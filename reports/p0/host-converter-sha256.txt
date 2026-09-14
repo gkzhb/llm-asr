@@ -1,0 +1,2 @@
+f6552fc83d190ba1fa5c53f614d65087fc4085d72cecd4f40e41133ad11ac3bf  .work/build/mnn-host/MNNConvert
+bb947813d40782deed98b9e399d0f0600330ed7ad1e0f4b55077120b25320dc7  .work/build/mnn-host/tools/converter/libMNNConvertDeps.so

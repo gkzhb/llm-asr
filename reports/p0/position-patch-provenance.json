@@ -1,0 +1,6 @@
+{
+  "file": "transformers/llm/engine/src/omni.cpp",
+  "before_sha256": "faff9ea1ab9f0d44f1885634d25538090f5740cf4eab40c27393529ae497d4c0",
+  "after_sha256": "fc66a0f5155855c59b560b69f26f0412d240b1f2fca0cd5b478f3f572aec41bf",
+  "note": "Hashes include temporary diagnostic trace; production trace removal is separate"
+}

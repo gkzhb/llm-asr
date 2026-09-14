@@ -1,0 +1,40 @@
+{
+  "kind": "P0-float-baseline-not-yet-device-validated",
+  "files": [
+    {
+      "file": "audio.mnn",
+      "bytes": 2989192,
+      "sha256": "cd6237e0c02003345ba035e0fa6e67fe8658f270978ca8fbd4a60bf27ad5e825"
+    },
+    {
+      "file": "audio.mnn.weight",
+      "bytes": 373185600,
+      "sha256": "1456a76d7039681fbfdd94ffdac486545da62859f80a58b43a6f527f42a72382"
+    },
+    {
+      "file": "llm.mnn",
+      "bytes": 1628400,
+      "sha256": "3ce4f4d93e0fc1d2adb10d834421ae98f421913d85f5238abb6929d7a65ebb5b"
+    },
+    {
+      "file": "llm.mnn.weight",
+      "bytes": 1192493056,
+      "sha256": "001a7838a2420182f0c6855657920d5a45c7b8b0999a7e045ef7ef0955a22ab4"
+    },
+    {
+      "file": "tokenizer.txt",
+      "bytes": 3194212,
+      "sha256": "70e5e435679b6520af2b8f5fd400e30023600321b09ab6153f7215b659b68c07"
+    },
+    {
+      "file": "llm_config.json",
+      "bytes": 1104,
+      "sha256": "8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85"
+    },
+    {
+      "file": "config.json",
+      "bytes": 617,
+      "sha256": "fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "file": "tools/audio/include/audio/audio.hpp",
+    "before_sha256": "485187fae9657faf71078ab0ff8967911e6345fcebd198469dbc060db3cdd26d",
+    "after_sha256": "bd25140e077168237f34f1a4292b2989c109834355fb2c584de757f7281d1918"
+  },
+  {
+    "file": "tools/audio/source/audio.cpp",
+    "before_sha256": "12204df2c8b0b80abfb823c0d36edc5827a6fc75db6965b5e3b2a73c18b48126",
+    "after_sha256": "4727ca0d835022e0cef0ab2f56a0fb734771bd339ca011587b41f42c157cd12a"
+  }
+]

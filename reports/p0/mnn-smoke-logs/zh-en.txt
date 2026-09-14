@@ -1,0 +1,10 @@
+Can't open file:/sys/devices/system/cpu/cpufreq/schedutil/affected_cpus
+CPU Group: [ 0  1 ], 1600000 - 2700000
+The device supports: i8sdot:0, fp16:0, i8mm: 0, sve2: 0, sme2: 0, perfCores: 0
+
+P0_TEXT_BEGIN
+甚至出现交易几乎停滞的情况。嗯，哦， yeah， yeah， he wasn't even that big when I started listening to him. But and his solo music didn't do overly well, but he did very well when he started writing for other people.
+
+P0_TEXT_END
+P0_METRICS {"load_s":7.27239,"inference_s":29.6648,"audio_us":7901482,"prefill_us":10674829,"decode_us":11057691,"prompt_tokens":272,"generated_tokens":53,"status":1,"truncated":false}
+

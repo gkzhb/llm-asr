@@ -1,0 +1,29 @@
+[project]
+name = "qwen-asr-p0-tools"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "qwen-asr==0.0.6",
+  "torch==2.10.0+cpu",
+  "torchaudio==2.10.0+cpu",
+  "onnx==1.20.1",
+  "onnxruntime==1.24.2",
+  "onnxslim==0.1.89",
+  "MNN==3.6.1",
+  "safetensors>=0.7,<0.8",
+  "numpy>=2,<3",
+  "psutil>=7,<8",
+  "datasets>=4,<5",
+  "peft>=0.18,<0.19",
+  "sentencepiece>=0.2,<0.3",
+  "yaspin>=3,<4",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torchaudio = { index = "pytorch-cpu" }

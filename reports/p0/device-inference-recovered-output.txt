@@ -1,0 +1,6 @@
+
+P0_TEXT_BEGIN
+甚至出现交易几乎停滞的情况。
+
+P0_TEXT_END
+P0_METRICS {"load_s":14.7791,"inference_s":4.26394,"audio_us":1795624,"prefill_us":1770473,"decode_us":2765083,"prompt_tokens":73,"generated_tokens":8,"status":1,"truncated":false}

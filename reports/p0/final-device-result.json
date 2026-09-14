@@ -1,0 +1,28 @@
+{
+  "load_s": 11.6248,
+  "inference_s": 4.72811,
+  "audio_us": 972961,
+  "prefill_us": 3873733,
+  "decode_us": 2691489,
+  "prompt_tokens": 73,
+  "generated_tokens": 8,
+  "status": 1,
+  "truncated": false,
+  "text": "甚至出现交易几乎停滞的情况。",
+  "audio_s": 4.2039375,
+  "shell_exit": 0,
+  "rtf": 1.1246860829876753,
+  "sampled_peak_pss_kib": 3209091,
+  "sampled_peak_pss_gib": 3.060427665710449,
+  "evidence_sha256": {
+    "reports/p0/device-inference-final-patches.txt": "8eaad99c9873dd7601ee150780049561e6f37cc346aafa582779141ba24440fd",
+    "reports/p0/device-deployment-final-patches.json": "0915dfb0596e40d0fd15f38914e9b6cc54a87d203d06c27308b0b4e32f301997"
+  },
+  "limitations": [
+    "Single native-shell recording, not APK or sustained benchmark",
+    "Process load, not persistent warm model",
+    "PSS sampled; actual peak may be higher",
+    "Stage counters overlap; do not sum",
+    "Not controlled before/after performance experiment"
+  ]
+}

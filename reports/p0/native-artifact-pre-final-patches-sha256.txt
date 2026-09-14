@@ -1,0 +1,3 @@
+d23d5faaed0ea4f21e500eb2a3ed2fa9a13c2553a5abd378ed4ff7e0c0d88c2b  /home/zhb/gitrep/llm-asr/.work/bin/libMNN.so
+1e0bb2c4699dcf5237848bcdc44f2cd26ea9f274af162139d114fca6f9634902  /home/zhb/gitrep/llm-asr/.work/bin/p0_asr
+d62101f8507555817f3802b53fce352dc2053b082f9b924698b9351153ea8316  /home/zhb/gitrep/llm-asr/.work/bin/p0_capabilities

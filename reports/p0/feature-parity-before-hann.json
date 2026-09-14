@@ -1,0 +1,73 @@
+{
+  "thresholds": {
+    "max_abs": 0.0001,
+    "relative_l2": 0.0001
+  },
+  "results": [
+    {
+      "id": "zh-original",
+      "expected_shape": [
+        128,
+        420
+      ],
+      "mnn_elements": 53760,
+      "native_log": "Can't open file:/sys/devices/system/cpu/cpufreq/schedutil/affected_cpus\nCPU Group: [ 0  1 ], 1600000 - 2700000\nThe device supports: i8sdot:0, fp16:0, i8mm: 0, sve2: 0, sme2: 0, perfCores: 0\nshape=1,128,420, elements=53760",
+      "max_abs": 0.20312798023223877,
+      "rmse": 0.0023541103582829237,
+      "relative_l2": 0.003960019908845425,
+      "passed": false
+    },
+    {
+      "id": "en-original",
+      "expected_shape": [
+        128,
+        1505
+      ],
+      "mnn_elements": 192640,
+      "native_log": "Can't open file:/sys/devices/system/cpu/cpufreq/schedutil/affected_cpus\nCPU Group: [ 0  1 ], 1600000 - 2700000\nThe device supports: i8sdot:0, fp16:0, i8mm: 0, sve2: 0, sme2: 0, perfCores: 0\nshape=1,128,1505, elements=192640",
+      "max_abs": 0.09494078159332275,
+      "rmse": 0.0014377792831510305,
+      "relative_l2": 0.002988726133480668,
+      "passed": false
+    },
+    {
+      "id": "zh-3200",
+      "expected_shape": [
+        128,
+        20
+      ],
+      "mnn_elements": 2560,
+      "native_log": "Can't open file:/sys/devices/system/cpu/cpufreq/schedutil/affected_cpus\nCPU Group: [ 0  1 ], 1600000 - 2700000\nThe device supports: i8sdot:0, fp16:0, i8mm: 0, sve2: 0, sme2: 0, perfCores: 0\nshape=1,128,20, elements=2560",
+      "max_abs": 0.02843618392944336,
+      "rmse": 0.0017064110143110156,
+      "relative_l2": 0.002137162024155259,
+      "passed": false
+    },
+    {
+      "id": "zh-480000",
+      "expected_shape": [
+        128,
+        3000
+      ],
+      "mnn_elements": 384000,
+      "native_log": "Can't open file:/sys/devices/system/cpu/cpufreq/schedutil/affected_cpus\nCPU Group: [ 0  1 ], 1600000 - 2700000\nThe device supports: i8sdot:0, fp16:0, i8mm: 0, sve2: 0, sme2: 0, perfCores: 0\nshape=1,128,3000, elements=384000",
+      "max_abs": 0.20312798023223877,
+      "rmse": 0.002166649093851447,
+      "relative_l2": 0.0036310493014752865,
+      "passed": false
+    },
+    {
+      "id": "zh-en",
+      "expected_shape": [
+        128,
+        1950
+      ],
+      "mnn_elements": 249600,
+      "native_log": "Can't open file:/sys/devices/system/cpu/cpufreq/schedutil/affected_cpus\nCPU Group: [ 0  1 ], 1600000 - 2700000\nThe device supports: i8sdot:0, fp16:0, i8mm: 0, sve2: 0, sme2: 0, perfCores: 0\nshape=1,128,1950, elements=249600",
+      "max_abs": 0.2335803508758545,
+      "rmse": 0.0015522307949140668,
+      "relative_l2": 0.003250944660976529,
+      "passed": false
+    }
+  ]
+}

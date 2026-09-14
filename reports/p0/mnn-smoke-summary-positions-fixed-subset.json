@@ -1,0 +1,14 @@
+{
+  "cases": 4,
+  "complete": 4,
+  "exact_matches": 3,
+  "different_or_failed": [
+    "zh-en"
+  ],
+  "limitations": [
+    "Two independent speech sources plus derived fixtures",
+    "No human labels",
+    "Official reference does not expose token-limit termination; long reference may be truncated",
+    "Native host processes, not APK or device batch"
+  ]
+}

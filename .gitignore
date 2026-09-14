@@ -1,0 +1,57 @@
+# Local agent/session state and build output
+.pi/
+result
+result-*
+.direnv/
+
+# Android credentials must never enter the repository
+.android/
+adbkey
+adbkey.pub
+
+# Future build/model artifacts
+.gradle/
+**/build/
+local.properties
+models/
+.venv/
+__pycache__/
+# P0 external sources, wheels, datasets and compiler scratch (manifests are tracked)
+.cache/
+.work/
+bench/audio/
+.pi-subagents/
+
+# Distributable local debug builds (reports retain hashes)
+dist/
+
+# Defense in depth: model payloads and generated binaries anywhere in the tree
+*.safetensors
+*.mnn
+*.mnn.weight
+*.weight
+*.onnx
+*.onnx.data
+*.gguf
+*.pt
+*.pth
+*.ckpt
+*.tflite
+*.mtok
+*.apk
+*.aab
+*.dex
+*.class
+*.so
+*.o
+*.a
+*.pyc
+
+# Signing credentials and private local configuration
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+.env
+.env.*

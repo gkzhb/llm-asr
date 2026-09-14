@@ -1,0 +1,7 @@
+7fa51ba2da40a3aa2428b5b4a47d4b7b9a33d17c7a2c0fa0814bd03d30b01950  /home/zhb/gitrep/llm-asr/.work/bin/host_audio_gate
+e300eee7e307d95fd020b3a745b043267e81c0384528773249c5e667a231ca34  /home/zhb/gitrep/llm-asr/.work/bin/host_feature_gate
+e60376d0882497ab9dba5c449b613e673fcfe0535cad2c735036e7e80f4f42ed  /home/zhb/gitrep/llm-asr/.work/bin/host_p0_asr
+f17f3051c3eb0439255048ab9f0c00a719138720fd94df11107f48052cedfaad  /home/zhb/gitrep/llm-asr/.work/bin/host_prompt_gate
+10910daddb4e1c10fdc11eb1e5d9d34ab44d338d8aa8fc4f04d3a5968002edb8  /home/zhb/gitrep/llm-asr/.work/bin/libMNN.so
+b1b024c533e3432c4626837af283e21bcd87aa4a16f7eeb343d649b551dc9e11  /home/zhb/gitrep/llm-asr/.work/bin/p0_asr
+d62101f8507555817f3802b53fce352dc2053b082f9b924698b9351153ea8316  /home/zhb/gitrep/llm-asr/.work/bin/p0_capabilities

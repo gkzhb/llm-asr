@@ -1,0 +1,19 @@
+--- a/qwen_asr/inference/qwen3_forced_aligner.py
++++ b/qwen_asr/inference/qwen3_forced_aligner.py
+@@ -18,7 +18,7 @@
+ from dataclasses import dataclass
+ from typing import Any, Dict, List, Optional, Union
+ 
+-import nagisa
++# P0: nagisa imported only for optional Japanese alignment.
+ import torch
+ from qwen_asr.core.transformers_backend import (
+     Qwen3ASRConfig,
+@@ -99,6 +99,7 @@
+         return tokens
+ 
+     def tokenize_japanese(self, text: str) -> List[str]:
++        import nagisa  # optional Japanese alignment; unsupported on this host
+         words = nagisa.tagging(text).words
+         tokens: List[str] = []
+         for w in words:

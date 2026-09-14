@@ -1,0 +1,12 @@
+{
+  "mnn": {
+    "revision": "a03b005cf6f888ebf092e4753840f935827f9c36",
+    "archive_sha256": "4bfeaff68193a58f097d1d549a9b31f5ef588ba796c9768990e0afd0b439c59d"
+  },
+  "qwen_asr": {
+    "revision": "7c6daf77a2421100f5fb066495372c00129d39ff",
+    "archive_sha256": "158145dd34d91528ebfe28bf7c9bf64fd3a792ec307f651f048b1da8c76dbb87",
+    "pypi_version": "0.0.6"
+  },
+  "note": "Source archives are local .work/sources, dependency wheel hashes in uv.lock; patches separately recorded."
+}

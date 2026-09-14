@@ -1,0 +1,10 @@
+Can't open file:/sys/devices/system/cpu/cpufreq/schedutil/affected_cpus
+CPU Group: [ 0  1 ], 1600000 - 2700000
+The device supports: i8sdot:0, fp16:0, i8mm: 0, sve2: 0, sme2: 0, perfCores: 0
+
+P0_TEXT_BEGIN
+甚至。
+
+P0_TEXT_END
+P0_METRICS {"load_s":42.5286,"inference_s":2.52448,"audio_us":480872,"prefill_us":1540952,"decode_us":461642,"prompt_tokens":31,"generated_tokens":3,"status":1,"truncated":false}
+

@@ -1,0 +1,106 @@
+{
+  "sha": "7c6daf77a2421100f5fb066495372c00129d39ff",
+  "node_id": "C_kwDORC8txdoAKDdjNmRhZjc3YTI0MjExMDBmNWZiMDY2NDk1MzcyYzAwMTI5ZDM5ZmY",
+  "commit": {
+    "author": {
+      "name": "Xiong Wang",
+      "email": "wangxiongts@163.com",
+      "date": "2026-06-26T08:20:17Z"
+    },
+    "committer": {
+      "name": "GitHub",
+      "email": "noreply@github.com",
+      "date": "2026-06-26T08:20:17Z"
+    },
+    "message": "Merge pull request #189 from ebezzam/patch-1\n\nAdd news on Transformers native support",
+    "tree": {
+      "sha": "f5492e4f346ffd945969a222c584661825230f49",
+      "url": "https://api.github.com/repos/QwenLM/Qwen3-ASR/git/trees/f5492e4f346ffd945969a222c584661825230f49"
+    },
+    "url": "https://api.github.com/repos/QwenLM/Qwen3-ASR/git/commits/7c6daf77a2421100f5fb066495372c00129d39ff",
+    "comment_count": 0,
+    "verification": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqPjZBCRC1aQ7uu5UhlAAAgRAQAADHerZirHoaTXB9mx3tkOOz\n0CSi8gmJlV2G+74XHytNuUJrTm2azexhcr76YTLqTYvNzzPzcN2tXIZQ2uvvaefQ\nxlLeBBhqFrxm13xJcmEe8U20msgSkAPfJLVxjVE0D/PIzAsSM2dG+8A1dptWLnxm\nHE2a4zphJOejIrnDDQNe/4OTnLBjax6BT1u/i0utowUPtwhG7OjWHeoPkE6fwbcf\nnCLyaXvqnzLRCyIR1TJlHBW2oBEtRRKw2gHgqR7HhsinICkSFBtJPHy8O4ntuKGt\nZbvGQKEsbTRhxtrSsaad2YqmzlF6omDUBGCF7LK+2Ly0AmMxIvEb1B1HEkUyS2MD\nZkrnHcCwdnViG9Vjp/kCQBOXrLsr17Q4/Taz3x6XGp04fZDW1bsQKu/gKPv4vK27\nGFSungeouBLUdhdss8oljavarESza20xFrHb3dDyk0mXTm+D2ykyEJ/hDeSb9BCS\nicMrBlf6uqQGTpOebuxAezhoNFWppqzbFYEs797FMBS1aQ6G8nK3J8q2bRSuwyJt\nSttL9pIctx7yc9450gTsg05wCkUGvL5c4f345+TNlAowkzvtRm0RwsPTXVom+NnG\nd7uGkPE5PvgvbmHgC2WZoTOUczZxRjKywXBBWH9oazvTIs7Q0BArt+rIsBFuSYTq\nGmBgtlQCggM2cMRHOSo/\n=DhEP\n-----END PGP SIGNATURE-----\n",
+      "payload": "tree f5492e4f346ffd945969a222c584661825230f49\nparent c17a131fe028b2e428b6e80a33d30bb4fa57b8df\nparent 2f9809596b7e3fc080fce9716b99fc87f588f407\nauthor Xiong Wang <wangxiongts@163.com> 1782462017 +0800\ncommitter GitHub <noreply@github.com> 1782462017 +0800\n\nMerge pull request #189 from ebezzam/patch-1\n\nAdd news on Transformers native support",
+      "verified_at": "2026-06-26T08:20:18Z"
+    }
+  },
+  "url": "https://api.github.com/repos/QwenLM/Qwen3-ASR/commits/7c6daf77a2421100f5fb066495372c00129d39ff",
+  "html_url": "https://github.com/QwenLM/Qwen3-ASR/commit/7c6daf77a2421100f5fb066495372c00129d39ff",
+  "comments_url": "https://api.github.com/repos/QwenLM/Qwen3-ASR/commits/7c6daf77a2421100f5fb066495372c00129d39ff/comments",
+  "author": {
+    "login": "wangxiongts",
+    "id": 22543219,
+    "node_id": "MDQ6VXNlcjIyNTQzMjE5",
+    "avatar_url": "https://avatars.githubusercontent.com/u/22543219?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/wangxiongts",
+    "html_url": "https://github.com/wangxiongts",
+    "followers_url": "https://api.github.com/users/wangxiongts/followers",
+    "following_url": "https://api.github.com/users/wangxiongts/following{/other_user}",
+    "gists_url": "https://api.github.com/users/wangxiongts/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/wangxiongts/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/wangxiongts/subscriptions",
+    "organizations_url": "https://api.github.com/users/wangxiongts/orgs",
+    "repos_url": "https://api.github.com/users/wangxiongts/repos",
+    "events_url": "https://api.github.com/users/wangxiongts/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/wangxiongts/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "web-flow",
+    "id": 19864447,
+    "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+    "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/web-flow",
+    "html_url": "https://github.com/web-flow",
+    "followers_url": "https://api.github.com/users/web-flow/followers",
+    "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+    "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+    "organizations_url": "https://api.github.com/users/web-flow/orgs",
+    "repos_url": "https://api.github.com/users/web-flow/repos",
+    "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/web-flow/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "c17a131fe028b2e428b6e80a33d30bb4fa57b8df",
+      "url": "https://api.github.com/repos/QwenLM/Qwen3-ASR/commits/c17a131fe028b2e428b6e80a33d30bb4fa57b8df",
+      "html_url": "https://github.com/QwenLM/Qwen3-ASR/commit/c17a131fe028b2e428b6e80a33d30bb4fa57b8df"
+    },
+    {
+      "sha": "2f9809596b7e3fc080fce9716b99fc87f588f407",
+      "url": "https://api.github.com/repos/QwenLM/Qwen3-ASR/commits/2f9809596b7e3fc080fce9716b99fc87f588f407",
+      "html_url": "https://github.com/QwenLM/Qwen3-ASR/commit/2f9809596b7e3fc080fce9716b99fc87f588f407"
+    }
+  ],
+  "stats": {
+    "total": 6,
+    "additions": 5,
+    "deletions": 1
+  },
+  "files": [
+    {
+      "sha": "11cb7f061dd669e8a1024a030a7e668bd389bef3",
+      "filename": "README.md",
+      "status": "modified",
+      "additions": 5,
+      "deletions": 1,
+      "changes": 6,
+      "blob_url": "https://github.com/QwenLM/Qwen3-ASR/blob/7c6daf77a2421100f5fb066495372c00129d39ff/README.md",
+      "raw_url": "https://github.com/QwenLM/Qwen3-ASR/raw/7c6daf77a2421100f5fb066495372c00129d39ff/README.md",
+      "contents_url": "https://api.github.com/repos/QwenLM/Qwen3-ASR/contents/README.md?ref=7c6daf77a2421100f5fb066495372c00129d39ff",
+      "patch": "@@ -17,6 +17,10 @@ We release **Qwen3-ASR**, a family that includes two powerful all-in-one speech\n \n \n ## News\n+* 2026.6.26: 🤗🤗🤗 Native Transformers support is now available! It includes `torch.compile` support for faster inference. See the new model cards for example usage:\n+  - [Qwen/Qwen3-ASR-1.7B-hf](https://huggingface.co/Qwen/Qwen3-ASR-1.7B-hf)\n+  - [Qwen/Qwen3-ASR-0.6B-hf](https://huggingface.co/Qwen/Qwen3-ASR-0.6B-hf)\n+  - [Qwen/Qwen3-ForcedAligner-0.6B-hf](https://huggingface.co/Qwen/Qwen3-ForcedAligner-0.6B-hf)\n * 2026.1.29: 🎉🎉🎉 We have released the [Qwen3-ASR](https://huggingface.co/collections/Qwen/qwen3-asr) series (0.6B/1.7B) and the Qwen3-ForcedAligner-0.6B model. Please check out our [blog](https://qwen.ai/blog?id=qwen3asr)!\n \n \n@@ -1438,4 +1442,4 @@ If you find our paper and code useful in your research, please consider giving a\n \n [![Star History Chart](https://api.star-history.com/svg?repos=QwenLM/Qwen3-ASR&type=Date)](https://star-history.com/#QwenLM/Qwen3-ASR&Date)\n \n-<br>\n\\ No newline at end of file\n+<br>"
+    }
+  ]
+}

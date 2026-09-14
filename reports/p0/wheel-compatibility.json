@@ -1,0 +1,14 @@
+[
+  {
+    "file": "qwen_asr/inference/qwen3_forced_aligner.py",
+    "before": "fb586127507c5980d11c6d848b530e652afad3ae0707cba6eb0c90377b2a2111",
+    "after": "6db11a594809af8668410dc69b200f76c2ee018ea9dab9aac8851a662f137e3a",
+    "fix": "lazy nagisa import; ASR untouched"
+  },
+  {
+    "file": "_mnncengine.cpython-312-x86_64-linux-gnu.so",
+    "before": "10a5cf7357dbd1b13f87a131044b7cff7de3df911df651b02d3e2305ca006559",
+    "after": "174dc8fdfa10f823a91041d9d061f833f49d65753aa0d3045eb553f49f62ca10",
+    "fix": "PT_GNU_STACK PF_X cleared"
+  }
+]

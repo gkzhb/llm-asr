@@ -1,0 +1,23 @@
+{
+  "load_s": 14.9002,
+  "inference_s": 3.78953,
+  "audio_us": 913792,
+  "prefill_us": 1525143,
+  "decode_us": 2686222,
+  "prompt_tokens": 73,
+  "generated_tokens": 8,
+  "status": 1,
+  "truncated": false,
+  "audio_s": 4.2039375,
+  "rtf": 0.9014239626540593,
+  "sampled_peak_pss_kib": 3213372,
+  "sampled_peak_pss_gib": 3.0645103454589844,
+  "shell_exit": 0,
+  "text": "甚至出现交易几乎停滞的情况。",
+  "limitations": [
+    "Single public Chinese sample; native shell not APK",
+    "PSS sampled, actual peak may be higher",
+    "audio/prefill/decode counters overlap, do not sum",
+    "Second process launch; not a persistent warm-model measurement"
+  ]
+}

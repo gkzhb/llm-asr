@@ -1,0 +1,211 @@
+{
+  "purpose": "Planning evidence snapshots only; not executable instructions or dependency/model lock. No model weights downloaded. local_saved_at is filesystem time, not authoritative upstream publication time.",
+  "sources": [
+    {
+      "file": "llama-converter.txt",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/master/convert_hf_to_gguf.py",
+      "bytes": 13012,
+      "sha256": "e9a1da876330bbce9687541ab31736542a01b4ac43c6686126514a50f122fb7f",
+      "local_saved_at": "2026-09-13T18:12:28.545719+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "llama-mtmd.txt",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/master/tools/mtmd/README.md",
+      "bytes": 5627,
+      "sha256": "5821ef525780b71085f68da7e4ea1dd9b90241fbba91cb928519b06eb2f76c42",
+      "local_saved_at": "2026-09-13T18:12:28.386206+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "llama-qwen-conversion.txt",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/5f436dddb440a288ee5611d7d1eca564a6aca9f4/conversion/qwen.py",
+      "bytes": 40770,
+      "sha256": "b783f53598e1a65cb0ef7fbe0d0f52da472e2784f63acf13a5aea00f623cfaa6",
+      "local_saved_at": "2026-09-13T18:13:10.196727+00:00",
+      "source_ref_kind": "commit"
+    },
+    {
+      "file": "llama-qwen3a.txt",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/master/tools/mtmd/models/qwen3a.cpp",
+      "bytes": 3576,
+      "sha256": "be9a27e837ee6641b1269d42d5d2f904d39b9b1e830543129bcc3cb224745b4b",
+      "local_saved_at": "2026-09-13T18:12:28.515468+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "llama-qwenvl.txt",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/5f436dddb440a288ee5611d7d1eca564a6aca9f4/conversion/qwenvl.py",
+      "bytes": 9152,
+      "sha256": "ec8fb850a2ebf19191893a861f18f9db4cfc23ff059543036b7227e5feda73ea",
+      "local_saved_at": "2026-09-13T18:14:28.819205+00:00",
+      "source_ref_kind": "commit"
+    },
+    {
+      "file": "llama-readme.txt",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/master/README.md",
+      "bytes": 7351,
+      "sha256": "e58520857253729851cc02313883c9d2a8b2ae86abe212aaf1bcbd7db8bfefb4",
+      "local_saved_at": "2026-09-13T18:11:48.413665+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "llama-tree.txt",
+      "url": "https://api.github.com/repos/ggml-org/llama.cpp/git/trees/master?recursive=1",
+      "bytes": 1215437,
+      "sha256": "ad5dad245b126c76470842e4f6392eb126d7beadff27376f7fae6cba3bdfb049",
+      "local_saved_at": "2026-09-13T18:11:48.275658+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "mnn-audio-header.txt",
+      "url": "https://raw.githubusercontent.com/alibaba/MNN/a03b005cf6f888ebf092e4753840f935827f9c36/tools/audio/include/audio/audio.hpp",
+      "bytes": 6287,
+      "sha256": "485187fae9657faf71078ab0ff8967911e6345fcebd198469dbc060db3cdd26d",
+      "local_saved_at": "2026-09-13T18:15:16.346131+00:00",
+      "source_ref_kind": "commit"
+    },
+    {
+      "file": "mnn-audio.txt",
+      "url": "https://raw.githubusercontent.com/alibaba/MNN/a03b005cf6f888ebf092e4753840f935827f9c36/transformers/llm/export/utils/audio.py",
+      "bytes": 41281,
+      "sha256": "8ecccf54b4e6bec4436abecb9d5fbfcc00c5fc93ddf839c2660791c87da61a54",
+      "local_saved_at": "2026-09-13T18:13:10.038719+00:00",
+      "source_ref_kind": "commit"
+    },
+    {
+      "file": "mnn-config.txt",
+      "url": "https://raw.githubusercontent.com/alibaba/MNN/a03b005cf6f888ebf092e4753840f935827f9c36/transformers/llm/engine/src/llmconfig.hpp",
+      "bytes": 23334,
+      "sha256": "0235df8fe75f0f33f114b4782b6a19c3e85a7d4c48c3601758675d83b4970230",
+      "local_saved_at": "2026-09-13T18:13:56.039802+00:00",
+      "source_ref_kind": "commit"
+    },
+    {
+      "file": "mnn-engine.txt",
+      "url": "https://raw.githubusercontent.com/alibaba/MNN/a03b005cf6f888ebf092e4753840f935827f9c36/transformers/llm/engine/src/llm.cpp",
+      "bytes": 70193,
+      "sha256": "cebd5ee71cf45d0630ad43d6b0d89e5474edfd2d97a93fa3e88efed7df22b11a",
+      "local_saved_at": "2026-09-13T18:13:10.265730+00:00",
+      "source_ref_kind": "commit"
+    },
+    {
+      "file": "mnn-export.txt",
+      "url": "https://raw.githubusercontent.com/alibaba/MNN/a03b005cf6f888ebf092e4753840f935827f9c36/transformers/llm/export/llmexport.py",
+      "bytes": 57255,
+      "sha256": "38cfce2d55e5ef30e911c2421603bf46eb599d9414f948f3cb697f36074728bf",
+      "local_saved_at": "2026-09-13T18:13:10.312732+00:00",
+      "source_ref_kind": "commit"
+    },
+    {
+      "file": "mnn-mapper.txt",
+      "url": "https://raw.githubusercontent.com/alibaba/MNN/master/transformers/llm/export/utils/model_mapper.py",
+      "bytes": 49665,
+      "sha256": "8b09172307acbb0ba5ee9c9dcdc30f5149a3d371cc931a3e9362f82d11f85c89",
+      "local_saved_at": "2026-09-13T18:12:28.768730+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "mnn-omni.txt",
+      "url": "https://raw.githubusercontent.com/alibaba/MNN/a03b005cf6f888ebf092e4753840f935827f9c36/transformers/llm/engine/src/omni.cpp",
+      "bytes": 160425,
+      "sha256": "afb34e39f3f6e9ceb1d446a0a80275c1485619b5c2b97c25d5a52e21f5e5fb27",
+      "local_saved_at": "2026-09-13T18:13:56.626827+00:00",
+      "source_ref_kind": "commit"
+    },
+    {
+      "file": "mnn-readme.txt",
+      "url": "https://raw.githubusercontent.com/alibaba/MNN/master/README.md",
+      "bytes": 13307,
+      "sha256": "9e64c51e4493f319c5c0f6ddf46d738d008870bfa892c27586d68750f2dbdfe2",
+      "local_saved_at": "2026-09-13T18:11:48.326661+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "mnn-tree.txt",
+      "url": "https://api.github.com/repos/alibaba/MNN/git/trees/master?recursive=1",
+      "bytes": 2998931,
+      "sha256": "bed57f3c33cc038c7e5c78bb4d0b8243d4383749cb4ab29cd65a76cd2ed594a6",
+      "local_saved_at": "2026-09-13T18:11:48.839688+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "nix-android.txt",
+      "url": "https://raw.githubusercontent.com/NixOS/nixpkgs/nixos-unstable/doc/languages-frameworks/android.section.md",
+      "bytes": 14258,
+      "sha256": "020f09e273a010e883534a6fc6a98d0423f227563f8aa95dfdc4169875a19fa6",
+      "local_saved_at": "2026-09-13T18:13:10.086722+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "qwen-asr-config.txt",
+      "url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/master/config.json",
+      "bytes": 6193,
+      "sha256": "76d3ae4601ce939830b2517f4a6cadb86cc51316c3900af6b020b051c21a478c",
+      "local_saved_at": "2026-09-13T18:10:11.426097+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "qwen-asr-preprocessor.txt",
+      "url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/master/preprocessor_config.json",
+      "bytes": 330,
+      "sha256": "45e120a4eda2c20c5d7f2ea9354e63536bf35e27aa573fb7cdf78017b378770d",
+      "local_saved_at": "2026-09-13T18:10:11.330182+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "qwen-asr-readme.txt",
+      "url": "https://raw.githubusercontent.com/QwenLM/Qwen3-ASR/main/README.md",
+      "bytes": 60537,
+      "sha256": "27b5d6e31c3dc10c9b4b86e226f215baacca57bede504994779ad334a67275a0",
+      "local_saved_at": "2026-09-13T18:11:22.298261+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "qwen-model-card.md",
+      "url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/master/README.md",
+      "bytes": 57456,
+      "sha256": "5058416891bc47a2051557765997e8c42f8eb78a0e33c3e775bd17d4b0ba4d50",
+      "local_saved_at": "2026-09-13T18:11:20.916185+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    },
+    {
+      "file": "qwen-modeling.txt",
+      "url": "https://raw.githubusercontent.com/QwenLM/Qwen3-ASR/main/qwen_asr/core/transformers_backend/modeling_qwen3_asr.py",
+      "bytes": 57850,
+      "sha256": "2fb5d98da1933748f5117ee05ce4e7150c9ead8154fb8e25f7af3968b853adc7",
+      "local_saved_at": "2026-09-13T18:12:28.829733+00:00",
+      "source_ref_kind": "mutable-branch-or-api"
+    }
+  ],
+  "failed_sources": [
+    {
+      "url": "https://www.mediatek.com/products/smartphones-2/mediatek-dimensity-1000-plus",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.mediatek.com/products/smartphones/mediatek-dimensity-1000-plus",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.mediatek.com/technology/dimensity/mediatek-dimensity-1000plus",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.iqoo.com.cn/vivo/param/z1",
+      "error": "DNS resolution failed"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/5f436dddb440a288ee5611d7d1eca564a6aca9f4/conversion/qwen3a.py",
+      "error": "HTTP 404; consulted actual tree instead"
+    },
+    {
+      "url": "https://developer.android.com/guide/topics/text/creating-input-method",
+      "error": "connection timeout"
+    },
+    {
+      "url": "https://developer.android.com/develop/background-work/services/fgs/service-types",
+      "error": "connection timeout"
+    }
+  ]
+}

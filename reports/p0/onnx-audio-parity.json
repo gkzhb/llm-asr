@@ -1,0 +1,108 @@
+{
+  "backend": "ORT CPU unoptimized vs official eager FP32",
+  "onnx_sha256": "de83de762c21899838cb9b0d9f5f15a623c36aaebb86e9c9c26000b1e26ebdc9",
+  "limits": {
+    "max_abs": 0.0001,
+    "relative_l2": 0.001
+  },
+  "results": [
+    {
+      "frames": 801,
+      "shape": [
+        1,
+        105,
+        1024
+      ],
+      "max_abs": 7.599592208862305e-07,
+      "rmse": 5.405266989555457e-08,
+      "relative_l2": 2.8029692202835577e-06,
+      "finite": true,
+      "seconds": 7.005671249004081,
+      "passed": true
+    },
+    {
+      "frames": 20,
+      "shape": [
+        1,
+        3,
+        1024
+      ],
+      "max_abs": 9.685754776000977e-08,
+      "rmse": 2.5085272525871005e-08,
+      "relative_l2": 1.463891749153845e-06,
+      "finite": true,
+      "seconds": 0.3590747460257262,
+      "passed": true
+    },
+    {
+      "frames": 99,
+      "shape": [
+        1,
+        13,
+        1024
+      ],
+      "max_abs": 1.8998980522155762e-07,
+      "rmse": 2.8897748194367523e-08,
+      "relative_l2": 1.4268754284785246e-06,
+      "finite": true,
+      "seconds": 0.8166346729267389,
+      "passed": true
+    },
+    {
+      "frames": 100,
+      "shape": [
+        1,
+        13,
+        1024
+      ],
+      "max_abs": 4.023313522338867e-07,
+      "rmse": 4.7775241540648494e-08,
+      "relative_l2": 2.374817995587364e-06,
+      "finite": true,
+      "seconds": 0.8468822031281888,
+      "passed": true
+    },
+    {
+      "frames": 101,
+      "shape": [
+        1,
+        14,
+        1024
+      ],
+      "max_abs": 5.140900611877441e-07,
+      "rmse": 5.561228988426592e-08,
+      "relative_l2": 2.8481379104050575e-06,
+      "finite": true,
+      "seconds": 1.6854257211089134,
+      "passed": true
+    },
+    {
+      "frames": 800,
+      "shape": [
+        1,
+        104,
+        1024
+      ],
+      "max_abs": 7.413327693939209e-07,
+      "rmse": 5.38988054188394e-08,
+      "relative_l2": 2.7897262953047175e-06,
+      "finite": true,
+      "seconds": 6.555032138014212,
+      "passed": true
+    },
+    {
+      "frames": 801,
+      "shape": [
+        1,
+        105,
+        1024
+      ],
+      "max_abs": 7.599592208862305e-07,
+      "rmse": 5.405266989555457e-08,
+      "relative_l2": 2.8029692202835577e-06,
+      "finite": true,
+      "seconds": 5.308770791860297,
+      "passed": true
+    }
+  ]
+}

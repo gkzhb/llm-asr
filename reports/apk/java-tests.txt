@@ -1,0 +1,1 @@
+PASS 21 minimal APK Java checks

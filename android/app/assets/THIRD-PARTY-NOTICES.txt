@@ -1,0 +1,17 @@
+MNN: Copyright (c) Alibaba, Inc. and its affiliates. Apache License 2.0.
+Source: https://github.com/alibaba/MNN
+Pinned commit: a03b005cf6f888ebf092e4753840f935827f9c36
+Local modifications: patches/mnn-p0.patch, patches/mnn-whisper-periodic-hann.patch,
+and ASR audio boundary position-count correction (see project patches/).
+License text included as MNN-LICENSE.txt. See project source for exact changes.
+
+Qwen3-ASR-0.6B model: Qwen team, Apache License 2.0 as declared in official model card.
+Weights are NOT included in this APK. Model import is pinned to project SHA-256 manifest.
+Model revision: 4ce9cc728b473a5aedbe7b6e1ea45646316824dc
+Source: https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B
+
+Bundled public Chinese WAV is the official Qwen3-ASR inference example, used for
+local engineering testing; no independent audio redistribution license is asserted.
+Source: https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen3-ASR-Repo/asr_zh.wav
+SHA-256: 46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50
+This debug APK is a local testing artifact, not cleared for store distribution.

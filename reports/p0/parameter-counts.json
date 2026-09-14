@@ -1,0 +1,10 @@
+{
+  "audio_encoder": {
+    "parameters": 186376192,
+    "bytes": 372752384
+  },
+  "text_decoder": {
+    "parameters": 751632384,
+    "bytes": 1503264768
+  }
+}

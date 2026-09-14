@@ -1,0 +1,21 @@
+{
+  "flake.nix": "f54b911766c54e591f5843ce06731b0818f2b80194f9a3da3d58753866dbaf38",
+  "flake.lock": "0ae8d7124e7a06626bd764744beac322a1f032eb6f4a0d223b18781ab0f16afc",
+  "scripts/build-minimal-apk.sh": "0da0e7e0fa7f35da631723c7591994cb83428186f802dc396d19aa884d60706e",
+  "scripts/check-minimal-apk.py": "5fde85f949f77f397291d1378ed3fb87e2c26aa25c97f3b410c9bf672a230b2f",
+  "scripts/test-minimal-apk.sh": "1822b4418afff4df096adf49d6eeb6145f00d1e723f0a62857ddd34303006c81",
+  "tests/MinimalApkTest.java": "57e1d5837b33ad9e4bab06faa332c09115d19f4764d1523d60134211b407a134",
+  "reports/p0/mnn-model-manifest.json": "1435b19c210472fa88d04e471595b4a709264b164a3eae2cec432643eaee380e",
+  "android/app/AndroidManifest.xml": "67c99b24741cc655c2832847577186dc21ab97dea3464eb4fd51926293c62d37",
+  "android/app/assets/MNN-LICENSE.txt": "a830d59c4f98d110e0540d0581efada06192ba6e798434307d1794b07a290302",
+  "android/app/assets/THIRD-PARTY-NOTICES.txt": "ec1e5a8e908b38b09adbadb8f5a225c3a1bbcc6d6eec1d93fe02e70de3efe957",
+  "android/app/src/org/llmasr/minimal/AsrText.java": "c82050008c1dd484257fdd41d974396c11ef4b362de4fe4eee4ea3641c0d2322",
+  "android/app/src/org/llmasr/minimal/MainActivity.java": "c3b9dc895eda3d8a9a1988eb2772a2089fc0cd95d5c9ca1a12dbfd2e88c9d7c5",
+  "android/app/src/org/llmasr/minimal/WaveInput.java": "089bf01a52f5ddd07e1bf4962f6162804dd995c7e06dfc284f5cdfe7ca57bb10",
+  "native/apk/asr_jni.cpp": "67dfeaa2f286df633726d1d7b90e8822352f2fb50bb40100554920ce17bd3dbd",
+  "scripts/link-apk-native.py": "95a1f6917732f5d30bc4db7d4bf65353cdb826b49899a03a9d1bac3bf8cbad42",
+  "patches/mnn-asr-boundary-positions.patch": "bd643768d175ef9f2a46099bdcecc46216d8fdb9f1a0e6662dd6825ad827fe84",
+  "patches/mnn-p0.patch": "c0ea13850febb20ee8f4d01d4028461fd49daf4b8730a84de0f5e38876d7f363",
+  "patches/mnn-whisper-periodic-hann.patch": "b1642f6bc52372e1d800d763e47888c746e1a3e3575c75f11177f337f5acaa4f",
+  "patches/qwen-lazy-nagisa.patch": "c24bf1940bab19c2a89c34159f3900be0fdf9e7e502d89de4cba5936f045abe8"
+}

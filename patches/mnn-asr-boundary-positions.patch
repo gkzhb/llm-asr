@@ -1,0 +1,17 @@
+--- a/transformers/llm/engine/src/omni.cpp
++++ b/transformers/llm/engine/src/omni.cpp
+@@ -1815,7 +1815,13 @@
+         }
+     }
+     int embed_len = audio_embedding->getInfo()->dim[0];
+-    addPositionIds(embed_len);
++    // Qwen3-ASR uses sequential positions for audio embeddings AND boundary tokens.
++    // Missing boundaries left decode mRoPE two positions behind the KV sequence.
++    int position_count = embed_len;
++    if (audio_type == "qwen3_asr") {
++        position_count += (mAudioStart >= 0 ? 1 : 0) + (mAudioEnd >= 0 ? 1 : 0);
++    }
++    addPositionIds(position_count);
+     std::vector<int> audio_ids(embed_len, mAudioPad);
+     if (mAudioStart >= 0) {
+         audio_ids.insert(audio_ids.begin(), mAudioStart);

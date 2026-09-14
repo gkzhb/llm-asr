@@ -1,0 +1,6 @@
+scope=adb-shell-native-process
+page_size=4096
+hwcap=0x119fff
+asimd=1 fphp=1 asimdhp=1 asimddp=1
+opencl_platform_query=0 count=1
+opencl_platform_0_status=0 name=ARM Platform

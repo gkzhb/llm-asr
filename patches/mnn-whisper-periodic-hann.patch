@@ -1,0 +1,56 @@
+--- a/tools/audio/include/audio/audio.hpp
++++ b/tools/audio/include/audio/audio.hpp
+@@ -75,6 +75,9 @@
+ 
+     /** Power scaling factor, default is 2.0. */
+     float power = 2.0;
++
++    /** Periodic Hann opt-in; false preserves other frontend defaults. */
++    bool periodic_hann = false;
+ };
+ 
+ /**
+--- a/tools/audio/source/audio.cpp
++++ b/tools/audio/source/audio.cpp
+@@ -479,7 +479,7 @@
+ VARP spectrogram(VARP waveform, const SpectrogramParams* params) {
+     int pad_left = 0, pad_right = 0, pad_mode = REFLECT;
+     int n_fft = 400, hop_length = 0, win_length = 0, window_type = HANNING;
+-    bool center = false, normalized = false;
++    bool center = false, normalized = false, periodic_hann = false;
+     float power = 2.0;
+     if (params) {
+         pad_left = params->pad_left;
+@@ -492,6 +492,7 @@
+         window_type = params->window_type;
+         normalized = params->normalized;
+         power = params->power;
++        periodic_hann = params->periodic_hann;
+     }
+     if (pad_left > 1 || pad_right > 1) {
+         waveform = MNN::Express::_Pad(waveform, _var<int>({pad_left, pad_right}, {2}), MNN::Express::CONSTANT);
+@@ -506,13 +507,13 @@
+     VARP window;
+     switch (window_type) {
+         case HANNING:
+-            window = hann_window(win_length);
++            window = hann_window(win_length, periodic_hann);
+             break;
+         case HAMMING:
+             window = hamming_window(win_length);
+             break;
+         default:
+-            window = hann_window(win_length);
++            window = hann_window(win_length, periodic_hann);
+             break;
+     }
+     std::unique_ptr<OpT> op(new OpT);
+@@ -753,6 +754,8 @@
+     spec_params.n_fft = n_fft;
+     spec_params.hop_length = hop_length;
+     spec_params.center = true;
++    // WhisperFeatureExtractor uses torch.hann_window(..., periodic=True).
++    spec_params.periodic_hann = true;
+     auto mel_specgram = mel_spectrogram(waveform, &mel_params, &spec_params);
+     mel_specgram =
+         _Slice(mel_specgram, _var<int>({0, 0}, {2}), _var<int>({mel_specgram->getInfo()->dim[0] - 1, -1}, {2}));

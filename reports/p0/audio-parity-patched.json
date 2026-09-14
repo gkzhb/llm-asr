@@ -1,0 +1,92 @@
+{
+  "backend": "official-unmodified-eager-vs-MNN-wrapper-eager",
+  "dtype": "float32",
+  "features": "seeded random mel tensors, not recognition accuracy",
+  "source_sha256": "be7d04be62f9c9fd408a16d31c2947edcb71f6f7efbe0226a5b2a179259712cb",
+  "results": [
+    {
+      "frames": 20,
+      "shape": [
+        1,
+        3,
+        1024
+      ],
+      "max_abs": 0.0,
+      "rmse": 0.0,
+      "relative_l2": 0.0,
+      "cosine": 1.0000001192092896,
+      "seconds": 0.9136062059551477,
+      "finite": true
+    },
+    {
+      "frames": 99,
+      "shape": [
+        1,
+        13,
+        1024
+      ],
+      "max_abs": 0.0,
+      "rmse": 0.0,
+      "relative_l2": 0.0,
+      "cosine": 1.0000001192092896,
+      "seconds": 1.7282718310598284,
+      "finite": true
+    },
+    {
+      "frames": 100,
+      "shape": [
+        1,
+        13,
+        1024
+      ],
+      "max_abs": 0.0,
+      "rmse": 0.0,
+      "relative_l2": 0.0,
+      "cosine": 1.000000238418579,
+      "seconds": 1.2891318129841238,
+      "finite": true
+    },
+    {
+      "frames": 101,
+      "shape": [
+        1,
+        14,
+        1024
+      ],
+      "max_abs": 0.0,
+      "rmse": 0.0,
+      "relative_l2": 0.0,
+      "cosine": 1.0000004768371582,
+      "seconds": 1.6477825890760869,
+      "finite": true
+    },
+    {
+      "frames": 800,
+      "shape": [
+        1,
+        104,
+        1024
+      ],
+      "max_abs": 0.0,
+      "rmse": 0.0,
+      "relative_l2": 0.0,
+      "cosine": 1.0000014305114746,
+      "seconds": 9.180032955948263,
+      "finite": true
+    },
+    {
+      "frames": 801,
+      "shape": [
+        1,
+        105,
+        1024
+      ],
+      "max_abs": 0.0,
+      "rmse": 0.0,
+      "relative_l2": 0.0,
+      "cosine": 1.0000015497207642,
+      "seconds": 14.798331503057852,
+      "finite": true
+    }
+  ]
+}

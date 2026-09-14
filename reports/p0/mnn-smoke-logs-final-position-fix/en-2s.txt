@@ -1,0 +1,11 @@
+Can't open file:/sys/devices/system/cpu/cpufreq/schedutil/affected_cpus
+CPU Group: [ 0  1 ], 1600000 - 2700000
+The device supports: i8sdot:0, fp16:0, i8mm: 0, sve2: 0, sme2: 0, perfCores: 0
+P0_EFFECTIVE_CONFIG {"llm_model":"llm.mnn","llm_weight":"llm.mnn.weight","backend_type":"cpu","thread_num":2,"precision":"high","memory":"low","sampler_type":"greedy","temperature":0.8,"top_k":40,"top_p":0.9,"min_p":0.05,"tfs_z":1.0,"typical":0.95,"repetition_penalty":1.0,"presence_penalty":0.0,"frequency_penalty":0.0,"penalty_window":0,"n_gram":8,"ngram_factor":1.0,"tokenizer_file":"tokenizer.txt","max_new_tokens":128,"async":false,"mllm":{"backend_type":"cpu","thread_num":2,"precision":"high","memory":"low"},"asr_language":"English","model_type":"qwen3_asr","hidden_size":1024,"layer_nums":28,"attention_mask":"float","attention_type":"full","is_mrope":true,"mrope_axes":3,"is_audio":true,"audio_type":"qwen3_asr","audio_start":151669,"audio_end":151670,"audio_pad":151676,"max_position_embeddings":65536,"attn_scale":0.08838834764831845,"jinja":{"chat_template":"{%- set content = messages[-1].content -%}<|im_start|>system\n<|im_end|>\n<|im_start|>user\n{{ content }}<|im_end|>\n{% if add_generation_prompt and content is string and '<audio>' in content and '</audio>' in content %}<|im_start|>assistant\n{% if asr_language %}language {{ asr_language }}<asr_text>{% endif %}{% endif %}","context":{"asr_language":"Chinese"},"eos":"<|im_end|>"},"tie_embeddings":{"weight_offset":881328128,"alpha_offset":1192493056,"alpha_size":0,"quant_bit":16,"quant_block":64,"alpha_dtype":"fp16"}}
+
+P0_TEXT_BEGIN
+Uh huh. Oh yeah, yeah.
+
+P0_TEXT_END
+P0_METRICS {"load_s":4.77827,"inference_s":4.13485,"audio_us":890337,"prefill_us":1696432,"decode_us":1545263,"prompt_tokens":44,"generated_tokens":9,"status":1,"truncated":false}
+

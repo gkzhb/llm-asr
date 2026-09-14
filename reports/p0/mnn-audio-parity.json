@@ -1,0 +1,52 @@
+{
+  "reference": "official eager FP32",
+  "backend": "matched-commit MNN CPU, high precision, FP16 stored weights",
+  "limits": {
+    "max_abs": 0.002,
+    "relative_l2": 0.02
+  },
+  "results": [
+    {
+      "frames": 801,
+      "max_abs": 0.00043167732656002045,
+      "relative_l2": 0.0024048318155109882,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "frames": 20,
+      "max_abs": 0.00018571503460407257,
+      "relative_l2": 0.002526707947254181,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "frames": 99,
+      "max_abs": 0.00019882246851921082,
+      "relative_l2": 0.002000730251893401,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "frames": 100,
+      "max_abs": 0.00021458789706230164,
+      "relative_l2": 0.0022342787124216557,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "frames": 101,
+      "max_abs": 0.00030123069882392883,
+      "relative_l2": 0.002590256044641137,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "frames": 800,
+      "max_abs": 0.00025297701358795166,
+      "relative_l2": 0.0023011898156255484,
+      "finite": true,
+      "passed": true
+    }
+  ]
+}

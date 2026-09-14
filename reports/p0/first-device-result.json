@@ -1,0 +1,22 @@
+{
+  "load_s": 14.7791,
+  "inference_s": 4.26394,
+  "audio_us": 1795624,
+  "prefill_us": 1770473,
+  "decode_us": 2765083,
+  "prompt_tokens": 73,
+  "generated_tokens": 8,
+  "status": 1,
+  "truncated": false,
+  "sample_duration_s": 4.2039375,
+  "rtf": 1.014272928653197,
+  "sampled_peak_pss_kib": 3226431,
+  "sampled_peak_pss_gib": 3.0769643783569336,
+  "text": "甚至出现交易几乎停滞的情况。",
+  "limitations": [
+    "Single native-shell run; not APK",
+    "Collector timed out, recovered device output; no reliable shell exit status",
+    "audio/prefill/decode timings may overlap and are not additive",
+    "Sampled PSS, not guaranteed exact peak"
+  ]
+}

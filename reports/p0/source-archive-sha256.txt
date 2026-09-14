@@ -1,0 +1,2 @@
+4bfeaff68193a58f097d1d549a9b31f5ef588ba796c9768990e0afd0b439c59d  .work/sources/mnn.tar.gz
+158145dd34d91528ebfe28bf7c9bf64fd3a792ec307f651f048b1da8c76dbb87  .work/sources/qwen-asr.tar.gz

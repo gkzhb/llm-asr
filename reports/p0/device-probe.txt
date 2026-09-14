@@ -1,0 +1,224 @@
+Probe UTC: 2026-09-13T18:46:55Z
+Scope: read-only platform capabilities; no personal data
+
+=== properties ===
+ro.product.manufacturer=vivo
+ro.product.model=V1986A
+ro.product.device=PD1986
+ro.build.version.release=12
+ro.build.version.sdk=31
+ro.product.cpu.abilist=arm64-v8a,armeabi-v7a,armeabi
+ro.board.platform=mt6885
+ro.hardware=mt6889
+ro.soc.model=MT6885
+ro.soc.manufacturer=Mediatek
+
+=== memory ===
+MemTotal:        7712828 kB
+MemAvailable:    4688492 kB
+SwapTotal:       6291452 kB
+SwapFree:        3555668 kB
+
+=== storage ===
+Filesystem       Size Used Avail Use% Mounted on
+/dev/block/sdc56 109G  79G   31G  72% /data/user/0
+
+=== cpu ===
+processor	: 0
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x2
+CPU part	: 0xd05
+CPU revision	: 0
+processor	: 1
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x2
+CPU part	: 0xd05
+CPU revision	: 0
+processor	: 2
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x2
+CPU part	: 0xd05
+CPU revision	: 0
+processor	: 3
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x2
+CPU part	: 0xd05
+CPU revision	: 0
+processor	: 4
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x1
+CPU part	: 0xd0d
+CPU revision	: 0
+processor	: 5
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x1
+CPU part	: 0xd0d
+CPU revision	: 0
+processor	: 6
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x1
+CPU part	: 0xd0d
+CPU revision	: 0
+processor	: 7
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x1
+CPU part	: 0xd0d
+CPU revision	: 0
+Hardware	: MT6889Z/CZA
+
+=== cpufreq ===
+/sys/devices/system/cpu/cpufreq/policy0
+related_cpus=0 1 2 3
+cpuinfo_max_freq=2000000
+scaling_max_freq=2000000
+scaling_cur_freq=1181000
+/sys/devices/system/cpu/cpufreq/policy4
+related_cpus=4 5 6 7
+cpuinfo_max_freq=2600000
+scaling_max_freq=2600000
+scaling_cur_freq=730000
+
+=== gpu-features ===
+feature:android.hardware.opengles.aep
+feature:android.hardware.vulkan.compute
+feature:android.hardware.vulkan.level=1
+feature:android.hardware.vulkan.version=4198400
+feature:android.software.opengles.deqp.level=132383489
+feature:android.software.vulkan.deqp.level=132383489
+
+=== gpu-libraries ===
+/vendor/lib64/libOpenCL.so: readable (not proof of app linker access)
+/vendor/lib64/egl/libGLES_mali.so: readable (not proof of app linker access)
+/system/lib64/libvulkan.so: readable (not proof of app linker access)
+
+=== thermal ===
+IsStatusOverride: false
+ThermalEventListeners:
+	callbacks: 1
+	killed: false
+	broadcasts count: -1
+ThermalStatusListeners:
+	callbacks: 6
+	killed: false
+	broadcasts count: -1
+Thermal Status: 0
+Cached temperatures:
+	Temperature{mValue=66.709, mType=0, mName=CPU, mStatus=0}
+	Temperature{mValue=66.709, mType=1, mName=GPU, mStatus=0}
+	Temperature{mValue=66.709, mType=9, mName=NPU, mStatus=0}
+	Temperature{mValue=37.0, mType=3, mName=SKIN, mStatus=0}
+	Temperature{mValue=29.0, mType=2, mName=BATTERY, mStatus=0}
+	Temperature{mValue=33.0, mType=5, mName=POWER_AMPLIFIER, mStatus=0}
+HAL Ready: true
+HAL connection:
+	ThermalHAL 2.0 connected: yes
+Current temperatures from HAL:
+	Temperature{mValue=33.621, mType=0, mName=CPU, mStatus=0}
+	Temperature{mValue=33.621, mType=1, mName=GPU, mStatus=0}
+	Temperature{mValue=28.0, mType=2, mName=BATTERY, mStatus=0}
+	Temperature{mValue=29.0, mType=3, mName=SKIN, mStatus=0}
+	Temperature{mValue=29.0, mType=5, mName=POWER_AMPLIFIER, mStatus=0}
+	Temperature{mValue=33.621, mType=9, mName=NPU, mStatus=0}
+Current cooling devices from HAL:
+	CoolingDevice{mValue=0, mType=2, mName=cpu_adaptive_0}
+	CoolingDevice{mValue=0, mType=2, mName=cpu_adaptive_1}
+	CoolingDevice{mValue=0, mType=2, mName=cpu_adaptive_2}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-backlight01}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-backlight02}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-backlight03}
+	CoolingDevice{mValue=0, mType=1, mName=mtk-cl-bcct00}
+	CoolingDevice{mValue=0, mType=1, mName=mtk-cl-bcct01}
+	CoolingDevice{mValue=0, mType=1, mName=mtk-cl-bcct02}
+	CoolingDevice{mValue=0, mType=1, mName=abcct_lcmoff}
+	CoolingDevice{mValue=0, mType=1, mName=abcct}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-cam00}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-cam01}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-cam02}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-cam-urgent}
+	CoolingDevice{mValue=0, mType=2, mName=cpu00}
+	CoolingDevice{mValue=0, mType=2, mName=cpu01}
+	CoolingDevice{mValue=0, mType=2, mName=cpu02}
+	CoolingDevice{mValue=0, mType=2, mName=cpu03}
+	CoolingDevice{mValue=0, mType=2, mName=cpu04}
+	CoolingDevice{mValue=0, mType=2, mName=cpu05}
+	CoolingDevice{mValue=0, mType=2, mName=cpu06}
+	CoolingDevice{mValue=0, mType=2, mName=cpu07}
+	CoolingDevice{mValue=0, mType=2, mName=cpu08}
+	CoolingDevice{mValue=0, mType=2, mName=cpu09}
+	CoolingDevice{mValue=0, mType=2, mName=cpu10}
+	CoolingDevice{mValue=0, mType=2, mName=cpu11}
+	CoolingDevice{mValue=0, mType=2, mName=cpu12}
+	CoolingDevice{mValue=0, mType=2, mName=cpu13}
+	CoolingDevice{mValue=0, mType=2, mName=cpu14}
+	CoolingDevice{mValue=0, mType=2, mName=cpu15}
+	CoolingDevice{mValue=0, mType=2, mName=cpu16}
+	CoolingDevice{mValue=0, mType=2, mName=cpu17}
+	CoolingDevice{mValue=0, mType=2, mName=cpu18}
+	CoolingDevice{mValue=0, mType=2, mName=cpu19}
+	CoolingDevice{mValue=0, mType=2, mName=cpu20}
+	CoolingDevice{mValue=0, mType=2, mName=cpu21}
+	CoolingDevice{mValue=0, mType=2, mName=cpu22}
+	CoolingDevice{mValue=0, mType=2, mName=cpu23}
+	CoolingDevice{mValue=0, mType=2, mName=cpu24}
+	CoolingDevice{mValue=0, mType=2, mName=cpu25}
+	CoolingDevice{mValue=0, mType=2, mName=cpu26}
+	CoolingDevice{mValue=0, mType=2, mName=cpu27}
+	CoolingDevice{mValue=0, mType=2, mName=cpu28}
+	CoolingDevice{mValue=0, mType=2, mName=cpu29}
+	CoolingDevice{mValue=0, mType=2, mName=cpu30}
+	CoolingDevice{mValue=0, mType=2, mName=cpu31}
+	CoolingDevice{mValue=0, mType=2, mName=cpu32}
+	CoolingDevice{mValue=0, mType=2, mName=cpu33}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-kshutdown00}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-kshutdown01}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-kshutdown02}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-kshutdown03}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-kshutdown04}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-kshutdown05}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-kshutdown06}
+	CoolingDevice{mValue=0, mType=6, mName=mtk-cl-kshutdown07}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-mutt00}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-mutt01}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-mutt02}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-mutt03}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-mutt04}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-mutt05}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-mutt06}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-mutt07}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-noIMS}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-mdoff}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-adp-mutt}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-tx-pwr00-nr}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-tx-pwr01-nr}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-tx-pwr02-nr}
+	CoolingDevice{mValue=0, mType=4, mName=mtk-cl-scg-off}
+
+=== battery ===
+  AC powered: false
+  USB powered: false
+  Wireless powered: false
+  Max charging voltage: 0
+  board temp status: 0
+  low bat status: 0
+  reverse wl chg status: 0
+  status: 3
+  level: 76
+  scale: 100
+  voltage: 3815
+  temperature: 275

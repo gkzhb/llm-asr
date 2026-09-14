@@ -1,0 +1,142 @@
+BEGIN elapsed-realtime=42250.40 214827.32
+EXIT=0
+END elapsed-realtime=42274.69 214925.88
+P0_EFFECTIVE_CONFIG {"llm_model":"llm.mnn","llm_weight":"llm.mnn.weight","backend_type":"cpu","thread_num":2,"precision":"high","memory":"low","sampler_type":"greedy","temperature":0.8,"top_k":40,"top_p":0.9,"min_p":0.05,"tfs_z":1.0,"typical":0.95,"repetition_penalty":1.0,"presence_penalty":0.0,"frequency_penalty":0.0,"penalty_window":0,"n_gram":8,"ngram_factor":1.0,"tokenizer_file":"tokenizer.txt","max_new_tokens":128,"async":false,"mllm":{"backend_type":"cpu","thread_num":2,"precision":"high","memory":"low"},"model_type":"qwen3_asr","hidden_size":1024,"layer_nums":28,"attention_mask":"float","attention_type":"full","is_mrope":true,"mrope_axes":3,"is_audio":true,"audio_type":"qwen3_asr","audio_start":151669,"audio_end":151670,"audio_pad":151676,"asr_language":"Chinese","max_position_embeddings":65536,"attn_scale":0.08838834764831845,"jinja":{"chat_template":"{%- set content = messages[-1].content -%}<|im_start|>system\n<|im_end|>\n<|im_start|>user\n{{ content }}<|im_end|>\n{% if add_generation_prompt and content is string and '<audio>' in content and '</audio>' in content %}<|im_start|>assistant\n{% if asr_language %}language {{ asr_language }}<asr_text>{% endif %}{% endif %}","context":{"asr_language":"Chinese"},"eos":"<|im_end|>"},"tie_embeddings":{"weight_offset":881328128,"alpha_offset":1192493056,"alpha_size":0,"quant_bit":16,"quant_block":64,"alpha_dtype":"fp16"}}
+
+P0_TEXT_BEGIN
+甚至出现交易几乎停滞的情况。
+
+P0_TEXT_END
+P0_METRICS {"load_s":11.6248,"inference_s":4.72811,"audio_us":972961,"prefill_us":3873733,"decode_us":2691489,"prompt_tokens":73,"generated_tokens":8,"status":1,"truncated":false}
+
+MEMORY_SAMPLES
+
+SAMPLE 42250.44 214827.44
+VmSize:	  866104 kB
+VmHWM:	   22668 kB
+VmRSS:	   22668 kB
+Threads:	1
+Rss:               24172 kB
+Pss:                7326 kB
+Private_Clean:      1728 kB
+Private_Dirty:      4176 kB
+
+SAMPLE 42251.58 214833.76
+VmSize:	11969916 kB
+VmHWM:	  377316 kB
+VmRSS:	  366264 kB
+Threads:	2
+Rss:              388180 kB
+Pss:              364068 kB
+Private_Clean:      3956 kB
+Private_Dirty:    358276 kB
+
+SAMPLE 42252.74 214839.68
+VmSize:	12369816 kB
+VmHWM:	  768244 kB
+VmRSS:	  768244 kB
+Threads:	2
+Rss:              778692 kB
+Pss:              754581 kB
+Private_Clean:      3956 kB
+Private_Dirty:    748788 kB
+
+SAMPLE 42253.94 214848.08
+VmSize:	12738960 kB
+VmHWM:	 1136392 kB
+VmRSS:	 1136392 kB
+Threads:	2
+Rss:             1144148 kB
+Pss:             1120037 kB
+Private_Clean:      3956 kB
+Private_Dirty:   1114244 kB
+
+SAMPLE 42255.09 214853.70
+VmSize:	13112224 kB
+VmHWM:	 1516208 kB
+VmRSS:	 1516144 kB
+Threads:	2
+Rss:             1542624 kB
+Pss:             1518513 kB
+Private_Clean:      3956 kB
+Private_Dirty:   1512720 kB
+
+SAMPLE 42256.27 214859.12
+VmSize:	13708504 kB
+VmHWM:	 1988956 kB
+VmRSS:	 1988956 kB
+Threads:	2
+Rss:             2048088 kB
+Pss:             2023977 kB
+Private_Clean:      3956 kB
+Private_Dirty:   2018184 kB
+
+SAMPLE 42258.17 214866.35
+VmSize:	14620132 kB
+VmHWM:	 3024256 kB
+VmRSS:	 2499192 kB
+Threads:	2
+Rss:             2677912 kB
+Pss:             2653801 kB
+Private_Clean:      3952 kB
+Private_Dirty:   2648012 kB
+
+SAMPLE 42260.18 214874.02
+VmSize:	14224588 kB
+VmHWM:	 3024848 kB
+VmRSS:	 2620804 kB
+Threads:	2
+Rss:             2642412 kB
+Pss:             2618301 kB
+Private_Clean:      3960 kB
+Private_Dirty:   2612504 kB
+
+SAMPLE 42262.31 214885.12
+VmSize:	14545084 kB
+VmHWM:	 3024848 kB
+VmRSS:	 2946408 kB
+Threads:	2
+Rss:             2975456 kB
+Pss:             2951347 kB
+Private_Clean:      3960 kB
+Private_Dirty:   2945548 kB
+
+SAMPLE 42264.27 214891.99
+VmSize:	14819548 kB
+VmHWM:	 3216324 kB
+VmRSS:	 3216324 kB
+Threads:	2
+Rss:             3221084 kB
+Pss:             3196893 kB
+Private_Clean:      4340 kB
+Private_Dirty:   3190712 kB
+
+SAMPLE 42266.13 214898.49
+VmSize:	14830512 kB
+VmHWM:	 3231340 kB
+VmRSS:	 3231340 kB
+Threads:	2
+Rss:             3233256 kB
+Pss:             3209091 kB
+Private_Clean:      4340 kB
+Private_Dirty:   3202884 kB
+
+SAMPLE 42267.96 214904.51
+VmSize:	14857872 kB
+VmHWM:	 3249296 kB
+VmRSS:	 3249296 kB
+Threads:	2
+Rss:             3192168 kB
+Pss:             3168004 kB
+Private_Clean:      4400 kB
+Private_Dirty:   3161736 kB
+
+SAMPLE 42271.72 214914.70
+VmSize:	14405088 kB
+VmHWM:	 3249824 kB
+VmRSS:	 2804680 kB
+Threads:	2
+Rss:               92728 kB
+Pss:               68564 kB
+Private_Clean:      4400 kB
+Private_Dirty:     62296 kB

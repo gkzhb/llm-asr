@@ -1,0 +1,227 @@
+{
+  "schema": 1,
+  "kind": "engineering-smoke-not-independent-accuracy",
+  "limitations": [
+    "Only two independent public speech sources",
+    "No human labels",
+    "Does not cover music, dialect or independently labeled numbers/proper names"
+  ],
+  "sources": [
+    {
+      "id": "zh",
+      "url": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen3-ASR-Repo/asr_zh.wav",
+      "sha256": "46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50",
+      "purpose": "public official inference example, local engineering testing only",
+      "normalization": "PCM16 mono; scipy resample_poly to 16kHz if needed"
+    },
+    {
+      "id": "en",
+      "url": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen3-ASR-Repo/asr_en.wav",
+      "sha256": "f9b4440ac8393e47c14a6240e9739dea09b645bb1592b8f2dd48feb9666cea7f",
+      "purpose": "public official inference example, local engineering testing only",
+      "normalization": "PCM16 mono; scipy resample_poly to 16kHz if needed"
+    }
+  ],
+  "cases": [
+    {
+      "id": "zh-original",
+      "path": "bench/audio/zh-original.wav",
+      "language": "Chinese",
+      "samples": 67263,
+      "duration_s": 4.2039375,
+      "sha256": "46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50",
+      "derivation": "public zh example normalized to mono16k PCM16",
+      "human_transcript": null
+    },
+    {
+      "id": "en-original",
+      "path": "bench/audio/en-original.wav",
+      "language": "English",
+      "samples": 240820,
+      "duration_s": 15.05125,
+      "sha256": "64e219123047e533c1c1dbb446cb04873ff8c72a2ff20e24ae9d84664d9b455f",
+      "derivation": "public en example normalized to mono16k PCM16",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-3200",
+      "path": "bench/audio/zh-3200.wav",
+      "language": "Chinese",
+      "samples": 3200,
+      "duration_s": 0.2,
+      "sha256": "817b3f000ea63fc1d58e686d41d8bfee2109d54ad383400648af48242cd239af",
+      "derivation": "crop/tile public zh audio; boundary fixture, not independent speech",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-15840",
+      "path": "bench/audio/zh-15840.wav",
+      "language": "Chinese",
+      "samples": 15840,
+      "duration_s": 0.99,
+      "sha256": "e304fb7e9f5dea01fcc21303f6f11177938e96e54e6b9f9f8181d3598f36b2f1",
+      "derivation": "crop/tile public zh audio; boundary fixture, not independent speech",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-16000",
+      "path": "bench/audio/zh-16000.wav",
+      "language": "Chinese",
+      "samples": 16000,
+      "duration_s": 1.0,
+      "sha256": "010b8f0e64091f87fc98508ba380b3efbd5ff33a72181727158ffd246e11c5d6",
+      "derivation": "crop/tile public zh audio; boundary fixture, not independent speech",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-16160",
+      "path": "bench/audio/zh-16160.wav",
+      "language": "Chinese",
+      "samples": 16160,
+      "duration_s": 1.01,
+      "sha256": "7c01d0bb8a03190a2c33c038005cd4d482c0074a9705a59204f26abb82a68f1d",
+      "derivation": "crop/tile public zh audio; boundary fixture, not independent speech",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-127840",
+      "path": "bench/audio/zh-127840.wav",
+      "language": "Chinese",
+      "samples": 127840,
+      "duration_s": 7.99,
+      "sha256": "e484f8a6456a25e91190fd8c8f67bcc9d23ab2c446851edbc8b1ba81b66941f0",
+      "derivation": "crop/tile public zh audio; boundary fixture, not independent speech",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-128000",
+      "path": "bench/audio/zh-128000.wav",
+      "language": "Chinese",
+      "samples": 128000,
+      "duration_s": 8.0,
+      "sha256": "42e4df7822e89c7aff6fe83e7646faae53f90b76dd163323d47a54fff4cb28c0",
+      "derivation": "crop/tile public zh audio; boundary fixture, not independent speech",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-128160",
+      "path": "bench/audio/zh-128160.wav",
+      "language": "Chinese",
+      "samples": 128160,
+      "duration_s": 8.01,
+      "sha256": "5a7efc9d6ea8d0b89d5cfc4ff1d9f908b2729a7ac3976cf54d4df0b80478f02b",
+      "derivation": "crop/tile public zh audio; boundary fixture, not independent speech",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-240000",
+      "path": "bench/audio/zh-240000.wav",
+      "language": "Chinese",
+      "samples": 240000,
+      "duration_s": 15.0,
+      "sha256": "3cf133d1248a94556e9b5f6d1c0699b81d98b3af34f7e0c659878509f2b03ae0",
+      "derivation": "crop/tile public zh audio; boundary fixture, not independent speech",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-480000",
+      "path": "bench/audio/zh-480000.wav",
+      "language": "Chinese",
+      "samples": 480000,
+      "duration_s": 30.0,
+      "sha256": "961d13c46b94b4e2935a9c28412a407b48432a6aefcba33e8caee87c1e20b99e",
+      "derivation": "crop/tile public zh audio; boundary fixture, not independent speech",
+      "human_transcript": null
+    },
+    {
+      "id": "silence-3200",
+      "path": "bench/audio/silence-3200.wav",
+      "language": "Chinese",
+      "samples": 3200,
+      "duration_s": 0.2,
+      "sha256": "946c3f59f3e671ef87ad6655ece8bfc00c451f868f751787278c2d462f4bde26",
+      "derivation": "synthetic silence",
+      "human_transcript": null
+    },
+    {
+      "id": "silence-16000",
+      "path": "bench/audio/silence-16000.wav",
+      "language": "Chinese",
+      "samples": 16000,
+      "duration_s": 1.0,
+      "sha256": "643f8a8dc8bd9c19225afffad2becfec5426180b3749cb208abdf1a6c8354efc",
+      "derivation": "synthetic silence",
+      "human_transcript": null
+    },
+    {
+      "id": "silence-128160",
+      "path": "bench/audio/silence-128160.wav",
+      "language": "Chinese",
+      "samples": 128160,
+      "duration_s": 8.01,
+      "sha256": "11e86c545f047216cd616baa1efe68dc1507651021837de51a793b355ac871f8",
+      "derivation": "synthetic silence",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-noise-100",
+      "path": "bench/audio/zh-noise-100.wav",
+      "language": "Chinese",
+      "samples": 67263,
+      "duration_s": 4.2039375,
+      "sha256": "10e5f7a3441a90e4db3f7e3684fa9cb4740247117534091710d0ff14ebb17cb5",
+      "derivation": "public zh example plus seeded Gaussian noise (not music)",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-noise-500",
+      "path": "bench/audio/zh-noise-500.wav",
+      "language": "Chinese",
+      "samples": 67263,
+      "duration_s": 4.2039375,
+      "sha256": "54f00ab4c75d806f8d29c4f888e66ba61b66fde7bf5e939d506db493e5db4f71",
+      "derivation": "public zh example plus seeded Gaussian noise (not music)",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-repeat",
+      "path": "bench/audio/zh-repeat.wav",
+      "language": "Chinese",
+      "samples": 138526,
+      "duration_s": 8.657875,
+      "sha256": "80ed66559faa4fa54eb47c9ee26c60ee770b77a9730fbbf69ed507bd53303e59",
+      "derivation": "same phrase repeated with 250ms gap",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-en",
+      "path": "bench/audio/zh-en.wav",
+      "language": null,
+      "samples": 312083,
+      "duration_s": 19.5051875,
+      "sha256": "0ad4542a026f1d67501aec4de93b3046b93d7cf373d0997bc270fe1c709579f9",
+      "derivation": "concatenated public zh/en examples, automatic language",
+      "human_transcript": null
+    },
+    {
+      "id": "zh-tail-silence",
+      "path": "bench/audio/zh-tail-silence.wav",
+      "language": "Chinese",
+      "samples": 75263,
+      "duration_s": 4.7039375,
+      "sha256": "4efae3c478371ca2eae761196228b9d9bce1d7dc82c3c8f45a8ec6416a5cbe9a",
+      "derivation": "real 500ms appended silence, valid audio",
+      "human_transcript": null
+    },
+    {
+      "id": "en-2s",
+      "path": "bench/audio/en-2s.wav",
+      "language": "English",
+      "samples": 32000,
+      "duration_s": 2.0,
+      "sha256": "b4fffd5e8c74b940606b380e3d386068ee9bec73d5e9599b350e59adeff665cf",
+      "derivation": "cropped/tiled public English example",
+      "human_transcript": null
+    }
+  ]
+}

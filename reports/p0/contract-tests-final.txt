@@ -1,0 +1,10 @@
+test_actual_config (test_audio_contract.AudioContractTest.test_actual_config) ... ok
+test_boundaries (test_audio_contract.AudioContractTest.test_boundaries) ... ok
+test_empty_invalid (test_audio_contract.AudioContractTest.test_empty_invalid) ... ok
+test_mask_contract_not_runtime (test_audio_contract.AudioContractTest.test_mask_contract_not_runtime) ... ok
+test_prompt_newlines_and_mode (test_audio_contract.AudioContractTest.test_prompt_newlines_and_mode) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.033s
+
+OK

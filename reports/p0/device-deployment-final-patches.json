@@ -1,0 +1,56 @@
+{
+  "serial": "100.64.0.3:33317",
+  "remote": "/data/local/tmp/qwen-asr-p0",
+  "files": [
+    {
+      "file": "audio.mnn",
+      "sha256": "cd6237e0c02003345ba035e0fa6e67fe8658f270978ca8fbd4a60bf27ad5e825",
+      "verified": true
+    },
+    {
+      "file": "audio.mnn.weight",
+      "sha256": "1456a76d7039681fbfdd94ffdac486545da62859f80a58b43a6f527f42a72382",
+      "verified": true
+    },
+    {
+      "file": "llm.mnn",
+      "sha256": "3ce4f4d93e0fc1d2adb10d834421ae98f421913d85f5238abb6929d7a65ebb5b",
+      "verified": true
+    },
+    {
+      "file": "llm.mnn.weight",
+      "sha256": "001a7838a2420182f0c6855657920d5a45c7b8b0999a7e045ef7ef0955a22ab4",
+      "verified": true
+    },
+    {
+      "file": "tokenizer.txt",
+      "sha256": "70e5e435679b6520af2b8f5fd400e30023600321b09ab6153f7215b659b68c07",
+      "verified": true
+    },
+    {
+      "file": "llm_config.json",
+      "sha256": "8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85",
+      "verified": true
+    },
+    {
+      "file": "config.json",
+      "sha256": "fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d",
+      "verified": true
+    },
+    {
+      "file": "p0_asr",
+      "sha256": "b1b024c533e3432c4626837af283e21bcd87aa4a16f7eeb343d649b551dc9e11",
+      "verified": true
+    },
+    {
+      "file": "libMNN.so",
+      "sha256": "10910daddb4e1c10fdc11eb1e5d9d34ab44d338d8aa8fc4f04d3a5968002edb8",
+      "verified": true
+    },
+    {
+      "file": "sample.wav",
+      "sha256": "46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50",
+      "verified": true
+    }
+  ]
+}

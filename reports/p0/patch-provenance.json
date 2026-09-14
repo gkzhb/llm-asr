@@ -1,0 +1,12 @@
+[
+  {
+    "path": "transformers/llm/export/llmexport.py",
+    "before_sha256": "38cfce2d55e5ef30e911c2421603bf46eb599d9414f948f3cb697f36074728bf",
+    "after_sha256": "d616b83ff02b5bbc3f110a596d3d1f20f8dc60c1320b276c766d59a339d58d86"
+  },
+  {
+    "path": "transformers/llm/export/utils/audio.py",
+    "before_sha256": "8ecccf54b4e6bec4436abecb9d5fbfcc00c5fc93ddf839c2660791c87da61a54",
+    "after_sha256": "be7d04be62f9c9fd408a16d31c2947edcb71f6f7efbe0226a5b2a179259712cb"
+  }
+]

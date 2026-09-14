@@ -1,0 +1,68 @@
+--- a/transformers/llm/export/llmexport.py
++++ b/transformers/llm/export/llmexport.py
+@@ -65,11 +65,11 @@
+     def qwen3_asr_chat_template():
+         return (
+             "{%- set content = messages[-1].content -%}"
+-            "<|im_start|>system<|im_end|>"
+-            "<|im_start|>user{{ content }}<|im_end|>"
+-            "{%- if add_generation_prompt and content is string and '<audio>' in content and '</audio>' in content -%}"
+-            "<|im_start|>assistantlanguage {{ asr_language }}<asr_text>"
+-            "{%- endif -%}"
++            "<|im_start|>system\n<|im_end|>\n"
++            "<|im_start|>user\n{{ content }}<|im_end|>\n"
++            "{% if add_generation_prompt and content is string and '<audio>' in content and '</audio>' in content %}"
++            "<|im_start|>assistant\n{% if asr_language %}language {{ asr_language }}<asr_text>{% endif %}"
++            "{% endif %}"
+         )
+ 
+     @spinner_run(f'load pretrained model ', True)
+--- a/transformers/llm/export/utils/audio.py
++++ b/transformers/llm/export/utils/audio.py
+@@ -192,8 +192,10 @@
+         return output_lengths
+ 
+     def forward(self, input_features):
+-        chunk_size = self.chunk_size
++        # P0: preserve official single-short-chunk convolution geometry dynamically.
+         seq_len = input_features.shape[-1]
++        chunk_size = torch.minimum(torch._shape_as_tensor(input_features)[-1],
++                                   torch.tensor(self.chunk_size, dtype=torch.long))
+         chunk_num = (seq_len + chunk_size - 1) // chunk_size
+         pad_len = chunk_num * chunk_size - seq_len
+ 
+@@ -218,7 +220,12 @@
+         aftercnn_lens = self._get_feat_extract_output_lengths(chunk_lengths)
+         padded_mask_after_cnn = torch.arange(time, device=input_features.device).unsqueeze(0) < aftercnn_lens.unsqueeze(1)
+         hidden_states = padded_embed[padded_mask_after_cnn]
+-        cu_seqlens = torch.nn.functional.pad(aftercnn_lens.cumsum(0).to(torch.int32), (1, 0), value=0)
++        # P0: correct metadata only. Eager still has no mask, matching upstream eager.
++        total_tokens = hidden_states.shape[0]
++        window_tokens = self.chunk_output_size * (self.audio_tower.n_window_infer // self.chunk_size)
++        starts = torch.arange(0, total_tokens, window_tokens, dtype=torch.int32, device=input_features.device)
++        end = torch._shape_as_tensor(hidden_states)[0:1].to(device=input_features.device, dtype=torch.int32)
++        cu_seqlens = torch.cat([starts, end])
+ 
+         for encoder_layer in self.audio_tower.layers:
+             hidden_states = encoder_layer(hidden_states, cu_seqlens)[0]
+@@ -260,12 +267,18 @@
+         return hidden_states.unsqueeze(0)
+ 
+     def audio_process(self, audio_obj):
+-        input_features = self.feature_extractor(
++        features = self.feature_extractor(
+             audio_obj,
+             sampling_rate=self.sampling_rate,
++            padding=True,
++            truncation=False,
+             return_attention_mask=True,
+             return_tensors='pt'
+-        )['input_features'][0].to(dtype=torch.float32)
++        )
++        valid_frames = int(features['attention_mask'][0].sum().item())
++        if valid_frames <= 0:
++            raise ValueError('P0 requires nonempty audio')
++        input_features = features['input_features'][0, :, :valid_frames].to(dtype=torch.float32)
+         with torch.no_grad():
+             audio_embeds = self.forward(input_features)
+         self.audio_embeds = audio_embeds.permute(1, 0, 2)

@@ -73,7 +73,7 @@ sha256sum "$apk" "$lib" "$build/package/lib/arm64-v8a/libqwen_asr_jni.so" > repo
 python3 - <<'PY'
 import json,hashlib
 from pathlib import Path
-files=['flake.nix','flake.lock','scripts/build-minimal-apk.sh','scripts/check-minimal-apk.py','scripts/test-minimal-apk.sh','tests/MinimalApkTest.java','reports/p0/mnn-model-manifest.json']
+files=['flake.nix','flake.lock','scripts/build-minimal-apk.sh','scripts/check-minimal-apk.py','scripts/test-minimal-apk.sh','tests/MinimalApkTest.java','tests/RecordingRaceTest.java','reports/p0/mnn-model-manifest.json']
 files += [str(p) for p in sorted(Path('android/app').rglob('*')) if p.is_file()]
 files += ['native/apk/asr_jni.cpp','scripts/link-apk-native.py']+[str(p) for p in sorted(Path('patches').glob('*.patch'))]
 Path('reports/apk/build-input-sha256.json').write_text(json.dumps({p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in files},indent=2)+'\n')

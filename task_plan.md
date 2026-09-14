@@ -1,10 +1,10 @@
-# Task Plan: Qwen3-ASR Android / iQOO Z1 规划
+# Task Plan: Qwen3-ASR 通用 Android App
 
 ## Goal
-先交付可核验的详细技术规划：Android 离线语音转文字 App、系统输入法、本地推理 API、Qwen3-ASR 模型、天玑 1000+ / 8GB RAM 优化和 Nix Flake 开发环境。本轮不声称已实现应用或达到实机性能指标。
+优先广泛ARM64 Android SoC支持与离线ASR App功能完善；暂缓天玑专属优化，后续IME/API共用引擎。Nix锁定环境、模型不入Git，正确性与权限边界不放宽。
 
 ## Current Phase
-Phase 7 / 首版代码提交完成 — 骁龙APK手动验证已记录；暂存/提交树安全审计与轻量测试通过；P0完整质量限制继续保留
+Phase 9 / 用户确认0.2测试正常，提交检查点后推进0.3模型状态与结果管理
 
 ## Phases
 ### Phase 1: 需求与技术事实核验
@@ -164,3 +164,30 @@ Phase 7 / 首版代码提交完成 — 骁龙APK手动验证已记录；暂存/�
 - **Status:** complete
 - 不推送远端，不删除本地模型或APK，不修改签名身份。
 - Git初始状态为unborn main（git log提示尚无提交），所有当前源码未跟踪；没有已有暂存用户变更。
+
+### Phase 8: 通用SoC与App功能优先（替代旧天玑优化优先级）
+- [x] 修订路线图：Android29+/arm64 CPU跨厂商基线；厂商GPU/NPU/绑核推迟，性能目标按设备分层
+- [x] 第一增量：用户主动授权前台录音、停止转写/取消、30秒硬上限、失去前台取消采集（实现/编译通过，硬件行为待实测）
+- [x] 纯Java PCM/状态边界测试，APK权限精确白名单、构建/签名与独立代码审查（32+20 host checks，R1/R2/R3复核关闭）
+- [x] 交付新版本地开发APK与手动验收清单，保留0.1已验证检查点；录音硬件验收明确未实测
+- **Status:** complete（本轮实现/构建/复核交付；真实设备录音验收仍pending）
+
+## Updated product direction
+先完善通用Android离线ASR App，再IME/API；首轮仍Android10+/arm64-v8a，不承诺32位/x86/所有内存配置。暂缓天玑专属调优、QNN/APU/GPU与CPU绑核；复用已验证CPU数学路径和固定模型。
+允许实现仅由用户点击并授权的麦克风功能；代理不自动采集实机麦克风、不读取私人音频。模型/录音/构建产物/密钥不入Git。本次不自动commit/push。
+
+### Recording review error log
+| Finding | Attempt | Resolution |
+|---|---|---|
+| R1 check/start跨线程竞态 | 1 | 用同一session同步gate线性化start与cancel，取消胜出时零start调用；释放由worker负责且不承诺onPause同步硬件释放 |
+| R2 capture→inference漏取消 | 1 | 明确captureReleased后同步tryCommitInference，cancel/commit同gate；commit胜出后拒绝取消，不假装native已中止 |
+| R3 Back两次volatile读导致NPE | 1 | 单次快照与cancel返回值，按实际接受结果展示UI |
+
+
+### Phase 9: 0.2检查点与0.3模型状态/结果管理
+- [x] 记录用户0.2手动验收，提交前排除模型/产物/凭据并运行轻量检查
+- [ ] 创建0.2本地提交（不push），在后续工作记录引用commit
+- [ ] 0.3第一增量：结果编辑/分享/SAF导出/清除，模型状态/存储提示，受限临时文件清理
+- [ ] 单元测试、签名APK构建与独立复核；交付后邀请用户手动验收
+- **Status:** in_progress
+- 用户授权本次0.2提交；后续未验收0.3不自动提交。模型删除/历史数据库/下载/长音频留后续增量，不同时堆叠。

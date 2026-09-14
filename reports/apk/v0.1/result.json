@@ -1,0 +1,31 @@
+{
+  "artifact": "dist/qwen-asr-minimal-debug.apk",
+  "bytes": 2380584,
+  "sha256": "ff432527ad62e696208f3311804265da3a0369c5ffa9c1c36dda6478073b6877",
+  "package": "org.llmasr.minimal",
+  "min_sdk": 29,
+  "target_sdk": 35,
+  "abi": "arm64-v8a",
+  "signing": "local debug / APK Signature Scheme v3 verified",
+  "java_helper_checks": 21,
+  "package_checks": "passed after correcting aapt2 field name; no APK binary change",
+  "post_build_checker_sha256": "5d2b49f1949540c4c914ad2c66556e191c1544a769bae3fc5208f7a2e3b079dc",
+  "installed": false,
+  "apk_inference_verified": false,
+  "device_blocker": "Original authorized ADB endpoint 100.64.0.3:33317 refused connection",
+  "limitations": [
+    "Debuggable local testing artifact, not production release",
+    "No microphone, IME, background API, VAD, quantization or GPU",
+    "Model files separate, about 1.57GB",
+    "New single-DSO JNI runtime has not been device-validated; P0 native executable evidence does not substitute"
+  ],
+  "user_reported_validation": {
+    "source": "user conversation",
+    "soc_family": "Qualcomm Snapdragon",
+    "model_load_success": true,
+    "correct_output": true,
+    "independently_verified": false,
+    "details": "reports/apk/user-snapdragon-validation.md"
+  },
+  "historical_build_checkpoint_note": "Top-level installed/apk_inference_verified false describe agent-collected evidence at build checkpoint, not absence of later user manual testing."
+}

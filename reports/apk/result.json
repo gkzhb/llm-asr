@@ -1,31 +1,40 @@
 {
   "artifact": "dist/qwen-asr-minimal-debug.apk",
-  "bytes": 2380584,
-  "sha256": "ff432527ad62e696208f3311804265da3a0369c5ffa9c1c36dda6478073b6877",
+  "version": "0.2-debug",
+  "version_code": 2,
+  "bytes": 2384680,
+  "sha256": "6c5c2fb7c298482b42fc968081806b39665b4b6cd64505fc4f0c3717a99ec98b",
   "package": "org.llmasr.minimal",
   "min_sdk": 29,
   "target_sdk": 35,
   "abi": "arm64-v8a",
-  "signing": "local debug / APK Signature Scheme v3 verified",
-  "java_helper_checks": 21,
-  "package_checks": "passed after correcting aapt2 field name; no APK binary change",
-  "post_build_checker_sha256": "5d2b49f1949540c4c914ad2c66556e191c1544a769bae3fc5208f7a2e3b079dc",
+  "signing": "local debug / v3 verified, same certificate as 0.1",
+  "java_helper_checks": 32,
+  "p0_contract_checks": 5,
+  "package_checks": "passed",
+  "permissions": [
+    "android.permission.RECORD_AUDIO"
+  ],
   "installed": false,
   "apk_inference_verified": false,
-  "device_blocker": "Original authorized ADB endpoint 100.64.0.3:33317 refused connection",
+  "recording_device_verified": false,
+  "independent_recording_review": "R1/R2/R3 resolved; no new blocking source race identified; 32+20 host checks independently passed",
+  "prior_user_validation": "0.1 only; reports/apk/v0.1/user-snapdragon-validation.md",
   "limitations": [
-    "Debuggable local testing artifact, not production release",
-    "No microphone, IME, background API, VAD, quantization or GPU",
-    "Model files separate, about 1.57GB",
-    "New single-DSO JNI runtime has not been device-validated; P0 native executable evidence does not substitute"
+    "No new-version device/microphone testing",
+    "Only devices offering 16kHz mono PCM16 capture; unsupported devices can import WAV",
+    "Foreground capture only, max30s; no VAD/native inference cancellation/service/IME/API/vendor acceleration",
+    "Cross-SoC CPU support is a target, not every device validated"
   ],
+  "disposition": "build and focused source review passed; ready for manual device testing",
+  "recording_lifecycle_gate_checks": 20,
+  "build_task": "b83c3f5b0",
+  "build_exit_code": 0,
+  "review_report": "reports/apk/recording-fix-review.md",
+  "reviewed_source_matches_build": true,
   "user_reported_validation": {
-    "source": "user conversation",
-    "soc_family": "Qualcomm Snapdragon",
-    "model_load_success": true,
-    "correct_output": true,
-    "independently_verified": false,
-    "details": "reports/apk/user-snapdragon-validation.md"
-  },
-  "historical_build_checkpoint_note": "Top-level installed/apk_inference_verified false describe agent-collected evidence at build checkpoint, not absence of later user manual testing."
+    "source": "reports/apk/user-v0.2-validation.md",
+    "result": "User reports testing without issues",
+    "independently_observed": false
+  }
 }

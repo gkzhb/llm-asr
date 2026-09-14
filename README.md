@@ -1,8 +1,12 @@
-# Qwen3-ASR Android（P0 原生可行性验证）
+# Qwen3-ASR Android（通用离线 App）
 
-面向 **iQOO Z1 / 天玑 1000+ / 8GB RAM** 的离线语音转文字项目：Android App、系统语音输入法及本地推理 API，计划由 Nix Flake 提供开发环境。
+面向 **Android 10+ / ARM64、跨厂商 SoC** 的离线语音转文字项目：Android App、系统语音输入法及本地推理 API，计划由 Nix Flake 提供开发环境。
 
 > 已完成最终补丁的 host 20/20 工程回归与手机 native CPU 单条复测；不等同于完整质量验收。当前已生成 **最小 Java/JNI 离线 debug APK**（模型导入、示例/WAV 转写），构建、签名与静态包检查通过；**用户已反馈在骁龙手机上成功加载模型并正确输出**（[手动验证记录](reports/apk/user-snapdragon-validation.md)，尚无自动采集日志/性能数据），仍非完整 IME/API 产品。产物与验证边界见 [APK 状态](reports/apk/status.md)。构建/使用方式见 [最小 APK 指南](docs/minimal-apk.md)，P0 证据与限制见 [P0 报告](reports/p0/report.md)，进展见 [工作记录](progress.md)。
+
+## 当前方向
+
+以[通用 App 路线图](docs/app-roadmap.md)为准：先前台录音与App易用性，再模型/结果管理、生命周期/分段、IME/API。暂缓天玑专属绑核与GPU/APU优化；不承诺所有SoC/内存配置已实测。
 
 ## 阅读入口
 

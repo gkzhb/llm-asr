@@ -181,3 +181,14 @@
 ## User-reported Snapdragon APK validation
 - 用户在自己的骁龙SoC手机上成功加载模型并正确输出内容，证明至少有一次用户报告的APK端到端功能成功。
 - 未提供具体设备型号、系统版本、音频/文本、计时/PSS或原始运行报告；不把该反馈升级为自动验证、全骁龙兼容性或性能结果。
+
+## Revised cross-SoC product scope
+- 当前App可共享arm64 CPU路径，无厂商推理SDK依赖；“支持目标”与具体SoC/OS/内存配置的“已验证”必须分开。
+- 既有0.1 Activity已含全进程互斥任务所有权。首轮录音可复用事务但需停止/取消控件独立于禁用按钮，并在onPause主动取消录音；后台录音/FGS不在首轮。
+- 既有APK检查强制零权限；新增录音后必须改为精确RECORD_AUDIO白名单，仍拒绝INTERNET/广泛存储权限，而不是删除权限门槛。
+- 0.2录音采用READ_NON_BLOCKING+有界无数据超时，worker独占AudioRecord创建/读取/stop/release；onPause只发cancel信号，避免UI与读取线程并发release死锁。真实设备回调延迟与音频驱动行为仍需测试。
+- 前台录音仅支持设备原生16kHz单声道PCM能力；不支持则明确提示并保留WAV入口，而非错误标注采样率；跨采样率回退是后续功能。
+- R1/R2修正采用RecordingControl同步gate：start/cancel/tryCommitInference线性化，captureReleased记录worker释放收尾。取消胜出不start/不写WAV/不推理；commit胜出后cancel返回false。捕获循环和JNI不持gate。
+- 取消只保证状态次序与worker清理，不承诺onPause同步硬件释放：startRecording本身可能阻塞cancel获取锁，实际延迟须设备验证。相比多加volatile检查，这一契约可被确定性latch测试覆盖。
+- 独立复核关闭R1/R2/R3原始阻塞并复现52项host检查；强调gate测试不执行AudioRecord/MainActivity，start-wins latch也不能替代完整生产集成调度测试。审查通过属于源码次序契约，不是设备释放/隐私生产验收。
+- 用户确认修复版0.2测试没有问题；缺具体测试明细/日志，不替代硬件延迟和多设备覆盖。下一增量不修改录音同步gate或MNN数学。

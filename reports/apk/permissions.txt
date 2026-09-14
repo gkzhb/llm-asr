@@ -1,1 +1,2 @@
 package: org.llmasr.minimal
+uses-permission: name='android.permission.RECORD_AUDIO'

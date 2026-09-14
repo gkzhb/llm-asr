@@ -1,35 +1,35 @@
-# Minimal APK — build verified, user-reported Snapdragon success
+# 0.2 foreground recording — build and focused review passed
 
 ## Deliverable
-- APK: `dist/qwen-asr-minimal-debug.apk`
-- Size: 2,380,584 bytes (about 2.27 MiB)
-- SHA-256: `ff432527ad62e696208f3311804265da3a0369c5ffa9c1c36dda6478073b6877`
-- Package: `org.llmasr.minimal`, arm64-v8a, minSdk29, targetSdk35.
-- Local debug signature: APK Signature Scheme v3 verified (appropriate for minSdk29).
-- Usage: `docs/minimal-apk.md`; machine-readable summary: `result.json`.
+- APK: `dist/qwen-asr-minimal-debug.apk`, versionCode2 / 0.2-debug.
+- SHA-256: `6c5c2fb7c298482b42fc968081806b39665b4b6cd64505fc4f0c3717a99ec98b`.
+- Same package and local debug signer as 0.1; upgrade without uninstalling or deleting models.
+- Android29+/arm64 CPU, target35, RECORD_AUDIO-only permission, no bundled weights/network/vendor SDK.
+- Generic SoC app roadmap: `docs/app-roadmap.md`; usage and device checklist: `docs/minimal-apk.md`.
 
 ## Verified
-- SDK35/build-tools35.0.0/JDK17 realized through locked Nix environment.
-- 21 pure Java WAV boundary/malformed input and protocol-display checks passed.
-- All Activity Java sources compiled, d8 conversion completed.
-- Final P0 libMNN identity checked before native relink.
-- JNI + 578 existing final-P0 objects linked into one DSO with one static C++ runtime; original P0 library unchanged. Object hashes in `native-link-provenance.json`.
-- APK signature, ZIP CRC/integrity/alignment, exact embedded model manifest/public sample, single arm64 DSO hash, zero permissions, API/ABI and absence of weights/intermediate objects verified.
-- Independent review completed; parent fixes and remaining runtime tests documented in `review-disposition.md`.
+- Build task b83c3f5b0 completed exit0; Java/d8/native linking, signing, exact version/permission/ABI and archive checks passed.
+- 32 helper checks and 20 fake-backend session-gate checks passed and independently reproduced by follow-up reviewer. Five P0 contract tests also passed this iteration.
+- Native DSO remains byte-identical to 0.1; no inference math/model/vendor optimization change.
+- Original review R1 start/cancel, R2 inference handoff/cancel and R3 Back double-read blockers resolved under the documented lifecycle contract. Follow-up review identified no new blocking source-level race.
+- Reviewed source fingerprints match current sources AND recorded APK build inputs; current APK hash matches result.json.
 
-## Build failures and recovery
-- `b0c0c6b1f`: Java lambda compilation failed with Android boot stubs. Minimal red/green probe and full Java compile passed after switching to `--release 8` + Android classpath, followed by d8 desugaring.
-- `bbe10cd9b`: APK built/signed, but final checker expected old `sdkVersion` field. Actual pinned aapt2 emits `minSdkVersion:'29'`. Checker corrected without relaxing API assertion; existing signed APK then passed all archive checks. Original build log remains a failure record, not rewritten as exit0.
-- Build input manifest reflects the checker at build time; `result.json` separately records the corrected post-build checker SHA. APK bytes were not changed by checker correction.
+## Exact recording contract
+Only explicit user tap with runtime permission starts capture; granting permission does not automatically record. Standard 16kHz mono PCM16, sample-count ceiling30s, stop-to-transcribe/cancel-to-discard. Cancel, microphone start and inference commit share a session gate. Accepted cancellation prevents later start/commit; commit winning means later cancellation is unavailable. Worker attempts stop/release before handoff; hardware release is not synchronously guaranteed onPause. No capture loop or JNI execution holds the gate.
 
-## User-reported manual device test
-- User reports successful model loading and correct output on a Snapdragon phone. See `user-snapdragon-validation.md`.
-- Exact device/OS, installed artifact identity and raw logs/metrics not supplied; this is not automated verification.
+## User manual feedback
+- User reports the fixed0.2 test had no issues and authorizes committing it. See `user-v0.2-validation.md`. No per-case logs or hardware latency supplied; remaining items below refer to independently collected evidence.
 
-## Not independently verified / blocked
-- Agent has not independently collected install/launch or APK UID inference logs. SAF negative import, repeated requests, process interruption and Activity recreation tests remain pending.
-- Original authorized ADB endpoint `100.64.0.3:33317` refused connection. User must restore wireless debugging/provide current connection port. Do not scan or bypass lockscreen.
-- Existing native-shell P0 inference is not APK evidence. New single-DSO runtime must be validated on device.
-- Debug-only local test artifact; no production/distribution readiness claim. Model weights (~1.57GB) separate; no microphone/IME/API/VAD/GPU/quantization.
+## Still unverified / residual risks
+- No0.2 device install, real microphone, permission denial/revocation, lock/Home/rotation, repeated recording, source contention or shutdown-latency testing. Host gate tests do not execute AudioRecord or Activity lifecycle integration.
+- Slow/stuck vendor startRecording can delay UI cancellation/status queries under the gate and risk ANR. Actual release latency/microphone indicator disappearance requires measurement.
+- Some devices return silence on mic privacy switch/source contention rather than a read error; no-data timeout is not VAD or silence detection.
+- Devices without16kHz mono PCM16 capture get an error and retain WAV import; multi-rate fallback is not yet implemented.
+- Committed inference may continue after pause and cannot yet be cancelled. No background survival guarantee, FGS, long audio, IME/API or VAD.
+- Process death can leave private input WAVs; normal deletion is best effort and results intentionally persist. No secure-erasure/production-privacy claim.
+- Existing user Snapdragon success is0.1 evidence only, archived under `reports/apk/v0.1/`; original APK is ignored at `dist/v0.1/`. Original rejected0.2 binary is quarantined at `dist/review-rejected-v0.2/`, not an acceptance artifact.
+- P0 strict frontend/window/independent-golden and production release requirements remain open. No broad all-SoC performance/compatibility guarantee.
 
-Logs: `.pi/tasks/session-525127-525127/bbe10cd9b.output`, plus `package-checks.txt`, `signature.txt`, `badging.txt`, `permissions.txt`, `contents.txt`, `java-tests.txt`.
+## Evidence
+`result.json`, `recording-review.md`, `recording-fix-review.md`, `java-tests.txt`, `package-checks.txt`, `build-input-sha256.json`, `signature.txt`, `badging.txt`, `permissions.txt`.
+Build log: `.pi/tasks/session-525127-525127/b83c3f5b0.output`.

@@ -16,7 +16,10 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public final class MainActivity extends Activity {
-    private static final int MODEL_TREE=10, AUDIO_FILE=11;
+    private static final int MODEL_TREE=10, AUDIO_FILE=11, MIC_PERMISSION=12;
+    private static volatile RecordingControl recording;
+    private volatile boolean foreground;
+    private Button stopRecording, cancelRecording;
     private static final ExecutorService worker=Executors.newSingleThreadExecutor();
     private static final java.util.concurrent.atomic.AtomicBoolean RUNNING=new java.util.concurrent.atomic.AtomicBoolean();
     private static volatile String lastStatus="尚未校验模型。首次请选择含 7 个清单文件的模型目录，或使用开发部署脚本。", lastText="";
@@ -39,7 +42,7 @@ public final class MainActivity extends Activity {
         ScrollView scroll=new ScrollView(this); scroll.setFillViewport(true); scroll.addView(root); setContentView(scroll);
         TextView title=new TextView(this); title.setText("Qwen3-ASR · 最小离线原型"); title.setTextSize(22); root.addView(title);
         TextView note=new TextView(this);
-        note.setText("arm64 CPU / FP16 权重 · 约 1.6 GB 模型，推理约 3.1 GiB 内存。\n不联网、不录音。仅支持 16kHz 单声道 PCM16 WAV（0.1–30 秒）。导入后请保持界面前台；每次转写重新加载模型。静音可能幻觉输出，本版无 VAD。模型导入后占用应用内部存储。"); root.addView(note);
+        note.setText("arm64 CPU / FP16 权重 · 约 1.6 GB 模型，推理约 3.1 GiB 内存。\n不联网。录音仅在授权后由您点击开始，离开界面取消；最长30秒。文件仅支持 16kHz 单声道 PCM16 WAV（0.1–30 秒）。导入后请保持界面前台；每次转写重新加载模型。静音可能幻觉输出，本版无 VAD。模型导入后占用应用内部存储。"); root.addView(note);
         addButton(root,"1. 导入模型目录", () -> {
             Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE); intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivityForResult(intent,MODEL_TREE);
@@ -56,6 +59,14 @@ public final class MainActivity extends Activity {
             Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT); intent.setType("*/*"); intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); startActivityForResult(intent,AUDIO_FILE);
         });
+        addButton(root,"开始录音（最多30秒）", () -> requestRecording());
+        stopRecording=new Button(this); stopRecording.setText("停止录音并转写");
+        stopRecording.setOnClickListener(v -> { RecordingControl r=recording; if(r!=null)r.stop(); }); root.addView(stopRecording);
+        cancelRecording=new Button(this); cancelRecording.setText("取消录音并丢弃");
+        cancelRecording.setOnClickListener(v -> {
+            RecordingControl r=recording;
+            if(r!=null)showStatus(r.cancel() ? "正在取消录音，等待麦克风释放……" : "已进入转写，无法取消native推理。");
+        }); root.addView(cancelRecording);
         addButton(root,"复制转写文本", () -> {
             ((android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("ASR",result.getText()));
             Toast.makeText(this,"已复制",Toast.LENGTH_SHORT).show();
@@ -74,10 +85,46 @@ public final class MainActivity extends Activity {
             }
         });
     }
-    @Override protected void onResume() { super.onResume(); current=new java.lang.ref.WeakReference<>(this); refresh(); }
+    @Override protected void onResume() { super.onResume(); foreground=true; current=new java.lang.ref.WeakReference<>(this); refresh(); }
+    @Override protected void onPause() {
+        // Lifecycle and inference compete at the session gate. If commit already won,
+        // this is inference (not capture) and native cancellation is unavailable.
+        RecordingControl r=recording; if(r!=null)r.cancel();
+        foreground=false;
+        super.onPause();
+    }
+    private void requestRecording() {
+        if(RUNNING.get() || !foreground)return;
+        if(checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)!=android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO},MIC_PERMISSION); return;
+        }
+        if(!verified) { showStatus("请先点击校验已部署模型（或导入模型），成功后再录音。"); return; }
+        final RecordingControl control=new RecordingControl(); final String lang=language.getSelectedItem().toString();
+        recording=control;
+        launch(() -> {
+            byte[] wav;
+            try {
+                wav=ForegroundRecorder.capture(control,seconds -> showStatus(String.format(Locale.ROOT,"正在录音 %.1f / 30.0 秒 · 停止后转写，离开界面会取消",seconds)));
+                // Atomic handoff shared with cancel/onPause. No WAV/JNI work before it.
+                if(!control.tryCommitInference())throw new CancellationException("已取消录音，音频已丢弃");
+            } finally { if(recording==control)recording=null; refresh(); }
+            try(InputStream in=new ByteArrayInputStream(wav)) { runAudio(in,lang,"user-microphone"); }
+        });
+    }
+    @Override public void onRequestPermissionsResult(int request,String[] permissions,int[] grants) {
+        super.onRequestPermissionsResult(request,permissions,grants);
+        if(request==MIC_PERMISSION) {
+            boolean allowed=grants.length>0 && grants[0]==android.content.pm.PackageManager.PERMISSION_GRANTED;
+            // Do not automatically open the mic after permission UI: require an explicit fresh tap.
+            showStatus(allowed ? "已授权麦克风；请点击开始录音。" : "麦克风权限未授予。仍可选择WAV；若已禁止再次询问，可在系统应用权限中手动开启。");
+        }
+    }
     private void showStatus(String s) { lastStatus=s; refresh(); }
     private void setBusy(boolean value) {
         for(Button b:buttons)b.setEnabled(!value); language.setEnabled(!value);
+        RecordingControl r=recording;
+        stopRecording.setEnabled(value && r!=null && !r.stopped());
+        cancelRecording.setEnabled(value && r!=null && !r.cancelled() && !r.committed());
         if(value)getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
@@ -94,11 +141,16 @@ public final class MainActivity extends Activity {
                 if(!inferenceReported) {
                     JSONObject r=new JSONObject(); r.put("state","complete"); r.put("success",true); r.put("kind","model-operation"); saveReport(r);
                 }
+            } catch(CancellationException e) {
+                showStatus("已取消录音，音频已丢弃。");
+                try { JSONObject r=new JSONObject(); r.put("state","cancelled"); r.put("success",false); saveReport(r); }
+                catch(Exception persistence) { showStatus("取消完成，但结果无法持久化："+persistence.getMessage()); }
             } catch(Exception | LinkageError e) {
                 showStatus("失败："+e.getMessage());
                 try { JSONObject r=new JSONObject(); r.put("state","failed"); r.put("success",false); r.put("error",String.valueOf(e)); saveReport(r); }
                 catch(Exception persistence) { showStatus("失败且结果无法持久化："+persistence.getMessage()); }
             } finally {
+                recording=null;
                 new File(getFilesDir(),"input-"+requestId+".wav").delete();
                 RUNNING.set(false); refresh();
             }
@@ -199,6 +251,8 @@ public final class MainActivity extends Activity {
         }); }
     }
     @Override public void onBackPressed() {
+        RecordingControl r=recording;
+        if(r!=null && r.cancel()) { showStatus("正在取消录音，等待麦克风释放……"); return; }
         if(RUNNING.get()) { Toast.makeText(this,"任务执行中；本版不支持安全中断，请等待完成。",Toast.LENGTH_LONG).show(); return; }
         super.onBackPressed();
     }

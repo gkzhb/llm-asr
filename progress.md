@@ -212,3 +212,31 @@
 - 显式暂存源码/配置/锁文件/文档/文本证据，223个文件约5.91MB；逐Git blob审计无模型/权重、二进制、符号链接、密钥扩展、明显凭据模式或>5MiB单文件。
 - git check-ignore确认原模型、模型传输副本、APK及debug keystore均被忽略；不删除任何本地模型/产物。仓库只包含模型版本/哈希清单和转换代码，不包含模型实体。即将创建本地初始提交，不push。
 - 本地初始功能检查点已创建，提交树223文件审计通过，无模型实体/二进制/签名凭据；未push。将本条提交完成记录与Phase7完成状态纳入同一个尚未推送的本轮提交（仅amend自己刚创建的提交）。
+
+## Session: 通用SoC路线与App功能完善
+- 基线89d244a，工作区干净；用户调整目标：暂不针对天玑SoC做特性优化，先广泛SoC支持、完善App。
+- 第一可交付增量定为前台录音→停止→转写；继续使用标准Android AudioRecord、MNN CPU，不加入厂商SDK/云端回退。
+- 先修订路线与验收边界，再实现与构建；用户骁龙成功反馈仍只归因0.1版，不冒充新录音功能已实测。
+- 已写docs/app-roadmap.md并更新旧规划优先级；实现0.2前台AudioRecord采集/权限/停止/取消/后台自动丢弃，模型与native路径不变。
+- 保留0.1 APK于dist/v0.1（ignored）及历史报告reports/apk/v0.1，不把用户的0.1成功归因新版本。
+- 新增纯Java PCM边界与取消优先测试，32项通过。真实AudioRecord/权限UI/设备生命周期尚未测试。
+- 主构建b44376ae9：Java32项→native/DEX/签名/精确RECORD_AUDIO白名单，日志.pi/tasks/session-525127-525127/b44376ae9.output。
+- 独立只读录音审查workflow3d50f2ab已启动；无设备录音访问。docs/minimal-apk.md补覆盖安装与权限/取消/后台/30秒/重复请求手动验收清单。
+- b44376ae9日志已出现APK_READY：0.2全构建/签名/包检查通过，RECORD_AUDIO为唯一权限，32Java+5契约测试通过。
+- 比对native DSO SHA与0.1完全一致；App新增录音没有改MNN数学/模型/厂商路径。当前result/status更新为0.2，不再混用旧0.1哈希与用户反馈。
+- 独立录音审查仍pending，真实设备权限/采集/生命周期未运行；本轮未自动访问手机麦克风、未提交或推送更改。
+- 独立录音审查d5741343 request-changes：R1 start/cancel、R2 handoff/cancel、R3返回键双读竞态。原报告归档reports/apk/recording-review.md。
+- 已将审查未通过的0.2 APK移至dist/review-rejected-v0.2，不继续把它作为可验收录音版本；保留0.1。
+- 将实现同一session生命周期gate和确定性latch回归；无设备麦克风访问。
+- 已修R1/R2/R3并新增20项latch/fake-backend生命周期gate测试，连同原32项Java测试全部通过；仅覆盖会话次序，不声称真实AudioRecord/权限/硬件延迟通过。
+- 包检查新增versionCode2/versionName0.2断言，文档明确cancel/commit先后语义、异步硬件释放和系统返回静音的限制；准备重新构建与独立复核。
+- 修复版后台构建b83c3f5b0与独立复核da49b719均已启动。等待自动完成通知，不自动采集麦克风或提交代码。
+- result/status明确原0.2属于审查拒绝旧产物，避免旧哈希或“构建通过”被误用为录音可验收证据。
+- b83c3f5b0正式完成exit0：修复版0.2 APK_READY，32 helper+20 lifecycle gate测试通过，单DSO/版本/签名/权限校验通过。当前dist主路径已是修复版，result.json更新新SHA；独立复核尚待完成，不声称设备录音验证。
+- 独立复核b3c4efaf完成：R1/R2/R3源码阻塞已解决，未发现新阻塞；独立复跑32+20 host检查通过。报告已归档reports/apk/recording-fix-review.md。
+- 比对审查指纹、当前源码和APK build-input全部一致，APK SHA核对通过；result/status更新为build+focused-review passed / ready for manual device testing。
+- Phase8本轮实现与构建/复核交付完成。仍待真实手机麦克风权限/生命周期/释放延迟验收；硬件start调用可能延迟UI、进程kill留临时WAV等限制保留。未提交、未push、未访问手机麦克风。
+
+## Session: 0.2用户验收与继续路线B
+- 用户反馈“测试没有问题”，明确要求提交并继续；记录为0.2手动反馈，不扩大为逐项硬件/所有SoC验收。
+- 先提交当前已审查录音版，保持模型/APK/缓存/密钥不入Git、不push；之后独立推进0.3模型状态/结果管理和临时文件清理。

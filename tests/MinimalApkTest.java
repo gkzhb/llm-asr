@@ -1,5 +1,7 @@
 import org.llmasr.minimal.WaveInput;
 import org.llmasr.minimal.AsrText;
+import org.llmasr.minimal.PcmWave;
+import org.llmasr.minimal.RecordingControl;
 import java.io.*;
 import java.nio.file.*;
 public final class MinimalApkTest {
@@ -45,6 +47,18 @@ public final class MinimalApkTest {
             require(AsrText.display("language English<asr_text>Hello.<|im_end|>\n").equals("Hello."));
             require(AsrText.display("甚至出现交易几乎停滞的情况。").equals("甚至出现交易几乎停滞的情况。"));
             require(AsrText.display("<asr_text>").equals(""));
+            PcmWave capture=new PcmWave(); short[] block=new short[1600]; block[0]=(short)-32768; block[1]=32767;
+            require(capture.append(block,block.length)==1600);
+            byte[] mic=capture.finish(); require(mic[44]==0 && mic[45]==(byte)128 && mic[46]==(byte)255 && mic[47]==127);
+            require(WaveInput.canonicalize(new ByteArrayInputStream(mic),out)==0.1);
+            for(int i=0;i<300;i++)capture.append(block,block.length);
+            require(capture.samples()==480000); require(capture.append(block,block.length)==0);
+            require(WaveInput.canonicalize(new ByteArrayInputStream(capture.finish()),out)==30.0);
+            boolean tooShort=false; try { new PcmWave().finish(); } catch(IOException e) { tooShort=true; } require(tooShort);
+            boolean badLength=false; try { capture.append(block,1601); } catch(IllegalArgumentException e) { badLength=true; } require(badLength);
+            RecordingControl control=new RecordingControl(); require(!control.stopped() && !control.cancelled());
+            control.stop(); require(control.stopped() && !control.cancelled());
+            control.cancel(); control.stop(); require(control.stopped() && control.cancelled());
             System.out.println("PASS "+checks+" minimal APK Java checks");
         } finally { out.delete(); }
     }

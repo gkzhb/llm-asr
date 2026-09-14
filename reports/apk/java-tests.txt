@@ -1,1 +1,2 @@
-PASS 21 minimal APK Java checks
+PASS 32 minimal APK Java checks
+PASS 20 recording lifecycle gate checks (fake backend; not device release latency)

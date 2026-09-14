@@ -1,7 +1,6 @@
-package: name='org.llmasr.minimal' versionCode='2' versionName='0.2-debug' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+package: name='org.llmasr.minimal' versionCode='1' versionName='0.1-debug' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
 minSdkVersion:'29'
 targetSdkVersion:'35'
-uses-permission: name='android.permission.RECORD_AUDIO'
 application: label='Qwen ASR Minimal' icon=''
 application-debuggable
 launchable-activity: name='org.llmasr.minimal.MainActivity'  label='' icon=''

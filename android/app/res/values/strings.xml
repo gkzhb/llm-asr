@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ime_subtype_label">Qwen ASR · 离线语音</string>
+</resources>

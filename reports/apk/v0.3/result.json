@@ -1,0 +1,34 @@
+{
+  "artifact": "dist/qwen-asr-minimal-debug.apk",
+  "version": "0.3-debug",
+  "version_code": 3,
+  "bytes": 2388776,
+  "sha256": "439e5bfa1b020241233d63f1d34845153ee5ec6660fe6016b9ff77034cd8147b",
+  "package": "org.llmasr.minimal",
+  "min_sdk": 29,
+  "target_sdk": 35,
+  "abi": "arm64-v8a",
+  "permissions": [
+    "android.permission.RECORD_AUDIO"
+  ],
+  "build_task": "bc41cf58a",
+  "build_exit_code": 0,
+  "java_helper_checks": 32,
+  "recording_lifecycle_gate_checks": 20,
+  "result_cleanup_export_checks": 41,
+  "package_checks": "passed",
+  "disposition": "build and focused source reviews passed; ready for manual 0.3 device testing",
+  "installed": false,
+  "apk_inference_verified": false,
+  "result_management_device_verified": false,
+  "prior_user_validation": "0.2 only; reports/apk/v0.2/user-v0.2-validation.md",
+  "limitations": [
+    "93 host checks do not execute Android Activity/SAF/provider integration",
+    "No0.3 user/device acceptance yet; prior user acceptance is0.2",
+    "No native math or vendor backend change",
+    "Private clear does not securely erase or retract clipboard/external exports; provider writes can leave partial files"
+  ],
+  "independent_review": "F1/F2 resolved, N1 resolved; no new actionable defect in final narrow review",
+  "review_report": "reports/apk/export-owner-review.md",
+  "reviewed_source_matches_build": true
+}

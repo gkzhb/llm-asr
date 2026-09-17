@@ -1,0 +1,46 @@
+{
+  "artifact": "dist/qwen-asr-minimal-debug.apk",
+  "version": "0.5-debug",
+  "version_code": 5,
+  "variant": "phase16-model-management-review-pending",
+  "bytes": 2442088,
+  "sha256": "f4ad0e57b4d3da661a310df94510affbb42bad95bd71b2533310974b7caf37ab",
+  "package": "org.llmasr.minimal",
+  "min_sdk": 29,
+  "target_sdk": 35,
+  "abi": "arm64-v8a",
+  "permissions": [
+    "android.permission.RECORD_AUDIO"
+  ],
+  "build_task": "b6b11ff8b",
+  "build_exit_code": 0,
+  "build_log": ".pi/tasks/session-1194494-1194494/b6b11ff8b.output",
+  "host_checks": {
+    "core_and_existing": 847,
+    "android_policy_helpers": 100,
+    "total": 947,
+    "java_suites": 16
+  },
+  "source_policy_checks": "passed; source fixtures distinct from compiled package evidence",
+  "package_checks": "passed",
+  "build_input_files_checked": 72,
+  "frozen_review_input_files_checked": 61,
+  "native_dso_identical_to_pre_model_management_0_4": true,
+  "disposition": "build passed; independent dual review pending; not final acceptance package",
+  "independent_review_workflow": "e6cfb984-4091-4d7e-9df5-fdebdc0011ed",
+  "independent_review_status": "pending",
+  "installed": false,
+  "model_management_device_verified": false,
+  "ime_device_verified": false,
+  "previous_artifact": "dist/pre-model-management-0.4/qwen-asr-minimal-debug.apk",
+  "limitations": [
+    "Host tests do not execute real Android Activity/Service/SAF/AudioRecord/InputConnection/UI",
+    "Independent source review not yet complete",
+    "Cooperative cancellation waits for provider IO/close/cleanup; no background-service guarantee",
+    "Exact aggregate preflight required-space display not implemented",
+    "Deletion failure counts are terminal-only; no per-file terminal reuse flag",
+    "Existing small manifest bootstrap performs synchronous asset IO",
+    "No new native/model correctness or performance validation; original P0 limitations retained",
+    "No device access, installation, microphone use, commit or push"
+  ]
+}

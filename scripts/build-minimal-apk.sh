@@ -40,14 +40,21 @@ expected=$(awk '$2 ~ /\/libMNN\.so$/ {print $1}' reports/p0/native-artifact-sha2
 test -n "$expected"
 printf '%s  %s\n' "$expected" "$lib" | sha256sum -c -
 # Caller must build final patched MNN first; record exact library hash below.
+# Compile the same frozen JNI source against a Java-generated header before
+# linking; exported short names alone cannot prove C++ parameter signatures.
+bash scripts/compile-jni-object.sh
 python3 scripts/link-apk-native.py "$build/package/lib/arm64-v8a/libqwen_asr_jni.so"
 # Keep only the single combined DSO in the APK, not intermediate .o/.rsp files.
 rm -f "$build/package/lib/arm64-v8a/asr_jni.o" "$build/package/lib/arm64-v8a/native-link.rsp"
 "$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf" -d "$build/package/lib/arm64-v8a/"*.so > reports/apk/native-dynamic.txt
-"$bt/aapt2" link -o "$build/base.apk" -I "$platform" --manifest android/app/AndroidManifest.xml -A "$build/assets" --java "$build/generated"
+"$bt/aapt2" compile --dir android/app/res -o "$build/res-compiled.zip"
+"$bt/aapt2" link --auto-add-overlay -o "$build/base.apk" -I "$platform" --manifest android/app/AndroidManifest.xml -A "$build/assets" -R "$build/res-compiled.zip" --java "$build/generated"
 # Android's boot stubs omit LambdaMetafactory.metafactory. Compile Java 8
 # against JDK release APIs + Android classes; d8 below desugars the lambdas.
-javac -encoding UTF-8 --release 8 -classpath "$platform" -d "$build/classes" android/app/src/org/llmasr/minimal/*.java
+# R6: recursive discovery picks up every production subpackage.
+mapfile -t prod_sources < <(find android/app/src/org/llmasr/minimal -name '*.java' -type f | LC_ALL=C sort)
+javac -encoding UTF-8 --release 8 -classpath "$platform" -d "$build/classes" "${prod_sources[@]}"
+python3 scripts/check-jni-symbols.py "$build/classes" "$build/package/lib/arm64-v8a/libqwen_asr_jni.so"
 mapfile -t classes < <(find "$build/classes" -name '*.class' -type f | sort)
 "$bt/d8" --min-api 29 --lib "$platform" --output "$build/dex" "${classes[@]}"
 cp "$build/dex/classes.dex" "$build/package/classes.dex"
@@ -67,14 +74,20 @@ apk="$root/dist/qwen-asr-minimal-debug.apk"
 "$bt/apksigner" verify --verbose --print-certs "$apk" > reports/apk/signature.txt
 "$bt/aapt2" dump badging "$apk" > reports/apk/badging.txt
 "$bt/aapt2" dump permissions "$apk" > reports/apk/permissions.txt
+"$bt/aapt2" dump xmltree "$apk" --file AndroidManifest.xml > reports/apk/manifest-tree.txt
+"$bt/aapt2" dump xmltree "$apk" --file res/xml/method.xml > reports/apk/ime-method-tree.txt
+python3 scripts/apk_report_binding.py
 "$bt/zipalign" -c -p 4 "$apk"
 unzip -l "$apk" > reports/apk/contents.txt
 sha256sum "$apk" "$lib" "$build/package/lib/arm64-v8a/libqwen_asr_jni.so" > reports/apk/artifact-sha256.txt
 python3 - <<'PY'
 import json,hashlib
 from pathlib import Path
-files=['flake.nix','flake.lock','scripts/build-minimal-apk.sh','scripts/check-minimal-apk.py','scripts/test-minimal-apk.sh','tests/MinimalApkTest.java','tests/RecordingRaceTest.java','reports/p0/mnn-model-manifest.json']
+files=['flake.nix','flake.lock','scripts/build-minimal-apk.sh','scripts/check-minimal-apk.py','scripts/test-minimal-apk.sh','tests/MinimalApkTest.java','tests/RecordingRaceTest.java','tests/ResultFilesTest.java','tests/NativeResponseTest.java','tests/ModelRepositoryTest.java','tests/PartRecoveryTest.java','tests/RequestRunnerTest.java','tests/TaskCoordinatorTest.java','tests/AdmissionBoundaryTest.java','tests/ImeSessionTest.java','reports/p0/mnn-model-manifest.json']
 files += [str(p) for p in sorted(Path('android/app').rglob('*')) if p.is_file()]
+files += [str(p) for p in sorted(Path('tests').glob('*')) if p.is_file()]
+files += [str(p) for p in sorted(Path('tests/fixtures').rglob('*')) if p.is_file()]
+files += ['scripts/compile-android-java.sh','scripts/apk_report_binding.py','scripts/check-jni-symbols.py','scripts/compile-jni-object.sh']
 files += ['native/apk/asr_jni.cpp','scripts/link-apk-native.py']+[str(p) for p in sorted(Path('patches').glob('*.patch'))]
 Path('reports/apk/build-input-sha256.json').write_text(json.dumps({p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in files},indent=2)+'\n')
 PY

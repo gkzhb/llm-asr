@@ -240,3 +240,280 @@
 ## Session: 0.2用户验收与继续路线B
 - 用户反馈“测试没有问题”，明确要求提交并继续；记录为0.2手动反馈，不扩大为逐项硬件/所有SoC验收。
 - 先提交当前已审查录音版，保持模型/APK/缓存/密钥不入Git、不push；之后独立推进0.3模型状态/结果管理和临时文件清理。
+- 0.2本地检查点已提交a4c6a65（feat: add foreground recording with lifecycle-safe cancellation）；提交后工作区干净。52项Java+5项契约、APK检查与整个index242个文本文件安全审计通过；无模型/录音/APK/密钥，不push。
+- 开始0.3路线B第一增量，后续改动保持未提交，待实现/构建/独立复核/用户验收。
+- 0.3实现模型状态/空间、编辑对话框、系统分享、SAF TXT快照导出、确认清除与互斥临时文件清理；原生引擎与录音gate未修改。14项清理/UTF-8/上限/symlink/非递归测试通过，总66项Java检查。
+- 保留0.2 APK于dist/v0.2（ignored）及报告快照reports/apk/v0.2；0.3不继承用户0.2手动验收结论。
+- 0.3构建bbf0c292d已启动，日志.pi/tasks/session-525127-525127/bbf0c292d.output；独立只读复核2af328d8同步执行。66项host tests已通过，0.3设备测试/构建尚未归结。
+- bbf0c292d正式完成exit0：0.3 APK_READY，32+20+14 host tests、编译/DEX/签名/权限/包检查通过；native DSO与0.2一致。result/status已记录新版本，不混用旧0.2用户验收。
+- 独立review中间反馈：host66项独立通过，未发现当前所有权下误删模型/active WAV；发现startup重复清理导致计数0且状态停留执行中。等完整只读报告后集中修复，不在审查期间修改源码。
+- 0.3审查第二次中间反馈已记录：确认启动状态问题，另有clear与pending SAF快照失效风险（尚无设备复现）及云provider隐私说明缺口；继续等待最终只读报告，不将中间反馈当审查批准。
+- 0.3原始独立审查4832912e完成，无已证实发布阻塞，F1启动重复清理属确认低严重缺陷；报告归档reports/apk/result-management-review.md。开始集中修复/加强后再重建，不将旧审查当新源码已批准。
+- 已修startup清理一次/计数/终态；加入ExportSession全进程epoch、单pending与唯一请求码，clear撤销旧票据，实际写入前在同一任务所有权下二次验证；Activity销毁放弃请求，延迟旧回调不会消费新请求。
+- App+文档补云SAF/provider同步提示。扩展报告part/编辑结果/嵌套model/写入和close异常、startup计数、clear前后/旧回调/重建票据测试，32+20+34=86项host检查通过；没有真实SAF/lifecycle测试结论。
+- 修复版0.3构建baacdc2b1已启动（.pi/tasks/session-525127-525127/baacdc2b1.output），独立后续复核b74b3378同步执行；审查期间冻结源码，不push/commit、不读取手机数据。
+- baacdc2b1正式完成exit0：修复版0.3 APK_READY，32+20+34=86项host检查及编译/签名/包检查通过。result.json更新当前APK哈希；独立后续复核仍pending，未实机验收或提交0.3。
+- 后续复核中间反馈：startup/cloud提示已修复，host86项独立通过；发现clear与新export begin未共享所有权的交错风险，待最终报告后集中修复并新增针对性测试。审查期间不改冻结源码，当前构建不标为最终验收包。
+- export-fix-review566272bd完成并归档：F1/F2关闭，N1导出创建未持任务owner仍需修；当前0.3不作为最终验收包。开始窄修复+可控线程测试，不改变录音gate或native。
+- N1窄修复：ExportSession.beginOwned先CAS取得RUNNING，再调用Supplier读文本+begin，finally仅释放自身owner；MainActivity使用该入口，无预先读取lastText。picker等待期不持owner，clear/write原所有权保持。
+- 新增clear invalidate之后/text清空之前暂停的latch测试：busy拒绝且Supplier读取0次、不释放clear owner；清除完成空结果拒绝；新文本导出、后续clear撤销、supplier失败释放均通过。32+20+41=93项host检查通过。
+- 最终窄复核1684d8ea与重建bc41cf58a已启动，日志.pi/tasks/session-525127-525127/bc41cf58a.output。审查期间冻结源码，不自动提交或推送0.3。
+- bc41cf58a正式完成exit0：export beginOwned修复版0.3 APK_READY，32+20+41=93项host检查和完整编译/签名/权限/版本/包检查通过；result.json记录当前APK SHA。最终独立复核仍待完成，未提交/推送/实机验收0.3。
+- 最终复核2662ccce已关闭N1且独立93项host检查通过，指纹与APK build-input一致；0.3可供用户测试，但尚无用户验收。
+
+## Session: 继续模型管理0.4
+- 用户要求继续，保留0.3 APK/报告到dist/v0.3与reports/apk/v0.3。不自动提交未验收代码。
+- 计划新增有界文件导入进度/协作取消/已校验文件复用与确认删除内部模型；本轮恢复核查确认尚未实现（完整已校验文件复用原已存在）。不下载模型、不改native/录音gate、不访问设备。
+
+## Session: 继续规划 / 代码复杂度审计
+- 已恢复三份规划文件、catchup无额外输出；git diff --stat确认0.3相关源码/报告未提交，保留原样。
+- 发现顶部Current Phase仍为9而文末已有Phase10；先核查0.4是否真正落盘，不把进度意图当实现。
+- 首次合并读取超过工具50KB输出上限；已单独完整重读task_plan与progress尾部，findings完整段落已在输出中；后续按文件/范围有界读取。
+- 已完整检查MainActivity及录音、导出、文件/WAV helper、JNI、host测试入口；独立只读review cf6fec84正在执行，不触碰现有源码。
+- 本轮Nix host重跑93项checks全部通过，日志.work/reviews/current-host-tests.txt。不是0.4构建或Android设备测试。
+
+- 审计完成：独立报告归档reports/review/current-complexity-independent.md，综合报告docs/code-complexity-review.md；确认1项条件性模型残片恢复缺陷与多项维护/覆盖风险，未伪称实机复现。
+- 已更新路线图与Phase12待实施拆分；本轮93项Java检查、5项P0契约测试、26项构建输入指纹通过。未改产品源码/测试、未构建APK、未提交或访问设备。
+
+## Session: 实施解耦重构
+- 用户明确要求继续重构优化降低耦合；恢复planning/catchup，保留全部既有未提交0.3代码/文档。
+- 本轮实施Phase12，不叠加0.4新功能；单writer负责生产源码/测试，父会话负责规划、构建证据与独立复核。
+- writer88cf4a75已启动，范围TaskCoordinator/应用操作层/ModelRepository-SAF隔离/生产组件测试；要求part缺陷红绿证据及Java编译，不自行构建覆盖APK报告。
+- 父会话已建立docs/refactor-phase12.md验收清单并保留旧APK/报告，不修改writer负责的源码。
+- 初稿完成200项host检查，但父审未接受：发现主线程/生命周期/报告回归和测试副本冒充生产流程覆盖。当前源码未构建APK，不对外作为可验收包；进入定向修正。
+- 第二轮writer412002af完成，但父审仍发现取消录音在worker创建session前可漏掉、owner释放后缺UI通知、preflight/pending失败不写终态、初始化错误被吞等问题；暂停委派，由父会话接管唯一源码writer集中收尾。
+- 父会话完成定向收尾：录音control在owner admission同步发布，finally清理；owner释放后状态失效通知；UI用主线程弱目标回调读当前状态；preflight/pending失败同样写failure终态；坏manifest显示初始化失败而不误调用未安装graph。
+- 新增AdmissionBoundaryTest直接调生产RequestRunner/TaskCoordinator/RecordingControl/ExportSession，覆盖worker未开始前pause取消、busy拒绝不运行hook、释放通知、preflight失败清正文与终态、executor拒绝回滚。纯Java脚本移除android.jar依赖。
+- 父复跑243项host checks通过。源码冻结，独立review0f95a7be和完整APK构建bfe1aeb24同步开始；构建日志.pi/tasks/session-525127-525127/bfe1aeb24.output。
+- bfe1aeb24完整APK构建exit0，APK_READY；独立review de31b20c未发现当前正常生产路径发布阻塞，确认解耦/录音admission/owner通知/终态/导出保护。报告reports/review/phase12-independent.md。
+- 独立审查指出非阻塞测试证据问题：坏hash曾实际测超长，rename用例未到发布阶段，假Map重名不成立，cleanup身份断言不足。已仅修改测试：同长度坏hash且断言SHA原因、复制完成后注入目标目录并断言rename原因、删除伪重名case、枚举cap收窄为异常传播、cleanup断言同上下文/路径。
+- 生产源码保持独立审查版本，父复跑245项checks通过。最终指纹构建b4b1d2d31进行中，仅因测试变化重跑，不冒称独立审查者运行了245项。
+
+- 最终构建b4b1d2d31 exit0：APK 2,405,160 bytes，SHA3772e2049106301f7553fdc48d25e6c11ab27f32577491de0347fdecf70152d3；245 checks与签名/包检查通过，47项输入SHA匹配。新旧APK的native DSO逐字相同。
+- reports/apk/result/status已改为本轮重构身份，独立审查/测试修正边界明确；Phase12完成，设备回归pending，0.4取消/删除未实施。无commit/push、未访问设备或私人数据。
+
+## Session: 下一功能确认
+- 用户询问下一步功能；恢复规划并运行session-catchup（无额外输出），核对工作区与路线图。
+- 确认Phase12重构已交付构建/审查，设备回归仍pending；下一功能为0.4模型管理：进度、协作取消、已校验完整文件复用、确认删除。
+- 本轮仅给出优先级与验收建议，不启动开发、不提交或访问设备；保留既有未提交改动。
+
+## Session: 用户验收重构版 / 输入法优先
+- 用户反馈“验证没问题”，记录为重构版用户手动验收，不扩展成全设备/逐项自动验收；未授权新提交，本轮不commit/push。
+- 用户明确改变优先级：跳过尚未实现的模型管理增强，先实现离线语音IME。
+- 首版限定用户手动启用/切换、前台点击录音、停止转写、预览确认提交；共享现有进程任务owner与CPU引擎，隐藏/换输入框使旧会话失效，敏感字段拒绝录音/提交。
+- 唯一源码writer workflow698cc694已启动；父会话仅维护规划/文档和后续验收，未并行修改生产代码。旧重构APK/报告已保留dist/pre-ime-0.3与reports/apk/pre-ime-0.3。
+- 新建docs/voice-ime.md的输入法隐私/会话/验收契约，路线图按用户优先级更新。版本拟0.4-ime-debug，原模型管理增强延期。
+- 初稿918e0dd5未通过父审：录音WAV没有进入native推理、%p非法format、缺launcher入口与真实预览、UI worker直调/强引用、密码visible漏判、解绑后不能恢复。父会话接管唯一源码writer；未构建/交付该初稿。
+- 已重写IME会话/生产编排/Service：同owner下真实Backend录音→WAV→校验→JNI→解析→预览；复用ForegroundRecorder，移除重复采集实现与无用ImeSink；IME不接触App正文/报告。
+- 父新增真实生产controller的全流程fake-backend/owner/commit测试：真实capture字节传入transcribe、同request清理、迟到结果丢弃、同字段重启、敏感字段、null/拒绝/异常连接单次消费、交接取消与thread latch。Android Backend仅编译，真实硬件仍待测。
+- ba7d5d8dd正在执行host回归+Android Java编译；APK包检查改为强制读取manifest与IME metadata编译树，仍精确RECORD_AUDIO白名单。
+- ba7d5d8dd正式完成exit0：既有245项+新增89项IME生产controller检查=334 checks全部通过；全部Android Java源码编译通过。仅deprecated API编译提示，不是运行失败。硬件/系统InputConnection尚未实测。
+- 独立只读审查f5b0daca进行中，源码保持冻结；启动完整APK构建验证XML资源/DEX/签名/权限与组件，不将构建通过冒充审查批准。
+- bff361037失败于末尾新增manifest-tree解析断言（service缩进假设错误），并非Java/native编译失败。真实编译树确认AsrImeService、BIND_INPUT_METHOD、exported=true与action/metadata存在；第二处bool格式断言也需按真实输出修正。
+- 此次exit1保留，不将已生成签名文件作为完成验收包；旧reports/apk/result/status身份需要在最终成功后统一更新，当前权威状态为本条构建失败记录。
+- 独立审查ec61deb8中间反馈：独立334项host checks通过，未执行Android/完整构建；重点核查输入法选择器关闭后恢复（当前切换入口visible=false/session=null，可能没有恢复回调）。这仍为审查中间发现，不当作最终阻塞结论或批准；源码继续冻结等待完整报告/指纹。
+- reviewer ec61deb8确认picker恢复缺陷：打开选择器前visible=false，取消或重选自身不保证onStartInputView，onWindowShown仅render导致键盘保持禁用。最终报告前不改源码；建议新会话恢复而不复活旧preview。
+- 审查期reports/apk变化来自父bff361037构建及status身份澄清，不是审查者写入；生产源码/测试仍冻结。intercom/send与subagent_supervisor/send均返回由native supervisor处理且未确认送达，不宣称已通知子agent。
+- ec61deb8完整独立报告已消费并归档reports/review/ime-independent.md（e2b156...）；31源指纹保持冻结，解除冻结后集中修复B1/N1/N2/N3与构建checker。
+- B1采用明确hide策略：生产leaveForExternalUi先invalidate/cancel→requestHideSelf→picker/settings；取消选择/重选本身后如键盘隐藏，用户点输入框触发新onStartInputView，不恢复旧preview/自动录音。设置启动失败同样不留下可见死会话。
+- N1加共享任务忙提示；N2删除无连接AppState假断言、明确fake字节传递意义、清理失败改为删除前抛出并测试残留/teardown，补stale failure/stop/blocked-cleanup/external command顺序；不冒称Android picker覆盖。N3文档改为采集交接后处理阶段不可取消，包含校验/JNI前期。
+- 修正checker对既有失败包的静态断言已通过；保留bff361037历史exit1，不冒充旧源码包包含B1修复。git diff --check通过。
+- B1修复版全构建b4ea5c08d与独立窄复核3c49a277同步启动，生产源码/测试/docs再次冻结；构建只改输出reports/apk/dist。
+- b4ea5c08d正式完成exit0，APK_READY；245+160=405项host检查及完整资源/Java/DEX/native/签名/权限/IME组件检查通过。当前APK2413416 bytes，SHAc433d1b82f30b5b1ef3ab37fbd4b349199196bd8507386d97e0463ca5c451a2c，55输入指纹匹配，native DSO与旧0.3逐字相同。
+- reports/apk/result.json与status.md已更新为当前IME构建身份；仍标独立B1修复复核pending、不作为最终验收包，硬件设备测试未执行。
+- 最终复核39a429db已完整消费并归档reports/review/ime-fix-independent.md：B1源码缺陷关闭，未发现新阻塞，独立405项host检查通过。保留两个P3：旧同controller任务的新会话忙提示不足、stop断言位于handoff后较弱；不夸大覆盖。
+- 父核对31合并审查SHA、55 build-input SHA及APK SHA全部一致；静态包检查与git diff --check通过。result/status/disposition已更新可供手动IME设备测试，Phase13实现交付完成。未改变最终复核后的生产源码/测试，不需再次重建。
+- APK dist/qwen-asr-minimal-debug.apk，0.4-ime-debug code4，2413416 bytes，c433d1b82f30b5b1ef3ab37fbd4b349199196bd8507386d97e0463ca5c451a2c。无安装、设备数据/麦克风访问、commit或push。
+
+## Session: IME透明背景反馈
+- 用户反馈底部输入法背景透明、按钮文字难辨；源码确认root未设置background。
+- 本轮仅修视觉样式，保留旧包/身份到dist/pre-ime-background及reports/apk/pre-ime-background；不把此反馈当其他IME功能全面验收。
+- b82a77e99 exit0 / APK_READY：405项host checks和完整构建/签名/包检查通过，55输入SHA核对。相较上包仅AsrImeService显示样式变更，native DSO相同。
+- 新APK SHА2070cd7f1d1eb7a51be971c16a328d5db1a1950b99e0506b657a9337fbd4044a，2413416 bytes；result/status更新视觉修复身份。旧逻辑审查保留但不声称新版Service已独立复审；视觉效果待用户确认。无commit/push/设备访问。
+
+## Session: 背景修复验收 / 下一步待确认
+- 用户反馈“验证没问题”，记录为当前背景修复包用户手动反馈，不扩展成所有IME生命周期/设备验收。
+- 用户要求先确认下一步，本轮不启动开发/构建/提交。建议回到延期的模型管理增强（进度、协作取消、完整文件重试复用、确认删除、维护不清转写结果），模型驻留提速另设后续阶段。
+
+## Session: 独立模型管理页面规划
+- 用户要求生成新规划文件、细化模型管理，并提供独立UI页面；仅授权本轮规划。
+- 已恢复三份规划并运行catchup（无额外输出）。合并读取progress/findings超工具上限，已补读progress前210行；后续有界读取。
+- 已新建docs/model-management-plan.md：独立Activity与主页/IME导航、文字线框、模型/任务双状态、按钮矩阵、MM-01~08功能契约、取消/发布/epoch、生命周期、结果隔离、M1~M4任务与测试门槛。
+- 明确当前7文件合计1,573,492,181 bytes动态显示；不把原始模型目录、磁盘与RAM混淆。状态刷新不自动hash；重试重新选目录且复用完整文件；删除只删白名单内部副本。
+- 默认前台管理：旋转不取消，离开/锁屏请求取消且owner收尾后才释放；无后台服务承诺。这些为新规划默认方案，非现有实现或用户已确认产品决策。
+- 规划交付检查通过：333行新规格的本地链接、代码围栏、必要章节标记及git diff --check；55项APK build-input指纹全部未变，证明本轮未修改构建输入。未运行新代码测试/构建/设备操作，无commit/push。Phase15仅规划完成。
+
+## Session: 从 D3pb0j 交接恢复
+- 已读取 /tmp/llm-asr-handoff-D3pb0j.md，当前工作区为 /home/zhb/gitrep/llm-asr；session-catchup无额外输出。
+- 初次合并读取三份规划触发50KB截断，改为有界补读；已核对git status/diff，保留全部既有未提交和未跟踪成果。
+- 交接明确独立模型管理尚仅规划；本次“继续工作”先恢复并核对默认方案，实施范围待明确，不自动开发、构建、提交或访问设备。
+
+## Session: 开始0.5独立模型管理实施
+- 用户明确“开始”，接受上一轮M1→M4及默认产品边界；已恢复当前规划/catchup（无额外输出）。不再等待重复实施确认。
+- 已建立Phase16，保留原0.4 APK/报告至pre-model-management-0.4，生产输入快照至.work/model-management-baseline；不重置现有工作区。
+- 已核对AppGraph/ModelRepository与host入口，现有仓库没有取消/hash进度/delete，原405项为待复跑基线，不冒充新功能证据。
+- 委派workflow0789736f在JS解析时失败（task单引号跨行），源码worker未执行；改用模板字面量重新启动。父会话未修改生产代码。
+- 修正JS模板字面量后唯一源码writer workflow ada832dd已启动，负责M1→M3与M4构建输入/host和Android编译；父会话不并行改源码。
+- 新增docs/model-management-validation.md分层验收矩阵，规划状态更新为用户已确认实施。备份APK的大小/SHA与备份result.json一致。
+- 当前尚未完成新功能实现/测试/构建，当前dist主APK仍为旧0.4，不冒称可交付0.5。
+- ada832dd/173038b7超时退出，partial artifact仅最后一句C1定位；已落盘模型readiness/control/state/controller、repo扩展及5份新测试，但尚无ModelManagementActivity、Android导航/版本接线。源码不交付，不覆盖旧APK。
+- 接管前恢复现有规划/catchup；后续按更小任务单writer推进，不简单重跑整个M1→M3大任务。
+- 发现超时writer遗留孤儿shell1201929和java1202017（ModelRepositoryCancelTest已运行14分钟），已仅终止这两个确认属于本次writer的进程，避免继续后续测试/写输出。
+- 父复跑日志bbd20822e显示现有前5组151项通过，随后PartRecoveryTest失败：其红证据编译副本未带新增ModelManagementState依赖，不能把编译失败当空间次序红绿。尚未执行到C1，最后一句partial不能准确表示阻塞位置。
+- 已启动小范围单writer修复22170594，仅纯Java核心/测试，明确重现PartRecovery编译依赖失败与有界测试防挂起；Android页面/接线另起后续阶段，父不并行改生产源码。
+- bbd20822e正式终态通知exit1，与先前已读取日志一致：PartRecoveryTest独立编译缺ModelManagementState依赖；这是已交给22170594处理的同一次失败，不是新增失败或核心修复结果。未重跑/未干预正在修复的writer。
+- 收到核心writer1e38833a检查点并完整读取148行权威报告 .pi-subagents/artifacts/outputs/1e38833a/.work/model-management-core-repair-output.md；报告称847 host checks/15 suites、确定性核心117+223各三次通过，生产行为变异红证据已恢复。父会话尚待独立复跑，不把子报告当Android接线完成。
+- 该slice明确未改Activity/AppGraph/Service/SAF/manifest，未构建APK；下一步父核对核心接口/旧Android调用后推进独立页面与统一readiness。
+- 核心workflow22170594已正式completed/ok，权威报告已消费；父独立复跑b8cc832f1执行中（有界180秒），不重确认子终态。
+- 父已核对core主要实现与旧Main/AsrOperation/AppState/ImeBackend/SAF/IME接线；创建.work/model-management-android-handoff.md，明确统一readiness、移除旧维护入口、页面/票据/生命周期、安全错误与版本包门槛。等待父复跑正式结果后启动Android唯一writer，避免测试读取与源码写入交错。
+- 父独立复跑b8cc832f1正式exit0，完整日志确认15 suites/847 checks全部通过；核心修复验证通过，但不等于Android页面/SAF/真实设备验收。日志.pi/tasks/session-1194494-1194494/b8cc832f1.output。
+- Android唯一writer workflow a25d515e已启动，范围页面/主页IME导航/共享readiness/SAF与生命周期/版本checker及测试编译；不构建覆盖APK。父更新验收矩阵，核心M2/M3 host通过与Android pending明确区分。
+- Android workflow a25d515e / writer84371bfd正式completed/ok；完整读取162行权威报告 .pi-subagents/artifacts/outputs/84371bfd/.work/model-management-android-output.md。报告947 host checks/16 suites、SDK35全Java编译通过；未构建APK/真实SAF/设备验证。
+- 已接页面/共享readiness/ModelAccess/SAF票据与生命周期/版本0.5；明确剩余展示缺口：聚合预检空间未暴露、删除失败仅终态统计、部分逐文件复用状态未持久快照。父审与独立审查决定修复优先级，不全勾验收。
+- 源码61输入冻结，fresh独立双审e6cfb984已启动：Android生命周期/隐私用户流与核心文件/取消/owner/测试证据分工；均不执行构建/测试，避免与父完整构建输出竞争。
+- 父完整APK构建b6b11ff8b已启动（含当前host947重跑与全部打包检查），报告status明确验证中/不可将旧result与新输出混用。旧0.4独立备份保持可用；构建和审查后统一身份。
+- b6b11ff8b完整构建正式exit0/APK_READY，父读取完整关键日志确认947 checks/资源JavaDEXnative签名权限组件均通过；APK2442088 bytes，SHA f4ad0e57b4d3da661a310df94510affbb42bad95bd71b2533310974b7caf37ab。
+- 父核对72构建输入及61冻结输入SHA均匹配，native DSO与旧0.4逐字一致；result/status更新准确0.5身份并保留独立双审pending/非最终验收包。源码仍冻结，不在审查中改代码。设备未测。
+- 独立Android reviewer98e2832f中间反馈：未证明ModelPageSession double-peek会导致生产NPE（main线程准入约束），不把父疑点当已确认缺陷。确认待完整报告的问题：重进页自动INSPECT覆盖先前取消/失败/删除终态；provider CancellationException原文可透入errorCode/UI。源码继续冻结，待双审完整artifact后集中修。
+- 独立双审e6cfb984完整完成，父已完整消费并归档98e2832f/44a6d42a报告至reports/review/model-management-{android,core}-independent.md，61冻结SHA匹配。结论不是无条件通过：恢复终态被INSPECT覆盖、provider取消异常脱敏缺口、失败终态迟到取消、lazy验证漏非法part、复用/空间/删除显示与listener测试漏检需修。
+- 原947-check构建保留dist/model-management-review-baseline及reports/apk/model-management-review-baseline；解除源码冻结进入集中修复，旧包仍非最终验收。两审均未执行测试，不冒称独立947复跑。
+- 已形成reports/review/model-management-disposition.md逐项接受修复/明确defer，唯一writer639de525启动。范围恢复终态、provider安全边界、非法part lazy验证、完整终态仲裁、结构化预检/复用/删除显示、测试断言与APK派生报告绑定；不并行改源码、不全构建。result/status标当前包为审查修复前，不伪装通过。
+- 修复writer186ebfc3中间检查点：accepted batch实现，final-host/final-javac日志已由父读取，旧数字检查现945（readiness断言由35改33）加7组review回归/provider边界/3个可编译行为mutants/实际checker绑定fixtures通过；不能沿用947为新总数或把分组混为checks。
+- Writer仍在最终报告/指纹收尾，本轮不并行启动构建或改源码。新增self-review修复executor拒绝终态重入取消、provider LinkageError脱敏；待正式完整报告后父核对并重建/窄复核。
+- 修复workflow639de525/186ebfc3正式completed/ok，父完整读取179行权威报告 .pi-subagents/artifacts/outputs/186ebfc3/.work/model-management-review-fixes.md；accepted修复实现与红绿/3变异/checker绑定证据齐全，仍待父重建及独立复核。
+- Writer报告工具错误补录：首次缺Java PATH exit127（不算缺陷证据），改已安装JDK；广泛SDK find超时后改确切已安装SDK路径。无遗留命令，不重新触发下载。
+- 修复后69输入冻结，独立双复核99c50a92（恢复/隐私/终态及展示/测试/绑定）和完整构建b9bbf4283同步启动；均不修改源码，审查不运行测试争用输出。status标重建中，旧result身份不能用于新输出。
+- 父独立准备docs/model-management.md使用与手动设备验收清单，明确仍构建/复核中，不把主机provider包装测试当真实SAF，记录取消/重建/删除和证据边界；不触碰冻结源码。
+- b9bbf4283正式exit0/APK_READY，父读取完整关键日志：945数值checks+7review groups/provider/3可编译行为变异/actual checker fixtures及全构建通过。78 build-input/69冻结SHA匹配，6份派生报告与APK绑定核验通过、standalone checker通过，native DSO与0.4一致。
+- 新APK2442088 bytes，SHA57f51fa5658a09b48d3616f0b0fc735f11c73ae587035fa9589bf1fe2f1a148f，result/status统一修复版身份；独立99c50a92复核仍pending，暂不交付最终验收，源码保持冻结。
+- 独立双复核99c50a92正式完成，父完整消费8d949144/3db342f7并归档reports/review/model-management-fix-{safety,evidence}-review.md，69冻结SHA匹配。核心恢复/隐私/终态/非法part与F4/F5/F6均源码关闭；剩E1已发布A在B失败后仍显示待复制、E2零可用空间全复用未直接测。父接管唯一writer作末次小修，保持此前安全协议。
+- 父E1新增真实queued controller A发布/B坏hash、发布内取消两序列，旧生产实现明确断言失败（.work/model-final-polish/publication-red.log）；E2将全复用/parts-only空间设0且断言无COPY/open、已通过。只在publishPart成功后、cancel checkpoint前新增历史状态，不改变READY/gate。
+- 父末次三文件差异targeted publication/planning通过；69输入再次冻结，最终窄reviewbee6c8ca与完整构建b0453981b启动。核心安全双复核已归档，不在最终窄审扩大可选polish。
+- 最终b0453981b正式exit0/APK_READY，945数值+8review/provider/3mutants/checker fixtures及全包检查通过。父核对78 build-input包含且一致于69冻结输入、APK/6报告绑定、旧0.4 native DSO逐字一致。
+- 当前APK2442088 bytes，SHA6e4fbf7a4cf07262912019dc667258123a32f95931b13bb1c046cf6e77471073；result/status同步最终构建身份，末次bee6c8ca窄review仍pending，不把构建通过冒充最后批准。
+- 最后review8c20d499正式完成并完整消费/归档，E1/E2源码和测试缺口关闭，无新阻塞；父最终重核78构建/69冻结、APK SHA/6报告绑定、native一致、check-minimal-apk与diff-check通过。Phase16实现交付完成，更新result/status/规格/使用/验收，真实设备pending，无commit/push。
+
+## Session: 模型导入内部根路径失败反馈
+- 用户关联任务 c8dbb9fb-04e3-41ad-9183-bd044be604e9，逐条提供导入未完成/复用0/非法model根路径或符号链接/清理未知/概况读取失败。
+- 定位checkRoot要求absolute-normalized==canonical，Android可信私有父目录别名会被误拒绝；设备实际路径未读取，不断言用户源模型坏或确有残片。
+- 备份当前0.5 APK/报告至pre-model-root-fix；父唯一writer新增专用forAppFiles延迟解析可信filesDir后拼model，保留model叶/managed文件及一般repository严格边界。
+- 新主机真实symlink fixture在接线stub+旧逻辑下运行失败，异常与用户一致（.work/model-root-fix/red.log）；修复后全量host通过（.work/model-root-fix/host.log），含新增controller导入/READY/复用/刷新/校验/删除与非法根/文件/part拒绝。
+- fresh只读review 4e96a5f8已启动；完整APK重建将启动。真实设备/SAF尚未测，无设备/麦克风/私人数据访问、commit/push。
+- 完整构建bc04a521f正式exit0/APK_READY：全部host含新alias组、资源JavaDEXnative签名包检查通过；父核对79输入指纹/standalone checker/旧包native DSO一致与diff-check通过。新APK2446184 bytes，SHA1c8de63959cb8d8b99aa7706e8239bb2349fb49eea2ccb4b3b7d1d245652f7b3；result更新身份，独立review仍pending。
+- 独立窄审35d4908c正式完成，完整报告归档reports/review/model-private-root-review.md：无阻塞，2项LOW为first-worker/once-only及alias ModelAccess直接覆盖测试加强，明确defer且不夸大当前证据。父再次核对79输入与APK SHA匹配；复核后不改生产源码/测试。result/status更新可供手动设备验证，无安装/清数据/commit/push。首次按cwd读取review路径ENOENT，后从隔离output路径完整读取，不丢失报告。
+
+## Session: 用户验收路径修复 / 新增运行日志
+- 用户明确“没有问题”，记录为路径修复手动反馈；新授权日志页面、模型加载/完成/推理完成时间戳和日志文件导出。
+- 已检查App/IME共用JNI：当前load与response在单个native调用内，必须添加真实阶段回调，不能在返回后伪造load完成时刻。
+- 已保留旧包/报告至pre-runtime-logs并保存构建输入baseline；下一步唯一writer实施，父仅补文档和review准备。
+- 唯一源码writer workflow7681e5d0已启动（30分钟有界），负责typed有界持久日志、App/IME真实JNI事件、LogsActivity导出与version/checker/test接线；不全构建、不改dist/reports/apk。父不并行改源码。
+- 新增docs/runtime-logs-plan.md实施契约和docs/runtime-logs-validation.md分层验证矩阵；明确日志隐私、真实事件时间、后台IO/有界队列、SAF快照生命周期和native变更不能沿用旧DSO一致结论。
+- workflow7681e5d0/worker a7c0e1f9 30分钟timeout exit143，无最终报告、新测试或有效验证结果。最后工具是全/nix/store无界find，非测试本身超时；父确认无遗留find/javac/test进程。已落日志core/UI/接线/JNI初稿，不能交付。
+- 父源码核对发现真实阻塞：JNI找不存在VALUES字段导致无阶段回调/缺前向声明；持久化未接普通append、主线程restore、part符号链接缺口；导出写live而非ticket快照/close异常误报成功/Activity捕获/UI提示错位；无新增测试。整理.work/runtime-logs/core-recovery-handoff.md，按core→native adapter→Android导出小slice重做，非简单重跑大任务。
+- b8ef3fe86开始独立核对partial host和Android javac并分别记录.work/runtime-logs/partial-{host,javac}.log，未覆盖APK；等待正式编译结果后启动core唯一writer。
+- b8ef3fe86正式exit127：命令被fish解析，Bash变量赋值语法拒绝，测试并未执行；不得当host失败/通过证据。父改用bash工具有界执行Android javac，exit0，完整日志.partial-javac实际路径为.work/runtime-logs/partial-javac.log；仅Java编译不说明JNI/UI/持久化正确。
+- core唯一writer workflow8eee5457已启动，显式newapi/gpt-6-astra，小slice仅RuntimeLog core+新增core测试，不碰Android/JNI/main scripts，完成后再接下一层。没有并行源码writer。
+- core writer a007bbd2中间检查点（非最终验收）：报告8组focused生产core测试通过（真实symlink/坏持久文件/permission-denied/阻塞写时1万append合并/不可变UTF8导出）；完整host前17个Java程序通过后在model_android_source_test.py:63失败，原因synthetic manifest仍2 Activity而checker要求3。writer按core范围未修改该fixture，将补跑剩余host尾部。等待权威完整报告，不把中间通知当已独立复跑/Android完成。
+- core workflow8eee5457/a007bbd2正式completed/ok；父完整读取权威报告，独立运行.work/runtime-logs/test-core.sh exit0/8groups，日志.work/runtime-logs/parent-core.log。新core只代表日志存储，不代表Android/JNI接线完成；17 Java+host尾部分别通过，全套仍被已知2/3Activity fixture阻塞。
+- 已创建.work/runtime-logs/inference-handoff.md并启动唯一slice2 writer f8c75745（newapi/gpt-6-astra），仅共享App/IME adapter+真实JNI事件+测试/编译，不改LogsActivity/export/AppGraph/manifest/main scripts/core。明确已有JNI异常保留、正常response判据、Java解析后才request success与数值单调耗时。
+- slice2 worker30170dc7请求遥测故障策略；父经supervisor回复06b2777e确认：保留成功ASR payload，非法/缺失callback不得伪造REQUEST_SUCCESS或REQUEST_FAILURE，新增固定LOG_TELEMETRY_FAILED表示记录不完整；真实native/验证/协议失败才请求失败。NativeResponse.parse当前为IAE，handoff称IOException是父误记，以源码为准并在adapter固定错误规范化。
+- f8c75745 workflow报告failed原因是intercom协调detach，不等于writer实现失败；已回复后按要求对exact30170dc7注册nonblocking subagent_wait自动唤醒，无替代writer/resume/重复启动。继续等待其正式终态。
+- slice2 worker30170dc7中间报告：真实App/IME已调用共用InferenceAdapter，新增MODEL_ACCESS_*区分缓存/懒SHA与真实加载；int ABI1..4/Java解析后终态/日志Throwable隔离、JNI pending异常保护。子称adapter9组279checks、core8组、Android Java及NDK API29 object编译通过；尚待完整报告与父复核，不当真机JNI已测。父不在其收尾阶段写源码。
+- slice2 30170dc7正式completed（wait通知确认），父完整读取权威inference-repair.md，独立test-inference.sh exit0：9groups/330checks（.work/runtime-logs/parent-inference.log）。子scope核对331 reports/dist不变，MainActivity未变、原生配置不变；NDK只object编译，未JNI运行/全包。
+- slice3唯一writer workflow04d86ee8启动，范围LogsActivity/不可变SAF快照session+bounded独立导出owner/graph导航/主host与3Activity版本fixture；不改已核对core/inference/native。详细.work/runtime-logs/android-handoff.md，明确provider close失败不成功、日志页面状态不写AppState、录音/维护离开语义、固定事件中文含义。
+- slice3 workflow04d86ee8在JS解析阶段失败（单引号prompt含don’t的ASCII引号），未启动writer；改模板字面量后fbc43643已实际启动，仍只有一个源码writer。
+- slice3 fbc43643/16563e13服务429（astra及fallback terra冷却）失败；已写LogExportController初稿与entry快照，无最终报告/验证。用户“继续”后父接管唯一writer，不反复重试同限流。
+- 父完成LogExportPage生命周期helper/LogsActivity重写/中文事件含义/graph独立导出owner与应用context backend/录音确认和模型维护导航限制；controller固定快照、close后成功、slot覆盖阻塞IO、状态不写AppState。新增LogExportTest96checks，接主host core8组/inference330及3Activity负向fixtures，full host exit0和Android javac通过。
+- 当前源码冻结.work/runtime-logs/frozen-sha256.json；独立双review03d758e1启动（core/JNI安全及UI/export/package两个只读方向），父开始完整APK构建。真实SAF/JNI/device仍未测，尚不交付最终包。
+- b599e59ef正式exit0/APK_READY：全量host+Java/native新ABI链接+资源DEX签名包检查通过，父核对99输入/100冻结SHA一致、578 MNN对象与旧报告一致。APK2466664 bytes SHAd3aeda18c78f86b3a24fe9c030e29f83047e49cf8f1333fbf65ef59bf10c3851；result同步当前构建，独立双审仍pending。首次报告脚本stat字段误作函数TypeError，仅阻止报告更新，已修正；不影响构建/校验。两个reviewer中间均无普通路径阻塞，nonblocking观察待完整报告处置，源码冻结。
+- 独立双审03d758e1正式completed/ok，父完整消费fe64f868/d73c3154报告，归档reports/review/runtime-logs-{safety,export}.md；无普通生产路径阻塞，4项非阻塞发现按disposition明确defer，未改已审源码。父再次核对99输入/100冻结与APK SHA一致；报告状态统一为可供手机验证，非零缺陷或设备验收。
+
+
+## Session: 用户授权编写重构规划然后执行 / Phase19
+- 完整读取task_plan/progress/findings并运行skill catchup（无待同步输出），保留所有原有工作区成果。
+- 新建docs/android-refactor-plan.md，界定本轮R0–R4与后续R5/R6，写明行为保持、测试、回退及不访问设备/不提交边界。
+- 下一步保存小文件基线和旧APK，复跑host/Android javac，然后单writer分批实现。未改变产品源码。
+
+- R0完成：100输入保存至.work/refactor-phase19-baseline/inputs及sha256.json，旧APK保存dist/pre-refactor-0.6，旧报告完整保存baseline/apk-reports。
+- Nix完整host基线exit0（含可编译mutation/checker绑定负例），Android javac exit0；日志baseline/host.log、javac.log。未运行设备，未覆盖主APK。
+- R1唯一writer ed473135已启动：模型DTO依赖提取+日志Error恢复红绿/架构约束。父仅读R2/R3调用与测试，准备.work/refactor-phase19-r2-handoff.md；没有并行改源码。
+- 父已准备R3交接：报告序列化保持原键/异常/大小限制；JNI仅迁移类符号且集中Graph装配，native对象编译与最终链接证据分开。R1仍是唯一活动源码writer，后续slice未启动。
+- R1超时初稿已停止；模型DTO迁移已落盘但尚未验收。日志初稿/测试拒绝：正常检查pending与释放分离可漏唤醒，测试同步列表未等待producer终止且无界重入；父改为原子正常释放+异常专属收尾，并重写有界生产测试。子曾无Android classpath编译全部Java失败、管道未pipefail，均非有效验证。
+
+- R1父收尾通过：ModelReports移动仅改变类型归属；未精简SHA入口（保持边界/异常语义），未做文案枚举。替换子重写的mutation框架为原有可编译mutants，新增独立lexical架构约束及负例。
+- 日志保留Error原样传播及LOG_TELEMETRY_FAILED契约，异常退出释放publisher；正常pending检查/释放同锁，不在finally重复释放新publisher。旧源码red编译通过/断言exit1；新测试含fatal身份、并发、一次重入，有界join。
+- 全量host与Android javac父exit0，日志.work/refactor-phase19-r1/{red-compile.log,red.log,host-final.log,javac.log}。即将进入R2，不完整构建APK。
+- R2唯一writer 667472bc启动（显式astra路线）；父补docs/android-refactor-validation.md，区分已通过R1、未完成R2/R3/R4和设备限制，不并行改产品代码。
+- R2 writer0450851a正式完成，报告.work/refactor-phase19-r2/report.md完整读取；父源码核对并独立复跑parent-host.log/parent-javac.log exit0。新增admission/observer/fatal/cleanup覆盖执行生产策略；没有改R1日志/模型DTO、JNI或APK。
+- R2试验错误为两次fixture编译和lexical guard未接受postDelayed，均修正后全套绿；纳入总计划错误，不将失败当产品行为红。
+- R3唯一writer0127821f已启动，父仅读旧产物报告准备最终身份更新，不并行改产品/测试。独立审查需基于R3后冻结输入，旧0.6双审不归因重构版。
+
+- R3 55c753c3正式完成，报告完整消费；父对照报告writer/Graph/IME/JNI和新增工具源码。writer全host/Android/真实NDK object通过；Nix并行eval-cache contention为忽略警告，不当失败。即将冻结R1–R3与日志修复并独立双审/父全构建。
+- 父完整构建exit0/APK_READY，含111 build-input、112冻结输入匹配、actual linked DSO/Java native符号核验、578 MNN对象与R0相同、录音gate/recorder SHA不变；新APK2466664 bytes，d919891538cff713c4360d64968e8b2941d6eb49f2f42bc0265a04bd71d81060。日志.work/refactor-phase19-final/build.log。独立双审仍pending，尚不交付最终包。
+- reviewer中间发现测试假阳性：TaskCoordinator listener内断言被生产观察异常隔离吞掉，待完整报告后集中加强外部断言。R3中间无新增生产阻塞，完整build尚未强制javac-h头编译（standalone object有）；源码继续冻结。
+- 完整独立审查c3e1535b/1732b7b8已消费并归档reports/review/phase19-{core,android-jni}-review.md；解除冻结仅改两文件：TaskCoordinatorTest外部断言修复、build脚本加入真实javac-h头/NDK object前置。生产源码不变；准备负例证明新断言有效，再最终重建/窄复核。
+- 修复断言有效性负例：可编译测试副本强制记录错误finalized=0，明确AssertionError exit1；真实全量host fix-host.log exit0。两文件重新冻结，所有产品源码保持原双审SHA。处置见reports/review/phase19-disposition.md。
+
+- 最终重建exit0/APK_READY，日志build-final.log；强制生成JNI头编译和实际linked DSO符号检查均通过。新APK2466664 bytes，SHA0b891db946992cb649d33b4ec8bf0347738070e4593c306a0558d7f68460e43c。
+- 708e5aac最终窄复核完整消费归档：两个接受问题源码层关闭，未发现新阻塞。父核对111 build-input/112 frozen/41变更输入包含关系、APK+6报告绑定、578 MNN对象不变、diff-check、暂存为空；未改变最终复核后的产品输入。
+- 更新规划/验证/APK身份/审查处置，R0–R4工程交付完成；真实设备测试、R5 TXT隔离、R6拆包/文案/锁外通知仍pending。所有变化保持未提交，无设备/麦克风/私人数据访问。
+
+## Session: 用户继续 R5/R6 优化 / Phase20
+- 用户明确授权继续TXT导出隔离与功能拆包/剩余策略整理。已恢复历史规划与catchup（无额外输出），保留大量既有未提交成果；旧R0–R4已交付不等于R5/R6完成。
+- 首次恢复合并输出超50KB，已分段补读；后续使用有界输出。下一步保存本轮小文件/APK基线，分R5、R6策略、R6包迁移三个单writer切片，最终独立复核和完整构建。
+- Phase20基线完成：111输入SHA/副本、旧APK与全部APK报告已保存；Nix host全回归（含mutation/checker负例）及SDK35 javac通过，日志.work/refactor-phase20-baseline/{host,javac}.log。
+- 准备R5唯一writer：实际ResultState/revision、独立导出生命周期/状态与生产联动测试；先不迁包、不修改R6模型或日志策略，分小切片验收。
+- R5唯一writer workflow02102761已启动，输出目标.work/refactor-phase20-r5/report.md（实际artifact路径以完成回执为准）；父未并行改源码。
+- 父完成R6只读预检查并保存.work/refactor-phase20-r6/preliminary-handoff.md：锁内安装/锁外通知、typed文件结果、codec与迁包构建防线。R6 writer尚未启动，避免同工作区并发写。
+
+- R5初稿ba365fc7完整报告已读取，父不接受完成声明：clear不校验票据epoch；Activity从未设置exportPage.foreground导致无法begin；无导出状态通知/展示；编辑text/revision分读；queued即ADMITTED使clear/destroy不能撤销未写工作。开始父单writer修复，R6未启动。
+
+- 父已完成R5窄修复：ResultState独立clear epoch；controller把QUEUED与真正WRITING分开并在同同步域复核；queued撤销仍持slot至收尾；生产UI前后台/weak导出通知/独立状态与原子编辑快照接线。保留100000字符限制，恢复edit共享owner。
+- 新TextExportSafetyTest在初稿下可编译且明确AssertionError（clear后仍provider open）；重写误认可旧票据的测试，增加open/write/close阻塞、真实同controller销毁、requestCode全耗尽等。后台b11460b9d正在父全量host/Android编译，不以尚未返回的结果标通过。
+
+- b11460b9d完成exit0，父完整读取host/javac日志：TextExportTest91checks（含完整requestCode耗尽和3个IO阻塞阶段）、clear生产红绿、既有全量回归/变异/checker通过；SDK35编译通过。额外R5 Activity接线6负例通过。R5源码14文件冻结准备独立审查；R6策略writer限定不改这些文件。
+
+- 启动workflow00fe3a00：fresh R5只读安全复核 +唯一R6策略writer；严格不交叉修改R5冻结14文件。R6负责typed文件结果/controller锁外通知/日志codec，暂不迁包。父维护文档/验收，无并行源码改写。
+- 收到R5 reviewer abd2a604中间反馈：冻结14文件一致，发现WRITING状态缺通知导致阻塞IO期间撤销提示陈旧。review仍检查fatal/close/覆盖；父保持冻结，待workflow完整结果汇总再修，不把中间意见当批准。R6唯一writer仍独立策略范围。
+- R5审查继续：两项拟报告P2为WRITING通知/陈旧可撤销提示、普通write失败合并fatal close被吞；测试接线/交错覆盖待加强。父不修改冻结源码、不干预R6唯一writer；最终报告回来后集中处置并重测。
+
+- workflow00fe3a00达到25分钟超时：R5 reviewer abd2a604已完成，完整报告归档reports/review/phase20-r5-independent.md；R6 worker5197729f failed，无交付报告，末句“host通过准备javac”非父验证证据。未发现遗留javac/test进程。父接管唯一writer，先复跑当前partial再集中修R5，不重复整个大委派。
+
+- b707b4736全host/SDK35编译通过（partial基线，不代表新契约已通过）。父新增两个可编译红测试：ModelNotificationTest确认INSPECT锁内通知；TextExportFatalTest确认compound close fatal被吞，均明确AssertionError。锁外通知/typed failure code/codec真实调用接线及R5 fatal仲裁/前台250ms合并刷新修复中。
+
+- 父完成首轮集中修复并启动b4c8c0fe6全host/javac：INSPECT pending/terminal/finish及cancel通知均安装锁内/回调锁外，typed失败闭合枚举，真实LogExportController改直接codec无Worker转发；R5 explicit close异常仲裁/前台coalesced busy刷新。尚待正式测试输出，不提前标通过。
+
+- b4c8c0fe6正式exit0，父读完整host/javac：两个新行为红测试已绿，既有全套/mutation/绑定通过。随后增强R5测试：同AppState.resultState+真实RequestRunner/AppRequestPolicy在3个阻塞IO阶段执行clear/inference并核对报告（不是Android Graph运行）；deferred clear/destroy/duplicate、精确100000 UTF16边界、throwing observer；R6增加重入取消和observer内异线程取得controller锁。增强待复跑。
+
+- b96279f0c完成exit0，父检查增强回归日志：TXT104checks+fatal/锁外/8接线负例、全套既有mutation/绑定及SDK35 javac通过。迁移前113输入已备份，git diff --check通过；开始唯一writer包迁移，保留根Android注册入口。
+
+- R6迁包唯一writer workflowd0cce038已启动（40分钟有界），机械迁移62类及递归构建/测试/JNI符号/架构负例；根Activity/Service及AppGraph保留，父不并行改源码。最终验收顺序已存.work/refactor-phase20-final-handoff.md。
+
+- 包迁移writer938a0b17在child30分钟上限超时（workflow设置40分钟不能覆盖child默认），无最终报告；已有host/javac62源/JNI object日志。无遗留测试进程。父接管并启动b3cac2615独立host/Java/JNI复跑；初比62类全部唯一映射，除imports/package及少量public可见性外未见方法体改变，需审查可见性必要性。
+
+- b3cac2615父host/62Java/真实NDK object全通过。父收尾修正R6依赖检查为完整映射+允许边+15个实际checker负例；RuntimeLogEvent恢复package-private，测试移到diagnostics；host使用fresh临时classes防陈旧包污染。源码冻结准备双审/全构建。
+
+- 最终双审中间发现两处测试接线/断言问题：mutation旧classes路径、LogExportTest自捕断言。R5两P2/source锁外已静态支持关闭，最终报告仍待完成；build与源冻结继续，后续统一修复重构建。
+
+- reviewer193f09cb请求scope决定：日志codec真实close-owner LogExportController同样有普通write/flush+fatal close吞异常，属迁包前已存在相邻缺陷。父回复要求单独列为pre-existing具体P2，不误归因迁包；完整双审后考虑一致窄修，并修LogExportTest自捕断言。不扩展日志worker Error恢复。
+
+- be617092e完整构建正式exit0/APK_READY：APK2470760 bytes SHA bbb85daa0401027cd366a640c57e701af0b32621f6d00b7e385ce845999361a6，119 build inputs匹配、jni-pre-r3 fixture已绑定、实际linked DSO符号与Java描述一致、签名权限组件通过。但mutation gate有审查确认陈旧classes缺陷，本包仅中间构建，仍需修复后重建，不能标最终验收。
+
+- package reviewer9df12f23完整报告已读取归档reports/review/phase20-package-review.md：PKG-1 high需修fresh classes传递，PKG-2 freeze补JNI digest fixture，PKG-3 standalone JNI注释/unused list清理。确认62Java仅3处必要可见性、native4处prefix；无产品迁包逻辑回归证据。behavior报告仍待正式完成，保持冻结。
+
+- workflow431fae3e结束返回behavior193f09cb为intercom detached而非最终报告，package完成。父此前已回复scope请求，现按工具指引对exact193f09cb注册nonblocking wait自动唤醒；不resume/不启动替代review，不改冻结源码。
+
+- behavior193f09cb正式completed，完整报告消费归档reports/review/phase20-behavior-review.md；解除冻结仅集中修PKG1/2/3、BR1/BR-T1。原两R5P2/source通知修复已独立关闭，日志compound fatal为旧相邻缺陷不归因迁包。
+
+- 最后修复落盘：MODEL_REVIEW_CLASSES强制显式本次classes（缺参fail closed通过）；JNI脚本修正subset说明/去unused；LogExportTest捕获后外部identity断言+compound红测试明确AssertionError，LogExportController改显式close仲裁。完整fixture补freeze现126项，准备真实fresh全构建，原中间APK不验收。
+
+- b19042db8最终完整构建exit0/APK_READY，TXT104/log100、fresh classes3mutants、全套及Java/JNI/签名包检查通过。APK2470760 bytes SHA a03c0876ba0f73ccec6532a0eb91c0416a1edb2488b5e57f19f7ffb58b4947f1。父核对119 build/126 frozen全部SHA、APK报告绑定、578 MNN对象与baseline相同、standalone checker/diff-check通过；result/status已改本轮准确身份，窄review pending。
+
+- 最终875e523f报告完整消费归档，PKG1/2/3/BR1/BR-T1全部源码关闭、5差异+1fixture无额外变更；父再次核对APK/119build/126frozen与记录一致。result/status/路线与验收统一最终身份，Phase20完成（设备pending），复核后未改产品输入、未提交/设备访问。
+
+## Session: 用户授权提交并建立后续提交规则
+- 用户要求提交当前代码，并在agents规则中规定每轮功能开发测试完成后先提交，再通知验证APK。采用工具标准识别文件名AGENTS.md（此前无同名或小写文件），明确不自动push/不提交模型、音频、产物或密钥。
+- 已检查index为空、HEAD a4c6a65（0.2），当前待提交包含后续累计已完成源码/测试/文档/文本证据，非只R5-R6孤立差异。生产输入和APK不因本轮文档规则改变。
+
+- 提交前全量host复跑通过（.work/refactor-phase20-final/precommit-host.log），APK checker/119build+126frozen与最终APK SHA一致；本轮仅新增规则/规划文档，无生产变更，无需重新构建。
+- index全树531文本文件约8.60MB安全审计通过，模型/产物/音频/密钥/缓存均未纳入；317路径累计差异形成完整当前版本。历史5份readelf报告尾随空格原样保留，其余cached diff-check通过。创建本地检查点，准确提交哈希由Git日志及用户交付消息记录；不push。

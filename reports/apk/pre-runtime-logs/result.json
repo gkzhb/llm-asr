@@ -1,0 +1,59 @@
+{
+  "artifact": "dist/qwen-asr-minimal-debug.apk",
+  "version": "0.5-debug",
+  "version_code": 5,
+  "variant": "model-private-root-alias-fix",
+  "bytes": 2446184,
+  "sha256": "1c8de63959cb8d8b99aa7706e8239bb2349fb49eea2ccb4b3b7d1d245652f7b3",
+  "package": "org.llmasr.minimal",
+  "min_sdk": 29,
+  "target_sdk": 35,
+  "abi": "arm64-v8a",
+  "permissions": [
+    "android.permission.RECORD_AUDIO"
+  ],
+  "build_task": "bc04a521f",
+  "build_exit_code": 0,
+  "build_log": ".pi/tasks/session-1194494-1194494/bc04a521f.output",
+  "host_checks": {
+    "numeric_checks": 945,
+    "numeric_java_suites": 16,
+    "focused_review_groups": 8,
+    "provider_boundary_suite": "passed",
+    "compiled_behavioral_mutants_killed": 3,
+    "apk_report_binding_fixtures": "1 valid accepted; 8 invalid rejected",
+    "source_policy_checks": "passed",
+    "note": "Mixed evidence units: no aggregate check count claimed",
+    "private_root_alias_suite": "passed; real host filesystem aliases, production controller flow, symlink safety"
+  },
+  "source_policy_checks": "passed; source fixtures distinct from compiled package evidence",
+  "package_checks": "passed",
+  "build_input_files_checked": 79,
+  "native_dso_identical_to_pre_model_management_0_4": true,
+  "disposition": "full build and focused independent source review passed; ready for manual device verification",
+  "independent_review_status": "completed; no blockers found; two LOW test-strengthening recommendations deferred",
+  "installed": false,
+  "model_management_device_verified": false,
+  "ime_device_verified": false,
+  "previous_artifact": "dist/pre-model-root-fix/qwen-asr-minimal-debug.apk",
+  "limitations": [
+    "Real Android Activity/Service/ContentResolver/Cursor/AudioRecord/InputConnection/UI not host-tested",
+    "Provider IO/close/cleanup may block; no background continuation or timeout owner release",
+    "Small bundled manifest bootstrap synchronous; exact external owner label generic",
+    "Empty model-directory removal failure not separately shown",
+    "No new native/model correctness/performance validation; P0 limits retained",
+    "APK metadata hash binding does not defend against malicious rewriting of artifacts and binding together",
+    "No device/microphone/private-data access, commit or push",
+    "Reuse total before completed planning is not confirmed-so-far; previous unknown-file count can remain cached after failed inspection",
+    "No fsync/seven-file atomic install or protection against hostile concurrent filesystem writers",
+    "Alias fixture does not directly prove first-worker/once-only parent resolution or exercise ModelAccess/native continuation with an aliased parent; reviewer LOW recommendations deferred without source changes",
+    "Actual device alias topology and recovery of reported import failure remain unverified"
+  ],
+  "apk_report_binding": "verified current APK SHA plus all six detached report hashes",
+  "independent_review_execution": "static source review and existing-log inspection only; tests/build executed by parent",
+  "independent_review_workflow": "4e96a5f8-2ee0-431a-99bc-48ebaa2cc334",
+  "independent_review_reports": [
+    "reports/review/model-private-root-review.md"
+  ],
+  "reviewed_source_matches_build": true
+}

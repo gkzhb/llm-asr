@@ -1,0 +1,17 @@
+Archive:  /home/zhb/gitrep/llm-asr/dist/qwen-asr-minimal-debug.apk
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+     3604  01-01-1980 00:00   AndroidManifest.xml
+      500  01-01-1980 00:00   res/xml/method.xml
+      764  01-01-1980 00:00   resources.arsc
+    11346  01-01-1980 00:00   assets/MNN-LICENSE.txt
+     1100  01-01-1980 00:00   assets/THIRD-PARTY-NOTICES.txt
+     1125  01-01-1980 00:00   assets/model-manifest.json
+   134570  01-01-1980 00:00   assets/sample.wav
+   156464  09-15-2026 20:46   classes.dex
+  5395256  09-15-2026 20:46   lib/arm64-v8a/libqwen_asr_jni.so
+      989  09-15-2026 20:46   META-INF/ANDROIDD.SF
+     1223  09-15-2026 20:46   META-INF/ANDROIDD.RSA
+      862  09-15-2026 20:46   META-INF/MANIFEST.MF
+---------                     -------
+  5707803                     12 files

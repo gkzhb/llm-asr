@@ -1,7 +1,7 @@
-import org.llmasr.minimal.WaveInput;
-import org.llmasr.minimal.AsrText;
-import org.llmasr.minimal.PcmWave;
-import org.llmasr.minimal.RecordingControl;
+import org.llmasr.minimal.audio.WaveInput;
+import org.llmasr.minimal.audio.AsrText;
+import org.llmasr.minimal.audio.PcmWave;
+import org.llmasr.minimal.audio.RecordingControl;
 import java.io.*;
 import java.nio.file.*;
 public final class MinimalApkTest {

@@ -1,2 +1,74 @@
 PASS 32 minimal APK Java checks
 PASS 20 recording lifecycle gate checks (fake backend; not device release latency)
+PASS 34 result cleanup/export checks (host only)
+PASS 25 native response parser checks (host only; strict UTF-8, 128 token cap, empty raw allowed)
+PASS 33 model repository checks (host only; no test backdoors)
+PASS private-root alias import/inspect/verify/reuse/delete and symlink safety (host filesystem only)
+PASS 15 part-recovery red/green checks (host only)
+PASS 57 request runner checks (host only; covers success/failure/cancel/report-failure/owner/cleanup-id/clear-text policy)
+PASS 22 task coordinator checks (host only; no Thread.sleep busy polling)
+PASS 70 production admission/owner/recording/export boundary checks (host only)
+PASS 177 IME production controller checks (not Android hardware/InputConnection tests)
+PASS 33 model readiness state checks (shared ASR/IME truth)
+PASS 39 model operation control checks (cancel/publish/terminal arbitration)
+PASS 117 deterministic repository cancel/IO/progress checks
+PASS 27 model repository delete whitelist / partial / no-recursion checks
+PASS 223 deterministic model controller/connected runner isolation checks
+PASS Android production policy/lazy helpers 100 checks (host, not Android runtime)
+PASS typed privacy boundary, canonical UUID, timestamp/elapsed formatting, immutable bounded snapshots
+PASS real concurrent sequence/eviction, serialized coalescing sinks, reentrancy and listener fault isolation
+PASS real file reopen, strict complete parser (all truncated prefixes), corrupt/private/oversize rejection, hard caps and stale part
+PASS real final/part symlinks including dangling, leaf directories, trusted parent alias pinning, failed atomic staging and permission-denied IO
+PASS plain/injected executors, first asynchronous recovery preserving early events, blocked write + 10000 appends, latest coalescing/close/retry
+PASS production-owned background executor: no synchronous startup disk, nonblocking close and graceful accepted drain
+PASS observable/deduped disk failure, recursive callback isolation, recovery from failure and hostile sequence overflow
+PASS immutable picker-time UTF8 export through RuntimeLogCodec, exact byte preflight/cap, write/flush failures, close owned by caller
+PASS RuntimeLogCoreTest: 8 groups
+PASS RuntimeLogStoreErrorTest: 20 recovery/fatal/concurrent/reentrant checks
+PASS App/IME validated result, task IDs, phase timestamps and monotonic durations
+PASS one shared adapter, lazy JNI construction and per-request APP/IME listeners
+PASS real ModelAccess cold SHA/cached readiness and verify failure
+PASS readiness/library/native IOException RuntimeException LinkageError VM error identity
+PASS null and malformed native protocol never request success
+PASS load/inference failure boundaries
+PASS missing duplicate out-of-order stale wrong-thread callbacks fail telemetry closed
+PASS listener/store Throwable isolation and persisted/exported privacy
+PASS production RequestRunner owner/cleanup and external commit boundary
+PASS actual App/IME wiring and real JNI source contracts (not JNI runtime)
+PASS InferenceAdapterTest: 10 groups, 354 checks
+PASS LogExportTest: 100 checks (production tickets/owner/streams; not Android runtime)
+PASS TextExportTest: 104 checks; full code exhaustion and open/write/close interleavings
+PASS clear-before-admission production regression
+PASS compound write/close exact fatal propagation and cleanup
+PASS controller inspect/cancel notifications outside monitor
+PASS Android source wiring/manifest policy and checker clause mutation fixtures (not compiled APK)
+PASS log page source wiring and isolated log component negative fixtures (not Android runtime)
+PASS R5 Activity lifecycle/observer/atomic edit/export status wiring and 8 negative fixtures (not Android runtime)
+PASS model dependency boundaries and forbidden-reference negative fixtures (lexical, not AST)
+PASS R2 mechanism/policy/private-feature boundaries, direct lifecycle wiring and negative fixtures (lexical, not Android runtime)
+PASS R3 graph/shared-adapter/JNI/report boundaries and negative fixtures (lexical, not runtime)
+PASS R6 complete recursive package map, allowed edges and 15 actual-checker negative fixtures (lexical)
+PASS frozen pre-R3 report bodies + 8 negative fixtures; native source identical except JNI class symbol prefix (not runtime)
+PASS JNI symbol checker Java ABI and missing/stale/extra export negative fixtures
+PASS review regression history
+PASS review regression terminal
+PASS review regression window
+PASS review regression boundary
+PASS review regression deletion
+PASS review regression liveDeletion
+PASS review regression planning
+PASS review regression publication
+PASS production provider boundary exception/stream/owner regressions
+PASS compiled mutant killed: readiness-monitor exit 1 logs .work/model-review-fixes/mutants/readiness-monitor-0_h8h4bp
+PASS compiled mutant killed: provider-cancel-trust exit 1 logs .work/model-review-fixes/mutants/provider-cancel-trust-llbbf2ov
+PASS compiled mutant killed: terminal-cancel exit 1 logs .work/model-review-fixes/mutants/terminal-cancel-iqu6584r
+PASS actual checker fixture bound-fixture exit 0
+PASS actual checker fixture stale-apk exit 1
+PASS actual checker fixture modified-permissions.txt exit 1
+PASS actual checker fixture modified-badging.txt exit 1
+PASS actual checker fixture modified-signature.txt exit 1
+PASS actual checker fixture modified-manifest-tree.txt exit 1
+PASS actual checker fixture modified-ime-method-tree.txt exit 1
+PASS actual checker fixture modified-native-link-provenance.json exit 1
+PASS actual checker fixture missing-binding exit 1
+PASS archive/report binding rejects stale and every modified report; logs .work/model-review-fixes/apk-binding-k5yt8vbj

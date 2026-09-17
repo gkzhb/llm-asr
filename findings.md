@@ -192,3 +192,162 @@
 - 取消只保证状态次序与worker清理，不承诺onPause同步硬件释放：startRecording本身可能阻塞cancel获取锁，实际延迟须设备验证。相比多加volatile检查，这一契约可被确定性latch测试覆盖。
 - 独立复核关闭R1/R2/R3原始阻塞并复现52项host检查；强调gate测试不执行AudioRecord/MainActivity，start-wins latch也不能替代完整生产集成调度测试。审查通过属于源码次序契约，不是设备释放/隐私生产验收。
 - 用户确认修复版0.2测试没有问题；缺具体测试明细/日志，不替代硬件延迟和多设备覆盖。下一增量不修改录音同步gate或MNN数学。
+- 0.3结果编辑必须与任务UI refresh分离：现有refresh每次setText(lastText)会覆盖编辑，因此需明确result revision/编辑草稿归属、导出时冻结文本，不把导出/清除误记为模型操作。
+- 临时录音清理限app私有目录且精确匹配本app UUID文件；必须在全进程任务互斥下执行，不能Activity重建时删除正在推理的WAV。清除结果不清模型、不自动清外部导出文本或系统剪贴板。
+- 0.3通过maintenance事务复用RUNNING但不覆盖推理报告/清空当前文本；编辑不改原raw报告；导出在UI点击时冻结String，Activity重建丢失快照则fail closed。
+- ResultFiles只匹配UUID临时WAV/report part及确认清除的精确结果名，拒绝symlink/目录，不递归，确保模型与其他文件保留；系统provider导出无法保证原子写，失败可能产生空/部分外部文件，文档说明。
+- 0.3独立审查第二轮中间反馈：startup重复清理/idle仍执行中为确认低严重问题；clear后旧SAF exportSnapshot可能继续导出的跨Activity/task路径为待硬件复现风险，不声称已发生。
+- 后续修复方向：清除与未提交导出绑定全进程结果epoch，回调在实际写入前同一任务所有权下拒绝过期snapshot，不能只清某Activity字段；已经完成的外部导出不承诺撤回。
+- 文档需补：SAF目标可能为云provider，用户选择云存储可能由该provider上传；App无INTERNET权限不等于整个导出链路完全离线。
+- F1修复通过保存共同preflight cleanedTemporary计数供startup/clear终态使用；startup不重复清理；任务所有权保持不变。
+- pending导出策略明确为单进程单picker+不复用requestCode（耗尽fail closed）；clear提高epoch但不只清Activity字段，已take尚未write也会失效。clear与write通过RUNNING串行，外部已写内容不撤回。
+- 0.3后续审查中间反馈566272bd：F1/F2确认修复、86项host独立通过；新增export-click与clear-worker的源码交错风险。UI按钮异步禁用不能作为互斥：clear invalidate之后、lastText清空之前的导出点击可在新epoch捕获旧文本。尚无实际设备序列证据，不说已发生泄露。
+- 待最终报告后修复方向：导出票据创建/文本快照也必须进入与clear相同的任务所有权（而非仅写入时验证epoch），忙时拒绝，不靠按钮disabled或另加非原子状态检查；文件选择器等待期不长期占用推理owner。
+- N1同步边界补全：导出begin/read也持RUNNING，非阻塞CAS失败不会运行文本Supplier，不会释放他人owner；finally涵盖空文本/重复picker/异常。clear阻塞窗口测试覆盖真实beginOwned方法；仍非Activity/SAF仪器测试。
+
+## Current complexity audit — restored baseline
+- 当前git存在0.3未提交改动与ExportSession/ResultFiles新增文件；Phase10的0.4进度条未勾选，需要核对实现，不能据记录声称0.4已可用。
+- 本轮不自动续写功能，先按实际源码、测试和路线图给出开发/重构优先级。
+- 已核查MainActivity完整335行：UI、全进程任务owner、录音交接、SAF、模型hash/复制、JNI协议解析、报告写入集中在一类；高风险是职责/状态交错，不是行数本身。
+- 0.4目前未落盘：仍只有逐文件状态文字与已有完整文件SHA复用，无导入取消控制、字节进度和删除模型入口；progress上一节“新增”应理解为计划意图，待纠正。
+- test-minimal-apk.sh仅编译6个纯Java helper和3个host test，不编译MainActivity、ForegroundRecorder或JNI；需要区分helper契约与Android集成覆盖。
+- 本轮通过固定Nix apk环境重跑host tests：32 WAV/PCM/protocol + 20 recording-gate + 41 result/export = 93 checks，全通过；日志.work/reviews/current-host-tests.txt。宿主PATH无javac，但既有Nix环境可用，无需下载/大构建。
+- MainActivity.launch(Job, boolean report)把“持久化报告”与“清空当前文本”绑定；校验/导入同样会清空lastText并覆盖last-result.json。这是当前可见行为和语义耦合，不是推测线程崩溃。
+- RecordingControl已有同步gate，ExportSession已有同owner begin/clear/write与epoch保护；本轮不能把这些现有保护误报为缺失。重构必须保留cancel/commit次序与旧票据失效契约。
+- 模型导入新文件路径为copy -> checkFile(part) -> rename -> verifyModel全量复查；完整复用文件也先checkFile再最终verifyModel。存在重复磁盘读取，但本轮未测其耗时，不能承诺优化收益。
+- JNI仅63行，已用mutex/RAII/正常EOS判定，当前不值得重写MNN数学。Java对“计时 token换行正文”协议为内联解析，适合提取有边界检查的纯Java结果类型后测试。
+
+- 本轮另外5项P0纯契约测试通过；26项APK build-input源码SHA全部匹配，未重新构建/实测。
+- 审计建议写入docs/code-complexity-review.md，更新docs/app-roadmap.md；规划调整为小范围行为保持提取→0.4→生命周期诊断→长音频/IME/API。旧0.4“新增”进度措辞已纠正为尚未实施计划。
+
+- 独立只读审查55403803完成并归档reports/review/current-complexity-independent.md，支持先收拢owner再做0.4。新增中等恢复缺陷经主审对照源码确认：模型part残片占用空间，而空间检查在截断/回收之前，可能阻塞本可成功的低存储重试；未实机/故障注入复现。需模型仓库受限清理+空间查询fake红绿测试，不扩大ResultFiles删除范围。
+- 审查output实际由工具重定向到.pi-subagents/artifacts/outputs/55403803/.work/reviews/current-complexity-review.md；首次原路径读取ENOENT后从status artifact恢复，完整结论已归档。
+
+## Phase12 implementation contract
+- 用户授权进入源码解耦；唯一writer workflow88cf4a75负责Java/测试/必要构建输入脚本，父会话管理规划与验收。
+- 已保存13份原源码/测试/脚本与SHA到.work/refactor-baseline；旧0.3 APK/report另存pre-refactor-0.3，防止新构建冒用旧身份。
+- 本轮版本保持0.3-debug，用新APK SHA与refactor标识区分；不新增0.4功能、不改现有模型维护清空文本语义。验收清单docs/refactor-phase12.md。
+- writer初稿d7aae9a1已完成；父审发现交付报告与源码不符，暂不进入APK构建：Activity仍提交捕获this的长闭包；observer在worker直接refresh View、busy依赖UI观察者；startup重复清理回归；失败/取消未保存终态，reported map不回收；native提前static加载改变启动行为；ownerHandle暴露raw owner；ModelRepository仍依赖org.json；part所谓红绿是复制测试流程而非生产回归。已要求同一writer集中修正，不将200检查作为可交付证据。
+- 第二稿RequestRunner已独立可测，Activity任务闭包已移出；但“221检查全部通过”不能证明录音admission/pause与busy通知正确。需在取得owner时同步发布recording session，非worker body内创建；owner释放后显式通知UI当前状态，主线程仅弱目标渲染。
+- 录音取消的跨层关键契约已下沉至RequestRunner admitted/finished hooks：同步admission发布session后才enqueue，onPause可取消尚未运行的session；最终化仅释放本次session。新增生产联动tests而非修改RecordingControl gate。
+- 主线程UI依赖AppState invalidation与coordinator busy现读，无共享busy副本；通知不带旧任务布尔值，owner释放之后也通知，避免UI永久禁用。排队回调只弱引用Activity并在执行时检查foreground/destroyed。
+- RequestRunner纯Java生命周期保持原报告策略，异常/取消/报告失败后清理；ModelRepository/Manifest不再依赖Android JSON。安全清单补非空/重复/part冲突/名称/大小/hash校验，不做重复hash IO优化。
+- 独立审查确认：Activity335→208行（仅此类约-38%），整个Java包8→23文件、578→1712行（含适配/注释）。真实改善是任务请求/文件算法脱离Activity，不是总行数减少或圈复杂度量化降低。
+- 审查测试证据缺口已集中修正且父复跑245 checks；SAF真实枚举/Android adapter未host执行，继续明确pending。独立review原文保留243基线，不追溯篡改。
+
+## IME priority and baseline
+- 用户确认当前重构版验证无问题，并要求先实现输入法；原0.4模型管理计划延期。
+- 现manifest仅MainActivity、versionCode3/0.3-debug、RECORD_AUDIO；AppGraph是进程单例，可由IME使用application context初始化，共享协调器而非新增进程/第二推理引擎。
+- 当前测试入口为纯Java生产组件245 checks；IME需额外session/editor票据及fake commit测试，不能将host通过当Android InputConnection/麦克风实机通过。
+- AsrOperation现有App录音使用自己recording字段，RequestRunner默认非maintenance会清正文并写报告；IME不能直接复用startRecording入口，否则会将输入法正文落入App结果。实现需独立临时结果状态/无持久化端口并共享同一coordinator。
+- InputConnection必须只在确认主线程即时取得，不将异步识别结束当提交授权。真正宿主字段切换依赖Android回调，host只能证明收到回调后的会话作废契约；文档明确设备验收缺口。
+- 父修正后：IMEController使用MAINTENANCE runner与私有State/禁止报告端口（写报告则AssertionError），Backend由application context持有；JNI真实返回NativeResponse.display，仅进入当前editor+request revision的临时preview。
+- Service所有录音/提交入口主线程检查可见性和当前字段；通过弱目标listener发主线程失效通知，不传旧状态，AppState仅用于模型verified元数据与owner释放通知。
+- FieldPolicy补visible password及class masking；onUnbind不永久关闭Service，onStartInputView在同一字段重新显示时重建会话。删除初稿ImeSink与重复AudioRecord路径，不改原ForegroundRecorder/RecordingControl。
+- 最终IME复核关闭B1源码遗漏；requestHideSelf无完成确认，源码调用顺序不能证明实际窗口已隐藏，picker取消/重选/同字段重显必须实机测试。最终405 host checks并非Android集成。
+- 最终交付保留两项非阻塞：旧同controller推理期间新会话忙提示仍可不清晰；stop测试post-handoff断言不足以证明stop委派（源码已确认）。细节见reports/review/ime-disposition.md，不改原独立审查结论。
+- IME onCreateInputView使用无背景LinearLayout与Service默认控件上下文；需显式不透明底色与一致浅色控件主题，避免宿主内容透出/系统深色字色不匹配。此修复不涉及录音/提交契约。
+- 最新明确需求：模型管理为独立UI页面，不能继续把导入/校验/删除堆在转写主页。本轮只产出新规划，不启动实施。
+- 本轮源码核对：ModelRepository已有固定清单7文件、1MiB有界复制、每文件SHA/原子rename、完整文件复用、最终verifyAll、64MiB空间余量与part先回收；未有cancel token、hash进度或delete入口。SAF枚举上限10000，重复名已在adapter拒绝。
+- 清单实际总大小1,573,492,181 bytes（约1.57GB/1.47GiB），不是以0.6B型号推算。UI必须动态按manifest统计，磁盘空间与推理内存分开。
+- MainActivity仍将导入/校验/空间按钮放在转写首页；RequestRunner的MODEL_OPERATION默认清正文并写last-result报告，迁移需独立ModelManagement状态/报告端口，不能只换页面。
+- 独立页面选择同进程非exported Activity、复用AppGraph/TaskCoordinator；页面跳转不等于新引擎/新executor。需要单独规定选择器回调与app退后台，不复用录音onPause取消语义。
+- D3pb0j交接恢复核对：工作区仍保留IME/重构等未提交成果，当前总计划与交接一致，模型管理独立页面仅规划；未发现需要自动恢复执行的未完成构建。历史设备授权不沿用于本轮。
+- 已完整读取333行 docs/model-management-plan.md：需确认的关键产品默认值是前台导入/校验（离开/锁屏取消、旋转保留）、固定MNN模型、文件级恢复和仅删内部副本；后续实施从M1页面/状态隔离开始，不重写现成规格。
+- 实施前复核：FileSafety/ModelManifest的根安全检查可能创建不存在目录；inspect/delete实现需明确副作用及非法路径立即停止，不能让安全违规退化为一般可修复缺文件。
+- RequestRunner取消文案当前硬编码录音；模型操作应使用独立状态策略或在自身事务处理中收敛模型终态，保持既有App/IME行为和owner收尾。
+- 超时稿父审已确认不仅C1断言问题：controller在共享owner准入前占用独立opControl，busy/rejected未回滚；refreshInspect把异步worker结果在submit返回后立即读取；verify结束才创建token，且成功/取消无原子仲裁。
+- ModelOperationControl的cancel无同步而reserve仅自身同步，publishReserved为整操作一次性且不重置（后续文件可绕过取消）；complete可在取消后标成功。需先修真实协议并加确定性生产联动测试，不能只让当前测试变绿。
+- 核心修复父读：controller现用RequestRunner admitted/finished hooks绑定op，terminal仍持owner、finalize后control释放；token在hash前获得，最后inspect及成功仲裁后通知readiness。Android必须观察owner释放通知并读实时快照，不把pageOwnerHeld当唯一互斥。
+- ModelReadiness beginVerify/finishUnverified/inspect本身不发通知；lazy校验接线需在终态finally通知（markVerified成功自带），不能另保留AppState verified布尔缓存。
+- Android旧接线确认：MainActivity仍有MODEL_TREE=10导入回调和三模型按钮；AsrOperation.startImport/startVerify仍MODEL_OPERATION清正文/写报告；runInference用appState.verified缓存。必须迁走旧入口/统一校验，不只增加新Activity。
+- SAF旧adapter仅投影documentId/displayName，无逐条取消/MIME类型拒绝；Android lane需加入CancellationGate检查及安全错误包装，不能把provider原始异常完整URI显示出去。
+- ImeBackend仍独立循环verifyEntry并setVerified(true)；应与AsrOperation共用一个可host测试的模型访问/懒校验入口，以token校验并对失败终态通知，避免双套ready缓存。
+- Android父审发现ModelPageSession.cancellable先peekActive局部op再调用ownsActive二次读取，跨worker新op/释放可能使局部与判断不一致；应独立审查并单次快照判断。Activity按onStop配置重建取消、票据不跨重建恢复，需真实生命周期验证。
+- 页面本次仍需空间仅COPYING估算，聚合预检失败未携带精确需求；保留为明确规格缺口，独立审查后集中补，不在源码冻结期间并行修。
+- 98e2832f审查中间发现经父静态定位：refreshInspect走同submit→pending新空Snapshot→terminal，可能抹去用户离开期间的恢复信息；SafModelSource多处CancellationException原样throw，controller取getMessage，UI仅字符串过滤不是完整隐私边界。待完整独立报告给出触发与处置。
+- 父先前ModelPageSession double-peek仅疑点，独立审查指出main线程身份/准入约束阻止其假设序列，当前无已证实生产NPE，不升级为阻塞。
+- Phase16最终：恢复终态/安全异常/全终态仲裁/managed part lazy一致/完整复用计划/可靠listener测试与报告绑定已实现并分层验证；E1发布历史在取消后仍保留、E2空间0全复用已有真实生产host回归。最终三个源码差异独立关闭后无再改构建输入。设备SAF/系统回调/视觉仍未测，不因host通过泛化。
+
+## 内部模型根路径别名兼容修复
+- 用户报错位于内部Repository.checkRoot，而非SAF源目录枚举；absolute normalize与canonical比较会误拒绝可信Android filesDir祖先别名。主机真实symlink fixture产生相同异常，设备路径尚未确认。
+- 专用forAppFiles仅在首次worker IO规范化可信父目录，再拼接未canonicalize的model叶并保留每次严格检查。普通forWorker/eager入口安全语义不变；App/IME原生路径读repository.modelDir()。
+- 测试覆盖导入、SHA复用、READY、inspect、verify、delete和model/final/part符号链接与非目录拒绝；仍不证明实际Android文件系统/SAF行为。
+
+## 运行日志实施事实
+- 当前JNI MainActivity.transcribe在单次函数中执行create/config/load/response并最后返回load_s/inference_s和文本；因此准确阶段时间必须在native边界回调，Java返回后依据指标补写不满足需求。
+- App AsrOperation和IME ImeBackend均经ModelAccess.requireReady进入同一JNI符号，适合共用可测adapter+per-request callback；不能把SHA就绪当实际加载完成。
+- 现有TXT导出走ASR共享TaskCoordinator并绑定转写文本，不适合推理时查看/导出日志；需日志独立有界worker和不可变快照，保持单次picker与Activity生命周期隔离。
+- 旧APK签名包checker与source fixtures固定2 Activity/version5，新增独立日志页须同步第三Activity nonexported/code6检查且不降低权限白名单。
+
+### 日志超时初稿检查
+- 初稿native enum字段VALUES并非Java enum标准字段；当前InferencePhase无该字段，callback异常被清除会让无日志看起来推理成功。需简化真实int事件边界并隔离已有JNI异常。
+- UI快照契约和写盘契约必须在生产core测：初稿ticket未使用、写盘未接append、单线程SynchronousQueue拒绝后无dirty收尾。没有“能编译即能用”的推断。
+- 初稿RuntimeLogPersistence .part没有任何NOFOLLOW校验，不能交付；黑名单字符校验不是隐私固定事件词表。
+
+
+## Phase19 恢复与架构审计衔接
+- 当前已有55个Java生产文件约5092行、22个Java测试源；上一轮审计基于当前未提交0.6源码，非旧docs/code-complexity-review.md。
+- 确认模型核心/页面DTO双向依赖、RequestRunner App语义与空端口、共享busy借道AppState、JNI绑定Activity；先进行行为保持重构。
+- RuntimeLogStore Error分发滞留是Phase18已明确defer的hardening，本次纳入生产红绿测试。TXT导出阻塞共享owner是已知可用性限制，本次保留现有clear/export隐私语义，后续独立隔离。
+- 原三份规划已完整分段读完；session-catchup无额外输出，git存在大量既有未提交/未跟踪文件，不能使用git diff当本轮完整差异。
+- R2细化：现有RequestRunnerTest/AdmissionBoundaryTest/InferenceAdapterTest直接依赖State/Reports；模型controller诊断构造器还只为测试接受这些端口。重构必须让测试执行新生产App策略与实际model/IME编排，不能复制旧runner到测试维持数字。
+- TaskKind目前把报告和清正文写入枚举注释，MODEL_OPERATION仅遗留测试在用。可以保留任务标签用于上下文，但不得继续作为公共runner副作用开关。
+- R3 sourceContracts目前强制AsrOperation/ImeBackend各自new InferenceAdapter和MainActivity方法引用；需要改为集中AppGraph装配的真实边界检查，保留C++回调ABI/顺序/异常/配置断言。
+- R3报告提取边界已核对：当前成功报告含source/language/text/raw/load/inference/audio/rtf/tokens/uid/pid/manifest+audio SHA，采用UUID .part→last-result.json；须保留1MiB读取上限及异常前缀，不借提取改格式/刷盘保证。OperationContext本身含Android ContentResolver，不应再声称整个AsrOperation可无Android host执行。
+- link-apk-native.py只重编JNI再链接既有578个MNN对象，会覆盖reports/apk provenance；因此R3先object编译，完整链接留源码冻结后的父构建。JNI独立桥迁移需要编译后符号/Java声明一致检查，而不只源码字符串存在。
+- 父R1首轮红绿：旧生产store可编译且明确断言“later append must notify...”失败；新store恢复测试通过，但全套InferenceAdapterTest拒绝“吞AssertionError后产生REQUEST_SUCCESS”。保留原日志契约：RuntimeException继续隔离，Error原样传播使phase logger标不完整，store仅保证异常后释放publisher/保留pending供下次调用恢复，不吞Error伪造完整遥测。
+- R2生产源码父核对：RequestRunner只调用Lifecycle、不再读TaskKind控制副作用；AppRequestPolicy保留App报告/文案，IME INFERENCE使用私有session policy；模型controller移除State/Reports诊断构造器。TaskCoordinator直接Listener，AppGraph不再state::notifyChange，Main/IME/model页按生命周期订阅/移除。父全量host/Android编译复跑通过。
+- R2仍保留TaskKind.MODEL_OPERATION作为App策略历史标签/测试覆盖，未用其决定公共runner行为；ModelManagementController仍以MAINTENANCE标识模型操作但无报告绕行需求。此为明确剩余命名债务，不影响目标边界。
+- 最终产物报告策略：现reports/apk/result/status仍对应旧0.6 runtime-logs APK和99输入，源码R1/R2已变化但主APK尚未覆盖。完整构建开始前将状态标验证中，构建成功后重写身份/检查计数/审查状态，不能继承旧03d758e1 review或旧“publisher Error可永久卡住”限制。
+
+- R3父核对生产报告适配器和Graph注入：IME backend不再保留graph，MainActivity无native方法，C++仅类符号改变。新编译检查生成javac-h头强制C++参数一致，完整构建还会检查实际DSO导出；报告保留测试是冻结源码对照+负例而非Android JSONObject运行。
+- 新构建输入覆盖tests/fixtures及JNI工具；JNI符号迁移会改变DSO，578 MNN对象需和R0备份比较。
+- 完整APK已通过，但不能以总check数掩盖listener内断言被吞：需将观察值带出回调再断言，尤其finalization-before-release。先等独立完整报告后集中修测试并重建绑定，不在review期间改输入。
+- 冻结112包含8个与本APK构建无关的旧P0/deploy脚本；build-input111另包含flake/patch/manifest等真实构建资产。全部新增/改变产品输入均已绑定，两个集合不同不直接认为缺输入，最终复核按变更集合包含关系。
+
+- 最终独立review验证：ModelRepository/ModelReadiness仅DTO名替换，ImportPlan/FileDetail类体逐字一致；App报告方法体不变；C++仅4处JNI类前缀替换。是模块边界改进，不是模型算法或性能优化。
+- 最后两个审查项已关闭：回调外部断言有明确负例，javac-h头检查作为完整构建强制前置。Store后续append恢复不保证无新事件自动重发，也未修RuntimeLogWorker自身scheduled Error退出。
+- 单类变化：AsrOperation292→167，ModelManagementController293→263，MainActivity269→255，RequestRunner96→79；提取出ModelReports/AppRequestPolicy/AppReportWriter/JniNativeTranscription，整体类数增加不等于整体复杂度变坏，不宣称总行数或圈复杂度减少。
+
+## Phase20 R5/R6 恢复
+- 现有规划要求R5先定义begin/clear/admit/write线性化；外部写开始后不可撤回，独立slot必须覆盖open/write/close真实结束。R6不仅搬目录，还包括依赖方向、文案类型化和controller锁外通知；需分别验收。
+- 旧APK SHA0b891db946992cb649d33b4ec8bf0347738070e4593c306a0558d7f68460e43c，0.6-debug/code6；新源码不可继承旧审查/设备结论。
+- R5源码核对：AppState目前正文仅AtomicReference<String>，edit以文本相等判陈旧（ABA无法发现）；ExportSession有测试专用raw AtomicBoolean旧入口，生产begin/clear/write均依赖共享coordinator；AsrOperation.exportText经maintenance runner执行provider IO并修改ASR状态。需要真实ResultState版本与单独导出状态，而非只换executor。
+- 本轮基线保存111小文件至.work/refactor-phase20-baseline，旧APK保存dist/pre-r5-r6-0.6；host全套/Android javac复跑exit0，未访问设备。
+- R6定向源码核查：ModelManagementController的requestCancel/pending/progress/plan/file/deletion/terminal/finish均synchronized，并在锁内调用state.publish（同步listener）/safeLog；简单把publish搬出锁会产生旧snapshot覆盖新状态风险，需要锁内安装状态+锁外失效通知分离。
+- ModelRepository.Progress.fileResult及page fileResults仍String中文文案；应将文件观察结果改为纯模型enum/typed outcome，在ModelUiText翻译，保留failure安全边界及历史发布结果。
+- RuntimeLogWorker混入writeSnapshot编码/formatLine/legacy exporter，日志编码迁至独立类型需要保留UTF8/容量/flush/调用者close语义；Worker自身Error后scheduled恢复是独立已知问题，不能声称仅搬编码即修复。
+- R6迁包牵涉非递归javac源列表、生成JNI头路径/符号、test显式包、mutation复制列表、lexical源码定位和manifest组件；应先做迁移表/允许依赖边，再移动，不能只运行普通Java tests忽略构建工具自测。
+
+- R5父确认真实安全与接线回归，测试green不足以验收。详见.work/refactor-phase20-r5/parent-rejection.md；原report保持不改，后续新增可失败生产回归而非接受“清除前票据仍可admit”的错误新语义。
+
+- 初稿还绕过ResultFiles.writeText的100000字符上限，并把edit移出共享owner。父保留原限制/owner，Snapshot构造封闭并检查来源，UI读取完整Snapshot不再分两次读取正文/版本。
+
+- 父R5验证通过，但仍待独立复核；旧198check初稿部分测试直接认可clear后泄漏，已替换为真正否定旧行为的91checks及独立clear红绿。测试数量减少不表示降低安全门槛，按具体契约报告。
+
+- 包迁移先拟保留已注册Android入口/IME组件名在根包，将纯核心/策略按功能迁移；AppGraph仅装配，不允许feature反向依赖。OperationContext拟共享platform适配，避免IME依赖App正文包。详细提案.work/refactor-phase20-r6/package-proposal.md，尚未实施；待策略slice完成后重核实际依赖。
+- R5独立reviewer abd2a604中间反馈（非最终结论）：14/14冻结SHA匹配，clear epoch/write-admission锁与Activity生命周期接线静态合理；确认QUEUED→WRITING未发失效通知，若UI最后渲染QUEUED而provider随后阻塞，可能长期显示“仍可撤销”，与已开始不可撤回事实不符。待完整报告后集中修复；不改审查中的冻结源码。
+- R5 reviewer abd2a604第二次中间反馈：新增P2，try-with-resources把close中的fatal Error附加到普通write IOException/RuntimeException后，普通catch会连同suppressed fatal吞掉；需要明确fatal传播而仍保证真实close/slot收尾。另将覆盖缺口与产品缺陷分开：blocked测试用独立AppState/新owner不能证明实际共享接线；缺deferred-clear、begin竞争、重复page callback、throwing listener定向测试。均待完整报告及父复核，不提前声明已修。
+
+- 父R6源码检查已确认partial未完成：requestCancel仍整方法synchronized；INSPECT pending/finish仍锁内通知，terminal INSPECT提前return漏通知；无新增锁外测试。codec仍经Worker转发，typed失败reason只有长度过滤。详见.work/refactor-phase20-r6/partial-audit.md；父验证后台b707b4736不修改读取范围。
+
+- R6 SHA入口已逐实现核查：非取消sha读取到EOF；progress版有每次read前后取消、增长限额、post-close取消及不同异常。行为保持批次不强行合并，也不删除最终全清单验证；理由.work/refactor-phase20-r6/sha-disposition.md。
+
+- R5两项P2修复+R6策略增强全套已绿，仍不等于最终独立验收。IR-1当前只有真实源码/8负例验证前台250ms合并刷新，无真实Handler调度测试；clear撤销点是maintenance worker中的epoch变更，不是点击瞬间。迁包后review需重新绑定实际源码。
+
+- 迁包父审发现架构测试假阳性：tuple目标包与字符串直接比较导致task/platform多目标禁用规则未执行；多数所谓负例为空操作。RuntimeLogEvent.withSequence仅为旧包测试被改public，无产品跨包需要。待当前复跑结束后父修复，不接受green即完成；记录.work/refactor-phase20-packages/parent-audit.md。
+
+- 最终package reviewer9df12f23中间确认125SHA/62类等价及native仅prefix；发现新host mktemp未传给model_review_mutation_test.py，后者仍固定旧classes可读陈旧/clean tree失败。等待完整报告后集中修复，当前build即便绿也须重跑绑定；不提前把中间意见当完成。
+
+- behavior reviewer193f09cb中间确认旧两P2修复、controller10处install锁内/通知日志锁外、16文件迁移等价与125冻结一致；发现LogExportTest fatal测试catch自己的AssertionError可能假阳性。归类测试证据问题，待完整双审集中修；不改冻结源码。
+
+- package reviewer进一步确认mutation旧classes为主构建gate缺陷，clean环境失败/旧目录误证据；最终冻结125另漏tests/fixtures/jni-pre-r3.sha256（实际build-input递归包含），后续冻结补完整fixtures并分别核对。Manifest/method.xml与Phase20 baseline逐字一致。
+
+- package reviewer只读确认固定旧classes同时含迁移前后ModelReadiness和旧ModelReviewFixTest，验证陈旧污染不是纯假设。修复必须强制MODEL_REVIEW_CLASSES显式传本次mktemp目录、缺参拒绝，并使用fresh编译目录重跑全构建。JNI object all_sources未使用属低级文档/清理项，完整APK仍全源/nm门槛。
+
+- Phase20最终独立窄审关闭所有本轮接受问题；生产迁包62类和MNN578对象证据不等同运行/性能。交付APK a03c0876...947f1，设备/Handler/完整Android图、codec精确1MiB阈值及Worker Error剩余边界明确保留。
+
+## Phase21 提交边界
+- 仓库此前没有AGENTS.md或agents.md；新建AGENTS.md用于项目代理自动发现。用户已明确授权本地提交及今后功能轮次测试/必要审查后的先提交再交付顺序，未授权push。
+- 当前所有已完成增量从0.2后未提交，需一起形成可重现当前APK的完整源码检查点；模型/APK/签名凭据/缓存仍保持ignored。

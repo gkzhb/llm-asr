@@ -1,0 +1,47 @@
+{
+  "artifact": "dist/qwen-asr-minimal-debug.apk",
+  "version": "0.4-ime-debug",
+  "version_code": 4,
+  "variant": "phase13-voice-ime-picker-hide-fix",
+  "bytes": 2413416,
+  "sha256": "c433d1b82f30b5b1ef3ab37fbd4b349199196bd8507386d97e0463ca5c451a2c",
+  "package": "org.llmasr.minimal",
+  "min_sdk": 29,
+  "target_sdk": 35,
+  "abi": "arm64-v8a",
+  "permissions": [
+    "android.permission.RECORD_AUDIO"
+  ],
+  "build_task": "b4ea5c08d",
+  "build_exit_code": 0,
+  "build_log": ".pi/tasks/session-525127-525127/b4ea5c08d.output",
+  "host_checks": {
+    "existing_baseline": 245,
+    "ime_production_controller": 160,
+    "total": 405
+  },
+  "package_checks": "passed",
+  "build_input_files_checked": 55,
+  "native_dso_identical_to_pre_ime_0_3": true,
+  "disposition": "build and focused independent source reviews passed; ready for user manual IME testing",
+  "independent_review": "reports/review/ime-independent.md",
+  "independent_review_disposition": "B1 source defect closed; two P3 nonblocking refinements retained; Android behavior untested",
+  "installed": false,
+  "ime_device_verified": false,
+  "apk_inference_verified": false,
+  "limitations": [
+    "Host tests do not execute Android Service, Backend, InputConnection or microphone",
+    "Picker hide/re-show requires Android device validation",
+    "Processing becomes noncancellable after capture handoff including model verification before JNI",
+    "Private temporary WAV deletion is best-effort; process kill/deletion failure may leave a bounded-cleanup candidate",
+    "No new native mathematics, model conversion, quality or performance validation",
+    "Model management enhancements deferred; debug build not hardened release",
+    "Fresh editor while older same-controller inference runs may show default record prompt with disabled button",
+    "Host stop assertion is post-handoff and cannot alone detect a no-op stop; delegation verified by source"
+  ],
+  "independent_fix_review": "reports/review/ime-fix-independent.md",
+  "review_disposition": "reports/review/ime-disposition.md",
+  "independently_run_host_checks": 405,
+  "reviewed_source_fingerprints_checked": 31,
+  "reviewed_production_source_matches_build": true
+}

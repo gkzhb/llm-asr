@@ -1,35 +1,14 @@
-# 0.2 foreground recording — build and focused review passed
+# APK 状态：R5/R6构建与独立复核完成，可供手动设备验收
 
-## Deliverable
-- APK: `dist/qwen-asr-minimal-debug.apk`, versionCode2 / 0.2-debug.
-- SHA-256: `6c5c2fb7c298482b42fc968081806b39665b4b6cd64505fc4f0c3717a99ec98b`.
-- Same package and local debug signer as 0.1; upgrade without uninstalling or deleting models.
-- Android29+/arm64 CPU, target35, RECORD_AUDIO-only permission, no bundled weights/network/vendor SDK.
-- Generic SoC app roadmap: `docs/app-roadmap.md`; usage and device checklist: `docs/minimal-apk.md`.
+- APK：`dist/qwen-asr-minimal-debug.apk`
+- 版本：`0.6-debug` / code6；application ID及既有Activity/IME组件名保持不变。
+- 大小：2,470,760 bytes
+- SHA-256：`a03c0876ba0f73ccec6532a0eb91c0416a1edb2488b5e57f19f7ffb58b4947f1`
+- 完整构建：exit0 / APK_READY，日志`.work/refactor-phase20-final/build-final.log`。
+- 119构建输入与126冻结输入各自全部匹配；全部fixture含JNI摘要已冻结/构建绑定。集合范围不同：冻结另含旧P0/deploy/环境脚本，构建另含模型manifest/flake等资产，不用数量相同作为验收。
+- APK/六份派生metadata绑定、精确RECORD_AUDIO权限、API29/35、arm64单DSO、签名及实际JNI导出检查通过；578 MNN对象与本轮基线逐字相同，JNI DSO因包符号迁移改变。
+- Host：TXT104、日志导出100、compound fatal/controller锁外通知、原模型/IME/录音/parser等回归通过。3个行为mutant使用本轮fresh编译目录，不再读取旧class。15个架构负例及源码/JNI/report绑定负例通过。计数单位不同不合计。
 
-## Verified
-- Build task b83c3f5b0 completed exit0; Java/d8/native linking, signing, exact version/permission/ABI and archive checks passed.
-- 32 helper checks and 20 fake-backend session-gate checks passed and independently reproduced by follow-up reviewer. Five P0 contract tests also passed this iteration.
-- Native DSO remains byte-identical to 0.1; no inference math/model/vendor optimization change.
-- Original review R1 start/cancel, R2 inference handoff/cancel and R3 Back double-read blockers resolved under the documented lifecycle contract. Follow-up review identified no new blocking source-level race.
-- Reviewed source fingerprints match current sources AND recorded APK build inputs; current APK hash matches result.json.
+独立双审原报告已归档`reports/review/phase20-{behavior,package}-review.md`，接受的5项已集中修复并重新构建；fresh窄复核875e523f已关闭PKG-1/2/3、BR-1/BR-T1，未发现新的范围内阻塞；报告`reports/review/phase20-final-fix-review.md`。父再次核对最终APK/119构建/126冻结SHA一致，复核后未改产品输入。
 
-## Exact recording contract
-Only explicit user tap with runtime permission starts capture; granting permission does not automatically record. Standard 16kHz mono PCM16, sample-count ceiling30s, stop-to-transcribe/cancel-to-discard. Cancel, microphone start and inference commit share a session gate. Accepted cancellation prevents later start/commit; commit winning means later cancellation is unavailable. Worker attempts stop/release before handoff; hardware release is not synchronously guaranteed onPause. No capture loop or JNI execution holds the gate.
-
-## User manual feedback
-- User reports the fixed0.2 test had no issues and authorizes committing it. See `user-v0.2-validation.md`. No per-case logs or hardware latency supplied; remaining items below refer to independently collected evidence.
-
-## Still unverified / residual risks
-- No0.2 device install, real microphone, permission denial/revocation, lock/Home/rotation, repeated recording, source contention or shutdown-latency testing. Host gate tests do not execute AudioRecord or Activity lifecycle integration.
-- Slow/stuck vendor startRecording can delay UI cancellation/status queries under the gate and risk ANR. Actual release latency/microphone indicator disappearance requires measurement.
-- Some devices return silence on mic privacy switch/source contention rather than a read error; no-data timeout is not VAD or silence detection.
-- Devices without16kHz mono PCM16 capture get an error and retain WAV import; multi-rate fallback is not yet implemented.
-- Committed inference may continue after pause and cannot yet be cancelled. No background survival guarantee, FGS, long audio, IME/API or VAD.
-- Process death can leave private input WAVs; normal deletion is best effort and results intentionally persist. No secure-erasure/production-privacy claim.
-- Existing user Snapdragon success is0.1 evidence only, archived under `reports/apk/v0.1/`; original APK is ignored at `dist/v0.1/`. Original rejected0.2 binary is quarantined at `dist/review-rejected-v0.2/`, not an acceptance artifact.
-- P0 strict frontend/window/independent-golden and production release requirements remain open. No broad all-SoC performance/compatibility guarantee.
-
-## Evidence
-`result.json`, `recording-review.md`, `recording-fix-review.md`, `java-tests.txt`, `package-checks.txt`, `build-input-sha256.json`, `signature.txt`, `badging.txt`, `permissions.txt`.
-Build log: `.pi/tasks/session-525127-525127/b83c3f5b0.output`.
+旧APK保留`dist/pre-r5-r6-0.6/`。没有设备安装/SAF/Handler/IME/录音/JNI运行验收，也没有性能提升实测。外部provider可无限阻塞，slot不提前释放；清除不能撤回已开始的外部写入。未commit/stage/push、未访问设备/麦克风/私人数据。

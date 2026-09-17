@@ -1,0 +1,10 @@
+PASS 32 minimal APK Java checks
+PASS 20 recording lifecycle gate checks (fake backend; not device release latency)
+PASS 41 result cleanup/export checks (host only)
+PASS 25 native response parser checks (host only; strict UTF-8, 128 token cap, empty raw allowed)
+PASS 33 model repository checks (host only; no test backdoors)
+PASS 15 part-recovery red/green checks (host only)
+PASS 44 request runner checks (host only; covers success/failure/cancel/report-failure/owner/cleanup-id/clear-text policy)
+PASS 14 task coordinator checks (host only; no Thread.sleep busy polling)
+PASS 22 production admission/owner/recording/export boundary checks (host only)
+PASS 160 IME production controller checks (not Android hardware/InputConnection tests)

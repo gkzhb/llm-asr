@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.llmasr.minimal" android:versionCode="2" android:versionName="0.2-debug">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.llmasr.minimal" android:versionCode="6" android:versionName="0.6-debug">
     <uses-sdk android:minSdkVersion="29" android:targetSdkVersion="35" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
@@ -10,5 +10,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ModelManagementActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".LogsActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <service android:name=".AsrImeService" android:label="Qwen ASR 离线语音" android:permission="android.permission.BIND_INPUT_METHOD" android:exported="true">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data android:name="android.view.im" android:resource="@xml/method" />
+        </service>
     </application>
 </manifest>

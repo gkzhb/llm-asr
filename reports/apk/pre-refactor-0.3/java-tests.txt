@@ -1,0 +1,3 @@
+PASS 32 minimal APK Java checks
+PASS 20 recording lifecycle gate checks (fake backend; not device release latency)
+PASS 41 result cleanup/export checks (host only)

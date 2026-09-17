@@ -1,0 +1,1 @@
+PASS signed APK archive, one combined arm64 DSO, exact assets, RECORD_AUDIO-only permission, API29/35, IME service declared (0.4-ime-debug)

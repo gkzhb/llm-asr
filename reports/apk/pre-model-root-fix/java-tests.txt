@@ -1,0 +1,39 @@
+PASS 32 minimal APK Java checks
+PASS 20 recording lifecycle gate checks (fake backend; not device release latency)
+PASS 41 result cleanup/export checks (host only)
+PASS 25 native response parser checks (host only; strict UTF-8, 128 token cap, empty raw allowed)
+PASS 33 model repository checks (host only; no test backdoors)
+PASS 15 part-recovery red/green checks (host only)
+PASS 44 request runner checks (host only; covers success/failure/cancel/report-failure/owner/cleanup-id/clear-text policy)
+PASS 14 task coordinator checks (host only; no Thread.sleep busy polling)
+PASS 22 production admission/owner/recording/export boundary checks (host only)
+PASS 160 IME production controller checks (not Android hardware/InputConnection tests)
+PASS 33 model readiness state checks (shared ASR/IME truth)
+PASS 39 model operation control checks (cancel/publish/terminal arbitration)
+PASS 117 deterministic repository cancel/IO/progress checks
+PASS 27 model repository delete whitelist / partial / no-recursion checks
+PASS 223 deterministic model controller/connected runner isolation checks
+PASS Android production policy/lazy helpers 100 checks (host, not Android runtime)
+PASS Android source wiring/manifest policy and checker clause mutation fixtures (not compiled APK)
+PASS review regression history
+PASS review regression terminal
+PASS review regression window
+PASS review regression boundary
+PASS review regression deletion
+PASS review regression liveDeletion
+PASS review regression planning
+PASS review regression publication
+PASS production provider boundary exception/stream/owner regressions
+PASS compiled mutant killed: readiness-monitor exit 1 logs .work/model-review-fixes/mutants/readiness-monitor-fk1ycoet
+PASS compiled mutant killed: provider-cancel-trust exit 1 logs .work/model-review-fixes/mutants/provider-cancel-trust-ghamibxm
+PASS compiled mutant killed: terminal-cancel exit 1 logs .work/model-review-fixes/mutants/terminal-cancel-vjqfa5ns
+PASS actual checker fixture bound-fixture exit 0
+PASS actual checker fixture stale-apk exit 1
+PASS actual checker fixture modified-permissions.txt exit 1
+PASS actual checker fixture modified-badging.txt exit 1
+PASS actual checker fixture modified-signature.txt exit 1
+PASS actual checker fixture modified-manifest-tree.txt exit 1
+PASS actual checker fixture modified-ime-method-tree.txt exit 1
+PASS actual checker fixture modified-native-link-provenance.json exit 1
+PASS actual checker fixture missing-binding exit 1
+PASS archive/report binding rejects stale and every modified report; logs .work/model-review-fixes/apk-binding-gxezuq0b

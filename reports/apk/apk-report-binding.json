@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "apk_sha256": "a03c0876ba0f73ccec6532a0eb91c0416a1edb2488b5e57f19f7ffb58b4947f1",
+  "reports": {
+    "permissions.txt": "d8401caa7b230ffe49ccf26c52353d6a658a558ee78f86ef434762edb4912b4f",
+    "badging.txt": "83982ff372f8511bcd93b6ef1689dfdca51dbac4772c250d9f35cbef9349519b",
+    "signature.txt": "1ac7f735c17ba22db02d0cc9646ee2f536238ac1a5482c1d4cf43bd6755b63a7",
+    "manifest-tree.txt": "cf292d35dd7dacbd4cb5b57021a5b3ce2f9bbf991807cdb343ca71c13160ef89",
+    "ime-method-tree.txt": "48ff1e4fbeea55c5ec3cbfb5f2373f01a8deb53b7b0b098e27cec499ee350583",
+    "native-link-provenance.json": "014d0a11a34500894020b1d65eb5a628d70d7584014f9da2a9a18f6da7aaca01"
+  }
+}

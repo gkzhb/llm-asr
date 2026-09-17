@@ -1,260 +1,285 @@
 package org.llmasr.minimal;
 
 import android.app.*;
-import android.os.*;
 import android.content.*;
-import android.database.Cursor;
 import android.net.Uri;
-import android.provider.DocumentsContract;
+import android.os.*;
 import android.view.WindowManager;
 import android.widget.*;
-import org.json.*;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.*;
-import java.util.concurrent.*;
+import org.llmasr.minimal.audio.RecordingControl;
+import org.llmasr.minimal.model.ModelReadiness;
+import org.llmasr.minimal.modelmanagement.ModelUiText;
+import org.llmasr.minimal.task.TaskCoordinator;
+import org.llmasr.minimal.transcription.AppState;
+import org.llmasr.minimal.transcription.ResultState;
+import org.llmasr.minimal.transcription.TextExportController;
+import org.llmasr.minimal.transcription.TextExportPage;
 
 public final class MainActivity extends Activity {
-    private static final int MODEL_TREE=10, AUDIO_FILE=11, MIC_PERMISSION=12;
-    private static volatile RecordingControl recording;
+    private static final int AUDIO_FILE=11, MIC_PERMISSION=12;
+    private TextExportPage<Uri> exportPage;
     private volatile boolean foreground;
     private Button stopRecording, cancelRecording;
-    private static final ExecutorService worker=Executors.newSingleThreadExecutor();
-    private static final java.util.concurrent.atomic.AtomicBoolean RUNNING=new java.util.concurrent.atomic.AtomicBoolean();
-    private static volatile String lastStatus="尚未校验模型。首次请选择含 7 个清单文件的模型目录，或使用开发部署脚本。", lastText="";
-    private static java.lang.ref.WeakReference<MainActivity> current=new java.lang.ref.WeakReference<>(null);
-    private String requestId;
-    private boolean inferenceReported;
     private final ArrayList<Button> buttons=new ArrayList<>();
-    private TextView status, result;
+    private TextView status, result, modelSummary, exportStatus;
+    private Button exportTXT;
+    private boolean navigateAfterRecording;
     private Spinner language;
-    private static volatile boolean verified=false;
-    private File modelDir;
-    private static native byte[] transcribe(String config, String wav, String language, String cache);
-    private interface Job { void run() throws Exception; }
+    private AppGraph graph;
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
-        modelDir=new File(getFilesDir(),"model"); modelDir.mkdirs();
+        if (graph == null) {
+            try { AppGraph.install(getApplicationContext()); }
+            catch (IOException ioe) {
+                TextView failure = new TextView(this);
+                failure.setText("初始化失败：" + ioe.getMessage() + "\n请重新安装完整APK后重试。");
+                setContentView(failure);
+                return; // No graph: do not enable inference or dereference the failed install.
+            }
+            graph = AppGraph.get();
+        }
+        exportPage = new TextExportPage<>(graph.textExport());
         LinearLayout root=new LinearLayout(this); root.setOrientation(LinearLayout.VERTICAL);
         int pad=(int)(16*getResources().getDisplayMetrics().density); root.setPadding(pad,pad,pad,pad);
         ScrollView scroll=new ScrollView(this); scroll.setFillViewport(true); scroll.addView(root); setContentView(scroll);
         TextView title=new TextView(this); title.setText("Qwen3-ASR · 最小离线原型"); title.setTextSize(22); root.addView(title);
         TextView note=new TextView(this);
-        note.setText("arm64 CPU / FP16 权重 · 约 1.6 GB 模型，推理约 3.1 GiB 内存。\n不联网。录音仅在授权后由您点击开始，离开界面取消；最长30秒。文件仅支持 16kHz 单声道 PCM16 WAV（0.1–30 秒）。导入后请保持界面前台；每次转写重新加载模型。静音可能幻觉输出，本版无 VAD。模型导入后占用应用内部存储。"); root.addView(note);
-        addButton(root,"1. 导入模型目录", () -> {
-            Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE); intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(intent,MODEL_TREE);
+        note.setText("arm64 CPU / FP16 权重 · 推理约 3.1 GiB 内存。\n本App不联网；分享接收方或导出到云存储的提供方可能联网同步。录音仅在授权后由您点击开始，离开界面取消；最长30秒。文件仅支持 16kHz 单声道 PCM16 WAV（0.1–30 秒）。模型管理在独立页面；每次转写重新加载模型。静音可能幻觉输出，本版无 VAD。模型导入后占用应用内部存储。"); root.addView(note);
+        addButton(root,"输入法：授予麦克风权限（不开始录音）", () -> {
+            if(checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)!=android.content.pm.PackageManager.PERMISSION_GRANTED)
+                requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO},MIC_PERMISSION);
+            else Toast.makeText(this,"麦克风已授权，请手动切换输入法后点击录音。",Toast.LENGTH_LONG).show();
         });
-        addButton(root,"2. 校验已部署模型", () -> launch(() -> { verifyModel(); showStatus("模型 SHA-256 全部通过，可转写。"); }));
+        addButton(root,"输入法：打开系统启用设置", () -> {
+            try { startActivity(new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS)); }
+            catch(ActivityNotFoundException e) { Toast.makeText(this,"请在系统设置中手动启用Qwen ASR语音输入法。",Toast.LENGTH_LONG).show(); }
+        });
+        addButton(root,"输入法：选择 / 切换键盘", () -> {
+            android.view.inputmethod.InputMethodManager imm=(android.view.inputmethod.InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            if(imm!=null)imm.showInputMethodPicker();
+        });
+        modelSummary=new TextView(this); modelSummary.setTextSize(16); root.addView(modelSummary);
+        Button models=new Button(this); models.setText("模型管理"); models.setMinHeight((int)(48*getResources().getDisplayMetrics().density));
+        models.setOnClickListener(v -> openModelManagement()); root.addView(models); // Always available, even while owner is busy.
+        Button logs=new Button(this); logs.setText("运行日志"); logs.setMinHeight((int)(48*getResources().getDisplayMetrics().density));
+        logs.setOnClickListener(v -> openLogs()); root.addView(logs);
         language=new Spinner(this);
         language.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"Chinese","English","auto"}));
         root.addView(language);
-        addButton(root,"3. 转写内置中文示例", () -> {
-            final String lang=language.getSelectedItem().toString();
-            launch(() -> { try(InputStream in=getAssets().open("sample.wav")) { runAudio(in,lang,"public-zh-example"); } });
-        });
+        addButton(root,"转写内置中文示例", () -> graph.asrOperation().startSample(language.getSelectedItem().toString()));
         addButton(root,"选择 WAV 文件转写", () -> {
             Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT); intent.setType("*/*"); intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); startActivityForResult(intent,AUDIO_FILE);
         });
         addButton(root,"开始录音（最多30秒）", () -> requestRecording());
         stopRecording=new Button(this); stopRecording.setText("停止录音并转写");
-        stopRecording.setOnClickListener(v -> { RecordingControl r=recording; if(r!=null)r.stop(); }); root.addView(stopRecording);
+        stopRecording.setOnClickListener(v -> { RecordingControl r=graph.asrOperation().recording(); if(r!=null)r.stop(); }); root.addView(stopRecording);
         cancelRecording=new Button(this); cancelRecording.setText("取消录音并丢弃");
         cancelRecording.setOnClickListener(v -> {
-            RecordingControl r=recording;
-            if(r!=null)showStatus(r.cancel() ? "正在取消录音，等待麦克风释放……" : "已进入转写，无法取消native推理。");
+            RecordingControl r=graph.asrOperation().recording();
+            if(r!=null) graph.appState().setLastStatus(r.cancel() ? "正在取消录音，等待麦克风释放……" : "已进入转写，无法取消native推理。");
         }); root.addView(cancelRecording);
         addButton(root,"复制转写文本", () -> {
             ((android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("ASR",result.getText()));
             Toast.makeText(this,"已复制",Toast.LENGTH_SHORT).show();
         });
+        addButton(root,"编辑转写文本", () -> editResult());
+        addButton(root,"分享文本（由您选择接收应用）", () -> {
+            if(graph.appState().lastText().isEmpty()) { graph.appState().setLastStatus("暂无文本可分享。"); return; }
+            Intent share=new Intent(Intent.ACTION_SEND); share.setType("text/plain"); share.putExtra(Intent.EXTRA_TEXT,graph.appState().lastText());
+            try { startActivity(Intent.createChooser(share,"分享当前文本")); }
+            catch(ActivityNotFoundException e) { graph.appState().setLastStatus("没有可接收文本的应用。"); }
+        });
+        Button exportBtn = new Button(this); exportBtn.setText("导出 TXT"); exportBtn.setAllCaps(false);
+        exportBtn.setMinHeight((int)(48*getResources().getDisplayMetrics().density));
+        exportBtn.setOnClickListener(v -> {
+            TextExportController.Ticket ticket = exportPage.begin(graph.appState().resultState());
+            if (ticket == null) { Toast.makeText(this,"另一次导出尚未结束、文本为空或超过上限，请重试。",Toast.LENGTH_LONG).show(); return; }
+            Intent save=new Intent(Intent.ACTION_CREATE_DOCUMENT); save.setType("text/plain"); save.addCategory(Intent.CATEGORY_OPENABLE);
+            save.putExtra(Intent.EXTRA_TITLE,"qwen-asr-"+System.currentTimeMillis()+".txt");
+            try { startActivityForResult(save,ticket.requestCode); }
+            catch(ActivityNotFoundException e) { exportPage.onResult(ticket.requestCode, null); Toast.makeText(this,"系统没有可用的文件选择器。",Toast.LENGTH_LONG).show(); }
+        });
+        root.addView(exportBtn);
+        exportTXT = exportBtn;
+        exportStatus=new TextView(this); root.addView(exportStatus);
+        TextView exportNote=new TextView(this);
+        exportNote.setText("TXT保存快照：清除结果可撤销尚未开始的写入；已经开始的外部写入不能撤回。云存储提供方可能联网同步。"); root.addView(exportNote);
+        addButton(root,"清除结果 / 临时录音", () -> new AlertDialog.Builder(this).setTitle("清除应用内结果？")
+            .setMessage("删除本应用最后一次结果、编辑文本和遗留临时录音，并撤销尚未开始的TXT写入。已经开始的外部写入不能撤回；不会删除模型、外部导出文件或系统剪贴板；删除不是安全擦除。")
+            .setNegativeButton("取消",null).setPositiveButton("清除",(dialog,which) -> graph.asrOperation().clearResults()).show());
         status=new TextView(this); root.addView(status);
         result=new TextView(this); result.setTextSize(20); result.setTextIsSelectable(true); root.addView(result);
     }
+
     private void addButton(LinearLayout root,String text,Runnable action) {
         Button b=new Button(this); b.setText(text); b.setAllCaps(false); b.setOnClickListener(v -> action.run()); root.addView(b); buttons.add(b);
     }
-    private static void refresh() {
-        new Handler(Looper.getMainLooper()).post(() -> {
-            MainActivity a=current.get();
-            if(a!=null && !a.isDestroyed()) {
-                a.status.setText(lastStatus); a.result.setText(lastText); a.setBusy(RUNNING.get());
-            }
-        });
+
+    private void refresh() {
+        AppState s = graph.appState();
+        modelSummary.setText(graph.coordinator().isBusy() ? "模型：处理中（共享任务锁占用，可进入模型管理查看）"
+            : "模型：" + ModelUiText.readiness(graph.readiness().state()));
+        status.setText(s.lastStatus());
+        result.setText(s.lastText());
+        setBusy(graph.coordinator().isBusy());
+        // TXT button follows export/result availability, NOT ASR busy.
+        if (exportTXT != null) {
+            TextExportController.State exportState = graph.textExport().state();
+            exportTXT.setEnabled(foreground && !s.lastText().isEmpty() && !exportState.busy());
+            exportStatus.setText(TextExportController.statusText(exportState));
+            // Final write admission intentionally invokes no arbitrary observer
+            // before provider open. Foreground-only bounded refresh observes it.
+            appStateListener.whileExportBusy(foreground && exportState.busy());
+        }
+        if (navigateAfterRecording && graph.asrOperation().recording() == null) {
+            navigateAfterRecording=false;
+            startActivity(new Intent(this,ModelManagementActivity.class));
+        }
     }
-    @Override protected void onResume() { super.onResume(); foreground=true; current=new java.lang.ref.WeakReference<>(this); refresh(); }
+
+    private final UiRefresh appStateListener = new UiRefresh(this);
+    private static final class UiRefresh implements AppState.Listener, ModelReadiness.Listener, TaskCoordinator.Listener, TextExportController.Listener, Runnable {
+        private final java.lang.ref.WeakReference<MainActivity> target;
+        private final Handler main = new Handler(Looper.getMainLooper());
+        UiRefresh(MainActivity activity) { target = new java.lang.ref.WeakReference<>(activity); }
+        @Override public synchronized void onChange() { main.removeCallbacks(this); main.post(this); }
+        synchronized void whileExportBusy(boolean busy) {
+            main.removeCallbacks(this);
+            if (busy) main.postDelayed(this, 250L); // At most one foreground refresh.
+        }
+        synchronized void detach() { main.removeCallbacks(this); }
+        @Override public void run() {
+            MainActivity activity = target.get();
+            if (activity != null && activity.foreground && !activity.isDestroyed() && !activity.isFinishing())
+                activity.refresh();
+        }
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        foreground=true;
+        if (graph == null) return;
+        graph.appState().addListener(appStateListener);
+        graph.coordinator().addListener(appStateListener);
+        graph.readiness().addListener(appStateListener);
+        graph.textExport().addListener(appStateListener);
+        exportPage.foreground(true);
+        refresh();
+    }
     @Override protected void onPause() {
-        // Lifecycle and inference compete at the session gate. If commit already won,
-        // this is inference (not capture) and native cancellation is unavailable.
-        RecordingControl r=recording; if(r!=null)r.cancel();
         foreground=false;
+        if (graph != null) {
+            navigateAfterRecording=false;
+            graph.appState().removeListener(appStateListener);
+            graph.coordinator().removeListener(appStateListener);
+            graph.readiness().removeListener(appStateListener);
+            graph.textExport().removeListener(appStateListener);
+            exportPage.foreground(false);
+            appStateListener.detach();
+            graph.asrOperation().cancelRecording();
+        }
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onPause();
     }
+
+    private void openModelManagement() {
+        RecordingControl recording=graph.asrOperation().recording();
+        if(recording == null || recording.committed()) {
+            startActivity(new Intent(this,ModelManagementActivity.class)); return;
+        }
+        new AlertDialog.Builder(this).setTitle("先结束录音？")
+            .setMessage("停止后转写：留在此页等采集交接完成，再打开模型管理查看；也可明确丢弃录音并离开。不会静默取消。")
+            .setNegativeButton("留在此页",null)
+            .setNeutralButton("停止并等待",(d,w) -> { recording.stop(); navigateAfterRecording=true; refresh(); })
+            .setPositiveButton("取消并离开",(d,w) -> { recording.cancel(); startActivity(new Intent(this,ModelManagementActivity.class)); }).show();
+    }
+
+    /** Inference may continue while viewing logs; active capture needs explicit consent. */
+    private void openLogs() {
+        RecordingControl recording = graph.asrOperation().recording();
+        if (recording == null || recording.committed()) {
+            startActivity(new Intent(this, LogsActivity.class)); return;
+        }
+        new AlertDialog.Builder(this).setTitle("录音尚未结束")
+            .setMessage("打开日志会离开录音页面。请先停止并转写，或明确丢弃本次录音后查看日志。")
+            .setNegativeButton("继续录音",null)
+            .setNeutralButton("停止并留在此页",(d,w) -> recording.stop())
+            .setPositiveButton("丢弃并查看日志",(d,w) -> {
+                recording.cancel(); startActivity(new Intent(this, LogsActivity.class));
+            }).show();
+    }
+
     private void requestRecording() {
-        if(RUNNING.get() || !foreground)return;
+        if(graph.coordinator().isBusy() || !foreground)return;
         if(checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)!=android.content.pm.PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO},MIC_PERMISSION); return;
         }
-        if(!verified) { showStatus("请先点击校验已部署模型（或导入模型），成功后再录音。"); return; }
-        final RecordingControl control=new RecordingControl(); final String lang=language.getSelectedItem().toString();
-        recording=control;
-        launch(() -> {
-            byte[] wav;
-            try {
-                wav=ForegroundRecorder.capture(control,seconds -> showStatus(String.format(Locale.ROOT,"正在录音 %.1f / 30.0 秒 · 停止后转写，离开界面会取消",seconds)));
-                // Atomic handoff shared with cancel/onPause. No WAV/JNI work before it.
-                if(!control.tryCommitInference())throw new CancellationException("已取消录音，音频已丢弃");
-            } finally { if(recording==control)recording=null; refresh(); }
-            try(InputStream in=new ByteArrayInputStream(wav)) { runAudio(in,lang,"user-microphone"); }
-        });
+        ModelReadiness.State ready = graph.readiness().state();
+        if(ready == ModelReadiness.State.NOT_INSTALLED || ready == ModelReadiness.State.INCOMPLETE || ready == ModelReadiness.State.INVALID) {
+            graph.appState().setLastStatus("模型不可用，请打开模型管理检查或修复导入。"); return;
+        } // UNKNOWN/UNVERIFIED complete models are lazily SHA-verified under the inference owner.
+        graph.asrOperation().startRecording(language.getSelectedItem().toString());
     }
+
     @Override public void onRequestPermissionsResult(int request,String[] permissions,int[] grants) {
         super.onRequestPermissionsResult(request,permissions,grants);
         if(request==MIC_PERMISSION) {
             boolean allowed=grants.length>0 && grants[0]==android.content.pm.PackageManager.PERMISSION_GRANTED;
-            // Do not automatically open the mic after permission UI: require an explicit fresh tap.
-            showStatus(allowed ? "已授权麦克风；请点击开始录音。" : "麦克风权限未授予。仍可选择WAV；若已禁止再次询问，可在系统应用权限中手动开启。");
+            graph.appState().setLastStatus(allowed ? "已授权麦克风；请点击开始录音。" : "麦克风权限未授予。仍可选择WAV；若已禁止再次询问，可在系统应用权限中手动开启。");
         }
     }
-    private void showStatus(String s) { lastStatus=s; refresh(); }
+
     private void setBusy(boolean value) {
         for(Button b:buttons)b.setEnabled(!value); language.setEnabled(!value);
-        RecordingControl r=recording;
-        stopRecording.setEnabled(value && r!=null && !r.stopped());
-        cancelRecording.setEnabled(value && r!=null && !r.cancelled() && !r.committed());
+        RecordingControl r=graph.asrOperation().recording();
+        if(stopRecording != null) stopRecording.setEnabled(value && r!=null && !r.stopped());
+        if(cancelRecording != null) cancelRecording.setEnabled(value && r!=null && !r.cancelled() && !r.committed());
         if(value)getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
-    private void launch(Job job) {
-        // Process-wide ownership spans ALL Java file IO, model import, JNI and reporting.
-        if(!RUNNING.compareAndSet(false,true)) { showStatus("已有任务执行中，请等待。"); return; }
-        requestId=UUID.randomUUID().toString(); inferenceReported=false;
-        lastText=""; showStatus("执行中，请保持应用在前台……");
-        worker.execute(() -> {
-            try {
-                JSONObject pending=new JSONObject(); pending.put("state","pending"); pending.put("success",false); saveReport(pending);
-                job.run();
-                // Import/verification actions also replace pending with a terminal non-inference record.
-                if(!inferenceReported) {
-                    JSONObject r=new JSONObject(); r.put("state","complete"); r.put("success",true); r.put("kind","model-operation"); saveReport(r);
-                }
-            } catch(CancellationException e) {
-                showStatus("已取消录音，音频已丢弃。");
-                try { JSONObject r=new JSONObject(); r.put("state","cancelled"); r.put("success",false); saveReport(r); }
-                catch(Exception persistence) { showStatus("取消完成，但结果无法持久化："+persistence.getMessage()); }
-            } catch(Exception | LinkageError e) {
-                showStatus("失败："+e.getMessage());
-                try { JSONObject r=new JSONObject(); r.put("state","failed"); r.put("success",false); r.put("error",String.valueOf(e)); saveReport(r); }
-                catch(Exception persistence) { showStatus("失败且结果无法持久化："+persistence.getMessage()); }
-            } finally {
-                recording=null;
-                new File(getFilesDir(),"input-"+requestId+".wav").delete();
-                RUNNING.set(false); refresh();
-            }
-        });
+
+    private void editResult() {
+        final ResultState.Snapshot original = graph.appState().resultState().begin();
+        if(original.isEmpty()) { graph.appState().setLastStatus("暂无文本可编辑。"); return; }
+        EditText editor=new EditText(this); editor.setText(original.text); editor.setMinLines(4);
+        editor.setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(100000)});
+        new AlertDialog.Builder(this).setTitle("编辑结果（原始推理报告保留）").setView(editor)
+            .setNegativeButton("取消",null).setPositiveButton("应用",(d,w) -> {
+                final String edited=editor.getText().toString();
+                graph.asrOperation().editResult(original.revision, edited);
+            }).show();
     }
-    private JSONArray manifest() throws Exception {
-        try(InputStream in=getAssets().open("model-manifest.json")) {
-            return new JSONObject(new String(readSmall(in),StandardCharsets.UTF_8)).getJSONArray("files");
-        }
-    }
-    private static byte[] readSmall(InputStream in) throws IOException {
-        ByteArrayOutputStream out=new ByteArrayOutputStream(); byte[] b=new byte[8192]; int n;
-        while((n=in.read(b))!=-1) { if(out.size()+n>1048576)throw new IOException("Metadata too large"); out.write(b,0,n); } return out.toByteArray();
-    }
-    private static String hex(byte[] data) { StringBuilder s=new StringBuilder(); for(byte b:data)s.append(String.format(Locale.ROOT,"%02x",b&255));return s.toString(); }
-    private void checkFile(File file,JSONObject entry) throws Exception {
-        if(!file.isFile() || file.length()!=entry.getLong("bytes"))throw new IOException("缺少或大小不符："+file.getName());
-        MessageDigest h=MessageDigest.getInstance("SHA-256"); byte[] b=new byte[1024*1024]; int n;
-        try(InputStream in=new FileInputStream(file)) { while((n=in.read(b))!=-1)h.update(b,0,n); }
-        if(!hex(h.digest()).equals(entry.getString("sha256")))throw new IOException("SHA-256 不符："+file.getName());
-    }
-    private void verifyModel() throws Exception {
-        verified=false; JSONArray entries=manifest();
-        for(int i=0;i<entries.length();i++) { JSONObject e=entries.getJSONObject(i); showStatus("校验 "+e.getString("file")); checkFile(new File(modelDir,e.getString("file")),e); }
-        verified=true;
-    }
-    private void importModel(Uri tree) throws Exception {
-        verified=false;
-        Map<String,Uri> children=new HashMap<>();
-        JSONArray entries=manifest(); Set<String> expected=new HashSet<>();
-        for(int i=0;i<entries.length();i++)expected.add(entries.getJSONObject(i).getString("file"));
-        Uri list=DocumentsContract.buildChildDocumentsUriUsingTree(tree,DocumentsContract.getTreeDocumentId(tree));
-        try(Cursor c=getContentResolver().query(list,new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID,DocumentsContract.Document.COLUMN_DISPLAY_NAME},null,null,null)) {
-            if(c==null)throw new IOException("无法列出目录");
-            int seen=0;
-            while(c.moveToNext()) {
-                if(++seen>10000)throw new IOException("目录超过10000个条目，请选择专用模型目录");
-                String name=c.getString(1); if(!expected.contains(name))continue;
-                if(children.containsKey(name))throw new IOException("重复文件名："+name);
-                children.put(name,DocumentsContract.buildDocumentUriUsingTree(tree,c.getString(0)));
-            }
-        }
-        for(int i=0;i<entries.length();i++) {
-            JSONObject e=entries.getJSONObject(i); String name=e.getString("file"); File dest=new File(modelDir,name);
-            try { checkFile(dest,e); continue; } catch(IOException absent) { /* resumable validated files */ }
-            if(!children.containsKey(name))throw new IOException("目录缺少："+name);
-            if(modelDir.getUsableSpace()<e.getLong("bytes")+64L*1024*1024)throw new IOException("存储空间不足："+name);
-            showStatus("复制并校验 "+name+"（大文件可能需数分钟）");
-            File part=new File(modelDir,name+".part");
-            try {
-                try(InputStream in=getContentResolver().openInputStream(children.get(name)); OutputStream out=new FileOutputStream(part)) {
-                    if(in==null)throw new IOException("无法读取："+name);
-                    byte[] b=new byte[1024*1024]; int n; long count=0;
-                    while((n=in.read(b))!=-1) { count+=n; if(count>e.getLong("bytes"))throw new IOException("文件超出清单大小："+name); out.write(b,0,n); }
-                }
-                checkFile(part,e);
-                if(!part.renameTo(dest))throw new IOException("无法原子替换："+name);
-            } finally { if(part.exists())part.delete(); }
-        }
-        verifyModel(); showStatus("导入成功，全部 SHA-256 已核验。");
-    }
-    private void runAudio(InputStream in,String lang,String source) throws Exception {
-        File wav=new File(getFilesDir(),"input-"+requestId+".wav");
-        double seconds=WaveInput.canonicalize(in,wav);
-        if(!verified)verifyModel();
-        showStatus("模型加载 / 转写中（CPU，首次可能需要数十秒）……");
-        System.loadLibrary("qwen_asr_jni");
-        byte[] output=transcribe(new File(modelDir,"config.json").getAbsolutePath(),wav.getAbsolutePath(),lang,getCacheDir().getAbsolutePath());
-        if(output==null)throw new IOException("Native returned null");
-        String response=new String(output,StandardCharsets.UTF_8); int line=response.indexOf('\n');
-        String[] metrics=response.substring(0,line).split(" "); String raw=response.substring(line+1); String text=AsrText.display(raw);
-        double load=Double.parseDouble(metrics[0]), infer=Double.parseDouble(metrics[1]);
-        JSONObject report=new JSONObject(); report.put("success",true); report.put("state","complete"); report.put("kind","inference"); report.put("source",source); report.put("language",lang);
-        report.put("text",text); report.put("raw",raw); report.put("load_s",load); report.put("inference_s",infer);
-        report.put("audio_s",seconds); report.put("rtf",infer/seconds); report.put("generated_tokens",Integer.parseInt(metrics[2]));
-        report.put("truncated",false); report.put("uid",android.os.Process.myUid()); report.put("pid",android.os.Process.myPid());
-        report.put("model_manifest_sha256",assetDigest("model-manifest.json")); report.put("audio_sha256",fileDigest(wav));
-        saveReport(report);
-        inferenceReported=true;
-        lastText=text; refresh();
-        showStatus(String.format(Locale.ROOT,"完成 · 加载 %.2fs / 推理 %.2fs / RTF %.3f\n每请求释放模型；非 warm 测试。",load,infer,infer/seconds));
-    }
-    private String assetDigest(String name) throws Exception { try(InputStream in=getAssets().open(name)) { return hex(MessageDigest.getInstance("SHA-256").digest(readSmall(in))); } }
-    private static String fileDigest(File file) throws Exception { try(InputStream in=new FileInputStream(file)) { return hex(MessageDigest.getInstance("SHA-256").digest(readSmall(in))); } }
-    private void saveReport(JSONObject report) throws Exception {
-        report.put("request_id",requestId); report.put("timestamp_ms",System.currentTimeMillis());
-        File part=new File(getFilesDir(),"last-result-"+requestId+".part");
-        try(OutputStream out=new FileOutputStream(part)) { out.write(report.toString(2).getBytes(StandardCharsets.UTF_8)); }
-        if(!part.renameTo(new File(getFilesDir(),"last-result.json")))throw new IOException("Cannot save result");
-    }
+
     @Override protected void onActivityResult(int request,int code,Intent data) {
         super.onActivityResult(request,code,data);
-        if(code!=RESULT_OK || data==null || data.getData()==null)return;
-        Uri uri=data.getData();
-        if(request==MODEL_TREE)launch(() -> importModel(uri));
-        else if(request==AUDIO_FILE) { String lang=language.getSelectedItem().toString(); launch(() -> {
-            try(InputStream in=getContentResolver().openInputStream(uri)) { if(in==null)throw new IOException("无法读取音频"); runAudio(in,lang,"user-selected-wav"); }
-        }); }
+        // Foreign-callback rejection: the page only accepts a request code
+        // that matches its active ticket. Replay of old request codes is
+        // ignored.
+        if (exportPage != null) {
+            Uri target = (code == RESULT_OK && data != null) ? data.getData() : null;
+            if (exportPage.onResult(request, target)) return;
+        }
+        if(code != RESULT_OK || data == null || data.getData() == null) return;
+        final Uri uri = data.getData();
+        if(request == AUDIO_FILE) {
+            graph.asrOperation().startWave(uri, language.getSelectedItem().toString());
+        }
     }
+
     @Override public void onBackPressed() {
-        RecordingControl r=recording;
-        if(r!=null && r.cancel()) { showStatus("正在取消录音，等待麦克风释放……"); return; }
-        if(RUNNING.get()) { Toast.makeText(this,"任务执行中；本版不支持安全中断，请等待完成。",Toast.LENGTH_LONG).show(); return; }
+        if (graph == null) { super.onBackPressed(); return; }
+        RecordingControl r=graph.asrOperation().recording();
+        if(r!=null && r.cancel()) { graph.appState().setLastStatus("正在取消录音，等待麦克风释放……"); return; }
+        if(graph.coordinator().isBusy()) { Toast.makeText(this,"任务执行中；本版不支持安全中断，请等待完成。",Toast.LENGTH_LONG).show(); return; }
         super.onBackPressed();
     }
-    @Override protected void onDestroy() { if(current.get()==this)current.clear(); super.onDestroy(); }
+    @Override protected void onDestroy() {
+        if (graph != null && exportPage != null) exportPage.destroy();
+        appStateListener.detach();
+        super.onDestroy();
+    }
 }

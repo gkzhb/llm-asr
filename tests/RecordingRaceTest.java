@@ -1,4 +1,4 @@
-import org.llmasr.minimal.RecordingControl;
+import org.llmasr.minimal.audio.RecordingControl;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 

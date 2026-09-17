@@ -1,0 +1,48 @@
+{
+  "artifact": "dist/qwen-asr-minimal-debug.apk",
+  "version": "0.3-debug",
+  "version_code": 3,
+  "variant": "phase12-decoupling-refactor",
+  "bytes": 2405160,
+  "sha256": "3772e2049106301f7553fdc48d25e6c11ab27f32577491de0347fdecf70152d3",
+  "package": "org.llmasr.minimal",
+  "min_sdk": 29,
+  "target_sdk": 35,
+  "abi": "arm64-v8a",
+  "permissions": [
+    "android.permission.RECORD_AUDIO"
+  ],
+  "build_task": "b4b1d2d31",
+  "build_exit_code": 0,
+  "host_checks": {
+    "baseline": 93,
+    "native_response": 25,
+    "model_repository": 33,
+    "part_recovery": 15,
+    "request_runner": 44,
+    "task_coordinator": 14,
+    "admission_boundaries": 22,
+    "total": 245
+  },
+  "p0_contract_tests": 5,
+  "package_checks": "passed",
+  "disposition": "built; production source independently reviewed; ready for manual device regression",
+  "independent_review": "reports/review/phase12-independent.md",
+  "review_disposition": "reports/review/phase12-disposition.md",
+  "independently_run_host_checks": 243,
+  "reviewed_production_source_matches_build": true,
+  "post_review_changes": "tests only: ModelRepositoryTest and RequestRunnerTest; parent verified 245 checks",
+  "build_input_files_checked": 47,
+  "native_dso_identical_to_pre_refactor_0_3": true,
+  "installed": false,
+  "apk_inference_verified": false,
+  "device_regression_verified": false,
+  "limitations": [
+    "Host tests do not execute Activity/SAF/AudioRecord/AsrOperation Android adapters",
+    "No new SoC/performance/accuracy validation",
+    "Existing0.3 model operations still clear text/report;0.4 model cancel/delete not implemented",
+    "Rename is per-file atomic publication, not power-loss durability or seven-file transaction",
+    "Real storage write/delete and provider failures not exhaustively exercised"
+  ],
+  "build_log": ".pi/tasks/session-525127-525127/b4b1d2d31.output"
+}

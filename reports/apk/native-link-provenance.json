@@ -581,8 +581,8 @@
     ".work/build/mnn-android/CMakeFiles/llm.dir/transformers/llm/engine/src/tokenizer/unicode_data.cpp.o": "0482f460da281c2aedfa1cb280c62cdfdc15a93f7ada41fb8996748b5b833d5b",
     ".work/build/mnn-android/CMakeFiles/MNN.dir/cmake/dummy.cpp.o": "63423294c8b53f6bcf6749452a7fda1aa9bcdcbf713b5a7ab05cb1bd1143df14"
   },
-  "jni_source_sha256": "67dfeaa2f286df633726d1d7b90e8822352f2fb50bb40100554920ce17bd3dbd",
-  "output_sha256": "72a1503f1dd3a5987ab9d6ed2d857771edae1be36c726cd637f88bccaca19198",
+  "jni_source_sha256": "4eaca3d66b90c63954a65f69887fe94b1ea97ebdb474ecfda5b306ce9cc07946",
+  "output_sha256": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416",
   "limitations": [
     "New link product, not the identical P0 libMNN.so; APK UID inference still requires independent device validation"
   ]

@@ -1,0 +1,7 @@
+.work/build/lambda-probe/LambdaProbe.java:1: error: cannot find symbol
+public class LambdaProbe { Runnable r = () -> {}; }
+                                        ^
+  symbol:   method metafactory(Lookup,String,MethodType,MethodType,MethodHandle,MethodType)
+  location: interface LambdaMetafactory
+1 error
+Fatal Error: Unable to find method metafactory

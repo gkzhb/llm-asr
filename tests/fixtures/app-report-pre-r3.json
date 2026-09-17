@@ -1,0 +1,12 @@
+{
+  "private String assetDigest(": "a61bb8b1269e34187ec2bd56a4e0ecb58c0796fcd21998f073a80352234e7a10",
+  "private String fileDigest(": "3b4a274a8c6427045b29efc16fded46c9d44d21b0c80240fd1b5be97cd2e7c97",
+  "private static byte[] readSmall(": "0cf4b1d726fc4597d0da5850c3f0f242ef02949cb3c4c71aa0ac9dc8ca632c55",
+  "private static String hex(": "767f9cc54a888c133fd3ffea13340872a15743c269545776ec9f190d918b1311",
+  "private void saveReport(": "33e3e7bdf432d46d9bd8598976f646f51def939cd74ab6409a38bb7cc1646b6e",
+  "private JSONObject pendingReport(": "28edf4670305b86e4557fb80145a7e3cba88ceac20530571a42474aea8979807",
+  "private JSONObject modelOperationReport(": "62ddd5a8a5d24a875d24badfff6263c9da3bc6379557deec214ad709933cfe49",
+  "private JSONObject failureReport(": "46690f17c1ec9554345e16c4cba47d0c040424b77426fdf3ff4e6b9e783e05c9",
+  "private JSONObject cancelReport(": "8a4c3e45fa49843e2bba05880557610f75ad31d36d133c34a8fd8524533b94ad",
+  "public void writeSuccess(": "3c9387bc07fe3fc36fec4fddfee4341d68cbe91cf6434cf9db74cdcc4226c576"
+}

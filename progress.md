@@ -517,3 +517,11 @@
 
 - 提交前全量host复跑通过（.work/refactor-phase20-final/precommit-host.log），APK checker/119build+126frozen与最终APK SHA一致；本轮仅新增规则/规划文档，无生产变更，无需重新构建。
 - index全树531文本文件约8.60MB安全审计通过，模型/产物/音频/密钥/缓存均未纳入；317路径累计差异形成完整当前版本。历史5份readelf报告尾随空格原样保留，其余cached diff-check通过。创建本地检查点，准确提交哈希由Git日志及用户交付消息记录；不push。
+
+## Session: 本机从 Git 复现 APK（新 debug 密钥）
+- 用户允许创建新密钥，不访问设备。基线39a7923，仅比cc4bec1增加说明文档。
+- 从HEAD有效配置还原617/1104字节JSON并精确SHA校验；固定MNN归档/三补丁/公开样例恢复。
+- 首次原生编译476步成功但SHA失败：KleidiAI下载失败导致缺105对象；保留失败证据，不修改P0哈希门槛。
+- 补齐校验后的KleidiAI1.16.0并重编581步：578对象、libMNN、最终JNI DSO全部匹配历史SHA。
+- 完整原始APK构建exit0，host/fresh mutants/Java/JNI/签名/包检查通过；119输入一致，父再次checker通过。新APK233d134d343a636613fe6c762566ca881805cee387b185bd5a9640d8931c04eb，2470760bytes，0.6-debug/code6。
+- 历史报告归档pre-local-reproduction；新增复现说明，未改源码/测试/构建脚本。准备安全检查后本地提交文本证据，不提交模型/音频/密钥/产物，不push；实机pending。

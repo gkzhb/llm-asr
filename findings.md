@@ -351,3 +351,8 @@
 ## Phase21 提交边界
 - 仓库此前没有AGENTS.md或agents.md；新建AGENTS.md用于项目代理自动发现。用户已明确授权本地提交及今后功能轮次测试/必要审查后的先提交再交付顺序，未授权push。
 - 当前所有已完成增量从0.2后未提交，需一起形成可重现当前APK的完整源码检查点；模型/APK/签名凭据/缓存仍保持ignored。
+
+## 本机 APK 复现发现
+- HEAD中的P0_EFFECTIVE_CONFIG按导出格式拆分可精确还原两份模型JSON，不需下载权重。
+- MNN上游CMake在KleidiAI下载失败时降级而不报构建失败；本项目最终库SHA检查能拒绝。显式准备v1.16.0恢复105缺失对象后，578/578对象及native库、JNI DSO与历史全部匹配。
+- Nix锁定环境下本机精确native重编已实证；新key APK字节不同，不能覆盖旧签名安装。详细恢复和证据边界见docs/local-apk-reproduction.md。

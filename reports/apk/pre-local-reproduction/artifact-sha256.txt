@@ -1,3 +1,3 @@
-233d134d343a636613fe6c762566ca881805cee387b185bd5a9640d8931c04eb  /home/zhb/gitrep/llm-asr/dist/qwen-asr-minimal-debug.apk
+a03c0876ba0f73ccec6532a0eb91c0416a1edb2488b5e57f19f7ffb58b4947f1  /home/zhb/gitrep/llm-asr/dist/qwen-asr-minimal-debug.apk
 10910daddb4e1c10fdc11eb1e5d9d34ab44d338d8aa8fc4f04d3a5968002edb8  /home/zhb/gitrep/llm-asr/.work/build/mnn-android/libMNN.so
 d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416  /home/zhb/gitrep/llm-asr/.work/build/minimal-apk/package/lib/arm64-v8a/libqwen_asr_jni.so

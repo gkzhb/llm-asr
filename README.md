@@ -13,6 +13,7 @@
 - **[详细实施规划](docs/implementation-plan.md)**：框架选择、模型转换/量化、硬件优化、内存预算、IME/API 架构、Nix 环境设计、验收指标与里程碑。
 - [研究发现](findings.md)：已核验事实、源码风险、资料访问限制。
 - [任务状态](task_plan.md) / [工作日志](progress.md)：持久化进度与错误记录。
+- [本地模型与配置说明](docs/local-models-and-config.md)：Git 未追踪模型的位置、下载/导出链路、配置来源、校验和迁移边界。
 - [证据来源与哈希](docs/research/source-manifest.json)：本轮下载的小型文本/源码快照，不包含模型权重。
 
 ## 推荐方案

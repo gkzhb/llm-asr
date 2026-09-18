@@ -356,3 +356,25 @@
 - HEAD中的P0_EFFECTIVE_CONFIG按导出格式拆分可精确还原两份模型JSON，不需下载权重。
 - MNN上游CMake在KleidiAI下载失败时降级而不报构建失败；本项目最终库SHA检查能拒绝。显式准备v1.16.0恢复105缺失对象后，578/578对象及native库、JNI DSO与历史全部匹配。
 - Nix锁定环境下本机精确native重编已实证；新key APK字节不同，不能覆盖旧签名安装。详细恢复和证据边界见docs/local-apk-reproduction.md。
+
+## 当前改动续审：离线配置恢复脚本
+- 本轮实际范围为5个已跟踪改动及2个未跟踪Python文件（prepare-model-configs.py、prepare_model_configs_test.py）；未见Android产品源码变更。
+- 根AGENTS.md要求功能交付前本地提交；本轮用户请求审查，不据此自动修复或提交既有改动。
+- 初次恢复输出超50KB截断，改分段读取；本轮不读取本地会话历史，不访问设备/网络/麦克风。
+- 新实现先按日志顺序拆分两份配置、核对部署清单，再预检两目标；目录fd+O_NOFOLLOW、临时文件fsync+排他hardlink避免普通覆盖竞争。13个测试覆盖主要正常/失败路径。
+- 待验证边界：output_directory先abspath会折叠`..`，可能在检查前删除包含symlink的路径分量；源码尚未覆盖此路径反例。日志JSON形状错误可能抛未归一化AttributeError，仅作为低优先级健壮性观察。
+- 针对性验证：13项Python测试exit0；默认目录`--check`核对617/1104字节与固定SHA通过；两份shell语法与当前diff-check通过。日志.work/reviews/config-preparation/unit.log。
+- 文档顶部仍宣称119项输入与当前文件一致、测试/构建脚本未变化，而本轮已修改两脚本且增加2个构建输入（及新增测试）；应区分历史复现结果与当前增量，不能继承旧构建证据。
+- 工具合并命令exit1来自git check-ignore未命中，不是源码或测试失败；规划文件本身未在status中出现，后续核对跟踪状态。
+- 已复现路径契约缺陷：临时目录link→actual/child，`--output link/../configs`退出0并生成到lexical的临时根/configs，而非实际解析的actual/configs；symlink被abspath预先折叠绕过检查。未覆盖旧文件，但违反各级符号链接拒绝且写入非用户路径解析的目录。证据path-boundary.log。
+- 当前119项历史build-input中两份已修改shell SHA不匹配，新增准备脚本/测试未在历史清单中（未来构建列表已接入）。这是尚未重建的事实，不指控未来清单收集漏项。
+- 离线缓存Nix apk环境中完整`scripts/test-minimal-apk.sh`复跑exit0（含新13项配置测试、既有Java、fresh-class可编译mutation和包报告checker fixtures）。日志.work/reviews/config-preparation/host.log。未运行完整APK构建或设备测试。
+
+## Phase24 修复证据
+- 新CLI生产回归在旧脚本exit1：symlink/../output实际返回0并写入，check也能接受被折叠的路径。红日志.work/config-preparation-fix/red.log；不是导入/语法失败。
+- 最小修复于output_directory进入时检查Path.parts中的`..`，任何父跳转在abspath/open/mkdir前拒绝，不改hardlink发布和两文件预检。测试覆盖20个路径/绝对相对/check组合及正常相对输出。
+- 文档拆分d9ea37f历史复现与本轮新增脚本验证，删除旧119项对“当前文件”的错误归因。
+- 修复后16项测试在普通与`python -O`两种模式均通过；安全判断不依赖assert。原并发/不覆盖与fsync+排他hardlink逻辑保持。
+- 本轮自审仅收敛两个接受项；可信仓库输入形状错误的异常美化未扩展，避免混入通用配置schema设计。
+- 完整构建b64ce963e exit0/APK_READY，122项当前输入与冻结完全相同；standalone checker再次通过。578 MNN对象/JNI与上轮一致，APK所有ZIP条目内容均相同，只有容器身份变化。
+- 新APK SHA66be525e2f69b12b23f5a76f5bc2d0815f97c7447a672000162d38b6d4e7dfed，2470760bytes，签名复用上轮e9365b...c16c；未运行设备。

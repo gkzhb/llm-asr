@@ -11,6 +11,7 @@ bt="$ANDROID_HOME/build-tools/35.0.0"
 platform="$ANDROID_HOME/platforms/android-35/android.jar"
 compiler="$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang++"
 mkdir -p "$build" "$root/dist" "$root/reports/apk"
+python3 scripts/prepare-model-configs.py --check
 bash scripts/test-minimal-apk.sh | tee reports/apk/java-tests.txt
 # Only clear this script's derived outputs; preserve ignored local signing key.
 rm -rf "$build/classes" "$build/dex" "$build/package" "$build/assets"
@@ -84,6 +85,7 @@ python3 - <<'PY'
 import json,hashlib
 from pathlib import Path
 files=['flake.nix','flake.lock','scripts/build-minimal-apk.sh','scripts/check-minimal-apk.py','scripts/test-minimal-apk.sh','tests/MinimalApkTest.java','tests/RecordingRaceTest.java','tests/ResultFilesTest.java','tests/NativeResponseTest.java','tests/ModelRepositoryTest.java','tests/PartRecoveryTest.java','tests/RequestRunnerTest.java','tests/TaskCoordinatorTest.java','tests/AdmissionBoundaryTest.java','tests/ImeSessionTest.java','reports/p0/mnn-model-manifest.json']
+files += ['scripts/prepare-model-configs.py', 'reports/p0/device-inference-final-patches.txt']
 files += [str(p) for p in sorted(Path('android/app').rglob('*')) if p.is_file()]
 files += [str(p) for p in sorted(Path('tests').glob('*')) if p.is_file()]
 files += [str(p) for p in sorted(Path('tests/fixtures').rglob('*')) if p.is_file()]

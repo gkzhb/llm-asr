@@ -2,6 +2,8 @@
 set -euo pipefail
 root=$(cd "$(dirname "$0")/.." && pwd)
 cd "$root"
+mkdir -p "$root/.work/build" "$root/.work/model-review-fixes"
+timeout 30 python3 tests/prepare_model_configs_test.py
 classes=$(mktemp -d "$root/.work/build/minimal-apk-tests-XXXXXX")
 trap 'rm -rf "$classes"' EXIT
 # Pure Java production components only; no Android stub runtime. The

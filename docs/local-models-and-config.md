@@ -185,6 +185,15 @@ bash scripts/nix-env.sh native bash scripts/build-mnn-p0.sh android
 
 ### 5.3 `config.json`：运行参数如何生成
 
+若仅恢复当前 APK 构建所需的两个配置，无需重新导出模型，可运行：
+
+```bash
+python3 scripts/prepare-model-configs.py
+python3 scripts/prepare-model-configs.py --check
+```
+
+脚本从已追踪的有效配置日志精确恢复文件并核对现有清单，拒绝覆盖不同文件，不联网、不下载权重。此为历史导出产物的恢复，不是新的模型转换或验证。安全边界和测试见[本机 APK 复现](local-apk-reproduction.md)。
+
 第一步由本地固定 MNN 导出器 `transformers/llm/export/llmexport.py` 的 `LlmExporter.export_config(True)` 写出基础配置。第二步由 `export_decoder.py`（全模型流程则是 `export_mnn.py`）覆盖项目的运行策略。
 
 当前关键字段如下；这是说明用的**节选**，不是让用户覆盖原文件的完整模板：

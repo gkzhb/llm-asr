@@ -23,6 +23,9 @@
 前提：P0 固定源码、补丁、模型清单与公开示例已按项目流程生成；`.work/build/mnn-android/libMNN.so` 必须是全部最终补丁重编后的运行库。
 
 ```bash
+# 离线恢复并核对两个固定模型配置（不下载权重）
+python3 scripts/prepare-model-configs.py
+
 # 已有最终MNN库时无需重新导出/构建模型
 bash scripts/nix-env.sh apk bash -euo pipefail -c '
   bash scripts/test-minimal-apk.sh

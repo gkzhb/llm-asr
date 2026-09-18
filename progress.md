@@ -525,3 +525,21 @@
 - 补齐校验后的KleidiAI1.16.0并重编581步：578对象、libMNN、最终JNI DSO全部匹配历史SHA。
 - 完整原始APK构建exit0，host/fresh mutants/Java/JNI/签名/包检查通过；119输入一致，父再次checker通过。新APK233d134d343a636613fe6c762566ca881805cee387b185bd5a9640d8931c04eb，2470760bytes，0.6-debug/code6。
 - 历史报告归档pre-local-reproduction；新增复现说明，未改源码/测试/构建脚本。准备安全检查后本地提交文本证据，不提交模型/音频/密钥/产物，不push；实机pending。
+
+## Session: 当前未提交改动续审
+- 用户请求继续审查；恢复三份规划、AGENTS规则及git diff，范围5个跟踪文件+2个新增Python文件。
+- 本轮直接审查与临时目录测试，不修改产品源码或已有APK/报告，不自动提交；Phase23已建立。
+- 审查完成：R1/P2路径`symlink/../output`被abspath折叠后接受且写至不同目录，真实临时fixture复现；R2/P3文档混用119项历史构建身份与当前新接线。
+- 新Python13项、默认配置check、离线Nix完整host脚本、shell语法与diff-check通过；未重建APK/运行设备。报告和日志：.work/reviews/config-preparation/{review.md,unit.log,path-boundary.log,host.log}。
+- 仅更新三份规划文件，既有产品/测试/文档改动未修改，未stage/commit/push。Phase23审查完成不表示增量已修复/交付。
+
+## Session: 配置准备优化修复与验证
+- 用户授权修复上一轮问题并验证；按AGENTS约定验证成功后本地提交，不push/访问设备/网络。
+- 采用最小边界修复：任何含`..`的显式output在规范化/目录创建前拒绝；正常相对/绝对路径和现有O_NOFOLLOW、hardlink协议保留。
+- 路径红绿回归完成：旧实现FAIL（退出码0接受恶意路径），修后16 tests全部通过；--check既有配置、shell语法、diff-check通过。
+- 已冻结122个当前构建输入并备份旧APK/报告到.work/config-preparation-fix/baseline；主报告明确验证中，完整构建不复用旧119项结论。
+- 完整构建b64ce963e正式exit0/APK_READY；完整host/16Python/Java/JNI/DEX/签名/包检查通过。
+- 122build/frozen/current SHA相同，578MNN对象/JNI及全部APK ZIP条目内容与上轮一致；新容器SHA66be525e...e7dfed。standalone checker/diff-check通过。
+- 已更新当前产物身份、历史证据边界与直接自审报告，不冒称独立review/设备结果。下一步暂存安全审计及本地提交。
+- 最终自审/暂存审计通过：18个文本文件，无模型/音频/APK/密钥/缓存；122项暂存构建输入SHA均匹配。git diff --cached --check通过，模型/APK/密钥仍ignored。
+- 实施与验证已完成，执行本轮本地提交；提交身份以Git日志及交付消息为准，失败则不得声明交付。不push，无设备验收。

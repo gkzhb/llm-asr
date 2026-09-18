@@ -1,3 +1,15 @@
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
 PASS 32 minimal APK Java checks
 PASS 20 recording lifecycle gate checks (fake backend; not device release latency)
 PASS 34 result cleanup/export checks (host only)
@@ -59,9 +71,9 @@ PASS review regression liveDeletion
 PASS review regression planning
 PASS review regression publication
 PASS production provider boundary exception/stream/owner regressions
-PASS compiled mutant killed: readiness-monitor exit 1 logs .work/model-review-fixes/mutants/readiness-monitor-afdy1_1z
-PASS compiled mutant killed: provider-cancel-trust exit 1 logs .work/model-review-fixes/mutants/provider-cancel-trust-5uzfhi86
-PASS compiled mutant killed: terminal-cancel exit 1 logs .work/model-review-fixes/mutants/terminal-cancel-5_fm_nnr
+PASS compiled mutant killed: readiness-monitor exit 1 logs .work/model-review-fixes/mutants/readiness-monitor-qzb5jorw
+PASS compiled mutant killed: provider-cancel-trust exit 1 logs .work/model-review-fixes/mutants/provider-cancel-trust-xu7ax7tf
+PASS compiled mutant killed: terminal-cancel exit 1 logs .work/model-review-fixes/mutants/terminal-cancel-j9jvcx5p
 PASS actual checker fixture bound-fixture exit 0
 PASS actual checker fixture stale-apk exit 1
 PASS actual checker fixture modified-permissions.txt exit 1
@@ -71,4 +83,4 @@ PASS actual checker fixture modified-manifest-tree.txt exit 1
 PASS actual checker fixture modified-ime-method-tree.txt exit 1
 PASS actual checker fixture modified-native-link-provenance.json exit 1
 PASS actual checker fixture missing-binding exit 1
-PASS archive/report binding rejects stale and every modified report; logs .work/model-review-fixes/apk-binding-ppcu8gnw
+PASS archive/report binding rejects stale and every modified report; logs .work/model-review-fixes/apk-binding-3urt1zbg

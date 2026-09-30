@@ -15,3 +15,9 @@ local engineering testing; no independent audio redistribution license is assert
 Source: https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen3-ASR-Repo/asr_zh.wav
 SHA-256: 46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50
 This debug APK is a local testing artifact, not cleared for store distribution.
+
+Kotlin standard library 2.0.21 and JetBrains JVM annotations: JetBrains and respective authors.
+Source: https://github.com/JetBrains/kotlin
+The compiler is a build tool only; compiler and kotlin-reflect are NOT packaged.
+Apache License 2.0 text in KOTLIN-LICENSE.txt; applicable standard-library
+third-party notices in KOTLIN-NOTICES.txt (Apache 2.0, BSD and Boost notices).

@@ -11,6 +11,18 @@ bt="$ANDROID_HOME/build-tools/35.0.0"
 platform="$ANDROID_HOME/platforms/android-35/android.jar"
 compiler="$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang++"
 mkdir -p "$build" "$root/dist" "$root/reports/apk"
+python3 - <<'PY'
+import hashlib, json, os, subprocess
+from pathlib import Path
+home = Path(os.environ['KOTLIN_HOME'])
+jars = ['kotlin-stdlib.jar', 'annotations-13.0.jar']
+Path('reports/apk/kotlin-toolchain.json').write_text(json.dumps({
+    'compiler_version': subprocess.check_output(['kotlinc', '-version'], stderr=subprocess.STDOUT, text=True).strip(),
+    'nixpkgs_revision': json.loads(Path('flake.lock').read_text())['nodes']['nixpkgs']['locked']['rev'],
+    'runtime_jars': {name: hashlib.sha256((home/'lib'/name).read_bytes()).hexdigest() for name in jars},
+    'jvm_target': '1.8', 'reflection_or_compiler_packaged': False,
+}, indent=2)+'\n')
+PY
 python3 scripts/prepare-model-configs.py --check
 bash scripts/test-minimal-apk.sh | tee reports/apk/java-tests.txt
 # Only clear this script's derived outputs; preserve ignored local signing key.
@@ -53,11 +65,19 @@ rm -f "$build/package/lib/arm64-v8a/asr_jni.o" "$build/package/lib/arm64-v8a/nat
 # Android's boot stubs omit LambdaMetafactory.metafactory. Compile Java 8
 # against JDK release APIs + Android classes; d8 below desugars the lambdas.
 # R6: recursive discovery picks up every production subpackage.
-mapfile -t prod_sources < <(find android/app/src/org/llmasr/minimal -name '*.java' -type f | LC_ALL=C sort)
-javac -encoding UTF-8 --release 8 -classpath "$platform" -d "$build/classes" "${prod_sources[@]}"
+mapfile -t prod_sources < <(find android/app/src/org/llmasr/minimal -type f \( -name '*.java' -o -name '*.kt' \) | LC_ALL=C sort)
+bash scripts/compile-jvm-sources.sh "$build/classes" "$platform" "${prod_sources[@]}"
 python3 scripts/check-jni-symbols.py "$build/classes" "$build/package/lib/arm64-v8a/libqwen_asr_jni.so"
 mapfile -t classes < <(find "$build/classes" -name '*.class' -type f | sort)
-"$bt/d8" --min-api 29 --lib "$platform" --output "$build/dex" "${classes[@]}"
+# Ship the runtime used by Kotlin-generated classes, never compiler/reflection jars.
+"$bt/d8" --min-api 29 --lib "$platform" --output "$build/dex" "${classes[@]}" \
+  "$KOTLIN_HOME/lib/kotlin-stdlib.jar" "$KOTLIN_HOME/lib/annotations-13.0.jar" \
+  2>&1 | tee reports/apk/d8.txt
+# Exit 0 alone is insufficient: unsupported metadata rewrites can emit only warnings.
+if grep -Eiq 'warning:|malformed kotlin.Metadata|Unexpected error|metadata.*maximum supported' reports/apk/d8.txt; then
+  echo 'FATAL D8 diagnostic requires review; do not deliver this APK' >&2
+  exit 1
+fi
 cp "$build/dex/classes.dex" "$build/package/classes.dex"
 cp "$build/base.apk" "$build/unsigned.apk"
 (cd "$build/package" && zip -q -r "$build/unsigned.apk" classes.dex lib)
@@ -89,7 +109,7 @@ files += ['scripts/prepare-model-configs.py', 'reports/p0/device-inference-final
 files += [str(p) for p in sorted(Path('android/app').rglob('*')) if p.is_file()]
 files += [str(p) for p in sorted(Path('tests').glob('*')) if p.is_file()]
 files += [str(p) for p in sorted(Path('tests/fixtures').rglob('*')) if p.is_file()]
-files += ['scripts/compile-android-java.sh','scripts/apk_report_binding.py','scripts/check-jni-symbols.py','scripts/compile-jni-object.sh']
+files += ['scripts/compile-android-java.sh','scripts/compile-jvm-sources.sh','scripts/dex_class_inventory.py','scripts/apk_report_binding.py','scripts/check-jni-symbols.py','scripts/compile-jni-object.sh']
 files += ['native/apk/asr_jni.cpp','scripts/link-apk-native.py']+[str(p) for p in sorted(Path('patches').glob('*.patch'))]
 Path('reports/apk/build-input-sha256.json').write_text(json.dumps({p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in files},indent=2)+'\n')
 PY

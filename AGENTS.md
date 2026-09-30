@@ -27,6 +27,6 @@
 长期项目知识保存在本项目 Beads memories；索引不代替任务状态或 memory 正文。
 
 - 查找：`bd memories '<keyword>'`；全文：`bd recall '<key>'`。
-- 已存类别关键词：`Nix` / `资源约束` / `复现` / `KleidiAI` / `ASR` / `P0` / `验证边界`。
-- 相关 keys：`build-tiny-mirror`、`build-kleidiai-reproduction`、`asr-quality-evidence`。
+- 已存类别关键词：`Nix` / `资源约束` / `复现` / `KleidiAI` / `ASR` / `P0` / `验证边界` / `Kotlin` / `D8`。
+- 相关 keys：`build-tiny-mirror`、`build-kleidiai-reproduction`、`asr-quality-evidence`、`kotlin-d8-compatibility`。
 - 仅在成功保存知识且需要新增导航时更新此索引，不复制调试流水账。

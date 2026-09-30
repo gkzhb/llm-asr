@@ -12,9 +12,13 @@ mkdir -p "$out/classes" "$out/headers"
 # Standalone subset: ASR sources plus their transitive Java dependencies.
 # Full APK build separately compiles ALL Android sources and checks native owners
 # against the actual linked DSO; this object-only check makes no such claim.
-mapfile -t jni_files < <(find android/app/src/org/llmasr/minimal/asr -name '*.java' -type f | LC_ALL=C sort)
+# Mixed-language dependencies must be compiled before javac generates the bridge header.
+# Header generation still uses the real Java native declarations, not a hand-written stub.
+mapfile -t jvm_files < <(find android/app/src/org/llmasr/minimal -type f \( -name '*.java' -o -name '*.kt' \) | LC_ALL=C sort)
+bash scripts/compile-jvm-sources.sh "$out/classes" "$ANDROID_HOME/platforms/android-35/android.jar" "${jvm_files[@]}"
 javac --release 8 -encoding UTF-8 -h "$out/headers" -d "$out/classes" \
-  -sourcepath android/app/src "${jni_files[@]}"
+  -classpath "$out/classes:$KOTLIN_HOME/lib/kotlin-stdlib.jar" \
+  android/app/src/org/llmasr/minimal/asr/JniNativeTranscription.java
 source="$root/.work/sources/MNN-a03b005cf6f888ebf092e4753840f935827f9c36"
 compiler="$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang++"
 # Generated header now lives under org_llmasr_minimal_asr_*.h.

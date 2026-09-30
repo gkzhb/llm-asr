@@ -39,6 +39,7 @@ declare -A seen=()
 for fq in "${host_classes[@]}"; do
   sub=${fq%%.*}; cls=${fq##*.}
   path="android/app/src/org/llmasr/minimal/${sub}/${cls}.java"
+  if [ ! -f "$path" ]; then path="${path%.java}.kt"; fi
   [ -f "$path" ] || { echo "FATAL host source missing: $path" >&2; exit 2; }
   if [ -n "${seen[$cls]+set}" ]; then
     echo "FATAL host duplicate class $cls in $path (already in ${seen[$cls]})" >&2
@@ -47,7 +48,8 @@ for fq in "${host_classes[@]}"; do
   seen[$cls]="$path"
   sources+=( "$path" )
 done
-timeout 60 javac --release 8 -encoding UTF-8 -d "$classes" "${sources[@]}" \
+bash scripts/compile-jvm-sources.sh "$classes" "" "${sources[@]}" \
+  tests/KotlinMigrationTest.java \
   tests/RuntimeLogCoreTest.java \
   tests/RuntimeLogStoreErrorTest.java \
   tests/InferenceAdapterTest.java \
@@ -75,7 +77,8 @@ timeout 60 javac --release 8 -encoding UTF-8 -d "$classes" "${sources[@]}" \
   tests/ModelAndroidHelpersTest.java \
   tests/ModelReviewFixTest.java \
   tests/ModelProviderBoundaryTest.java
-run() { timeout 45 java -cp "$classes" "$@"; }
+run() { timeout 45 java -cp "$classes:$KOTLIN_HOME/lib/kotlin-stdlib.jar" "$@"; }
+run KotlinMigrationTest
 run MinimalApkTest bench/audio/zh-original.wav
 run RecordingRaceTest
 run ResultFilesTest

@@ -1,0 +1,10 @@
+{
+  "compiler_version": "info: kotlinc-jvm 2.0.21 (JRE 17.0.20.1+1-nixos)",
+  "nixpkgs_revision": "eaad089433ca2bb662274377d33df3d0e51ef28b",
+  "runtime_jars": {
+    "kotlin-stdlib.jar": "f31cc53f105a7e48c093683bbd5437561d1233920513774b470805641bedbc09",
+    "annotations-13.0.jar": "ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478"
+  },
+  "jvm_target": "1.8",
+  "reflection_or_compiler_packaged": false
+}

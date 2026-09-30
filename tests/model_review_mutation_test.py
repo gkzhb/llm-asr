@@ -8,6 +8,8 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 CLASSES = Path(os.environ['MODEL_REVIEW_CLASSES']).resolve(strict=True)
+RUNTIME = Path(os.environ['KOTLIN_HOME']) / 'lib/kotlin-stdlib.jar'
+assert RUNTIME.is_file(), 'Kotlin runtime missing for mixed production mutations'
 assert CLASSES.is_dir(), 'MODEL_REVIEW_CLASSES must name this run\'s compiled class directory'
 OUT = Path(os.environ.get('MODEL_REVIEW_MUTATION_OUT', str(ROOT / '.work/model-review-fixes/mutants')))
 OUT.mkdir(parents=True, exist_ok=True)
@@ -58,7 +60,7 @@ for name, cls, old, new, test, expected in mutations:
                                     capture_output=True, text=True, timeout=30)
     (work/'compile.log').write_text(compile_result.stdout+compile_result.stderr)
     assert compile_result.returncode == 0, (name, 'compile failure is not behavioral red', compile_result.stderr)
-    result = subprocess.run(['java', '-cp', str(work)+':'+str(CLASSES), *test], capture_output=True, text=True, timeout=20)
+    result = subprocess.run(['java', '-cp', str(work)+':'+str(CLASSES)+':'+str(RUNTIME), *test], capture_output=True, text=True, timeout=20)
     (work/'run.log').write_text(result.stdout+result.stderr)
     assert result.returncode != 0 and expected in result.stdout+result.stderr, (name, result.returncode, result.stdout, result.stderr)
     print('PASS compiled mutant killed:', name, 'exit', result.returncode, 'logs', work.relative_to(ROOT))

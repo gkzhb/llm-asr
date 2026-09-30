@@ -8,6 +8,7 @@ import json
 import subprocess
 import tempfile
 import zipfile
+import struct
 
 ROOT=Path(__file__).resolve().parents[1]
 REPORTS=('permissions.txt','badging.txt','signature.txt','manifest-tree.txt','ime-method-tree.txt','native-link-provenance.json')
@@ -19,11 +20,36 @@ manifest=(ROOT/'reports/p0/mnn-model-manifest.json').read_bytes()
 (work/'reports/p0/mnn-model-manifest.json').write_bytes(manifest)
 apk=work/'dist/qwen-asr-minimal-debug.apk'; reports=work/'reports/apk'
 native=b'synthetic native fixture; never executed'
+(work/'android/app/assets').mkdir(parents=True)
+licenses = {name:(ROOT/'android/app/assets'/name).read_bytes() for name in ('KOTLIN-LICENSE.txt', 'KOTLIN-NOTICES.txt')}
+for name, data in licenses.items(): (work/'android/app/assets'/name).write_bytes(data)
+# Minimal synthetic class/string/type tables exercise ownership, not executable DEX.
+def fixture_dex(include_runtime=True):
+    descriptors = [b'Lkotlin/jvm/internal/Intrinsics;', b'Lorg/llmasr/minimal/audio/AsrText;',
+        b'Lorg/llmasr/minimal/audio/PcmWave;', b'Lorg/llmasr/minimal/audio/RecordingControl;',
+        b'Lorg/llmasr/minimal/asr/NativeResponse;']
+    n = len(descriptors)
+    strings_offset, types_offset, classes_offset = 112, 112 + n*4, 112 + n*8
+    data = bytearray(classes_offset + n*32)
+    data[:8] = b'dex\n035\0'
+    struct.pack_into('<I', data, 40, 0x12345678)
+    struct.pack_into('<II', data, 56, n, strings_offset)
+    struct.pack_into('<II', data, 64, n, types_offset)
+    struct.pack_into('<II', data, 96, n if include_runtime else n-1,
+                     classes_offset if include_runtime else classes_offset+32)
+    for i, descriptor in enumerate(descriptors):
+        struct.pack_into('<I', data, strings_offset+i*4, len(data))
+        struct.pack_into('<I', data, types_offset+i*4, i)
+        struct.pack_into('<I', data, classes_offset+i*32, i)
+        data.extend(bytes([len(descriptor)]) + descriptor + b'\0')
+    return bytes(data)
+dex = fixture_dex()
 with zipfile.ZipFile(apk,'w') as z:
-    for name,data in {'classes.dex':b'fixture','AndroidManifest.xml':b'fixture',
+    for name,data in {'classes.dex':dex,'AndroidManifest.xml':b'fixture',
         'res/xml/method.xml':b'fixture','assets/model-manifest.json':manifest,
         'assets/sample.wav':(ROOT/'bench/audio/zh-original.wav').read_bytes(),
-        'lib/arm64-v8a/libqwen_asr_jni.so':native}.items():z.writestr(name,data)
+        'lib/arm64-v8a/libqwen_asr_jni.so':native,
+        **{'assets/'+name:data for name,data in licenses.items()}}.items():z.writestr(name,data)
 (reports/'native-link-provenance.json').write_text(json.dumps({'output_sha256':hashlib.sha256(native).hexdigest()}))
 (reports/'permissions.txt').write_text("uses-permission: name='android.permission.RECORD_AUDIO'\n")
 (reports/'badging.txt').write_text("package: name='org.llmasr.minimal' versionCode='6' versionName='0.6-debug'\nminSdkVersion:'29'\ntargetSdkVersion:'35'\nnative-code: 'arm64-v8a'\nprovides-component:'ime'\n")
@@ -60,6 +86,13 @@ def run(name,pass_expected,marker=''):
     print('PASS actual checker fixture',name,'exit',r.returncode)
 bind();run('bound-fixture',True)
 original=apk.read_bytes()
+# Missing runtime must fail even when report binding is recomputed for that APK.
+with zipfile.ZipFile(apk) as z: entries = {n:z.read(n) for n in z.namelist()}
+with zipfile.ZipFile(apk, 'w') as z:
+    for name, data in entries.items():
+        z.writestr(name, fixture_dex(False) if name == 'classes.dex' else data)
+bind();run('missing-kotlin-runtime',False,'Kotlin runtime/owner missing')
+apk.write_bytes(original);bind()
 with zipfile.ZipFile(apk,'a') as z:z.writestr('fixture-marker.txt',b'changed ZIP; metadata detached')
 run('stale-apk',False,'APK report binding mismatch');apk.write_bytes(original)
 for name in REPORTS:

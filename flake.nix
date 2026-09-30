@@ -30,6 +30,19 @@
         includeEmulator = false;
         toolsVersion = null;
       }).androidsdk;
+      # SDK 35 ships D8/R8 8.6: Kotlin 2.4 metadata is unsupported.
+      # Pin compiler AND its stdlib to a compatible official release archive.
+      kotlin = pkgs.kotlin.overrideAttrs (_: {
+        version = "2.0.21";
+        src = pkgs.fetchurl {
+          name = "kotlin-compiler-2.0.21.zip";
+          urls = [
+            "https://tarballs.nixos.org/sha256/0352c0a45bd22f80f6b26e485cd04da8047baa5de54865281fb9f89a4a7bcf2a"
+            "https://github.com/JetBrains/kotlin/releases/download/v2.0.21/kotlin-compiler-2.0.21.zip"
+          ];
+          sha256 = "0352c0a45bd22f80f6b26e485cd04da8047baa5de54865281fb9f89a4a7bcf2a";
+        };
+      });
       adbShell = pkgs.mkShellNoCC {
         packages = [ pkgs.android-tools ];
         shellHook = ''
@@ -46,7 +59,8 @@
           CMAKE_BUILD_PARALLEL_LEVEL = "2";
         };
         apk = pkgs.mkShell {
-          packages = with pkgs; [ android-tools jdk17 python312 zip unzip ndk sdk ];
+          packages = (with pkgs; [ android-tools jdk17 python312 zip unzip ndk sdk ]) ++ [ kotlin ];
+          KOTLIN_HOME = "${kotlin}";
           ANDROID_HOME = "${sdk}/libexec/android-sdk";
           ANDROID_NDK_ROOT = "${ndk}/libexec/android-sdk/ndk/28.2.13676358";
           JAVA_HOME = "${pkgs.jdk17}";

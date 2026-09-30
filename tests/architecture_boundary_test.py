@@ -46,9 +46,10 @@ def pkg_of(name):
 
 def path_of(name):
     sub = PACKAGE_MAP[name]
-    if sub:
-        return ROOT_BASE / sub / f'{name}.java'
-    return ROOT_BASE / f'{name}.java'
+    base = ROOT_BASE / sub / name
+    matches = [p for p in (base.with_suffix('.java'), base.with_suffix('.kt')) if p.is_file()]
+    assert len(matches) == 1, f'missing/duplicate JVM source for {name}'
+    return matches[0]
 
 def references(source):
     return set(re.findall(r'[A-Za-z_$][A-Za-z0-9_$]*', IGNORED.sub(' ', source)))
@@ -151,13 +152,13 @@ def check_package(package, text):
     # Wildcard local imports hide class names from lexical edge analysis.
     assert not re.search(r'import\s+org\.llmasr\.minimal[\w.]*\.\*', text)
 
-actual = list(ROOT_BASE.rglob('*.java'))
+actual = list(ROOT_BASE.rglob('*.java')) + list(ROOT_BASE.rglob('*.kt'))
 assert len(actual) == len(PACKAGE_MAP)
 assert {p.resolve() for p in actual} == {path_of(n).resolve() for n in PACKAGE_MAP}
 for name in PACKAGE_MAP:
     text = path_of(name).read_text()
     expected = 'org.llmasr.minimal' + ('.' + PACKAGE_MAP[name] if PACKAGE_MAP[name] else '')
-    assert re.search(r'^package\s+' + re.escape(expected) + r';', text, re.M)
+    assert re.search(r'^package\s+' + re.escape(expected) + r'(?:;|\s*$)', text, re.M)
     check_package(pkg_of(name), text)
 
 negatives = [('model', 'ModelManagementState'), ('ime', 'AppState'),

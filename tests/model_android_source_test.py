@@ -57,9 +57,10 @@ def java(name):
     if name not in PACKAGE_MAP:
         raise AssertionError('R6 unknown class ' + name)
     sub = PACKAGE_MAP[name]
-    if sub:
-        return (SRC_ROOT / sub / f'{name}.java').read_text()
-    return (SRC_ROOT / f'{name}.java').read_text()
+    base = SRC_ROOT / sub / name
+    matches = [p for p in (base.with_suffix('.java'), base.with_suffix('.kt')) if p.is_file()]
+    assert len(matches) == 1, 'missing/duplicate JVM source ' + name
+    return matches[0].read_text()
 graph = java('AppGraph')
 assert 'new AppState()' in graph
 assert 'state::notifyChange' not in graph
@@ -74,7 +75,7 @@ assert 'access::requireReady' in graph
 assert 'new JniNativeTranscription()' in graph
 assert 'TaskKind.MODEL_OPERATION' not in java('AsrOperation')
 assert 'MODEL_TREE' not in java('MainActivity')
-assert 'setVerified(true)' not in '\n'.join(p.read_text() for p in (android/'src').rglob('*.java'))
+assert 'setVerified(true)' not in '\n'.join(p.read_text() for p in (android/'src').rglob('*') if p.suffix in {'.java', '.kt'})
 ime = java('AsrImeService')
 assert re.search(r'"模型管理", \(\) -> leaveForExternalUi\(\(\) ->\s*startActivity\(new Intent\(this, ModelManagementActivity.class\).addFlags\(Intent.FLAG_ACTIVITY_NEW_TASK\)', ime)
 activity = java('ModelManagementActivity')

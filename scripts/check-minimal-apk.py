@@ -19,6 +19,18 @@ with zipfile.ZipFile(ROOT/'dist/qwen-asr-minimal-debug.apk') as z:
     libs=[n for n in names if n.startswith('lib/') and not n.endswith('/')]
     assert libs==['lib/arm64-v8a/libqwen_asr_jni.so'], libs
     assert 'classes.dex' in names and 'AndroidManifest.xml' in names
+    # Check actual class_def ownership; a dangling string/type reference is insufficient.
+    from dex_class_inventory import defined_classes
+    dex = defined_classes(z.read('classes.dex'))
+    for descriptor in (b'Lkotlin/jvm/internal/Intrinsics;',
+                       b'Lorg/llmasr/minimal/audio/AsrText;',
+                       b'Lorg/llmasr/minimal/audio/PcmWave;',
+                       b'Lorg/llmasr/minimal/audio/RecordingControl;',
+                       b'Lorg/llmasr/minimal/asr/NativeResponse;'):
+        assert descriptor in dex, 'Kotlin runtime/owner missing from DEX: ' + str(descriptor)
+    assert not any(n.endswith('.jar') for n in names), 'Build/runtime jars must not be bundled as raw ZIP entries'
+    for asset in ('KOTLIN-LICENSE.txt', 'KOTLIN-NOTICES.txt'):
+        assert z.read('assets/' + asset) == (ROOT/'android/app/assets'/asset).read_bytes()
     assert not any(n.endswith(('.weight','.mnn','.o','.rsp')) for n in names)
     assert z.read('assets/model-manifest.json')==(ROOT/'reports/p0/mnn-model-manifest.json').read_bytes()
     assert hashlib.sha256(z.read('assets/sample.wav')).hexdigest()=='46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50'

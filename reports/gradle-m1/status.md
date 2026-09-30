@@ -1,6 +1,6 @@
 # M1 Gradle/AGP debug 构建验证
 
-任务 `llm-asr-76d.2`；基线 `449f01a` / 产品 `2fd7511`。实现者直接自审，非独立review。最终构建/必要自审修复/指纹核对完成；本地提交成功身份以Git日志为准，提交失败不得宣称交付。设备验收pending。
+任务 `llm-asr-76d.2`；基线 `449f01a` / 产品 `2fd7511`。实现者直接自审，非独立review。最终构建/必要自审修复/指纹核对完成；功能与证据已安全本地提交 **22918a4**，M1验收后关闭。设备验收pending。
 
 ## 最终身份
 - APK：`android/app/build/outputs/apk/debug/app-debug.apk`

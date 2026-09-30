@@ -58,3 +58,7 @@
 - 当前直接自审接受项最终复验，无剩余阻塞；证据/边界/README/AGENTS/Beads收尾完成。下一步index文件清单/输入/安全审计及本地提交，不push；失败不交付。
 
 - index安全审计44文件通过：43文本+唯一官方SHA核验Wrapper JAR；无模型/音频/APK/key/cache/session，无他人分析目录。152构建输入index/current/report全一致。默认cached whitespace将官方Windows gradlew.bat的CRLF每行报错，保留官方字节（已验证全部为CRLF且无真实行尾空格）；git -c core.whitespace=cr-at-eol diff --cached --check通过，不修改绑定输入或降低源码检查。准备本地提交，不push。
+
+## 完成
+- 功能与证据安全提交22918a4成功，44文件；152构建输入commit SHA逐项匹配，官方Wrapper JAR唯一二进制启动输入，未提交生成产物。M1验收后显式close成功；ap5仍deferred。
+- 本次状态/计划收尾另作小型文本提交，不amend功能提交、不push；设备pending，M2未实施，不自动继续epic。

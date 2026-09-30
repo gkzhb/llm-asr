@@ -7,7 +7,7 @@
 只做M1：根Gradle/Kotlin DSL、sourceSets接现目录、固定Wrapper/AGP/Kotlin/JDK、生成assets/显式SHA native过渡输入、host/JNI及post-package验证、依赖校验/可锁配置/缓存与offline证据、文档。不是Exec包装旧整包脚本。不做M2干净native、模块拆分/JUnit/UI/CI/Compose/协程/语言迁移。产品源/min29/target35/包名/组件/权限/数学/签名关系不变。保留两个他人分析目录，不提交。设备/麦克风/私人数据、push/重写历史、委派均未授权。
 
 ## Current Phase
-Phase3：最终b7658194f full strict/offline/仓库checksum负例通过，152输入/73产品/native/签名/报告绑定核对完；安全暂存和本地提交收尾。
+Phase3：最终b7658194f full strict/offline/仓库checksum负例通过，152输入/73产品/native/签名/报告绑定核对完；安全暂存和本地提交22918a4成功，M1已关闭。
 
 ### Phase 1: 工具与基线
 - [x] 新用户决策、ap5暂停、M0关闭与M1claim/readback。
@@ -24,12 +24,12 @@ Phase3：最终b7658194f full strict/offline/仓库checksum负例通过，152输
 ### Phase 3: 验证与交付
 - [x] 当前host/负例/全源Java-Kotlin/JNI/签名包/native指纹通过，最终152输入全匹配。
 - [x] 准备缓存与strict offline rerun分别实测；checksum mutation被真实Gradle拒绝，不声称hermetic。
-- [ ] 自审/必要修复/文档，当前源/产物/证据一致、安全本地提交。
-- [ ] 本轮M1验收后才关闭，设备pending；M2另轮实施。
-- **Status:** in_progress
+- [x] 自审/必要修复/文档，当前源/产物/证据一致、安全本地提交22918a4。
+- [x] M1真实验收与提交后关闭，设备pending；M2另轮实施。
+- **Status:** complete
 
 ## Next Step
-显式暂存本轮本人源码/脚本/锁/证据/计划与Beads，审计index安全及152输入一致，再本地提交；成功后报告M1交付，设备pending，不自动推进M2或ap5。
+向用户报告22918a4与M1当前APK/验证边界；下一步M2需另轮明确范围与领取，不自动恢复ap5或访问设备。
 
 ## Resource policy
 Gradle最多1 worker、JVM约1536MiB、Kotlin in-process，不同时native大编译/模型推理；现native仅校验与JNI object验证，不重编MNN。标准Wrapper归档SHA544c35d6bd849ae8a5ed0bcea39ba677dc40f49df7d1835561582da2009b961d（官方sidecar已核）。工具候选仍需实际编译，不因兼容表或exit0宣称完成。

@@ -15,3 +15,18 @@
 - 此规则授权功能轮次完成后的本地提交；**未经用户明确授权不推送远端**，不自动修改已有提交或重写历史。
 - 构建失败、检查失败、提交失败应如实记录；不得跳过安全检查、降低测试门槛或用旧产物/旧审查替代当前证据。
 - 设备、麦克风及私人文件访问需要单独授权；本地提交不构成此类授权。
+
+## 项目上下文与任务导航
+
+- 项目需求核查：[docs/requirements-audit.md](docs/requirements-audit.md)。该页是快照；实时任务、依赖、blocker、assignee 以本项目 Beads 为准：`bd status`、`bd ready`、`bd blocked`、`bd show <id>`。
+- 根 `task_plan.md` / `findings.md` / `progress.md` 保留累计执行历史；活动任务使用明确绑定任务 ID / owner 的 `.planning/<id>/`，一计划一 writer。旧阶段 TODO 不应绕过当前 Beads 重复分派。
+- Agent 运行状态以 Herdr 查询为准；`bd ready` 不等于实施授权。分派前核对依赖、owner、runtime 与任务范围。发现汇总与逐条记录不一致时以显式 `bd show <id>` / `bd list --status blocked` 核查，不只看 `bd status` 的计数。
+
+## Project Knowledge
+
+长期项目知识保存在本项目 Beads memories；索引不代替任务状态或 memory 正文。
+
+- 查找：`bd memories '<keyword>'`；全文：`bd recall '<key>'`。
+- 已存类别关键词：`Nix` / `资源约束` / `复现` / `KleidiAI` / `ASR` / `P0` / `验证边界`。
+- 相关 keys：`build-tiny-mirror`、`build-kleidiai-reproduction`、`asr-quality-evidence`。
+- 仅在成功保存知识且需要新增导航时更新此索引，不复制调试流水账。

@@ -3,6 +3,8 @@
 result
 result-*
 .direnv/
+# Shared local planning pointer is not a task/agent identity
+.planning/.active_plan
 
 # Android credentials must never enter the repository
 .android/

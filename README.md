@@ -6,14 +6,16 @@
 
 ## 当前方向
 
-以[通用 App 路线图](docs/app-roadmap.md)为准：先前台录音与App易用性，再模型/结果管理、生命周期/分段、IME/API。暂缓天玑专属绑核与GPU/APU优化；不承诺所有SoC/内存配置已实测。
+当前已实现App前台录音/结果管理、语音IME、独立模型管理、运行日志与R5/R6模块化；API、VAD、长音频和加载驻留尚未实现。当前`0.6-debug`的设备回归与完整P0质量仍待完成；旧版用户反馈不代替现版验收。
+
+进度快照见[项目需求核查](docs/requirements-audit.md)，产品方向见[通用 App 路线图](docs/app-roadmap.md)；实时任务/依赖/owner以项目Beads为准：`bd status`、`bd ready`、`bd blocked`。后续批次待用户选择，暂缓天玑专属绑核与GPU/APU优化；不承诺所有SoC/内存配置已实测。
 
 ## 阅读入口
 
 - **[本机 APK 复现](docs/local-apk-reproduction.md)**：从 Git 记录恢复配置、补齐 KleidiAI、精确重编 native 与新签名 APK 的验证记录。
 - **[详细实施规划](docs/implementation-plan.md)**：框架选择、模型转换/量化、硬件优化、内存预算、IME/API 架构、Nix 环境设计、验收指标与里程碑。
 - [研究发现](findings.md)：已核验事实、源码风险、资料访问限制。
-- [任务状态](task_plan.md) / [工作日志](progress.md)：持久化进度与错误记录。
+- [历史执行规划](task_plan.md) / [工作日志](progress.md)：持久化进度与错误记录；当前任务状态查询`bd status`。
 - [本地模型与配置说明](docs/local-models-and-config.md)：Git 未追踪模型的位置、下载/导出链路、配置来源、校验和迁移边界。
 - [证据来源与哈希](docs/research/source-manifest.json)：本轮下载的小型文本/源码快照，不包含模型权重。
 

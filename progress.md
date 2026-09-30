@@ -543,3 +543,15 @@
 - 已更新当前产物身份、历史证据边界与直接自审报告，不冒称独立review/设备结果。下一步暂存安全审计及本地提交。
 - 最终自审/暂存审计通过：18个文本文件，无模型/音频/APK/密钥/缓存；122项暂存构建输入SHA均匹配。git diff --cached --check通过，模型/APK/密钥仍ignored。
 - 实施与验证已完成，执行本轮本地提交；提交身份以Git日志及交付消息为准，失败则不得声明交付。不push，无设备验收。
+
+## Session: Beads初始化与项目需求核查
+- 用户授权初始化bd并检查当前规划；Steward仅执行协调/调查，不启动产品实现或新Agent。
+- 完整恢复三份历史规划，Git核对Phase24已提交d5c1b64；修正根当前阶段/下一步，历史证据不删除。
+- 新库为项目embedded Dolt/database llm_asr，context/ping/status/memories/list成功；init自动提交9f843db，五个配置/ignore文本已检查，无库实体/备份/凭据，未push。
+- 审计llm-asr-874由llm-asr-steward唯一writer；固定plan=.planning/2026-09-30-bd-initialization-audit/，不共写其他活动计划。
+- 本轮只读核对现有APK SHA/大小与122当前输入全部匹配；产品测试/重建/设备均not run。当前版实机仍待验收。
+- 查重登记10条后续任务、8条依赖；新增功能与设备任务blocked，5条无依赖open包含质量调查/日志窄修/产品决定。均未claim/分派，bd ready不当授权。
+- 保存并读回3条长期知识，AGENTS补导航；需求核查docs/requirements-audit.md。export.git-add=false、backup.git-push=false，保持非敏感文本持久化。
+- 审计任务llm-asr-874已显式关闭，10后续任务实际5open/5blocked且均未分派，8依赖无环。bd汇总/blocked视图遗漏手动阻塞项的口径差异已记录，调度需显式list/show。
+- 文档链接/围栏、122产品输入与APK只读身份检查通过，库实体/backup/交互日志/APK/密钥均ignored；本轮仅非敏感协作文本本地提交，不push，准确哈希以Git为准。
+- 下一步：向用户报告并等待选择下一批；不自动安装/访问麦克风或实施产品功能。

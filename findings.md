@@ -378,3 +378,11 @@
 - 本轮自审仅收敛两个接受项；可信仓库输入形状错误的异常美化未扩展，避免混入通用配置schema设计。
 - 完整构建b64ce963e exit0/APK_READY，122项当前输入与冻结完全相同；standalone checker再次通过。578 MNN对象/JNI与上轮一致，APK所有ZIP条目内容均相同，只有容器身份变化。
 - 新APK SHA66be525e2f69b12b23f5a76f5bc2d0815f97c7447a672000162d38b6d4e7dfed，2470760bytes，签名复用上轮e9365b...c16c；未运行设备。
+
+## Beads 接入与需求核查
+- 2026-09-30 核对Git确认Phase24已提交d5c1b64，根“等待提交”不是当前待办；旧Phase10已由模型管理实现取代，R5/R6已完成。
+- 项目内嵌Dolt数据库初始化成功，prefix=llm-asr；context/ping/status/memories可查，无global/redirect。初始化工具自动配置提交9f843db仅含非敏感文本。
+- 当前APK大小/SHA及122项构建输入本轮只读核对一致；没有重新执行产品测试/构建/设备验收。
+- 当前未完成需求和依赖登记在Beads，摘要docs/requirements-audit.md；审计执行上下文.planning/2026-09-30-bd-initialization-audit/。后续10条任务未分派，设备/新功能明确授权和决策门槛。
+- 复用知识已查重保存并读回：build-tiny-mirror、build-kleidiai-reproduction、asr-quality-evidence；AGENTS新增相应查询导航。任务状态不保存为memory。
+- RuntimeLogStore.publisher与日志compound fatal已修，Worker自身scheduled异常恢复仍待做；不按旧审查重复立已关闭问题。

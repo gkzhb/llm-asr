@@ -4,7 +4,13 @@
 优先广泛ARM64 Android SoC支持与离线ASR App功能完善；暂缓天玑专属优化，后续IME/API共用引擎。Nix锁定环境、模型不入Git，正确性与权限边界不放宽。
 
 ## Current Phase
-Phase24 / 配置准备修复、全构建及指纹核验完成，执行本地提交
+Phase24 已提交为 d5c1b64；Beads 初始化与需求审计已接入，后续任务以项目 bd 为准。历史阶段保留，不按旧 TODO 重复分派。
+
+## Current Coordination
+- 本次审计任务：llm-asr-874；writer/assignee：llm-asr-steward。
+- 审计计划：.planning/2026-09-30-bd-initialization-audit/；阶段、证据与单一下一步见该目录。
+- 需求快照：docs/requirements-audit.md；实时状态/依赖/owner：bd status / bd ready / bd blocked。
+- 本轮仅初始化与规划核查，不实现后续产品需求、不访问设备或麦克风。
 
 ## Phases
 ### Phase 1: 需求与技术事实核验
@@ -423,4 +429,4 @@ Phase24 / 配置准备修复、全构建及指纹核验完成，执行本地提�
 - 用户授权修复/验证；直接实施不委派，不改模型/Android数学，不访问设备/网络，不push。
 
 ## Next Step
-完成本地提交并向用户报告哈希及验证结果；设备测试仍pending，不自动安装或push。
+由用户确认 llm-asr-msj 的下一批次；优先补当前APK设备回归/P0质量基础，或选择无需设备的窄日志Worker修复。未明确分派前不自动实施；设备访问另需授权，不安装或push。

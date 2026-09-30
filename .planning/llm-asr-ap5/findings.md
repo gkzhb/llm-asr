@@ -12,3 +12,6 @@
 - 完整build日志暴露D8/R8 8.6.2 metadata2.4不兼容，不能仅凭exit0交付。改固定Kotlin2.0.21官方归档；官方sha256旁文件真实读取为0352c0a45bd22f80f6b26e485cd04da8047baa5de54865281fb9f89a4a7bcf2a，已写入Nix override（尚待归档下载比对/编译）。nix-prefetch超时后curl HEAD官方302→200可达，采用有界curl替代，不复跑原无限等待。
 - DEX最初字符串检索不足以证明runtime类有定义，自审改为解析class_def/type/string表。synthetic负例保留Intrinsics字符串和type引用、只移除class_def，实际checker正确exit1；绑定与其他旧负例全部通过。编译/runtime jar SHA与nixpkgs revision将由构建自动记录。
 - 第一批选择 AsrText/PcmWave/RecordingControl/NativeResponse：现成 host 覆盖高，JNI声明与模型/诊断变异源仍保留Java。NativeResponse 必须保留 Java String.split(" ") 的末尾空字段规则；字符串 trim 必须仍按 <=U+0020 而非 Kotlin Unicode whitespace；@JvmField DTO和@JvmStatic工厂保持Java互操作。
+- 首批实际Kotlin2.0.21+127输入APK已提交a23277d。2026-09-30继续批次2时git干净，bd owner仍llm-asr-kotlin，Herdr仅当前同项目working。
+- 用户询问Nix hack：实际仅标准overrideAttrs固定官方2.0.21/hash和同hash镜像fallback；无compiler patch/metadata剥离/校验旁路/系统代理写入，SDK/NDK未改变。批次2不再改Nix。
+- 批次2 task.Lifecycle原为Java default方法，Kotlin必须-jvm-default=all生成真正JVM defaults，Java匿名实现才能继续只覆写需要的方法；Task/TaskBody/Preflight/Cleanup/Listener为fun interface SAM。RequestContext.inputWav为可空可变字段，不把原允许null构造器改为非空前置检查。TaskCoordinator fatal观察异常/owner释放次序与RequestRunner catches必须保持。

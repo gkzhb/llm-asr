@@ -10,8 +10,8 @@ VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d
 VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
 VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
 VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
-PASS mixed JVM compile: 4 Kotlin + 75 Java sources
-PASS Kotlin migration Java ABI/behavior: 23 checks
+PASS mixed JVM compile: 10 Kotlin + 69 Java sources
+PASS Kotlin migration Java ABI/behavior: 43 checks
 PASS 32 minimal APK Java checks
 PASS 20 recording lifecycle gate checks (fake backend; not device release latency)
 PASS 34 result cleanup/export checks (host only)
@@ -73,9 +73,9 @@ PASS review regression liveDeletion
 PASS review regression planning
 PASS review regression publication
 PASS production provider boundary exception/stream/owner regressions
-PASS compiled mutant killed: readiness-monitor exit 1 logs .work/model-review-fixes/mutants/readiness-monitor-e3mm1x_a
-PASS compiled mutant killed: provider-cancel-trust exit 1 logs .work/model-review-fixes/mutants/provider-cancel-trust-5ldtycim
-PASS compiled mutant killed: terminal-cancel exit 1 logs .work/model-review-fixes/mutants/terminal-cancel-_kr1g_7r
+PASS compiled mutant killed: readiness-monitor exit 1 logs .work/model-review-fixes/mutants/readiness-monitor-9g3ht53d
+PASS compiled mutant killed: provider-cancel-trust exit 1 logs .work/model-review-fixes/mutants/provider-cancel-trust-fve5w44o
+PASS compiled mutant killed: terminal-cancel exit 1 logs .work/model-review-fixes/mutants/terminal-cancel-d57qkpy3
 PASS actual checker fixture bound-fixture exit 0
 PASS actual checker fixture missing-kotlin-runtime exit 1
 PASS actual checker fixture stale-apk exit 1
@@ -86,4 +86,4 @@ PASS actual checker fixture modified-manifest-tree.txt exit 1
 PASS actual checker fixture modified-ime-method-tree.txt exit 1
 PASS actual checker fixture modified-native-link-provenance.json exit 1
 PASS actual checker fixture missing-binding exit 1
-PASS archive/report binding rejects stale and every modified report; logs .work/model-review-fixes/apk-binding-s3_91ypj
+PASS archive/report binding rejects stale and every modified report; logs .work/model-review-fixes/apk-binding-c8xz0tik

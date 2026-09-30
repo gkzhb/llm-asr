@@ -28,7 +28,7 @@ mkdir -p "$out"
 cp="$out:$stdlib:$annotations"
 [ -z "$classpath" ] || cp="$cp:$classpath"
 if [ "${#kotlin_sources[@]}" -gt 0 ]; then
-  timeout 120 kotlinc -jvm-target 1.8 -no-stdlib -no-reflect -classpath "$cp" \
+  timeout 120 kotlinc -jvm-target 1.8 -Xjvm-default=all -no-stdlib -no-reflect -classpath "$cp" \
     -d "$out" "${kotlin_sources[@]}" "${java_sources[@]}"
 fi
 if [ "${#java_sources[@]}" -gt 0 ]; then

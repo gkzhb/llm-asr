@@ -4,10 +4,10 @@
 用户授权核查技术问题，无阻塞则实施。任务 llm-asr-ap5，owner/writer llm-asr-kotlin，session 01a0f290-8712-7015-b76f-af1852068512；cwd /home/zhb/gitrep/llm-asr，main 基线 d929cb1。直接执行、不委派。最终生产 Java 剩余 0 才算全量完成；采用可单独构建验证的增量，不把第一批当全部迁移。
 
 ## Current Phase
-Phase 3: 兼容工具链全构建/自审/127 build与132 frozen核对通过，首批提交收尾；Phase4全量迁移仍pending。
+Phase 4 / 批次2：完整host/APK/直接自审/127build与133frozen核对通过，安全审计后创建本批提交；全量仍未完成。
 
 ## Next Step
-审计本轮暂存文件/安全边界与输入SHA，创建首批本地提交，然后继续Phase4下一批。
+安全审计index并创建批次2本地提交；后续按模型/管理/日志/Android入口迁移剩余52类。
 
 ### Phase 1: 技术核查和第一批边界
 - [x] 完整恢复历史 planning、git 和 Beads；新增并 claim llm-asr-ap5。
@@ -30,7 +30,9 @@ Phase 3: 兼容工具链全构建/自审/127 build与132 frozen核对通过，�
 ### Phase 4: 后续生产类迁移
 - [ ] 协调器/模型与管理/诊断/推理/Android 平台及入口分批迁移。
 - [ ] 每批独立验证和提交；全量生产 Java=0 后关闭任务。
-- **Status:** pending
+- 本批六类：TaskKind/RequestContext/TaskCoordinator/RequestRunner/AppState/ImeFieldPolicy。默认接口方法需真实JVM default供既有Java实现，拒绝只生成DefaultImpls。
+- 本批完整host/全源Android/JNI/DEX/直接自审/指纹通过，提交成功身份以Git为准；JNI桥/ResultState及模型变异源暂保留Java。
+- **Status:** in_progress
 
 ## Constraints
 不改 MNN/JNI 数学、包名、权限、隐私、录音取消/交接 gate、导出 epoch。不引入协程/Compose/Gradle。不访问设备/麦克风/私人文件；模型、音频、APK、编译缓存、签名密钥不入 Git，不 push。编译工具依赖可下载但不下载模型。既有工作区干净；一 writer。

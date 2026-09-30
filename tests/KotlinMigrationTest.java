@@ -4,6 +4,10 @@ import org.llmasr.minimal.audio.AsrText;
 import org.llmasr.minimal.audio.PcmWave;
 import org.llmasr.minimal.audio.RecordingControl;
 import org.llmasr.minimal.asr.NativeResponse;
+import org.llmasr.minimal.task.*;
+import org.llmasr.minimal.transcription.AppState;
+import org.llmasr.minimal.ime.ImeFieldPolicy;
+import java.util.concurrent.Executor;
 
 /** Java-caller ABI and subtle Java/Kotlin behavior preservation, no Android runtime. */
 public final class KotlinMigrationTest {
@@ -43,6 +47,39 @@ public final class KotlinMigrationTest {
         try { failed.start(() -> { throw fatal; }); } catch (Throwable t) { observed = t; }
         check(observed == fatal);
         check(failed.start(() -> {})); // Failed backend must not mark started.
+        RequestContext nullable = new RequestContext(null, null);
+        check(nullable.requestId == null && nullable.kind == null && nullable.inputWav == null);
+        nullable.cleanedTemporary = 9; nullable.inferenceReported = true;
+        check(nullable.cleanedTemporary == 9 && nullable.inferenceReported);
+        check(TaskKind.valueOf("INFERENCE") == TaskKind.INFERENCE && TaskKind.values().length == 3);
+        String[] hooks = {"admitted", "busy", "rejected", "beforeBody", "succeeded", "cancelled"};
+        for (String hook : hooks) check(RequestRunner.Lifecycle.class.getMethod(hook, RequestContext.class).isDefault());
+        for (String hook : new String[]{"failed", "cleanupFailed"})
+            check(RequestRunner.Lifecycle.class.getMethod(hook, RequestContext.class, Throwable.class).isDefault());
+        RequestRunner.Lifecycle defaults = new RequestRunner.Lifecycle() {};
+        TaskCoordinator direct = new TaskCoordinator(Runnable::run);
+        RequestRunner runner = new RequestRunner(direct, () -> 7, defaults, ctx -> check(ctx.cleanedTemporary == 7));
+        check(runner.submit(TaskKind.MAINTENANCE, ctx -> check(direct.isBusy())));
+        check(!direct.isBusy());
+        Throwable badPort = null;
+        try { new TaskCoordinator((Executor) null); } catch (Throwable e) { badPort = e; }
+        check(badPort instanceof IllegalArgumentException && badPort.getMessage().equals("executor required"));
+        badPort = null;
+        try { direct.submit(null); } catch (Throwable e) { badPort = e; }
+        check(badPort instanceof IllegalArgumentException && badPort.getMessage().equals("task/admission/abandon required"));
+        AppState state = new AppState();
+        state.setLastText(null); state.setLastStatus(null);
+        check(state.lastText().isEmpty() && state.lastStatus().isEmpty());
+        final class EqualListener implements AppState.Listener {
+            int calls;
+            public void onChange() { calls++; }
+            public boolean equals(Object ignored) { return true; }
+            public int hashCode() { return 1; }
+        }
+        EqualListener first = new EqualListener(), second = new EqualListener();
+        state.addListener(first); state.addListener(second); state.removeListener(first); state.notifyChange();
+        check(first.calls == 0 && second.calls == 1); // Must compare identity, not Kotlin == equality.
+        check(ImeFieldPolicy.isSensitive(0x81, 0) && !ImeFieldPolicy.isSensitive(1, 0));
         System.out.println("PASS Kotlin migration Java ABI/behavior: " + checks + " checks");
     }
 }

@@ -26,3 +26,13 @@
 - APK3167222bytes SHAf24b4da1f254f17a324b756990408e3f4474c2b09afce94290d06d608562a163，同既有本地debug证书。result/status/docs/直接自审报告统一首批身份，设备pending。
 - 保存并读回kotlin-d8-compatibility memory，AGENTS仅增加Kotlin/D8导航。任务仍in_progress：58生产Java剩余，不把首批当全量。
 - 暂存前diff-check及文件归属核对，本轮从干净d929cb1开始，仅相关文本源码/测试/工具/许可/报告/规划/Beads导出；即将安全审计index并本地提交，不提交产物/音频/模型/密钥/缓存，不push。提交失败不得交付，成功身份以Git为准。
+
+## 继续批次2
+- 首批a23277d提交成功，用户要求继续并询问Nix hack。重新恢复活动三文件，git干净，bd ownership不变，Herdr同项目仅当前working，无委派。
+- 明确Nix只是标准overrideAttrs官方2.0.21+SHA/同hashmirror fallback，没有compiler patch/metadata剥离/校验绕过/永久代理；SDK/NDK不改，本批Nix不变。
+- 首批127输入与APK/report已备份.work/kotlin-batch2/baseline。task四类、AppState、ImeFieldPolicy共六类已改为Kotlin，nullable/@JvmField/SAM/身份比较/default契约保留。
+- 混合编译添加-Xjvm-default=all，Java默认Lifecycle空实现/反射isDefault/nullable端口/弱Listener identity回归已补，启动bf516cc59全host+Android编译，日志.work/kotlin-batch2/{host,android}.log。
+- bf516cc59正式exit0，完整host/43 migration Java checks及既有所有回归/变异/包checker负例通过；Android10 Kotlin+52 Java编译通过，无Kotlin警告。133输入冻结.work/kotlin-batch2/frozen.json，完整bb3c4f1e9构建开始，日志build.log。源码保持冻结，Nix未改。
+- bb3c4f1e9正式exit0/APK_READY，全log确认完整host/43checks/3mutants/全源10 Kotlin+52 Java/真实JNI/DEX/签名包通过，d8为空。127build/133frozen/current全部一致；DEX10 Kotlin类定义，native provenance578对象和JNI DSO逐字相同，flake/lock/native未改。APK3171318bytes SHA5de230d55bc81b641682c6be38a13c01fe839ff39e4045475e1df02a2b0a8e26。
+- 直接自审/报告统一最终身份，无产品输入再改。Beads记录本批通过/52 Java剩余；准备本地提交，不push/设备访问。
+- 暂存前发现其他working session 01a0f2dc...新增.planning/llm-asr-ap5-toolchain-analysis/，读取其scope为只解释工具链且不改源码/不claim，独立writer。保留原样，明确不暂存或提交这些无关文件。本批提交仅显式列出的本人改动。

@@ -10,10 +10,10 @@ Archive:  /home/zhb/gitrep/llm-asr/dist/qwen-asr-minimal-debug.apk
      1476  01-01-1980 00:00   assets/THIRD-PARTY-NOTICES.txt
      1125  01-01-1980 00:00   assets/model-manifest.json
    134570  01-01-1980 00:00   assets/sample.wav
-  2500328  09-30-2026 22:43   classes.dex
-  5396664  09-30-2026 22:43   lib/arm64-v8a/libqwen_asr_jni.so
-     1183  09-30-2026 22:43   META-INF/ANDROIDD.SF
-     1223  09-30-2026 22:43   META-INF/ANDROIDD.RSA
-     1056  09-30-2026 22:43   META-INF/MANIFEST.MF
+  2507608  09-30-2026 23:19   classes.dex
+  5396664  09-30-2026 23:18   lib/arm64-v8a/libqwen_asr_jni.so
+     1183  09-30-2026 23:19   META-INF/ANDROIDD.SF
+     1223  09-30-2026 23:19   META-INF/ANDROIDD.RSA
+     1056  09-30-2026 23:19   META-INF/MANIFEST.MF
 ---------                     -------
-  8089890                     14 files
+  8097170                     14 files

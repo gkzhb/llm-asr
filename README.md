@@ -12,6 +12,7 @@
 
 ## 阅读入口
 
+- **[现代 Android 工程技术路线](docs/modern-android-roadmap.md)**：Nix＋Gradle/AGP、原生构建、模块/测试/CI、生命周期/UI及发布的分阶段规格；Beads 总任务 `llm-asr-76d`，新 Agent 从 M0 `llm-asr-76d.1` 核验交接边界开始。仅已登记，尚未实施。
 - **[本机 APK 复现](docs/local-apk-reproduction.md)**：从 Git 记录恢复配置、补齐 KleidiAI、精确重编 native 与新签名 APK 的验证记录。
 - **[详细实施规划](docs/implementation-plan.md)**：框架选择、模型转换/量化、硬件优化、内存预算、IME/API 架构、Nix 环境设计、验收指标与里程碑。
 - [研究发现](findings.md)：已核验事实、源码风险、资料访问限制。

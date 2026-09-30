@@ -19,6 +19,7 @@
 ## 项目上下文与任务导航
 
 - 项目需求核查：[docs/requirements-audit.md](docs/requirements-audit.md)。该页是快照；实时任务、依赖、blocker、assignee 以本项目 Beads 为准：`bd status`、`bd ready`、`bd blocked`、`bd show <id>`。
+- 现代 Android 工程路线：[docs/modern-android-roadmap.md](docs/modern-android-roadmap.md)，总任务 `llm-asr-76d`；新 Agent 先核 M0 `llm-asr-76d.1` 的基线/owner 交接。登记不等于实施或设备授权，不抢占现 Kotlin 迁移任务。
 - 根 `task_plan.md` / `findings.md` / `progress.md` 保留累计执行历史；活动任务使用明确绑定任务 ID / owner 的 `.planning/<id>/`，一计划一 writer。旧阶段 TODO 不应绕过当前 Beads 重复分派。
 - Agent 运行状态以 Herdr 查询为准；`bd ready` 不等于实施授权。分派前核对依赖、owner、runtime 与任务范围。发现汇总与逐条记录不一致时以显式 `bd show <id>` / `bd list --status blocked` 核查，不只看 `bd status` 的计数。
 
@@ -27,6 +28,6 @@
 长期项目知识保存在本项目 Beads memories；索引不代替任务状态或 memory 正文。
 
 - 查找：`bd memories '<keyword>'`；全文：`bd recall '<key>'`。
-- 已存类别关键词：`Nix` / `资源约束` / `复现` / `KleidiAI` / `ASR` / `P0` / `验证边界` / `Kotlin` / `D8`。
-- 相关 keys：`build-tiny-mirror`、`build-kleidiai-reproduction`、`asr-quality-evidence`、`kotlin-d8-compatibility`。
+- 已存类别关键词：`Nix` / `资源约束` / `复现` / `KleidiAI` / `ASR` / `P0` / `验证边界` / `Kotlin` / `D8` / `Gradle` / `现代Android`。
+- 相关 keys：`build-tiny-mirror`、`build-kleidiai-reproduction`、`asr-quality-evidence`、`kotlin-d8-compatibility`、`modern-android-migration-boundaries`。
 - 仅在成功保存知识且需要新增导航时更新此索引，不复制调试流水账。

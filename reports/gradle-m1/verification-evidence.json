@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "final_task": "b7658194f",
+  "strict_offline_all_tasks_executed": 41,
+  "dependency_checksum_mutation_expected_exit": 1,
+  "device_verified": false,
+  "log_sha256": {
+    ".work/gradle-m1/online-build.log": "bd6d2aa212d3af375924dfdd83c5c53581efbc715cd22b4e70289f997d0d1c38",
+    ".work/gradle-m1/verify-78JtBW/build.log": "a5706327a033f37e700e3c328e036338b3aeb9b30d1f2d6ac485def749bba1cb",
+    ".work/gradle-m1/dependency-negative-Jxj5Ri/rejection.log": "728e7b0d2756e871d0c3a3a057c15e3c48ebc16f1dd1c3910463dc18a1b62c9f"
+  }
+}

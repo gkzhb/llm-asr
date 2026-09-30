@@ -4,7 +4,7 @@ set -euo pipefail
 : "${ANDROID_NDK_ROOT:?Use scripts/nix-env.sh apk}"
 root=$(cd "$(dirname "$0")/.." && pwd)
 cd "$root"
-out="$root/.work/refactor-phase19-r3/jni"
+out="${JNI_CHECK_OUT:-$root/.work/refactor-phase19-r3/jni}"
 mkdir -p "$out"
 # Start from a clean tree; old layout .class files break the symbol owner check.
 rm -rf "$out/classes" "$out/headers" "$out/asr_jni.o"

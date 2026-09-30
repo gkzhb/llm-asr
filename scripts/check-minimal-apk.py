@@ -21,7 +21,12 @@ with zipfile.ZipFile(ROOT/'dist/qwen-asr-minimal-debug.apk') as z:
     assert 'classes.dex' in names and 'AndroidManifest.xml' in names
     # Check actual class_def ownership; a dangling string/type reference is insufficient.
     from dex_class_inventory import defined_classes
-    dex = defined_classes(z.read('classes.dex'))
+    dex_names = [name for name in names if re.fullmatch(r'classes(?:[2-9]|[1-9][0-9]+)?\.dex', name)]
+    dex = set()
+    for name in dex_names:
+        definitions = defined_classes(z.read(name))
+        assert not dex.intersection(definitions), 'Duplicate class_def across DEX files'
+        dex.update(definitions)
     for descriptor in (b'Lkotlin/jvm/internal/Intrinsics;',
                        b'Lorg/llmasr/minimal/audio/AsrText;',
                        b'Lorg/llmasr/minimal/audio/PcmWave;',

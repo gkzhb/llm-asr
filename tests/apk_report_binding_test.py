@@ -24,10 +24,12 @@ native=b'synthetic native fixture; never executed'
 licenses = {name:(ROOT/'android/app/assets'/name).read_bytes() for name in ('KOTLIN-LICENSE.txt', 'KOTLIN-NOTICES.txt')}
 for name, data in licenses.items(): (work/'android/app/assets'/name).write_bytes(data)
 # Minimal synthetic class/string/type tables exercise ownership, not executable DEX.
-def fixture_dex(include_runtime=True):
+def fixture_dex(include_runtime=True, only_runtime=False):
     descriptors = [b'Lkotlin/jvm/internal/Intrinsics;', b'Lorg/llmasr/minimal/audio/AsrText;',
         b'Lorg/llmasr/minimal/audio/PcmWave;', b'Lorg/llmasr/minimal/audio/RecordingControl;',
         b'Lorg/llmasr/minimal/asr/NativeResponse;']
+    if only_runtime:
+        descriptors = descriptors[:1]
     n = len(descriptors)
     strings_offset, types_offset, classes_offset = 112, 112 + n*4, 112 + n*8
     data = bytearray(classes_offset + n*32)
@@ -92,6 +94,22 @@ with zipfile.ZipFile(apk, 'w') as z:
     for name, data in entries.items():
         z.writestr(name, fixture_dex(False) if name == 'classes.dex' else data)
 bind();run('missing-kotlin-runtime',False,'Kotlin runtime/owner missing')
+apk.write_bytes(original);bind()
+# AGP debug splits owners across multiple DEX files. Actual definitions in
+# secondary DEX must count; dangling references still never count.
+with zipfile.ZipFile(apk, 'w') as z:
+    for name, data in entries.items():
+        z.writestr(name, fixture_dex(only_runtime=True) if name == 'classes.dex' else data)
+    z.writestr('classes2.dex', fixture_dex(False))
+bind();run('multidex-definitions',True)
+with zipfile.ZipFile(apk, 'w') as z:
+    for name, data in entries.items():
+        z.writestr(name, fixture_dex(only_runtime=True) if name == 'classes.dex' else data)
+bind();run('multidex-missing-owners',False,'Kotlin runtime/owner missing')
+with zipfile.ZipFile(apk, 'w') as z:
+    for name, data in entries.items(): z.writestr(name, data)
+    z.writestr('classes2.dex', fixture_dex())
+bind();run('multidex-duplicate-owners',False,'Duplicate class_def')
 apk.write_bytes(original);bind()
 with zipfile.ZipFile(apk,'a') as z:z.writestr('fixture-marker.txt',b'changed ZIP; metadata detached')
 run('stale-apk',False,'APK report binding mismatch');apk.write_bytes(original)

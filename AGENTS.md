@@ -29,5 +29,5 @@
 
 - 查找：`bd memories '<keyword>'`；全文：`bd recall '<key>'`。
 - 已存类别关键词：`Nix` / `资源约束` / `复现` / `KleidiAI` / `ASR` / `P0` / `验证边界` / `Kotlin` / `D8` / `Gradle` / `现代Android`。
-- 相关 keys：`build-tiny-mirror`、`build-kleidiai-reproduction`、`asr-quality-evidence`、`kotlin-d8-compatibility`、`modern-android-migration-boundaries`。
+- 相关 keys：`build-tiny-mirror`、`build-kleidiai-reproduction`、`asr-quality-evidence`、`kotlin-d8-compatibility`、`modern-android-migration-boundaries`、`gradle-nix-verification`。
 - 仅在成功保存知识且需要新增导航时更新此索引，不复制调试流水账。

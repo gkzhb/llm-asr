@@ -52,8 +52,13 @@
 - 文档/README及self-review统一最终证据（直接自审，不假称独立review），知识gradle-nix-verification原位更新且读回，AGENTS已覆盖类别无需机械修改。
 - 最终构建输入未再改，index/安全审计与本地提交待执行。设备全部not run，不push或claim下一任务。
 
+## 本地提交完成
+- 36个暂存文件全为UTF8非敏感文本，无模型/音频/APK/DSO/对象/缓存/密钥/会话数据；他人两个分析目录未纳入。cached diff-check通过，161index/current/report相同；Beads语义仅M2与gradle-nix-verification内容改变，其他memory仅排序。
+- 功能提交169731b成功，161已提交构建输入逐项SHA匹配产物证据。未push，不修改产品/构建输入或APK。
+- M2显式close成功读回closed，4KiB/16KiB各not run；最终Beads/plan/report文本收尾另做提交，不amend原功能提交，不claim下一task。
+
 ## Current Phase
-Phase4：最终验证/绑定/直接自审完成，安全本地提交待执行。
+Phase4 complete，M2已交付工程验收；真实设备待验证。
 
 ## Next Step
-审计本轮暂存路径/非敏感文本与161输入index一致性，创建本地提交并核commit输入后更新Beads及交付。
+向用户报告169731b、当前APK/证据与设备待验证；等待下一轮授权。

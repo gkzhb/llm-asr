@@ -15,7 +15,7 @@
 允许范围为 M2 所需原生构建目标、来源校验/准备、AGP 任务图接线、测试、provenance 与文档；具体技术路线须在核查当前实现后决定。保留 min29/target35、包名/组件/签名关系、单 C++ runtime、CPU 数学/模型清单和权限/隐私策略。不混做 M3 模块/JUnit、M6 UI、日志修复、模型质量集或产品优化。不访问设备、麦克风、私人文件；不 push、重写历史或委派。保留他人两个分析目录，不纳入本轮提交。约 8GiB 主机，构建低并发，不与模型参考推理并行。
 
 ## Current Phase
-Phase4：最终bc3339b51 full43/checksum负例/source9/native4通过，161/current/freeze/79native/73product一致；待安全提交。
+Phase4 complete：最终验证/审查/安全提交169731b成功，161commit输入匹配，Beads已closed；设备not run。
 
 ### Phase 1: 认领、基线与现路径调查
 - [x] 阅读 AGENTS、路线、M0/M1/ap5 与目标依赖、相关 memories 和 M1 planning。
@@ -38,12 +38,12 @@ Phase4：最终bc3339b51 full43/checksum负例/source9/native4通过，161/curre
 
 ### Phase 4: 审查、提交与交付
 - [x] 直接源码自审及阻塞修复，最终源码/测试/产物绑定通过，无独立Agent委派。
-- [ ] 文档、长期知识审查、暂存清单及安全审计；本地提交成功后才交付。
-- [ ] 按真实验收更新 Beads 与计划，设备验证单独标 not run。
-- **Status:** in_progress
+- [x] 文档/知识/36文本暂存安全审计及169731b本地提交，161commit指纹匹配。
+- [x] Beads显式close并读回，设备4KiB/16KiB各not run；收尾文本另提交，不amend。
+- **Status:** complete
 
 ## Next Step
-审计本轮暂存清单与161输入index一致性，创建本地提交并核commit指纹，再更新Beads/计划并交付。
+向用户报告169731b、APK身份与设备待验收边界；等待下一轮明确授权，不自动claim M3或恢复ap5。
 
 ## Decisions Made
 | Decision | Rationale |

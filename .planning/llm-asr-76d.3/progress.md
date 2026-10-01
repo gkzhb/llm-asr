@@ -57,8 +57,12 @@
 - 功能提交169731b成功，161已提交构建输入逐项SHA匹配产物证据。未push，不修改产品/构建输入或APK。
 - M2显式close成功读回closed，4KiB/16KiB各not run；最终Beads/plan/report文本收尾另做提交，不amend原功能提交，不claim下一task。
 
+## 收尾持久化检查
+- 文档收尾提交b9faf37成功（3文本）。前置范围断言曾预期Beads导出同步纳入但当时未刷新，AssertionError只说明预期文件清单不同，不代表产物或提交失败；已复核实际3路径与161最终commit/current指纹通过。
+- 随后Beads延迟JSONL导出刷新，读取确认M2 closed；补提交该非敏感状态与本记录，不改功能/产物，不重写历史。
+
 ## Current Phase
-Phase4 complete，M2已交付工程验收；真实设备待验证。
+Phase4 complete，M2已完成工程验收；真实设备待验证。
 
 ## Next Step
 向用户报告169731b、当前APK/证据与设备待验证；等待下一轮授权。

@@ -15,7 +15,7 @@
 允许范围为 M2 所需原生构建目标、来源校验/准备、AGP 任务图接线、测试、provenance 与文档；具体技术路线须在核查当前实现后决定。保留 min29/target35、包名/组件/签名关系、单 C++ runtime、CPU 数学/模型清单和权限/隐私策略。不混做 M3 模块/JUnit、M6 UI、日志修复、模型质量集或产品优化。不访问设备、麦克风、私人文件；不 push、重写历史或委派。保留他人两个分析目录，不纳入本轮提交。约 8GiB 主机，构建低并发，不与模型参考推理并行。
 
 ## Current Phase
-Phase4 complete：最终验证/审查/安全提交169731b成功，161commit输入匹配，Beads已closed；设备not run。
+Phase4 complete：最终验证/审查/安全提交169731b成功，161commit输入匹配，Beads已closed；用户报告本轮手动验证通过，代理设备测试仍not run。
 
 ### Phase 1: 认领、基线与现路径调查
 - [x] 阅读 AGENTS、路线、M0/M1/ap5 与目标依赖、相关 memories 和 M1 planning。
@@ -43,7 +43,7 @@ Phase4 complete：最终验证/审查/安全提交169731b成功，161commit输�
 - **Status:** complete
 
 ## Next Step
-向用户报告169731b、APK身份与设备待验收边界；等待下一轮明确授权，不自动claim M3或恢复ap5。
+等待下一轮明确任务授权，不自动claim M3或恢复ap5；本轮用户手动验证反馈已记录，M2保持closed。
 
 ## Decisions Made
 | Decision | Rationale |

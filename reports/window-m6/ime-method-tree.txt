@@ -1,0 +1,7 @@
+N: android=http://schemas.android.com/apk/res/android (line=2)
+  E: input-method (line=2)
+    A: http://schemas.android.com/apk/res/android:isDefault(0x01010221)=false
+      E: subtype (line=3)
+        A: http://schemas.android.com/apk/res/android:label(0x01010001)=@0x7f010000
+        A: http://schemas.android.com/apk/res/android:imeSubtypeLocale(0x010102ec)="zh-CN" (Raw: "zh-CN")
+        A: http://schemas.android.com/apk/res/android:imeSubtypeMode(0x010102ed)="voice" (Raw: "voice")

@@ -36,7 +36,7 @@ PACKAGE_MAP = {
     'RuntimeLogPersistence': 'diagnostics', 'RuntimeLogCodec': 'diagnostics',
     'RuntimeLogWorker': 'diagnostics', 'LogExportController': 'diagnostics',
     'LogExportPage': 'diagnostics', 'RuntimeLogText': 'diagnostics',
-    'OperationContext': 'platform',
+    'OperationContext': 'platform', 'ActivityWindow': 'platform',
 }
 # Reverse map for "package for class X" queries.
 def pkg_of(name):

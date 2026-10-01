@@ -9,6 +9,7 @@ import android.widget.*;
 import java.io.*;
 import java.util.*;
 import org.llmasr.minimal.audio.RecordingControl;
+import org.llmasr.minimal.platform.ActivityWindow;
 import org.llmasr.minimal.model.ModelReadiness;
 import org.llmasr.minimal.modelmanagement.ModelUiText;
 import org.llmasr.minimal.task.TaskCoordinator;
@@ -28,6 +29,7 @@ public final class MainActivity extends Activity {
     private boolean navigateAfterRecording;
     private Spinner language;
     private AppGraph graph;
+    private final ActivityWindow.BackRegistration windowBack = new ActivityWindow.BackRegistration(this, this::onBackPressed);
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -37,6 +39,7 @@ public final class MainActivity extends Activity {
                 TextView failure = new TextView(this);
                 failure.setText("初始化失败：" + ioe.getMessage() + "\n请重新安装完整APK后重试。");
                 setContentView(failure);
+                ActivityWindow.configure(this, failure);
                 return; // No graph: do not enable inference or dereference the failed install.
             }
             graph = AppGraph.get();
@@ -45,6 +48,7 @@ public final class MainActivity extends Activity {
         LinearLayout root=new LinearLayout(this); root.setOrientation(LinearLayout.VERTICAL);
         int pad=(int)(16*getResources().getDisplayMetrics().density); root.setPadding(pad,pad,pad,pad);
         ScrollView scroll=new ScrollView(this); scroll.setFillViewport(true); scroll.addView(root); setContentView(scroll);
+        ActivityWindow.configure(this, scroll);
         TextView title=new TextView(this); title.setText("Qwen3-ASR · 最小离线原型"); title.setTextSize(22); root.addView(title);
         TextView note=new TextView(this);
         note.setText("arm64 CPU / FP16 权重 · 推理约 3.1 GiB 内存。\n本App不联网；分享接收方或导出到云存储的提供方可能联网同步。录音仅在授权后由您点击开始，离开界面取消；最长30秒。文件仅支持 16kHz 单声道 PCM16 WAV（0.1–30 秒）。模型管理在独立页面；每次转写重新加载模型。静音可能幻觉输出，本版无 VAD。模型导入后占用应用内部存储。"); root.addView(note);
@@ -161,6 +165,7 @@ public final class MainActivity extends Activity {
 
     @Override protected void onResume() {
         super.onResume();
+        windowBack.resumed();
         foreground=true;
         if (graph == null) return;
         graph.appState().addListener(appStateListener);
@@ -171,6 +176,7 @@ public final class MainActivity extends Activity {
         refresh();
     }
     @Override protected void onPause() {
+        windowBack.paused();
         foreground=false;
         if (graph != null) {
             navigateAfterRecording=false;

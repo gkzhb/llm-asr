@@ -51,7 +51,7 @@ PACKAGE_MAP = {
     'RuntimeLogPersistence': 'diagnostics', 'RuntimeLogCodec': 'diagnostics',
     'RuntimeLogWorker': 'diagnostics', 'LogExportController': 'diagnostics',
     'LogExportPage': 'diagnostics', 'RuntimeLogText': 'diagnostics',
-    'OperationContext': 'platform',
+    'OperationContext': 'platform', 'ActivityWindow': 'platform',
 }
 def java(name):
     if name not in PACKAGE_MAP:
@@ -81,7 +81,7 @@ assert re.search(r'"模型管理", \(\) -> leaveForExternalUi\(\(\) ->\s*startAc
 activity = java('ModelManagementActivity')
 assert 'takePersistableUriPermission' not in activity and 'putExtra' not in activity
 assert 'page.stopped(isChangingConfigurations())' in activity
-assert 'WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout()' in activity
+assert 'ActivityWindow.configure(this, scroll);' in activity
 assert 'getApplicationContext().getContentResolver()' in activity
 for name in ['check-minimal-apk.py']:
     ast.parse((root/'scripts'/name).read_text())

@@ -104,6 +104,8 @@ run TextExportTest
 run TextExportSafetyTest
 run TextExportFatalTest
 run ModelNotificationTest
+timeout 120 python3 tests/activity_window_test.py
+timeout 15 python3 tests/activity_window_source_test.py
 timeout 15 python3 tests/model_android_source_test.py
 timeout 15 python3 tests/text_export_source_test.py
 timeout 15 python3 tests/architecture_boundary_test.py

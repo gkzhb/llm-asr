@@ -1,6 +1,7 @@
 {
   "schema": 1,
-  "source_commit": "2fd75116ca51c478071417a6e6906221113f37b8",
+  "source_commit": "82a5563",
+  "revision_scope": "M6 window/back changes on source_commit; exact current inputs are pinned below, native/assets/signing unchanged",
   "native": {
     "path": ".work/build/minimal-apk/package/lib/arm64-v8a/libqwen_asr_jni.so",
     "sha256": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416"
@@ -11,7 +12,7 @@
   },
   "signing_certificate_sha256": "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c",
   "files": {
-    "android/app/AndroidManifest.xml": "812b8477b9073141bf197ede0ec6664f58ea2fd51b18870c70e361755f8afad1",
+    "android/app/AndroidManifest.xml": "6b8e458f88a044d0ac8837c9ed8b522a70affdbbeea1c8d5eb3f4a387732cc78",
     "native/apk/asr_jni.cpp": "4eaca3d66b90c63954a65f69887fe94b1ea97ebdb474ecfda5b306ce9cc07946",
     "reports/p0/mnn-model-manifest.json": "1435b19c210472fa88d04e471595b4a709264b164a3eae2cec432643eaee380e",
     "patches/mnn-asr-boundary-positions.patch": "bd643768d175ef9f2a46099bdcecc46216d8fdb9f1a0e6662dd6825ad827fe84",
@@ -20,9 +21,10 @@
     "patches/qwen-lazy-nagisa.patch": "c24bf1940bab19c2a89c34159f3900be0fdf9e7e502d89de4cba5936f045abe8",
     "android/app/src/org/llmasr/minimal/AppGraph.java": "9f33cdd81234bbf033ac49807205a76a3734f39ac5b1e52ee8291bb96ae0e012",
     "android/app/src/org/llmasr/minimal/AsrImeService.java": "cff9fe4493b01bd26720e953b5606704c353e011ccd634c0f171d925a505f971",
-    "android/app/src/org/llmasr/minimal/LogsActivity.java": "b0e2142f8da938294320ea212d1a26bab09e4b377709474396b2acb5931d2102",
-    "android/app/src/org/llmasr/minimal/MainActivity.java": "b006828f85e3b8390785af8af74b1d08ee47b0de9f9b77276069c004a62c10f9",
-    "android/app/src/org/llmasr/minimal/ModelManagementActivity.java": "c089a41737418c4faa14df7fc3d57e9bfd4851e57306f743f85a41128660ecfb",
+    "android/app/src/org/llmasr/minimal/LogsActivity.java": "89f921c43c9f5a92e962eb4d03e3b990121f73fe2b2ab0cdd3a5b8b4e2def801",
+    "android/app/src/org/llmasr/minimal/MainActivity.java": "88f24a66d9f571c9ab659d4a095c730b90adb8e9a73e89205fa8c0c2156adadc",
+    "android/app/src/org/llmasr/minimal/ModelManagementActivity.java": "c04da08c22c5530f87aa013af0beeceeb23c88dbac9fd650b4be5ba3a6e08a02",
+    "android/app/src/org/llmasr/minimal/platform/ActivityWindow.java": "d4d8603f0c1575e90cd5df5b6c11e6c8d007555540b40120e7a4370df10eed8b",
     "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.java": "7c4aa16a0d3174b397db839269033190cf34de531c1b395291f52c3c75a06ddc",
     "android/app/src/org/llmasr/minimal/asr/InferencePhase.java": "72bc9400537dc6c2c4769ea09f8f210642bc27922a6f5b7e4481a3157667f00a",
     "android/app/src/org/llmasr/minimal/asr/InferencePhaseListener.java": "1132c3c4d5040449b9f7e0d1e60872e5652b2d5a42edd07e1d5b5758311dca44",

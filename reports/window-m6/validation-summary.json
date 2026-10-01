@@ -1,0 +1,36 @@
+{
+  "task": "llm-asr-76d.7",
+  "base_commit": "82a5563",
+  "verification": {
+    "task_id": "b8f9fc4e0",
+    "exit_code": 0,
+    "command": "bash scripts/nix-env.sh apk bash scripts/verify-gradle.sh --offline --rerun-tasks",
+    "log": ".work/window-m6/build-final.log",
+    "report": "android/app/build/verification/debug/run-d80294252e524780a500c0b1fc566c13",
+    "actionable_tasks": 43,
+    "executed_tasks": 43,
+    "source_inputs_frozen_current_report_equal": 164,
+    "product_inputs_checked": 74,
+    "production_sources": {"kotlin": 10, "java": 53},
+    "adapter_fake_platform_checks": 69,
+    "adapter_compiling_mutants_rejected": 3,
+    "activity_wiring_suites": 3,
+    "actual_apk_identity_tests": 7,
+    "staging_tests": 8,
+    "source_tests_normal_and_optimized_each": 9,
+    "native_tests_normal_and_optimized_each": 4,
+    "existing_host_and_three_production_mutants": "passed",
+    "all_source_jni_headers_object_linked_and_agp_class_symbols": "passed",
+    "native_payload_and_certificate_unchanged_from_m2": true,
+    "signed_apk_permissions_components_assets_dex_binding": "passed"
+  },
+  "review": {
+    "type": "direct_self_review_not_independent_agent",
+    "path": ".planning/llm-asr-76d.7/self-review.md",
+    "accepted_checker_boundary_fix_and_negatives": "passed final full gate",
+    "remaining_blockers": []
+  },
+  "device_visual_navigation_ime_dialog_recording_saf_4k_16k": "not_run",
+  "device_reason": "No current authorization or runtime evidence; host fakes do not prove Android behavior",
+  "network_dependency_claim": "Offline after controlled cache preparation, not hermetic"
+}

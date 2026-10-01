@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -21,11 +19,13 @@ import org.llmasr.minimal.diagnostics.RuntimeLogEvent;
 import org.llmasr.minimal.diagnostics.RuntimeLogStore;
 import org.llmasr.minimal.diagnostics.RuntimeLogText;
 import org.llmasr.minimal.diagnostics.RuntimeLogWorker;
+import org.llmasr.minimal.platform.ActivityWindow;
 
 /** Cache-only foreground log viewer. All provider IO belongs to graph's bounded
  * process export lane; the page never supplies worker callbacks capturing UI. */
 public final class LogsActivity extends Activity {
     private AppGraph graph;
+    private final ActivityWindow.BackRegistration windowBack = new ActivityWindow.BackRegistration(this, this::onBackPressed);
     private LogExportPage<Uri> page;
     private TextView body, summary, status;
     private Button export;
@@ -38,7 +38,8 @@ public final class LogsActivity extends Activity {
         super.onCreate(saved);
         try { AppGraph.install(getApplicationContext()); graph = AppGraph.get(); }
         catch (java.io.IOException failure) {
-            TextView text = new TextView(this); text.setText("初始化失败，请重新安装完整应用。"); setContentView(text); return;
+            TextView text = new TextView(this); text.setText("初始化失败，请重新安装完整应用。"); setContentView(text);
+            ActivityWindow.configure(this, text); return;
         }
         page = new LogExportPage<>(graph.logExports());
         LinearLayout root = new LinearLayout(this); root.setOrientation(LinearLayout.VERTICAL);
@@ -46,15 +47,7 @@ public final class LogsActivity extends Activity {
         root.setBackgroundColor(Color.rgb(248,250,252));
         scroll = new ScrollView(this); scroll.setFillViewport(true);
         scroll.setBackgroundColor(Color.rgb(248,250,252)); scroll.addView(root); setContentView(scroll);
-        scroll.setOnApplyWindowInsetsListener((v, insets) -> {
-            if (Build.VERSION.SDK_INT >= 30) {
-                android.graphics.Insets b = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
-                v.setPadding(b.left,b.top,b.right,b.bottom);
-            } else v.setPadding(insets.getSystemWindowInsetLeft(),insets.getSystemWindowInsetTop(),
-                insets.getSystemWindowInsetRight(),insets.getSystemWindowInsetBottom());
-            return insets;
-        });
-        scroll.requestApplyInsets();
+        ActivityWindow.configure(this, scroll);
         button(root,"‹ 返回",this::finish);
         text(root,"运行日志",24);
         text(root,"App / 语音输入法共用日志。日期、毫秒、时区及阶段耗时可见。\n仅保存固定事件，不包含转写正文、录音、外部路径或原始异常。保留最近 1000 条；突然结束进程可能丢失未刷盘日志。",14);
@@ -88,11 +81,12 @@ public final class LogsActivity extends Activity {
         if (page != null) page.result(request,result == RESULT_OK && data != null ? data.getData() : null);
     }
     @Override protected void onResume() {
-        super.onResume(); visible=true;
+        super.onResume(); windowBack.resumed(); visible=true;
         if (page == null) return;
         page.foreground(true); refresh.start();
     }
     @Override protected void onPause() {
+        windowBack.paused();
         visible=false; if (page != null) page.foreground(false);
         refresh.stop(); super.onPause();
     }

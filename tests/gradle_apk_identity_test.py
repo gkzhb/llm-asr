@@ -41,6 +41,24 @@ class IdentityTests(unittest.TestCase):
     def test_positive_existing_apk(self):
         module.check_identity(self.apk, self.baseline, self.report)
 
+    def test_policy_guard_rejects_borrowed_sibling_and_nested_attributes(self):
+        tree = (self.report / 'manifest-tree.txt').read_text()
+        module.check_activity_back_policy(tree)
+        lines = tree.splitlines()
+        # Last Activity must not borrow the following Service's callback flag.
+        start = next(i for i, line in enumerate(lines) if '="org.llmasr.minimal.LogsActivity"' in line)
+        flag = next(i for i in range(start + 1, len(lines)) if 'android:enableOnBackInvokedCallback' in lines[i])
+        callback = lines.pop(flag)
+        service = next(i for i in range(start + 1, len(lines)) if 'E: service' in lines[i])
+        lines.insert(service + 1, callback)
+        with self.assertRaisesRegex(ValueError, 'LogsActivity'):
+            module.check_activity_back_policy('\n'.join(lines))
+        lines = tree.splitlines()
+        flag = next(i for i in range(start + 1, len(lines)) if 'android:enableOnBackInvokedCallback' in lines[i])
+        lines[flag] = '    ' + lines[flag]
+        with self.assertRaisesRegex(ValueError, 'LogsActivity'):
+            module.check_activity_back_policy('\n'.join(lines))
+
     def test_changed_native_expectation_rejected(self):
         self.baseline['native']['sha256'] = '0' * 64
         with self.assertRaisesRegex(ValueError, 'native payload'):
@@ -54,6 +72,14 @@ class IdentityTests(unittest.TestCase):
     def test_missing_kotlin_owner_rejected(self):
         self.baseline['files']['android/app/src/org/llmasr/minimal/Missing.kt'] = '0' * 64
         with self.assertRaisesRegex(ValueError, 'owner definition missing'):
+            module.check_identity(self.apk, self.baseline, self.report)
+
+    def test_activity_back_opt_in_rejected(self):
+        self.baseline['revision_scope'] = 'M6 actual callback policy'
+        path = self.report / 'manifest-tree.txt'
+        path.write_text(path.read_text().replace('android:enableOnBackInvokedCallback',
+                                               'android:incorrectBackCallback'))
+        with self.assertRaisesRegex(ValueError, 'modern back opt-in missing'):
             module.check_identity(self.apk, self.baseline, self.report)
 
     def test_backup_policy_rejected(self):

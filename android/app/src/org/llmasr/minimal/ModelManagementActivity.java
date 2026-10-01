@@ -17,7 +17,6 @@ import android.os.Looper;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.view.View;
-import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -38,10 +37,12 @@ import org.llmasr.minimal.modelmanagement.ModelPageSession;
 import org.llmasr.minimal.modelmanagement.ModelPickerTickets;
 import org.llmasr.minimal.modelmanagement.ModelUiText;
 import org.llmasr.minimal.task.TaskCoordinator;
+import org.llmasr.minimal.platform.ActivityWindow;
 
 /** Same-process foreground maintenance page. All file work belongs to the shared controller. */
 public final class ModelManagementActivity extends Activity {
     private AppGraph graph;
+    private final ActivityWindow.BackRegistration windowBack = new ActivityWindow.BackRegistration(this, this::onBackPressed);
     private ModelPageSession<Uri> page;
     private TextView readiness, storage, task, files, busy;
     private Button choose, verify, delete, cancel;
@@ -59,7 +60,8 @@ public final class ModelManagementActivity extends Activity {
         super.onCreate(saved);
         try { AppGraph.install(getApplicationContext()); graph = AppGraph.get(); }
         catch (IOException e) {
-            TextView failure = new TextView(this); failure.setText("初始化失败，请重新安装完整应用。"); setContentView(failure); return;
+            TextView failure = new TextView(this); failure.setText("初始化失败，请重新安装完整应用。"); setContentView(failure);
+            ActivityWindow.configure(this, failure); return;
         }
         page = new ModelPageSession<>(graph.pickerTickets(), graph.modelManagement(), saved == null ? null : saved.getString("modelOperation"));
         LinearLayout root = new LinearLayout(this); root.setOrientation(LinearLayout.VERTICAL);
@@ -67,18 +69,7 @@ public final class ModelManagementActivity extends Activity {
         int pad = dp(16); root.setPadding(pad,pad,pad,pad);
         ScrollView scroll = new ScrollView(this); scroll.setFillViewport(true); scroll.setBackgroundColor(Color.rgb(248,250,252)); scroll.addView(root);
         setContentView(scroll);
-        scroll.setOnApplyWindowInsetsListener((v, insets) -> {
-            int left, top, right, bottom;
-            if (Build.VERSION.SDK_INT >= 30) {
-                android.graphics.Insets bars = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
-                left=bars.left; top=bars.top; right=bars.right; bottom=bars.bottom;
-            } else {
-                left=insets.getSystemWindowInsetLeft(); top=insets.getSystemWindowInsetTop();
-                right=insets.getSystemWindowInsetRight(); bottom=insets.getSystemWindowInsetBottom();
-            }
-            v.setPadding(left,top,right,bottom); return insets;
-        });
-        scroll.requestApplyInsets();
+        ActivityWindow.configure(this, scroll);
         button(root, "‹ 返回 · 模型管理", this::onBackPressed);
         text(root,"Qwen3-ASR-0.6B",24);
         text(root,"MNN · FP16 权重 · CPU · 当前固定部署版本\n仅支持内置固定清单，不支持原始 safetensors、压缩包或在线下载。",16);
@@ -208,7 +199,7 @@ public final class ModelManagementActivity extends Activity {
         else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
     @Override protected void onResume() {
-        super.onResume(); visible=true;
+        super.onResume(); windowBack.resumed(); visible=true;
         if (page == null) return;
         graph.modelManagement().state().addListener(invalidation); graph.readiness().addListener(invalidation); graph.coordinator().addListener(invalidation);
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
@@ -217,6 +208,7 @@ public final class ModelManagementActivity extends Activity {
         inspectNeeded=!page.ownsActive(); consumePicker(); invalidation.onChange();
     }
     @Override protected void onPause() {
+        windowBack.paused();
         visible=false;
         if (page != null) {
             page.foreground(false);

@@ -2,7 +2,7 @@
 
 面向 **Android 10+ / ARM64、跨厂商 SoC** 的离线语音转文字项目：Android App、系统语音输入法及本地推理 API，计划由 Nix Flake 提供开发环境。
 
-> 已完成最终补丁的 host 20/20 工程回归与手机 native CPU 单条复测；不等同于完整质量验收。当前已生成 **最小 Java/JNI 离线 debug APK**（模型导入、示例/WAV 转写），构建、签名与静态包检查通过；**用户已反馈在骁龙手机上成功加载模型并正确输出**（[手动验证记录](reports/apk/user-snapdragon-validation.md)，尚无自动采集日志/性能数据），仍非完整 IME/API 产品。产物与验证边界见 [APK 状态](reports/apk/status.md)。构建/使用方式见 [最小 APK 指南](docs/minimal-apk.md)，P0 证据与限制见 [P0 报告](reports/p0/report.md)，进展见 [工作记录](progress.md)。
+> 已完成最终补丁的 host 20/20 工程回归与手机 native CPU 单条复测；不等同于完整质量验收。当前已生成 **最小 Java/JNI 离线 debug APK**（模型导入、示例/WAV 转写），构建、签名与静态包检查通过；**用户已反馈在骁龙手机上成功加载模型并正确输出**（[手动验证记录](reports/apk/user-snapdragon-validation.md)，尚无自动采集日志/性能数据），仍非完整 IME/API 产品。历史手工构建产物见 [APK 状态](reports/apk/status.md)；当前标准构建及窗口适配产物身份见 [M6 状态](reports/window-m6/status.md)。构建/使用方式见 [最小 APK 指南](docs/minimal-apk.md)，P0 证据与限制见 [P0 报告](reports/p0/report.md)，进展见 [工作记录](progress.md)。
 
 ## 当前方向
 
@@ -15,6 +15,7 @@
 - **[现代 Android 工程技术路线](docs/modern-android-roadmap.md)**：Nix＋Gradle/AGP、原生构建、模块/测试/CI、生命周期/UI及发布的分阶段规格；Beads 总任务 `llm-asr-76d`，新 Agent 从 M0 `llm-asr-76d.1` 核验交接边界开始。M0交接、M1标准构建及M2显式原生构建已实施并验证；后续阶段未自动实施，设备仍待验收。
 - **[Gradle 标准构建](docs/gradle-build.md)**：固定Wrapper/AGP/Kotlin、同签名debug打包、旧回归/JNI/包检查、依赖SHA/锁与严格离线验证；当前Kotlin迁移按用户决定暂缓。
 - **[显式原生构建](docs/native-build.md)**：M2 独立源码准备、CMake OBJECT/JNI目标和AGP当前产物接线；最终全量验证/输入绑定通过，提交身份以Git为准，[M2产物与验证](reports/native-m2/status.md)，设备未通过本轮自动验收。
+- **[Activity 窗口与返回适配](docs/activity-window-validation.md)**：M6 三页面系统栏/刘海/键盘避让与平台返回回调，保留录音/忙任务/模型取消契约；[本轮状态](reports/window-m6/status.md)，真实视觉/手势待设备验证。
 - **[本机 APK 复现](docs/local-apk-reproduction.md)**：从 Git 记录恢复配置、补齐 KleidiAI、精确重编 native 与新签名 APK 的验证记录。
 - **[详细实施规划](docs/implementation-plan.md)**：框架选择、模型转换/量化、硬件优化、内存预算、IME/API 架构、Nix 环境设计、验收指标与里程碑。
 - [研究发现](findings.md)：已核验事实、源码风险、资料访问限制。

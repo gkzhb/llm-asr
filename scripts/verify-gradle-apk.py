@@ -60,9 +60,38 @@ def check_identity(apk, baseline, reports):
             if hashlib.sha256(archive.read(name)).hexdigest() != expected:
                 raise ValueError('APK asset hash mismatch: ' + name)
     tree = (reports / 'manifest-tree.txt').read_text()
+    check_activity_back_policy(tree)
     for key, value in [('debuggable', 'true'), ('allowBackup', 'false'), ('extractNativeLibs', 'true')]:
         if not re.search(r'android:' + key + r'[^\n]*=' + value + r'(?:\s|$)', tree):
             raise ValueError('Manifest policy mismatch: ' + key)
+
+
+def check_activity_back_policy(tree):
+    # Bound each component by its tree indentation; never borrow an opt-in from
+    # a following service/activity or nested child. Only direct attributes count.
+    lines = tree.splitlines()
+    activities = {}
+    for index, line in enumerate(lines):
+        node = re.fullmatch(r'(\s*)E: activity(?:\s+.*)?', line)
+        if not node:
+            continue
+        depth = len(node[1])
+        attributes = []
+        for following in lines[index + 1:]:
+            following_depth = len(following) - len(following.lstrip())
+            if following.strip() and following_depth <= depth:
+                break
+            if following_depth == depth + 2 and following.lstrip().startswith('A: '):
+                attributes.append(following)
+        direct = '\n'.join(attributes)
+        names = re.findall(r'android:name[^\n]*?="([^"]+)"', direct)
+        if len(names) != 1 or names[0] in activities:
+            raise ValueError('Activity identity missing/duplicated')
+        activities[names[0]] = direct
+    for name in ['MainActivity', 'ModelManagementActivity', 'LogsActivity']:
+        direct = activities.get('org.llmasr.minimal.' + name, '')
+        if not re.search(r'android:enableOnBackInvokedCallback[^\n]*=true(?:\s|$)', direct):
+            raise ValueError('Activity modern back opt-in missing: ' + name)
 
 
 def verify(apk_dir, report_dir, native_build):

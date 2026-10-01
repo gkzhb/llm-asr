@@ -1,0 +1,23 @@
+{
+  "full_verification": "passed",
+  "strict_offline": true,
+  "actionable_tasks": 43,
+  "checksum_mutation": "rejected exit=1 (negative test passed)",
+  "source_tests": 9,
+  "source_python_O": "passed",
+  "native_tests": 4,
+  "native_python_O": "passed",
+  "staging_tests": 8,
+  "apk_identity_tests": 5,
+  "production_mutants": 3,
+  "apk_inputs": 161,
+  "native_inputs": 79,
+  "frozen_product_inputs": 73,
+  "input_freeze_sha256": "09b42a33a51a4c29a668dc8bd32c6b0c4732a2efcb774bbd2a4fb4a5a75199b4",
+  "full_log_sha256": "b3a8d841867364fbe6115e91912a8141d10807d8083c7eaff6ae44f115f2f00e",
+  "native_first_clean_run": "passed",
+  "native_second_agp_clean_run": "compiled passed; initial report FileNotFoundError then repaired",
+  "review": "direct self-review, no independent agent",
+  "device_4k": "not run",
+  "device_16k": "not run"
+}

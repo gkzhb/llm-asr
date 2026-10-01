@@ -8,13 +8,31 @@ plugins {
 }
 
 val generated = layout.buildDirectory.dir("controlled-inputs")
+// Source preparation is deliberately separate from configuration/compilation.
+val nativeSources = rootProject.layout.projectDirectory.dir(".work/native-m2/sources")
+val nativeBuild = layout.buildDirectory.dir("native-debug")
+val buildNativeArtifact by tasks.registering(Exec::class) {
+    description = "Build pinned explicit MNN OBJECT/JNI artifact and recheck source/config/ELF identity"
+    workingDir(rootProject.projectDir)
+    inputs.dir(nativeSources)
+    inputs.files(rootProject.fileTree("native"), rootProject.fileTree("patches"),
+        rootProject.fileTree("android/app/src"), rootProject.fileTree("scripts"),
+        rootProject.file("flake.nix"), rootProject.file("flake.lock"))
+    outputs.dir(nativeBuild.map { it.dir("artifact") })
+    // No Gradle shortcut: even cached native must pass current source/object/provenance gates.
+    outputs.upToDateWhen { false }
+    commandLine("bash", rootProject.file("scripts/build-native-artifact.sh"),
+        nativeSources.asFile, nativeBuild.get().asFile)
+}
 val prepareInputs by tasks.registering(Exec::class) {
-    description = "Stage only hash-verified public assets/native and identity-preserving manifest"
+    description = "Stage verified public assets/current native artifact and identity-preserving manifest"
+    dependsOn(buildNativeArtifact)
+    workingDir(rootProject.projectDir)
     inputs.files(rootProject.file("gradle/baseline-inputs.json"),
         rootProject.file("scripts/prepare-gradle-inputs.py"), file("AndroidManifest.xml"),
         rootProject.file("reports/p0/mnn-model-manifest.json"),
         rootProject.file("bench/audio/zh-original.wav"),
-        rootProject.file(".work/build/minimal-apk/package/lib/arm64-v8a/libqwen_asr_jni.so"))
+        nativeBuild.map { it.file("artifact/libqwen_asr_jni.so") })
     inputs.dir("assets")
     inputs.dir("src")
     inputs.dir(rootProject.file("native/apk"))
@@ -24,7 +42,8 @@ val prepareInputs by tasks.registering(Exec::class) {
         rootProject.file("scripts/prepare-model-configs.py"))
     outputs.dir(generated)
     commandLine("python3", rootProject.file("scripts/prepare-gradle-inputs.py"),
-        "--output", generated.get().asFile)
+        "--output", generated.get().asFile,
+        "--native", nativeBuild.get().file("artifact/libqwen_asr_jni.so").asFile)
 }
 
 android {
@@ -120,7 +139,8 @@ androidComponents.onVariants(androidComponents.selector().withBuildType("debug")
             rootProject.file("scripts/verify-gradle-apk.py"))
         commandLine("python3", rootProject.file("scripts/verify-gradle-apk.py"),
             "--apk-dir", apkDirectory.get().asFile,
-            "--report-dir", layout.buildDirectory.dir("verification/debug").get().asFile)
+            "--report-dir", layout.buildDirectory.dir("verification/debug").get().asFile,
+            "--native-build", nativeBuild.get().asFile)
     }
 }
 // Fail closed rather than accidentally deliver a new release identity.

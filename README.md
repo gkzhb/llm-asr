@@ -12,8 +12,9 @@
 
 ## 阅读入口
 
-- **[现代 Android 工程技术路线](docs/modern-android-roadmap.md)**：Nix＋Gradle/AGP、原生构建、模块/测试/CI、生命周期/UI及发布的分阶段规格；Beads 总任务 `llm-asr-76d`，新 Agent 从 M0 `llm-asr-76d.1` 核验交接边界开始。M0交接已完成，M1标准构建已实施并验证；后续阶段未自动实施，设备仍待验收。
+- **[现代 Android 工程技术路线](docs/modern-android-roadmap.md)**：Nix＋Gradle/AGP、原生构建、模块/测试/CI、生命周期/UI及发布的分阶段规格；Beads 总任务 `llm-asr-76d`，新 Agent 从 M0 `llm-asr-76d.1` 核验交接边界开始。M0交接、M1标准构建及M2显式原生构建已实施并验证；后续阶段未自动实施，设备仍待验收。
 - **[Gradle 标准构建](docs/gradle-build.md)**：固定Wrapper/AGP/Kotlin、同签名debug打包、旧回归/JNI/包检查、依赖SHA/锁与严格离线验证；当前Kotlin迁移按用户决定暂缓。
+- **[显式原生构建](docs/native-build.md)**：M2 独立源码准备、CMake OBJECT/JNI目标和AGP当前产物接线；最终全量验证/输入绑定通过，提交身份以Git为准，[M2产物与验证](reports/native-m2/status.md)，设备未通过本轮自动验收。
 - **[本机 APK 复现](docs/local-apk-reproduction.md)**：从 Git 记录恢复配置、补齐 KleidiAI、精确重编 native 与新签名 APK 的验证记录。
 - **[详细实施规划](docs/implementation-plan.md)**：框架选择、模型转换/量化、硬件优化、内存预算、IME/API 架构、Nix 环境设计、验收指标与里程碑。
 - [研究发现](findings.md)：已核验事实、源码风险、资料访问限制。

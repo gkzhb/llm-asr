@@ -19,6 +19,8 @@ val verifyHost by tasks.registering(Exec::class) {
 }
 val verifyBuildInputs by tasks.registering(Exec::class) {
     group = "verification"
+    dependsOn(":app:buildNativeArtifact")
+    environment("NATIVE_TEST_ARTIFACT", file("android/app/build/native-debug/artifact/libqwen_asr_jni.so").absolutePath)
     inputs.files("scripts/prepare-gradle-inputs.py", "tests/gradle_inputs_test.py",
         "gradle/baseline-inputs.json")
     commandLine("python3", "tests/gradle_inputs_test.py")
@@ -31,15 +33,24 @@ val verifyApkChecker by tasks.registering(Exec::class) {
         "gradle/baseline-inputs.json")
     commandLine("python3", "tests/gradle_apk_identity_test.py")
 }
+val verifyNativeInputs by tasks.registering(Exec::class) {
+    group = "verification"
+    dependsOn(":app:buildNativeArtifact")
+    environment("NATIVE_TEST_ARTIFACT", file("android/app/build/native-debug/artifact/libqwen_asr_jni.so").absolutePath)
+    commandLine("bash", "-euo", "pipefail", "-c",
+        "python3 tests/native_sources_test.py && python3 -O tests/native_sources_test.py && " +
+        "python3 tests/native_artifact_test.py && python3 -O tests/native_artifact_test.py")
+}
 val verifyJni by tasks.registering(Exec::class) {
     group = "verification"
     description = "Generated JNI header, NDK bridge object and actual symbol verification"
     environment("JNI_CHECK_OUT", layout.buildDirectory.dir("jni-check").get().asFile.absolutePath)
+    environment("JNI_MNN_SOURCE", file(".work/native-m2/sources/mnn").absolutePath)
     inputs.files(fileTree("android/app/src"), fileTree("native/apk"), fileTree("scripts"))
     commandLine("bash", "scripts/compile-jni-object.sh")
 }
 tasks.register("verifyDebug") {
     group = "verification"
     description = "Host + JNI + AGP signed APK + fail-closed package/identity evidence"
-    dependsOn(verifyHost, verifyBuildInputs, verifyApkChecker, verifyJni, ":app:verifyDebugPackage")
+    dependsOn(verifyHost, verifyBuildInputs, verifyNativeInputs, verifyApkChecker, verifyJni, ":app:verifyDebugPackage")
 }

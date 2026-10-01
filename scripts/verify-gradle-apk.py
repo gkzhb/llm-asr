@@ -65,8 +65,13 @@ def check_identity(apk, baseline, reports):
             raise ValueError('Manifest policy mismatch: ' + key)
 
 
-def verify(apk_dir, report_dir):
+def verify(apk_dir, report_dir, native_build):
     baseline = json.loads((ROOT / 'gradle/baseline-inputs.json').read_text())
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('native_verify', ROOT / 'scripts/verify-native-artifact.py')
+    native_verify = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(native_verify)
+    native_result = native_verify.verify(native_build.absolute(), ROOT / '.work/native-m2/sources')
     apks = sorted(apk_dir.glob('*.apk'))
     if len(apks) != 1:
         raise ValueError('Expected exactly one AGP APK, got ' + str(apks))
@@ -116,10 +121,8 @@ def verify(apk_dir, report_dir):
         destination.mkdir(parents=True)
         for name in commands:
             shutil.copyfile(report / name, destination / name)
-        (destination / 'native-link-provenance.json').write_text(json.dumps({
-            'output_sha256': baseline['native']['sha256'],
-            'strategy': 'M1 explicit verified existing native input; M2 rebuild not implemented',
-        }) + '\n')
+        shutil.copyfile(native_build / 'artifact/native-link-provenance.json',
+                        destination / 'native-link-provenance.json')
         for relative in ['android/app/assets/KOTLIN-LICENSE.txt',
                          'android/app/assets/KOTLIN-NOTICES.txt', 'reports/p0/mnn-model-manifest.json']:
             path = fixture / relative
@@ -131,15 +134,17 @@ def verify(apk_dir, report_dir):
         subprocess.run(['python3', str(ROOT / 'scripts/check-minimal-apk.py'), '--root', str(fixture)], check=True)
         shutil.copyfile(destination / 'apk-report-binding.json', report / 'apk-report-binding.json')
         shutil.copyfile(destination / 'native-link-provenance.json', report / 'native-link-provenance.json')
+    shutil.copyfile(native_build / 'artifact/verification.json', report / 'native-verification.json')
     inputs = set(baseline['files'])
     for relative in ['settings.gradle.kts', 'build.gradle.kts', 'gradle.properties',
                      'flake.nix', 'flake.lock', 'gradlew', 'gradlew.bat',
                      'buildscript-gradle.lockfile', 'android/app/gradle.lockfile']:
         inputs.add(relative)
-    for folder in ['gradle', 'scripts', 'tests', 'android/app/res']:
+    for folder in ['gradle', 'scripts', 'tests', 'android/app/res', 'native/cmake']:
         inputs.update(str(p.relative_to(ROOT)) for p in (ROOT / folder).rglob('*')
                       if p.is_file() and '__pycache__' not in p.parts)
     inputs.add('android/app/build.gradle.kts')
+    inputs.add('native/source-lock.json')
     fingerprints = {relative: sha(ROOT / relative) for relative in sorted(inputs)}
     (report / 'build-input-sha256.json').write_text(json.dumps(fingerprints, indent=2) + '\n')
     result = {
@@ -149,7 +154,7 @@ def verify(apk_dir, report_dir):
         'native_sha256': baseline['native']['sha256'], 'product_baseline': baseline['source_commit'],
         'inputs_checked': len(fingerprints), 'device_verified': False,
         'external_inputs': {
-            baseline['native']['path']: sha(ROOT / baseline['native']['path']),
+            str((native_build / 'artifact/libqwen_asr_jni.so').relative_to(ROOT)): native_result['native_sha256'],
             baseline['sample']['path']: sha(ROOT / baseline['sample']['path']),
             'models/mnn-16/config.json': sha(ROOT / 'models/mnn-16/config.json'),
             'models/mnn-16/llm_config.json': sha(ROOT / 'models/mnn-16/llm_config.json'),
@@ -159,7 +164,7 @@ def verify(apk_dir, report_dir):
                                                       text=True).strip(),
                       'aapt2_sha256': sha(tools / 'aapt2'),
                       'apksigner_jar_sha256': sha(tools / 'lib/apksigner.jar')},
-        'limitations': ['Existing-native transition only; M2 clean native remains pending',
+        'limitations': ['Native rebuilt via explicit CMake targets; 4KiB/16KiB runtime not run',
                         'Host/JNI checks are separate verifyDebug prerequisites',
                         'No device/microphone/SAF/IME runtime acceptance'],
     }
@@ -172,5 +177,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--apk-dir', type=Path, required=True)
     parser.add_argument('--report-dir', type=Path, required=True)
+    parser.add_argument('--native-build', type=Path, required=True)
     args = parser.parse_args()
-    verify(args.apk_dir, args.report_dir)
+    verify(args.apk_dir, args.report_dir, args.native_build)

@@ -1,5 +1,7 @@
 # M1 标准 Android 构建
 
+> 本页保存 M1 已完成批次的工具与验证背景。M2 当前实现已将 AGP 的 native 过渡路径替换为显式原生目标；独立源准备、当前命令和验证中状态见 [原生构建](native-build.md)。以下关于“现成 DSO / MNN 不重编 / M2 未实施”的表述仅对应 M1 历史批次，不作为 M2 当前交付结论。
+
 任务 `llm-asr-76d.2`。用户已明确暂缓 `llm-asr-ap5`，保留其 Kotlin 迁移 owner；当前基建 writer 不继续迁移剩余52Java。在线与缓存后的严格离线全量验证、checksum负例、直接自审和最终输入核对已通过。**本地提交成功后才交付APK**，提交身份以Git为准；当前身份与证据见[本轮报告](../reports/gradle-m1/status.md)，设备仍pending。
 
 ## 工具分工和范围

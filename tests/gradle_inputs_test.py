@@ -2,6 +2,7 @@
 """Production M1 staging checks, using public fixture assets (no keys/weights)."""
 import importlib.util
 import json
+import os
 import shutil
 import tempfile
 import unittest
@@ -20,8 +21,12 @@ class InputTests(unittest.TestCase):
         self.addCleanup(self.directory.cleanup)
         self.root = Path(self.directory.name)
         self.baseline = json.loads((ROOT / 'gradle/baseline-inputs.json').read_text())
-        files = set(self.baseline['files']) | {self.baseline[key]['path'] for key in ['native', 'sample']}
+        files = set(self.baseline['files']) | {self.baseline['sample']['path']}
         files.add('gradle/baseline-inputs.json')
+        self.native = self.root / 'current-native/libqwen_asr_jni.so'
+        self.native.parent.mkdir()
+        shutil.copyfile(Path(os.environ.get('NATIVE_TEST_ARTIFACT',
+                        ROOT / self.baseline['native']['path'])), self.native)
         for relative in files:
             destination = self.root / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
@@ -34,7 +39,9 @@ class InputTests(unittest.TestCase):
 
     def test_actual_staging_and_manifest(self):
         output = self.root / 'build'
-        module.stage(self.root, output)
+        # The previous transition path is absent and must not be read.
+        self.assertFalse((self.root / self.baseline['native']['path']).exists())
+        module.stage(self.root, output, self.native)
         self.assertEqual(module.digest(output / 'jniLibs/arm64-v8a/libqwen_asr_jni.so'),
                          self.baseline['native']['sha256'])
         manifest = module.ET.parse(output / 'AndroidManifest.xml').getroot()
@@ -47,34 +54,34 @@ class InputTests(unittest.TestCase):
     def test_added_asset_rejected(self):
         (self.root / 'android/app/assets/extra.txt').write_text('fixture')
         with self.assertRaisesRegex(ValueError, 'inventory mismatch'):
-            module.stage(self.root, self.root / 'output')
+            module.stage(self.root, self.root / 'output', self.native)
         self.assertFalse((self.root / 'output').exists())
 
     def test_native_drift_rejected_before_output(self):
-        (self.root / self.baseline['native']['path']).write_bytes(b'wrong')
+        self.native.write_bytes(b'wrong')
         with self.assertRaisesRegex(ValueError, 'artifact hash mismatch'):
-            module.stage(self.root, self.root / 'output')
+            module.stage(self.root, self.root / 'output', self.native)
         self.assertFalse((self.root / 'output').exists())
 
     def test_product_drift_rejected_before_output(self):
         (self.root / 'native/apk/asr_jni.cpp').write_text('changed')
         with self.assertRaisesRegex(ValueError, 'Frozen product input mismatch'):
-            module.stage(self.root, self.root / 'output')
+            module.stage(self.root, self.root / 'output', self.native)
         self.assertFalse((self.root / 'output').exists())
 
     def test_native_symlink_rejected(self):
-        native = self.root / self.baseline['native']['path']
+        native = self.native
         native.unlink()
         native.symlink_to(ROOT / self.baseline['native']['path'])
         with self.assertRaisesRegex(ValueError, 'artifact hash mismatch'):
-            module.stage(self.root, self.root / 'output')
+            module.stage(self.root, self.root / 'output', self.native)
 
     def test_stale_asset_rejected(self):
         output = self.root / 'output'
         (output / 'assets').mkdir(parents=True)
         (output / 'assets/private.txt').write_text('fixture')
         with self.assertRaisesRegex(ValueError, 'stale generated asset'):
-            module.stage(self.root, output)
+            module.stage(self.root, output, self.native)
 
     def test_descendant_symlink_rejected(self):
         output = self.root / 'output'
@@ -83,7 +90,7 @@ class InputTests(unittest.TestCase):
         target.mkdir()
         (output / 'assets').symlink_to(target)
         with self.assertRaisesRegex(ValueError, 'descendants'):
-            module.stage(self.root, output)
+            module.stage(self.root, output, self.native)
         self.assertEqual(list(target.iterdir()), [])
 
     def test_output_symlink_rejected(self):
@@ -92,7 +99,7 @@ class InputTests(unittest.TestCase):
         output = self.root / 'output'
         output.symlink_to(target)
         with self.assertRaisesRegex(ValueError, 'symlink'):
-            module.stage(self.root, output)
+            module.stage(self.root, output, self.native)
         self.assertEqual(list(target.iterdir()), [])
 
 

@@ -59,7 +59,7 @@
           CMAKE_BUILD_PARALLEL_LEVEL = "2";
         };
         apk = pkgs.mkShell {
-          packages = (with pkgs; [ android-tools jdk17 python312 zip unzip ndk sdk ]) ++ [ kotlin ];
+          packages = (with pkgs; [ android-tools jdk17 python312 zip unzip cmake ninja util-linux ndk sdk ]) ++ [ kotlin ];
           KOTLIN_HOME = "${kotlin}";
           ANDROID_HOME = "${sdk}/libexec/android-sdk";
           ANDROID_NDK_ROOT = "${ndk}/libexec/android-sdk/ndk/28.2.13676358";

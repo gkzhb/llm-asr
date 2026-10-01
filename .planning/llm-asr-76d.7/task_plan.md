@@ -15,7 +15,7 @@
 仅 Activity 窗口/insets/back 适配与相关测试、构建输入接线、文档。保持 min29/target35、包名/组件/签名、权限/模型数学/单owner/录音gate/IME策略。不混 M3 模块、Kotlin 全迁、产品优化，不委派/设备/麦克风/私人文件/push/重写历史。保留两个他人未跟踪分析目录。约8GiB低并发；优先缓存/离线，不新增未验证依赖。
 
 ## Current Phase
-Phase4 in_progress：b8f9fc4e0末次strict offline全验证通过，164freeze/current/report与74产品匹配；非敏感报告已保存，准备安全审计/本地提交，未提交不得交付。
+Phase4 complete：b8f9fc4e0末次验证/自审/安全审计通过，功能本地提交5c6ab69成功；164commit指纹及APK核对，M6已closed，设备矩阵仍not run。
 
 ### Phase 1: 认领与调查
 - [x] 核 AGENTS、Beads/M0/M2/ap5、memories、Git、Herdr，原子 claim 并读回。
@@ -33,12 +33,12 @@ Phase4 in_progress：b8f9fc4e0末次strict offline全验证通过，164freeze/cu
 - **Status:** complete
 
 ### Phase 4: 安全提交与交付
-- [ ] 文档/plan/Beads与必要知识；暂存安全及指纹检查，本地提交。
-- [ ] 满足工程验收才关闭task；提交后报告身份与设备验证清单。
-- **Status:** in_progress
+- [x] 文档/plan/Beads与知识审查；32UTF8文本安全审计及164index/commit指纹检查，本地提交5c6ab69。
+- [x] 工程验收满足后显式close/readback；设备未运行及APK身份明确交付。
+- **Status:** complete
 
 ## Next Step
-暂存本轮明确文件，审计无私人内容/产物/密钥及164index指纹一致，成功本地提交后关闭本task并报告交付。
+等待本轮用户设备验证或下一轮明确任务授权；不自动claim M3/恢复ap5/访问设备，不以M6工程closed代替通用设备验收。
 
 ## Errors Encountered
 | Error | Attempt | Resolution |

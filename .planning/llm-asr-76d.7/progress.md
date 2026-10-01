@@ -28,5 +28,11 @@
 - reports/window-m6保存必要非敏感文本（最大native provenance约96KiB）及validation-summary/status；未复制APK/DSO/音频/权重/密钥或原始会话。直接自审无剩余工程blocker，真实设备仍not run。
 - 长期知识审查：本轮API接线与padding细节可从小adapter直接获得，暂无需新建memory类别；现Gradle/native与设备边界由已有memories覆盖，不重写无关memory/AGENTS。
 
+## 安全提交与关闭
+- 32个暂存文件全UTF8/小于1MiB，无二进制、权重/音频/APK/DSO/缓存/密钥/会话数据，164index指纹一致，cached diff-check通过；Beads语义仅M6变更，其他memory只是排序。两个他人分析目录保留未暂存。
+- 本地功能提交5c6ab69成功；164已提交源输入与report逐项SHA匹配，实际APK SHA再次通过。未push或重写历史。
+- M6验收工程范围满足后显式close/readback/export成功。设备not run边界保留到通用设备/质量task，不关闭它们或epic；不claim下一task。
+- 更新本task状态/status及Beads closed文本收尾，单独提交而不amend功能历史；不改任何已验证构建输入/APK。
+
 ## Next Step
-审计暂存文件清单、164index输入及Beads仅本task语义变化，安全本地提交后显式close并报告交付。
+等待用户本轮设备验证或下一轮明确授权，不自动claim/恢复ap5/访问设备。

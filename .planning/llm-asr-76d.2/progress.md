@@ -6,7 +6,7 @@
 - 本轮尚未产品修改/新APK，不stage/commit/push。后续按AGENTS验收与本地提交再交付。
 
 ## Next Step
-实现标准单app AGP工程/显式输入校验和验证入口；工具后台完成通知后运行配置与构建。
+M1已交付并获用户手动测试通过反馈；等待用户选择下一基建阶段，不自动恢复ap5或访问设备。
 
 - 已落标准settings/root/app Kotlin DSL，冻结产品SHA、显式native/assets/生成Manifest任务、AGP接管编译资源DEX签名，不执行旧整包脚本。verifyDebug连接旧host/真实JNI/新独立APK验签与报告绑定；JNI check输出允许指定本次build目录。
 - Python语法、shell语法、冻结inputs staging smoke与git diff-check正在核查；没有新APK交付。source manifest仅生成副本去AGP namespace冗余，原产品输入未改。
@@ -61,4 +61,8 @@
 
 ## 完成
 - 功能与证据安全提交22918a4成功，44文件；152构建输入commit SHA逐项匹配，官方Wrapper JAR唯一二进制启动输入，未提交生成产物。M1验收后显式close成功；ap5仍deferred。
-- 本次状态/计划收尾另作小型文本提交，不amend功能提交、不push；设备pending，M2未实施，不自动继续epic。
+- 状态/计划收尾已提交7c5f400，不amend功能提交、不push；设备pending，M2未实施，不自动继续epic。
+
+## 用户测试反馈
+- 用户反馈“没有问题，测试通过”，记录为本轮M1交付的用户报告手动验证通过；未提供设备/OS/具体项目/日志或端侧hash，不扩大为自动设备及全平台验收。
+- 仅更新验证文本和M1 Beads notes，不改源码/构建输入/APK，不重新构建、不访问设备。ap5继续deferred，M2不自动启动。

@@ -1,6 +1,6 @@
 # M1 Gradle/AGP debug 构建验证
 
-任务 `llm-asr-76d.2`；基线 `449f01a` / 产品 `2fd7511`。实现者直接自审，非独立review。最终构建/必要自审修复/指纹核对完成；功能与证据已安全本地提交 **22918a4**，M1验收后关闭。设备验收pending。
+任务 `llm-asr-76d.2`；基线 `449f01a` / 产品 `2fd7511`。实现者直接自审，非独立review。最终构建/必要自审修复/指纹核对完成；功能与证据已安全本地提交 **22918a4**，M1验收后关闭。用户已反馈本轮手动测试通过；未提供逐项设备证据的验收仍pending。
 
 ## 最终身份
 - APK：`android/app/build/outputs/apk/debug/app-debug.apk`
@@ -18,6 +18,11 @@
 - 仓库 `tests/gradle_dependency_verification_test.sh`：隔离篡改AGP期望SHA，实际Gradle strict因Dependency verification failed拒绝exit1；负例脚本自身exit0。
 - 407依赖artifact缓存SHA全匹配，AGP/stdlib官方sidecar交叉核对；其他受控HTTPS首次bootstrap信任固定，无校验豁免，不声称全部发布者独立签名认证。
 - 最终APK/152当前输入/73产品输入/外部SHA/6派生报告绑定复核通过。日志hash见verification-evidence.json；自审 `.planning/llm-asr-76d.2/self-review.md`。
+
+## 用户手动测试反馈
+- 用户在收到本轮M1 APK后反馈：“没有问题，测试通过”。记录为本轮交付的用户报告手动测试通过。
+- 未提供设备型号、Android版本、具体用例、运行日志或设备端APK哈希核对；不扩展为所有设备兼容、逐项生命周期/麦克风/SAF/IME/JNI自动验收。
+- 代理未访问设备或私人数据；`result.json` 的 `device_verified=false` 继续表示未取得代理采集的设备验收证据，不抹去用户反馈。
 
 ## 限制与恢复
 - 本轮M1 only：native现DSO hash过渡输入，M2干净native/模块/JUnit/CI/UI/release未实施。旧Kotlin迁移由用户暂缓，assignee保留，余52Java。

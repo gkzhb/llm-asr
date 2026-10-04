@@ -1,0 +1,55 @@
+[
+  {
+    "suite": "CoreRegressionJUnitTest",
+    "tests": "34",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "cases": [
+      "runtimeLogErrorIdentity",
+      "modelReadiness",
+      "imeSessionPrivacy",
+      "reviewWindow",
+      "reviewPublication",
+      "reviewDeletion",
+      "reviewLiveDeletion",
+      "resultFiles",
+      "modelPageHelpers",
+      "recordingRaces",
+      "kotlinJavaAbi",
+      "logExportGenerations",
+      "modelNotifications",
+      "admissionOwnerBoundary",
+      "privateModelRoot",
+      "reviewPlanning",
+      "modelOperationControl",
+      "modelWhitelistDeletion",
+      "reviewBoundary",
+      "modelRepository",
+      "runtimeLogCore",
+      "nativeResponseProtocol",
+      "modelCancelCleanup",
+      "textExportFatalIdentity",
+      "providerErrorAndStreamBoundary",
+      "requestRunner",
+      "reviewTerminal",
+      "textExport",
+      "partRecoveryProductionMutant",
+      "waveAndRecordingProtocol",
+      "modelManagementController",
+      "textExportSafety",
+      "reviewHistory",
+      "taskCoordinator"
+    ]
+  },
+  {
+    "suite": "RuntimeRegressionJUnitTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "cases": [
+      "inferenceAdapterAndJniConstruction"
+    ]
+  }
+]

@@ -62,6 +62,8 @@ android {
     sourceSets.named("main") {
         manifest.srcFile(generated.map { it.file("AndroidManifest.xml") })
         java.setSrcDirs(listOf("src"))
+        @Suppress("UNCHECKED_CAST")
+        java.include(rootProject.extra["appSources"] as List<String>)
         res.setSrcDirs(listOf("res"))
         assets.setSrcDirs(listOf(generated.map { it.dir("assets") }))
         jniLibs.setSrcDirs(listOf(generated.map { it.dir("jniLibs") }))
@@ -99,8 +101,19 @@ android {
     buildFeatures { buildConfig = false }
 }
 
+// All ten production Kotlin owners belong to core, not app.
+kotlin.sourceSets.named("main") { kotlin.exclude("**/*.kt") }
+tasks.withType<JavaCompile>().configureEach {
+    if (name == "compileDebugJavaWithJavac") {
+        @Suppress("UNCHECKED_CAST")
+        include(rootProject.extra["appSources"] as List<String>)
+    }
+}
 tasks.named("preBuild") { dependsOn(prepareInputs) }
 tasks.withType<KotlinCompile>().configureEach {
+    // Android's Java source root is also added to the Kotlin task by AGP.
+    // Source-set exclusion alone doesn't constrain that task-level collection.
+    exclude("**/*.kt")
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_1_8)
         freeCompilerArgs.add("-Xjvm-default=all")
@@ -124,6 +137,8 @@ configurations.configureEach {
     }
 }
 dependencies {
+    implementation(project(":core"))
+    implementation(project(":asr-runtime"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
     implementation("org.jetbrains:annotations:13.0")
 }

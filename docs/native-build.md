@@ -2,6 +2,10 @@
 
 任务 `llm-asr-76d.3`。实现与最终 strict offline 全量43项实际Gradle任务、checksum负例、直接自审和161输入绑定已通过；提交身份以 Git 为准，**提交失败不交付**。当前产物与证据见 [M2 报告](../reports/native-m2/status.md)。不继承 M1 的旧包验收，4KiB/16KiB 设备运行均待验证。
 
+## M3 模块接线说明
+
+M3仅将Java JNI桥/Android适配归属`:asr-runtime`、纯JVM业务归属`:core`；显式MNN/JNI artifact任务/当前native目录仍由`:app`持有。生产源码物理路径、包名、JNI头/符号/native数学flags与SHA门槛不改。当前全源为10Kotlin+53Java（M6新增ActivityWindow）；包检查汇集三个模块实际class并核全DEX唯一owner，不沿用app单目录假设。见[完整测试映射](module-test-map.md)和[M3实施报告](../reports/modules-m3/status.md)。M3的设备运行仍not run，旧用户M2手工验证不自动覆盖新包。
+
 ## 输入与构建分阶段
 
 1. 显式准备锁定归档（来源及原始 SHA 见 [本机复现文档](local-apk-reproduction.md)）。默认受控缓存为 `.work/sources/mnn.tar.gz` 与 `kleidiai-v1.16.0.tar.gz`，只消费归档，不读取旧展开源码或旧对象。脚本不下载。

@@ -33,12 +33,15 @@ def check_identity(apk, baseline, reports):
             raise ValueError('DEX missing')
         classes = set()
         for name in dex_files:
-            classes.update(defined_classes(archive.read(name)))
-        owners = [p.removeprefix('android/app/src/').removesuffix('.kt')
-                  for p in baseline['files'] if p.endswith('.kt')]
+            definitions = defined_classes(archive.read(name))
+            if classes.intersection(definitions):
+                raise ValueError('Duplicate production/runtime owner across DEX files')
+            classes.update(definitions)
+        owners = [p.removeprefix('android/app/src/').rsplit('.', 1)[0]
+                  for p in baseline['files'] if p.endswith(('.kt', '.java'))]
         for name in owners:
             if ('L' + name + ';').encode() not in classes:
-                raise ValueError('Production Kotlin owner definition missing: ' + name)
+                raise ValueError('Production Kotlin/Java owner definition missing: ' + name)
         if b'Lkotlin/jvm/internal/Intrinsics;' not in classes:
             raise ValueError('Kotlin runtime definition missing')
         native = archive.read('lib/arm64-v8a/libqwen_asr_jni.so')
@@ -96,6 +99,7 @@ def check_activity_back_policy(tree):
 
 def verify(apk_dir, report_dir, native_build):
     baseline = json.loads((ROOT / 'gradle/baseline-inputs.json').read_text())
+    subprocess.run(['python3', str(ROOT / 'tests/module_owners_test.py')], check=True)
     import importlib.util
     spec = importlib.util.spec_from_file_location('native_verify', ROOT / 'scripts/verify-native-artifact.py')
     native_verify = importlib.util.module_from_spec(spec)
@@ -125,7 +129,9 @@ def verify(apk_dir, report_dir, native_build):
     with tempfile.TemporaryDirectory(prefix='jni-classes-', dir=report) as temporary:
         classes = Path(temporary)
         class_roots = [ROOT / 'android/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes',
-                       ROOT / 'android/app/build/tmp/kotlin-classes/debug']
+                       ROOT / 'android/asr-runtime/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes',
+                       ROOT / 'core/build/classes/java/main',
+                       ROOT / 'core/build/classes/kotlin/main']
         for source in class_roots:
             if not source.is_dir():
                 raise ValueError('AGP class output missing: ' + str(source))
@@ -167,9 +173,12 @@ def verify(apk_dir, report_dir, native_build):
     inputs = set(baseline['files'])
     for relative in ['settings.gradle.kts', 'build.gradle.kts', 'gradle.properties',
                      'flake.nix', 'flake.lock', 'gradlew', 'gradlew.bat',
-                     'buildscript-gradle.lockfile', 'android/app/gradle.lockfile']:
+                     'buildscript-gradle.lockfile', 'android/app/gradle.lockfile',
+                     'core/build.gradle.kts', 'core/gradle.lockfile',
+                     'android/asr-runtime/build.gradle.kts', 'android/asr-runtime/gradle.lockfile']:
         inputs.add(relative)
-    for folder in ['gradle', 'scripts', 'tests', 'android/app/res', 'native/cmake']:
+    for folder in ['gradle', 'scripts', 'tests', 'android/app/res', 'native/cmake',
+                   'core/src', 'android/asr-runtime/src']:
         inputs.update(str(p.relative_to(ROOT)) for p in (ROOT / folder).rglob('*')
                       if p.is_file() and '__pycache__' not in p.parts)
     inputs.add('android/app/build.gradle.kts')

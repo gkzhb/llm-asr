@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -73,6 +74,20 @@ class IdentityTests(unittest.TestCase):
         self.baseline['files']['android/app/src/org/llmasr/minimal/Missing.kt'] = '0' * 64
         with self.assertRaisesRegex(ValueError, 'owner definition missing'):
             module.check_identity(self.apk, self.baseline, self.report)
+
+    def test_missing_java_owner_rejected(self):
+        self.baseline['files']['android/app/src/org/llmasr/minimal/Missing.java'] = '0' * 64
+        with self.assertRaisesRegex(ValueError, 'owner definition missing'):
+            module.check_identity(self.apk, self.baseline, self.report)
+
+    def test_duplicate_across_dex_rejected(self):
+        duplicate = self.report / 'duplicate.apk'
+        with zipfile.ZipFile(self.apk) as source, zipfile.ZipFile(duplicate, 'w') as target:
+            for name in source.namelist():
+                target.writestr(name, source.read(name))
+            target.writestr('classes99.dex', source.read('classes.dex'))
+        with self.assertRaisesRegex(ValueError, 'Duplicate production/runtime owner across DEX'):
+            module.check_identity(duplicate, self.baseline, self.report)
 
     def test_activity_back_opt_in_rejected(self):
         self.baseline['revision_scope'] = 'M6 actual callback policy'

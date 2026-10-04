@@ -3,7 +3,6 @@
 # This file is expected to be part of source control.
 androidx.databinding:databinding-common:8.6.1=classpath
 androidx.databinding:databinding-compiler-common:8.6.1=classpath
-com.android.application:com.android.application.gradle.plugin:8.6.1=classpath
 com.android.databinding:baseLibrary:8.6.1=classpath
 com.android.tools.analytics-library:crash:31.6.1=classpath
 com.android.tools.analytics-library:protos:31.6.1=classpath
@@ -112,7 +111,6 @@ org.glassfish.jaxb:jaxb-runtime:2.3.2=classpath
 org.glassfish.jaxb:txw2:2.3.2=classpath
 org.jdom:jdom2:2.0.6=classpath
 org.jetbrains.intellij.deps:trove4j:1.0.20200330=classpath
-org.jetbrains.kotlin.android:org.jetbrains.kotlin.android.gradle.plugin:2.0.21=classpath
 org.jetbrains.kotlin:kotlin-build-statistics:2.0.21=classpath
 org.jetbrains.kotlin:kotlin-build-tools-api:2.0.21=classpath
 org.jetbrains.kotlin:kotlin-compiler-embeddable:2.0.21=classpath

@@ -7,8 +7,10 @@ export GRADLE_USER_HOME="${GRADLE_USER_HOME:-$root/.cache/gradle-user-home}"
 mkdir -p "$root/.work/gradle-m1"
 fixture=$(mktemp -d "$root/.work/gradle-m1/dependency-negative-XXXXXX")
 cp settings.gradle.kts build.gradle.kts gradle.properties buildscript-gradle.lockfile "$fixture/"
-mkdir -p "$fixture/android/app" "$fixture/gradle"
+mkdir -p "$fixture/android/app" "$fixture/android/asr-runtime" "$fixture/core" "$fixture/gradle"
 cp android/app/build.gradle.kts android/app/gradle.lockfile "$fixture/android/app/"
+cp android/asr-runtime/build.gradle.kts android/asr-runtime/gradle.lockfile "$fixture/android/asr-runtime/"
+cp core/build.gradle.kts core/gradle.lockfile "$fixture/core/"
 cp gradle/verification-metadata.xml "$fixture/gradle/"
 python3 - "$fixture/gradle/verification-metadata.xml" <<'PY'
 import sys,xml.etree.ElementTree as E

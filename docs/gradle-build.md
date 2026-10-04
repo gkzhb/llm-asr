@@ -4,6 +4,12 @@
 
 任务 `llm-asr-76d.2`。用户已明确暂缓 `llm-asr-ap5`，保留其 Kotlin 迁移 owner；当前基建 writer 不继续迁移剩余52Java。在线与缓存后的严格离线全量验证、checksum负例、直接自审和最终输入核对已通过。**本地提交成功后才交付APK**，提交身份以Git为准；当前身份与证据见[本轮报告](../reports/gradle-m1/status.md)，设备仍pending。
 
+## M3 当前模块/测试入口
+
+M3已建立真实`:app → :asr-runtime → :core`和app直接core依赖；源码物理路径暂保留，core纯JVM独立编译/JUnit，runtime Android library，app装配/UI。当前实际生产63类（M6新增ActivityWindow）而非M1的62快照。详细唯一归属、逐旧main/参数路径JUnit覆盖映射、真实classpath编译负例与旧gate见[模块测试映射](module-test-map.md)。`verifyDebug`追加core34/runtime1真实JUnit及模块边界；继续所有原host/ABI/生产mutants/JNI/native/包gate。模块class输出和全部DEX定义均拒绝重复、缺失与core平台污染；APK指纹包含新模块配置/锁/src/测试。
+
+M3为父监管下中间交接，最新测试身份见[实施报告](../reports/modules-m3/status.md)；未经父审/复验/安全本地提交，不关闭任务或宣称新APK已交付。下列M1段落保留为历史工具背景，不是当前模块归属。
+
 ## 工具分工和范围
 
 - Nix `scripts/nix-env.sh apk` 提供既有 JDK17、SDK35/build-tools35.0.0、NDK28.2.13676358、Kotlin2.0.21 与 Python。

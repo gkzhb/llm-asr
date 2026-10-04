@@ -13,7 +13,7 @@
 - 监管计划：.planning/llm-asr-76d.4-supervision/。
 
 ## Current Phase
-Phase 4：父复验与独立审查处置完成，无工程阻塞；待执行writer状态文本收尾及安全本地提交。
+Phase 4 完成：功能安全提交9ec98d3，M3已关闭读回确认；本次仅持久化关闭文本，不改APK构建输入。
 
 ### Phase 1: 分派核查与契约
 - [x] 核任务依赖、assignee、Git 与 Herdr runtime。
@@ -32,13 +32,13 @@ Phase 4：父复验与独立审查处置完成，无工程阻塞；待执行writ
 - **Status:** complete
 
 ### Phase 4: 安全提交与交付
-- [ ] 暂存清单/差异安全核对，本地提交成功后才报告 APK。
-- [ ] 执行 Agent 按批准结果记录 Beads 和执行计划；仅满足验收时关闭 M3。
-- [ ] 报告提交/APK身份及设备 not run，不自动领取下一任务。
-- **Status:** in_progress
+- [x] 44限定文本与174输入/4external/index安全核对，功能本地提交9ec98d3成功后报告APK。
+- [x] 执行Agent获批准后仅关闭M3，父显式读回closed；设备/质量/epic未关。
+- [x] 已报告功能提交/APK身份与设备not run；关闭文本本地持久化收尾，不领取下一任务。
+- **Status:** complete
 
 ## Next Step
-接收m3-build只改状态文本的短收尾，安全暂存限定文件并核174输入/index/APK，成功本地提交后批准唯一Beads writer关闭任务。
+等待用户手动验证M3 APK或明确后续任务授权；不自动启动M4/M5，不访问设备。
 
 ## Stop Conditions
 ownership/runtime冲突、必要工具或依赖来源无法验证、安全契约无法保持、需要设备/私人数据/密钥或超范围架构决策时停止对应路径，记录证据、已尝试方案与用户下一输入；不强行关闭任务或交付旧包。

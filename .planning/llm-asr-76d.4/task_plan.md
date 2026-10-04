@@ -8,11 +8,11 @@
 - cwd/worktree: /home/zhb/gitrep/llm-asr；branch main；base HEAD: 538dcb66f16d41adeba440d934d3a0d2e8c4eb6d。
 - PI session: 01a107f4-71d8-778e-a743-2b336eef290c；subagent id: f27adc1c-44eb-4da9-bbbb-609b9b920bdc；Herdr pane wJ:p3（agent list实核）。
 - plan: .planning/llm-asr-76d.4/；父监管 .planning/llm-asr-76d.4-supervision/ 只读。
-- 原子 claim 成功，assignee m3-build，in_progress。父 wJ:p1 是监管，不并发产品 writer。
-- 保留他人两个未跟踪分析目录；不修改根历史计划。不stage/commit/close/push/设备/私人数据/新功能/全Kotlin迁移。
+- 原子claim及实施owner m3-build；父批准工程验收并授权后显式关闭M3成功。功能提交9ec98d3b9e9a2f28af21d86f811639e3a0302ade（父安全提交），关闭文本由父另提交。
+- 保留他人两个未跟踪分析目录；不修改根历史计划。不stage/commit/push/设备/私人数据/新功能/全Kotlin迁移；本次仅按父显式授权关闭M3，不关闭其他任务。
 
 ## Current Phase
-Phase 5 文档收尾：父独立复验及异家族审查完成，无本轮阻塞，准备父安全本地提交；未提交未关闭未交付。
+Phase 6 完成：功能已安全本地提交9ec98d3，父工程验收满足、M3已授权关闭。当前APK可供用户手动验证，设备未验收；本次关闭文本未提交，由父另提交。
 
 ### Phase 1: 依赖调查与最小方案
 - [x] AGENTS/路线/任务/M2/ap5/memories/runtime/Git核验与claim。
@@ -42,8 +42,14 @@ Phase 5 文档收尾：父独立复验及异家族审查完成，无本轮阻塞
 - [x] Beads显式append-notes验收完成待提交，保持in_progress；不stage/commit/close。
 - **Status:** complete
 
+### Phase 6: 功能提交后授权关闭
+- [x] 核HEAD完整9ec98d3、174current/committedSHA、4external与APK一致。
+- [x] 依bd close --help显式关闭llm-asr-76d.4，准确记录父70全gate/35JUnit/异家族处置与设备not run。
+- [x] 更新最终状态文本，未改构建输入/产物，未stage/commit；不关其他task，不领下一任务。
+- **Status:** complete
+
 ## Next Step
-等待父安全本地提交成功哈希及另行关闭批准；保持idle，不领取下一任务。
+等待父提交关闭状态文本；本Agent保持idle，不领取下一任务。
 
 ## Errors
 - 读取 app/build.gradle.kts ENOENT：实际:app目录android/app。

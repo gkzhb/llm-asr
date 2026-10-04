@@ -46,5 +46,15 @@
 - 第二次复核命令嵌套Bash/heredoc转义失败（SyntaxError/exit127），审计未执行、commit未触发。停止嵌套引号，改独立ignored .work审计脚本+简单bash调用；不把shell失败算测试/提交成功。
 - 被审源码未改，APK/核心身份保持。
 
+## 功能提交成功
+- 独立审计脚本复跑通过：44限定文本路径、174current/index SHA、4external SHA与APK一致，Beads逻辑仅M3+新memory变化；cached diff-check/产品无diff均通过。
+- 本地功能提交9ec98d3成功：build(android): extract core/runtime modules and map regressions to JUnit。未push，未纳入两个他人analysis目录及模型/音频/APK/密钥/cache。当前产品工作区干净。
+- 已subagent_send批准唯一writer m3-build核committed/current指纹后关闭M3并仅更新状态文本；不关闭通用设备/质量/epic、不接下一任务。父会对关闭记录另行安全提交，不改历史。
+
+## 工程任务关闭
+- m3-build完成显式M3 close，父bd show --json读回closed/assignee m3-build/close_reason包含功能提交9ec98d3及父独立复验审查；其余task未关闭。
+- 关闭仅6状态文本，父监督状态另2文件更新；174构建输入/APK未变。本次安全本地提交关闭记录，不重建、不修改历史、不push。
+- 功能交付已向用户报告9ec98d3、APK路径/version/SHA与建议验证；设备not run，不因task closed泛化为设备/ASR质量通过。
+
 ## Next Step
-严格复跑限定暂存安全与174index/4external指纹核对，全部通过后本地提交；未交付。
+等待用户手动验证M3 APK或明确后续任务授权；本轮监管完成，不自动启动M4/M5。

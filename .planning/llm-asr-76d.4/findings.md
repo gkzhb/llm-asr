@@ -21,7 +21,7 @@
 ## 父验收与审查处置
 - 父复验bbb64c7ae completed/exit0：clean core/runtime→strict offline rerun70action全执行、35JUnit/全部原gate、checksum目标拒绝通过；174current一致，APK a0494d25...a3f3未变。只读证据reports/modules-m3/parent-verification.md。
 - 异家族m3-review审查完成，父逐项处置无本轮阻塞，详见只读independent-review.md与review-disposition.md。F002遗漏core已有InferenceAdapterTest exclude，父实际class确认仅runtime存在，不改源码重复加exclude；F001保留app空sourcepath防隐式重编；F003 hard63为有意fail-closed；其余为正常确认。不把review原文误前提当已确认缺陷。
-- 准备父安全本地提交，尚未提交/交付/关闭；设备/仪器/麦克风/SAF/IME/JNI4K16K继续not run。此次仅文档/Beads收尾，无174构建输入改动；单一下一步等待父成功hash及另行关闭批准。
+- 父安全本地功能提交已成功，完整9ec98d3b9e9a2f28af21d86f811639e3a0302ade实核；174current/committedSHA、4external与APK身份一致，父批准工程验收并显式授权关闭M3成功。功能APK可供用户手动验证，但设备/仪器/麦克风/SAF/IME/JNI4K16K仍not run，不等同设备验收。此次仅关闭状态文本，无174输入/产物变化、不stage/commit；关闭文本由父另提交，不关tc3/quality/epic，不领下一任务。
 
 ## 恢复资料
 已全文恢复memories：gradle-nix-verification、kotlin-d8-compatibility、modern-android-migration-boundaries。offline≠hermetic；全DEX class_def身份，静态16KiB≠设备验收。

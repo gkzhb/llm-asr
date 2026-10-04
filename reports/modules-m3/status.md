@@ -1,9 +1,9 @@
-# M3 实施中间交接报告
+# M3 工程验收与功能提交报告
 
 - task llm-asr-76d.4；role project-agent；唯一源码/Beads/执行计划writer m3-build。
 - PI session 01a107f4-71d8-778e-a743-2b336eef290c，subagent f27adc1c-44eb-4da9-bbbb-609b9b920bdc，Herdr wJ:p3；父监管wJ:p1。
-- cwd/worktree /home/zhb/gitrep/llm-asr，main；基准及当前HEAD均538dcb66f16d41adeba440d934d3a0d2e8c4eb6d。
-- **实现/本机验证、父独立复验及异家族审查完成，父逐项处置无本轮阻塞，准备父安全本地提交。未stage、未提交、未关闭M3、未向用户交付APK。** 设备、仪器测试、麦克风、SAF/IME/JNI运行均not run；不安装、不ADB、不上传、不push。
+- cwd/worktree /home/zhb/gitrep/llm-asr，main；实施基准538dcb66f16d41adeba440d934d3a0d2e8c4eb6d；功能提交/当前HEAD `9ec98d3b9e9a2f28af21d86f811639e3a0302ade`（父安全本地提交）。
+- **实现/本机验证、父独立复验及异家族审查完成，无本轮阻塞；功能已安全本地提交 `9ec98d3`，父批准工程验收后M3已显式关闭。当前APK可供用户手动验证，但设备未验收。本次关闭状态文本尚未提交，由父另提交；执行Agent未stage/commit。** 设备、仪器测试、麦克风、SAF/IME/JNI运行均not run；不安装、不ADB、不上传、不push。
 
 ## 实现
 
@@ -32,9 +32,9 @@
 
 ## 父复验及审查结论
 
-父后台bbb64c7ae completed/exit0，clean core/runtime后strict offline rerun70action全部执行、35JUnit及完整原gate通过，checksum负例目标拒绝通过；174current输入一致，APK SHA a0494d25...a3f3不变。见只读[parent-verification.md](parent-verification.md)。异家族m3-review审查完成，原文[independent-review.md](independent-review.md)与父逐项[review-disposition.md](review-disposition.md)共同作为证据：F002遗漏core现有exclude，父actualclasses确认仅runtime有InferenceAdapterTest；F001不移除app sourcepath保护；F003 hard63有意fail-closed；其余正常确认，无本轮阻塞。保留原review追溯，不照错误前提改源码。当前只剩父安全本地提交，提交成功后再另行批准关闭/交付；设备边界不变。
+父后台bbb64c7ae completed/exit0，clean core/runtime后strict offline rerun70action全部执行、35JUnit及完整原gate通过，checksum负例目标拒绝通过；174current输入一致，APK SHA a0494d25...a3f3不变。见只读[parent-verification.md](parent-verification.md)。异家族m3-review审查完成，原文[independent-review.md](independent-review.md)与父逐项[review-disposition.md](review-disposition.md)共同作为证据：F002遗漏core现有exclude，父actualclasses确认仅runtime有InferenceAdapterTest；F001不移除app sourcepath保护；F003 hard63有意fail-closed；其余正常确认，无本轮阻塞。保留原review追溯，不照错误前提改源码。父已完成44限定文本安全审计并本地功能提交9ec98d3；关闭前独立核174current/committedSHA、4external与APK一致，父显式批准工程验收及关闭M3。设备边界不变，不关闭tc3/质量/epic，不领取下一任务。
 
-## 已父复验、待安全提交的包身份
+## 已提交功能、可供用户手动验证的包身份
 
 - 路径 `android/app/build/outputs/apk/debug/app-debug.apk`，5,216,037 bytes。
 - 包 `org.llmasr.minimal`；versionCode6 / `0.6-debug`；min29/target35；debug身份/组件不变。
@@ -57,6 +57,6 @@
 
 ## 直接自审与剩余限制
 
-见[self-review.md](self-review.md)。直接自审本身不是独立审查；其后父独立复验和异家族审查已完成、无本轮阻塞，见上述父报告。安全提交尚未完成，不能关闭/交付。物理共享source root过渡需task级过滤与owner gate共同维护；后续新增生产类需改baseline/归属审查，当前硬63 gate fail closed。main适配JUnit是过渡，未逐私有group改@Test，但全部body保留且每入口独立report；JUnit35不证明额外M5 Android行为。PartRecovery原固定.work/red输出仍串行（单worker/fork，不与旧host并行），跨外部进程并跑未保证；父勿竞争构建。release/M4/M5/M7/全Kotlin迁移/设备/新功能均范围外。
+见[self-review.md](self-review.md)。直接自审本身不是独立审查；其后父独立复验和异家族审查已完成、无本轮阻塞，见上述父报告。功能安全提交9ec98d3已完成并经父批准关闭M3，当前APK可供用户手动验证，但不代表设备验收；仅关闭状态文本待父另提交。物理共享source root过渡需task级过滤与owner gate共同维护；后续新增生产类需改baseline/归属审查，当前硬63 gate fail closed。main适配JUnit是过渡，未逐私有group改@Test，但全部body保留且每入口独立report；JUnit35不证明额外M5 Android行为。PartRecovery原固定.work/red输出仍串行（单worker/fork，不与旧host并行），跨外部进程并跑未保证；父勿竞争构建。release/M4/M5/M7/全Kotlin迁移/设备/新功能均范围外。
 
-单一下一步：等待父安全本地提交成功哈希及另行关闭批准；本Agent保持idle，不自主领取下一任务。
+单一下一步：等待父提交关闭状态文本；本Agent保持idle，不自主领取下一任务。

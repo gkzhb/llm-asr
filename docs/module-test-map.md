@@ -1,6 +1,6 @@
 # M3 模块与旧测试覆盖映射
 
-任务 llm-asr-76d.4，基准538dcb66；实现、本机验证、父独立复验和异家族审查完成，父逐项处置无本轮阻塞，准备安全本地提交。尚未提交/关闭/交付，不是设备验收声明。
+任务 llm-asr-76d.4，实施基准538dcb66；实现、本机验证、父独立复验和异家族审查完成，无本轮阻塞。功能已由父安全本地提交 `9ec98d3b9e9a2f28af21d86f811639e3a0302ade`，父批准工程验收并授权关闭M3成功。当前APK可供用户手动验证，但设备未验收；关闭状态文本待父另提交。
 
 ## 实际模块图与生产归属
 
@@ -86,4 +86,4 @@ bash scripts/nix-env.sh apk bash scripts/verify-gradle.sh --offline --rerun-task
 bash scripts/nix-env.sh apk bash tests/gradle_dependency_verification_test.sh
 ```
 
-所有Android仪器/真实设备/4KiB与16KiB运行/麦克风/SAF/IME runtime均not run（无授权）；不以host通过等同设备验收。本轮pass/fail日志与APK输入见执行计划及[实施报告](../reports/modules-m3/status.md)；父bbb64c7ae独立clean后strict offline rerun70action/35JUnit/全部gate及checksum通过，174current一致、APK SHA a0494d25...a3f3不变。异家族审查及父逐项处置见reports/modules-m3/{independent-review,review-disposition}.md，无本轮阻塞。保留现有core test exclude、app sourcepath保护与hard63门槛；不按review错误前提改源码。下一步等待父安全提交成功hash及另行关闭批准，未提交未交付。
+所有Android仪器/真实设备/4KiB与16KiB运行/麦克风/SAF/IME runtime均not run（无授权）；不以host通过等同设备验收。本轮pass/fail日志与APK输入见执行计划及[实施报告](../reports/modules-m3/status.md)；父bbb64c7ae独立clean后strict offline rerun70action/35JUnit/全部gate及checksum通过，174current一致、APK SHA a0494d25...a3f3不变。异家族审查及父逐项处置见reports/modules-m3/{independent-review,review-disposition}.md，无本轮阻塞。保留现有core test exclude、app sourcepath保护与hard63门槛；不按review错误前提改源码。功能提交9ec98d3已实核，174current/committedSHA、4external及APK一致；父授权关闭M3成功，功能APK可供用户手动验证，但设备仍未验收。下一步仅等待父提交关闭状态文本，不关闭tc3/质量/epic，不领取下一任务。

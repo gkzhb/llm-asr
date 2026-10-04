@@ -1,5 +1,12 @@
 # M3 执行记录
 
+## 功能提交后授权关闭
+- 父安全本地功能提交成功，独立git实核完整HEAD 9ec98d3b9e9a2f28af21d86f811639e3a0302ade；父44限定文本安全审计通过。关闭前174current/committedSHA、4external、APK a0494d25...a3f3逐SHA核对全部通过。
+- 父显式批准M3工程验收并授权唯一task/planwriter关闭；读取bd close --help后显式bd --actor m3-build close llm-asr-76d.4（不用force/claim-next/continue）exit0，准确close reason记录功能提交、父bbb64c7ae70全gate/35JUnit/checksum及异家族逐项处置无阻塞、设备not run。
+- 功能APK可供用户手动验证，但设备/仪器/麦克风/SAF/IME/JNI4K16K尚未验收；不关闭tc3/quality/epic，不领下一任务。此次仅自身计划/status/module-map与Beads最终文本，未stage/commit；关闭文本待父另提交。
+- close后读回status closed/assignee m3-build核实，Beads按ID/key对HEAD仅M3改变；最终174current/committedSHA、4external、APK仍一致，index为空，git diff --check exit0。关闭文本文件仅自身三计划、status.md、module-test-map.md与Beads自动export（6文件），待父另提交。
+- 初始git还见父独占supervision/progress.md跟踪修改，属于父收尾，未触碰；两个原analysis未跟踪保留。Next Step：等待父提交关闭文本，保持idle。以下为历史过程记录。
+
 ## 父验收后短文档收尾
 - 父明确授权本次仅更新独占plan/progress/findings、status/模块映射必要状态与changed-files清单及Beadsnotes，不改174输入/生产/测试/native，不stage/commit/close。
 - 已只读父reports/modules-m3/{parent-verification,independent-review,review-disposition}.md；bbb64c7ae clean core/runtime→strict offline rerun70action/35JUnit/所有gate/checksum completed exit0，父174current一致/包SHA原a0494d25...a3f3。异家族审查父处置F001–F005无本轮阻塞；F002漏现有exclude，F001保留app保护，F003有意hard63，其余正常确认。

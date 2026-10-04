@@ -1,0 +1,57 @@
+{
+  "base_commit": "f07c487bb39a202d7f70e95771fb0a3c0e31c21e",
+  "inputs": [
+    {
+      "path": "android/app/src/org/llmasr/minimal/asr/NativeTranscription.java",
+      "sha256": "76cecf33387a49107d13165a1cb92ebb1d5c484300ea2cb1bfc96d13c1c04b4e"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.java",
+      "sha256": "7c4aa16a0d3174b397db839269033190cf34de531c1b395291f52c3c75a06ddc"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/asr/NativeResponse.kt",
+      "sha256": "bd2620ec96a6030d66b7ce103227fc82d5a60ba1611808807bb81a547177f38a"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/AppGraph.java",
+      "sha256": "9f33cdd81234bbf033ac49807205a76a3734f39ac5b1e52ee8291bb96ae0e012"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/task/TaskCoordinator.kt",
+      "sha256": "9557fb0f244bd896b5d33e95e84e61cac25a66a242bf633102a7f05ccdd0ccd3"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/audio/ForegroundRecorder.java",
+      "sha256": "11fb3a286b06cfcfb513676a03757ff4c2c47f9f85a0ecffa2d16162dbc25a9b"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/audio/RecordingControl.kt",
+      "sha256": "dfa9ac879776138aca236aeb2216582e37221fd79c5dc56485d77c2a33e690ac"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ime/ImeController.java",
+      "sha256": "05d0dbcafb33b2b64d85b5839bb92854930ad14d7b20c3de0f2d35f4a304fa05"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelRepository.java",
+      "sha256": "4e842f6960d9568b01c8c79fee8f800791d9e32d53539abc4ead70641dd39b59"
+    },
+    {
+      "path": "native/apk/asr_jni.cpp",
+      "sha256": "4eaca3d66b90c63954a65f69887fe94b1ea97ebdb474ecfda5b306ce9cc07946"
+    },
+    {
+      "path": "core/build.gradle.kts",
+      "sha256": "ad5d3a56dc5ee64e6b0e310828469eee7ec859b276ae7f13b85c7dd19b3f0baf"
+    },
+    {
+      "path": "android/asr-runtime/build.gradle.kts",
+      "sha256": "5bb0c3faa584244ac0abfbd65a35d453f3e398e5867c786eedf25e3e817d6746"
+    },
+    {
+      "path": "android/app/AndroidManifest.xml",
+      "sha256": "6b8e458f88a044d0ac8837c9ed8b522a70affdbbeea1c8d5eb3f4a387732cc78"
+    }
+  ]
+}

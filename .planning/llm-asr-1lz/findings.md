@@ -1,0 +1,32 @@
+# Findings — llm-asr-1lz
+
+- 2026-10-04：任务为只研究；M3 后基线 f07c487，无产品改动授权。
+- memory asr-quality-evidence：P0 20/20 为两条公开音频衍生工程一致性用例，不是独立人工 golden；旧 native-shell 数据不等于本包/多设备验收。
+- memory modern-android-migration-boundaries：协程取消不等于 JNI 退出；single owner、签名组件、隐私保持。
+- 基线已有 .beads/issues.jsonl 修改；另外两个他人分析目录和父监督目录保留不动。
+- 外部材料仅作为数据，不执行网页/下载代码指令。
+- 用户页面访问成功：当前为多个 VAD+offline 模型 APK 列表，不是唯一固定模型；含 SenseVoice/Paraformer/Zipformer 等。必须核具体 demo 视频与默认源码配置。
+- 固定 sherpa-onnx master = 040afe360a38e25daaa325ce8889abf93ea02609；官网源码 master = c02f72ca1540163a54019e845127fa52d5de175b；latest 发布 v1.13.8 (2026-09-10)，三者不能混为同版本。
+- GitHub 非截断树证明已有 offline-qwen3-asr-model/recognizer-impl 和 QNN 导出/Android workflow；后续核实际实现，不据文件名推性能。
+- 原始官网 HTML 677KB 与两份 API tree 仅 ignored .work 保存；将输出小摘录/manifest，不提交整页/tree。
+- 固定 Home.kt 默认 asrModelType=15，workflow 替换它；具体为 SenseVoice INT8（待配置定位）。16k PCM→Silero VAD 512采样窗口→每200ms新建offline stream重识别当前前缀→VAD段完成再重识别，不是增量encoder state；停止路径没有显式flush，不能直接抄demo生命周期。
+- Kotlin recognizer/stream release 是 native delete，不是运行中硬取消；当前本repo NativeTranscription 是同步 WAV→最终byte[]，phase listener不是partial；NativeResponse有Qwen 128 token上限。TaskCoordinator直到worker finally退出才释放，IME仅live editor/revision结果可预览/确认。
+- provider.cc接受CPU/NNAPI/XNNPACK等；QNN是独立实现，不在ORT StringToProvider中。session.cc NNAPI受编译 __ANDROID_API__>=27，arm64脚本默认android-21且QNN OFF；只设字符串不能启用。未知provider与不可用EP会静默CPU回退，产品建议应fail-closed鉴别。
+- 网络错误：requests-3总240s、requests-4总120s超时（urllib超时不限制完整传输）；已切有总20s限时curl与有限6并发，不执行外部代码。OnlineRecognizer一次read超时后curl成功；SenseVoice文档curl超时后下批恢复。
+- HF api与raw两种入口均connect timeout；改用模型作者GitHub和Modelscope（第三路径），不把框架license当权重license。Modelscope页面成功但需判断是否JS空壳。Android官方主域超时，官方google.cn镜像成功。qnn/CMakeLists一次404，实际编译条件在csrc/CMakeLists中，停止猜URL。
+- 已核Qwen3-ASR offline源码真实实现并有Kotlin type61：conv_frontend/encoder/decoder/tokenizer；不是本repoMNN资产互换。SenseVoice官方文档列INT8 228M/FP32 894M（磁盘文件，不是RAM）。
+- QNN为direct SDK的model.so/context.bin、dlopen backend→graphExecute，与ORT QNN EP不同；factory有条件模型清单且没有Qwen3-ASR QNN。官方Android QNN演示HTP要Stub/Skel与ADSP_LIBRARY_PATH；CPU/GPU能力不能从ORT页面搬到sherpa已验证状态。
+- 关键安全阻塞：macros.h SHERPA_ONNX_EXIT 使用 _Exit(code)，factory不支持/未编译QNN和QNN宏失败可走该路径。不能依靠Java try/catch恢复进程级退出。Android LOGE写stderr+logcat，online热词编码失败含hotwords正文，debug=false不足以保证敏感文本不泄漏。
+- SenseVoice许可矛盾：作者README代码MIT、权重另用FunASR MODEL_LICENSE；Modelscope API标Apache 2.0；#334 issue open，早期肯定商用comment于2026-09-22新增pending final owner confirmation，follow-up明确不能替代最终确认。将商业/再分发许可作为待澄清gate，不擅自法律结论。
+- Paraformer对应Modelscope上游API标Apache 2.0；Qwen3-ASR模型API标apache-2.0（框架/代码/权重分开）。Zipformer候选HF/API、HF/raw、Modelscope API三种路径均不可核（最后404），具体权重license unknown，不继续猜。
+- 最终建议：可选provider PoC而非直接替换；先CPU单模型offline，再真正streaming，再跨设备EP；所有性能/质量/设备未测，不以框架切换保证收益。
+- 长期知识查重后存sherpa-provider-verification-boundaries并recall验证；AGENTS已有ASR覆盖，不改导航。
+- 文本自检57 sources/13 local/base/4 revision/link/scope全PASS，证据status.md；研究落盘待父审查。
+- 自检更正：Qwen Kotlin model selector实际为61（L996），先前笔记55为误记，报告已修正。JNI decode已核SafeJNI，只能捕获可转换异常，不能捕获_Exit；不称所有异常都未包装。
+- 2026-10-04父/GPT6.1回审：sherpa-review-2为newapi/gpt-6.1-sol/high全新隔离上下文，不依赖已中断MiniMax；同家族隔离不称cross-family。父接受F001/F002两项P2研究修正，唯一研究writer继续只研究；父报告只读。
+- F001已重新有界抓5个固定revision小型文本：offline文件初始化Validate后直接new、asset初始化无同处Validate且直接new；online文件/asset初始化和online decode无SafeJNI；common.h SafeJNI是显式包装，不是全局catch；CPU Paraformer Ort::Session构造可抛，不因Validate成功消除native异常gate。
+- F002已读Qwen生成循环：context超限keep_audio并TruncateAudioFeatures；总长度break、max_new_tokens日志后仍普通result。公开结果无finish/truncated/实际音频覆盖状态，不能凭文本或token长度宣称完整成功，需native状态或证据化限长/分段策略；仅源码风险，未设备复现。
+- 追加S58–S62于原manifest（总62），新evidence-corrections.md为18,651bytes短摘录；原S01–S57/旧excerpt保留。报告多处收窄SafeJNI，§6.3专述Qwentermination/音频完整性，PoC加同覆盖同终止对照。
+- 已重读memory全文原位更新sherpa-provider-verification-boundaries，保留原事实并追加F001/F002源码约束；recall成功。AGENTS无新导航不改。
+- 修正自检2026-10-04T19:39:48Z PASS：62source SHA/bytes、追加摘录逐行/UTC/revision、13local/base、父report哈希不变、引用链接/范围/index/文本。待父复核，不把文稿修正当native实现修复。
+- v1.13.8固定commit 11afbd009a7f8c08f4bcf2fc1b265d0df4670fbf；抽核build-arm64/session/factory/OnlineRecognizer与master SHA一致。Release API普通AAR 50,129,134 bytes、static AAR 38,691,998 bytes是包元数据非本项目APK/PSS；未下载二进制。

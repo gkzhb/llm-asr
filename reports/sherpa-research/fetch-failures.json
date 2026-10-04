@@ -1,0 +1,107 @@
+{
+  "failed_attempts": [
+    {
+      "id": "sherpa-onnx__android__SherpaOnnxAar__sherpa_onnx__src__main__java__com__k2fsa__sherpa__onnx__OnlineRecognizer.kt",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/android/SherpaOnnxAar/sherpa_onnx/src/main/java/com/k2fsa/sherpa/onnx/OnlineRecognizer.kt",
+      "status": "failed",
+      "error": "The read operation timed out",
+      "accessed_utc": "2026-10-04T18:51:06.925920+00:00"
+    },
+    {
+      "id": "sherpa__docs__source__onnx__sense-voice__pretrained.rst",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa/c02f72ca1540163a54019e845127fa52d5de175b/docs/source/onnx/sense-voice/pretrained.rst",
+      "status": "failed",
+      "error": "curl: (28) Operation timed out after 20002 milliseconds with 0 bytes received",
+      "accessed_utc": "2026-10-04T18:53:22.678319+00:00"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__qnn__CMakeLists.txt",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/qnn/CMakeLists.txt",
+      "status": "failed",
+      "error": "curl: (22) The requested URL returned error: 404",
+      "accessed_utc": "2026-10-04T18:55:35.080349+00:00"
+    },
+    {
+      "id": "sensevoice-hf.json",
+      "url": "https://huggingface.co/api/models/FunAudioLLM/SenseVoiceSmall",
+      "status": "failed",
+      "error": "curl: (28) Connection timed out after 8002 milliseconds",
+      "accessed_utc": "2026-10-04T18:55:43.710439+00:00"
+    },
+    {
+      "id": "streamzip-hf.json",
+      "url": "https://huggingface.co/api/models/csukuangfj/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20",
+      "status": "failed",
+      "error": "curl: (28) Connection timed out after 8002 milliseconds",
+      "accessed_utc": "2026-10-04T18:55:43.718288+00:00"
+    },
+    {
+      "id": "paraformer-hf.json",
+      "url": "https://huggingface.co/api/models/csukuangfj/sherpa-onnx-paraformer-zh-2023-03-28",
+      "status": "failed",
+      "error": "curl: (28) Connection timed out after 8002 milliseconds",
+      "accessed_utc": "2026-10-04T18:55:43.726405+00:00"
+    },
+    {
+      "id": "qwen-hf.json",
+      "url": "https://huggingface.co/api/models/Qwen/Qwen3-ASR-0.6B",
+      "status": "failed",
+      "error": "curl: (28) Connection timed out after 8001 milliseconds",
+      "accessed_utc": "2026-10-04T18:55:44.018752+00:00"
+    },
+    {
+      "id": "sense-export-hf.json",
+      "url": "https://huggingface.co/api/models/csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17",
+      "status": "failed",
+      "error": "curl: (28) Connection timed out after 8002 milliseconds",
+      "accessed_utc": "2026-10-04T18:55:44.037319+00:00"
+    },
+    {
+      "id": "android16.html",
+      "url": "https://developer.android.com/guide/practices/page-sizes",
+      "status": "failed",
+      "error": "curl: (28) Connection timed out after 8002 milliseconds",
+      "accessed_utc": "2026-10-04T18:55:47.772757+00:00"
+    },
+    {
+      "id": "sensevoice-README.md",
+      "url": "https://huggingface.co/FunAudioLLM/SenseVoiceSmall/raw/main/README.md",
+      "status": "failed",
+      "error": "curl: (28) Connection timed out after 8002 milliseconds",
+      "accessed_utc": "2026-10-04T18:57:14.728729+00:00"
+    },
+    {
+      "id": "streamzip-README.md",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/raw/main/README.md",
+      "status": "failed",
+      "error": "curl: (28) Connection timed out after 8002 milliseconds",
+      "accessed_utc": "2026-10-04T18:57:14.728956+00:00"
+    },
+    {
+      "id": "paraformer-README.md",
+      "url": "https://huggingface.co/csukuangfj/sherpa-onnx-paraformer-zh-2023-03-28/raw/main/README.md",
+      "status": "failed",
+      "error": "curl: (28) Connection timed out after 8002 milliseconds",
+      "accessed_utc": "2026-10-04T18:57:14.752755+00:00"
+    },
+    {
+      "id": "qwen-README.md",
+      "url": "https://huggingface.co/Qwen/Qwen3-ASR-0.6B/raw/main/README.md",
+      "status": "failed",
+      "error": "curl: (28) Connection timed out after 8002 milliseconds",
+      "accessed_utc": "2026-10-04T18:57:14.780074+00:00"
+    },
+    {
+      "id": "streamzip-hf-modelscope.json",
+      "url": "https://www.modelscope.cn/api/v1/models/csukuangfj/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20",
+      "status": "failed",
+      "error": "curl: (22) The requested URL returned error: 404",
+      "accessed_utc": "2026-10-04T18:58:19.797109+00:00"
+    }
+  ],
+  "batch_timeouts": [
+    "urllib requests-3 total 240s",
+    "urllib requests-4 total 120s"
+  ],
+  "resolution": "Bounded curl total 20s, max 6 concurrency; HF API/raw/Modelscope three routes unsuccessful for streaming Zipformer model license, left unknown; Android official google.cn succeeded; qnn/CMakeLists 404 replaced by csrc/CMakeLists tree entry."
+}

@@ -1,0 +1,85 @@
+{
+  "scope": "Four text files only, not whole-tree/binary equivalence",
+  "files": [
+    {
+      "path": "build-android-arm64-v8a.sh",
+      "head": {
+        "id": "sherpa-onnx__build-android-arm64-v8a.sh",
+        "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/build-android-arm64-v8a.sh",
+        "accessed_utc": "2026-10-04T18:45:41.734725+00:00",
+        "sha256": "149923a58ba30b83fec3910ec09af6b5050a94a7d29aff994b28bb184480ed0a",
+        "bytes": 9892,
+        "status": "ok"
+      },
+      "release": {
+        "id": "release__build-android-arm64-v8a.sh",
+        "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/11afbd009a7f8c08f4bcf2fc1b265d0df4670fbf/build-android-arm64-v8a.sh",
+        "accessed_utc": "2026-10-04T19:00:44.344644+00:00",
+        "sha256": "149923a58ba30b83fec3910ec09af6b5050a94a7d29aff994b28bb184480ed0a",
+        "bytes": 9892,
+        "status": "ok"
+      },
+      "same_sha256": true
+    },
+    {
+      "path": "sherpa-onnx/csrc/session.cc",
+      "head": {
+        "id": "sherpa-onnx__sherpa-onnx__csrc__session.cc",
+        "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/session.cc",
+        "accessed_utc": "2026-10-04T18:53:04.590936+00:00",
+        "sha256": "2ace7fcbc910ab41804ab93869c0eeceac8b0d416d6dbe76a4417c2b007a9e52",
+        "bytes": 21195,
+        "status": "ok"
+      },
+      "release": {
+        "id": "release__sherpa-onnx__csrc__session.cc",
+        "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/11afbd009a7f8c08f4bcf2fc1b265d0df4670fbf/sherpa-onnx/csrc/session.cc",
+        "accessed_utc": "2026-10-04T19:00:44.363521+00:00",
+        "sha256": "2ace7fcbc910ab41804ab93869c0eeceac8b0d416d6dbe76a4417c2b007a9e52",
+        "bytes": 21195,
+        "status": "ok"
+      },
+      "same_sha256": true
+    },
+    {
+      "path": "sherpa-onnx/csrc/offline-recognizer-impl.cc",
+      "head": {
+        "id": "sherpa-onnx__sherpa-onnx__csrc__offline-recognizer-impl.cc",
+        "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/offline-recognizer-impl.cc",
+        "accessed_utc": "2026-10-04T18:55:35.695667+00:00",
+        "sha256": "c77715c9709325665437df0e1061afb9b9cee0799af73a13802b1b7daf67daf8",
+        "bytes": 36269,
+        "status": "ok"
+      },
+      "release": {
+        "id": "release__sherpa-onnx__csrc__offline-recognizer-impl.cc",
+        "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/11afbd009a7f8c08f4bcf2fc1b265d0df4670fbf/sherpa-onnx/csrc/offline-recognizer-impl.cc",
+        "accessed_utc": "2026-10-04T19:00:44.842930+00:00",
+        "sha256": "c77715c9709325665437df0e1061afb9b9cee0799af73a13802b1b7daf67daf8",
+        "bytes": 36269,
+        "status": "ok"
+      },
+      "same_sha256": true
+    },
+    {
+      "path": "sherpa-onnx/kotlin-api/OnlineRecognizer.kt",
+      "head": {
+        "id": "sherpa-onnx__sherpa-onnx__kotlin-api__OnlineRecognizer.kt",
+        "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/kotlin-api/OnlineRecognizer.kt",
+        "accessed_utc": "2026-10-04T18:53:05.438205+00:00",
+        "sha256": "3204ff816361d99d94dda1e8c26681f6d4a5ad749a68d8fee93b4e8bb2b21d17",
+        "bytes": 30509,
+        "status": "ok"
+      },
+      "release": {
+        "id": "release__sherpa-onnx__kotlin-api__OnlineRecognizer.kt",
+        "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/11afbd009a7f8c08f4bcf2fc1b265d0df4670fbf/sherpa-onnx/kotlin-api/OnlineRecognizer.kt",
+        "accessed_utc": "2026-10-04T19:00:44.785496+00:00",
+        "sha256": "3204ff816361d99d94dda1e8c26681f6d4a5ad749a68d8fee93b4e8bb2b21d17",
+        "bytes": 30509,
+        "status": "ok"
+      },
+      "same_sha256": true
+    }
+  ]
+}

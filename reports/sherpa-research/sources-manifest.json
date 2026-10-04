@@ -1,0 +1,849 @@
+{
+  "schema": 1,
+  "research_only": true,
+  "sherpa_head": "040afe360a38e25daaa325ce8889abf93ea02609",
+  "sherpa_release_v1_13_8": "11afbd009a7f8c08f4bcf2fc1b265d0df4670fbf",
+  "docs_head": "c02f72ca1540163a54019e845127fa52d5de175b",
+  "sources": [
+    {
+      "id": "demo.html",
+      "url": "https://k2-fsa.github.io/sherpa/onnx/android/apk-simulate-streaming-asr-cn.html",
+      "accessed_utc": "2026-10-04T18:44:21.042179+00:00",
+      "sha256": "8014ebd1d13b993f99622273e89633b47f7a48d15803c8ad300700467299910f",
+      "bytes": 677400,
+      "status": "ok",
+      "source_id": "S01",
+      "locators": [
+        "L1-L17",
+        "L49-L78",
+        "L117-L128"
+      ],
+      "revision": "live snapshot; see accessed_utc"
+    },
+    {
+      "id": "sherpa-onnx__android__SherpaOnnxSimulateStreamingAsr__app__src__main__java__com__k2fsa__sherpa__onnx__simulate__streaming__asr__screens__Home.kt",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/android/SherpaOnnxSimulateStreamingAsr/app/src/main/java/com/k2fsa/sherpa/onnx/simulate/streaming/asr/screens/Home.kt",
+      "accessed_utc": "2026-10-04T18:53:06.483048+00:00",
+      "sha256": "1ea8e0b42f6c5a45e0c3853ac2323acc65a7cc76d75cd71d897f63c2faa15688",
+      "bytes": 14168,
+      "status": "ok",
+      "source_id": "S02",
+      "locators": [
+        "L65-L83",
+        "L139-L186",
+        "L207-L243"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__kotlin-api__OfflineRecognizer.kt",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/kotlin-api/OfflineRecognizer.kt",
+      "accessed_utc": "2026-10-04T18:53:05.706310+00:00",
+      "sha256": "8103b67ec65910a71e6b8d4bca7934f77c1af47b68a5c18cdca0ce3f956247a7",
+      "bytes": 56760,
+      "status": "ok",
+      "source_id": "S03",
+      "locators": [
+        "L4-L18",
+        "L78-L89",
+        "L133-L162",
+        "L198-L230",
+        "L470-L481",
+        "L996-L1014"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__kotlin-api__OnlineRecognizer.kt",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/kotlin-api/OnlineRecognizer.kt",
+      "accessed_utc": "2026-10-04T18:53:05.438205+00:00",
+      "sha256": "3204ff816361d99d94dda1e8c26681f6d4a5ad749a68d8fee93b4e8bb2b21d17",
+      "bytes": 30509,
+      "status": "ok",
+      "source_id": "S04",
+      "locators": [
+        "L5-L17",
+        "L42-L81",
+        "L90-L153"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__kotlin-api__OnlineStream.kt",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/kotlin-api/OnlineStream.kt",
+      "accessed_utc": "2026-10-04T18:53:05.483374+00:00",
+      "sha256": "6b9f8de317e6a0bb51f0f29d940617b781cb31b190e1c725dd438231836c06ab",
+      "bytes": 1178,
+      "status": "ok",
+      "source_id": "S05",
+      "locators": [
+        "L3-L36"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__kotlin-api__Vad.kt",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/kotlin-api/Vad.kt",
+      "accessed_utc": "2026-10-04T18:53:05.792025+00:00",
+      "sha256": "dc3fe3b63cea2becd4780a9cc8ef2aaee552eed9533d4c0f178db1172a53662c",
+      "bytes": 4112,
+      "status": "ok",
+      "source_id": "S06",
+      "locators": [
+        "L6-L39",
+        "L63-L91"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__online-recognizer-transducer-impl.h",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/online-recognizer-transducer-impl.h",
+      "accessed_utc": "2026-10-04T19:00:43.833250+00:00",
+      "sha256": "d96bcf9a4566d20da5f12265cf121dd793fd1030b346c62bf840bdcd397417a1",
+      "bytes": 18831,
+      "status": "ok",
+      "source_id": "S07",
+      "locators": [
+        "L210-L220",
+        "L249-L252",
+        "L341-L357",
+        "L375-L440"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa__docs__source__onnx__pretrained_models__online-transducer__zipformer-transducer-models.rst",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa/c02f72ca1540163a54019e845127fa52d5de175b/docs/source/onnx/pretrained_models/online-transducer/zipformer-transducer-models.rst",
+      "accessed_utc": "2026-10-04T18:53:03.843255+00:00",
+      "sha256": "3fa4142b34816710bb12de815c31c3a9c2faaa3771bea40581d1c4a4fd3f5f67",
+      "bytes": 64321,
+      "status": "ok",
+      "source_id": "S08",
+      "locators": [
+        "L1140-L1181"
+      ],
+      "revision": "c02f72ca1540163a54019e845127fa52d5de175b"
+    },
+    {
+      "id": "sherpa__docs__source__onnx__pretrained_models__offline-paraformer__paraformer-models.rst",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa/c02f72ca1540163a54019e845127fa52d5de175b/docs/source/onnx/pretrained_models/offline-paraformer/paraformer-models.rst",
+      "accessed_utc": "2026-10-04T18:51:40.810669+00:00",
+      "sha256": "20ad59b0a601546cfa89b05774064a4824697e44c84e52196ca161240a92e522",
+      "bytes": 39930,
+      "status": "ok",
+      "source_id": "S09",
+      "locators": [
+        "L1143-L1183"
+      ],
+      "revision": "c02f72ca1540163a54019e845127fa52d5de175b"
+    },
+    {
+      "id": "sherpa__docs__source__onnx__pretrained_models__online-paraformer__paraformer-models.rst",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa/c02f72ca1540163a54019e845127fa52d5de175b/docs/source/onnx/pretrained_models/online-paraformer/paraformer-models.rst",
+      "accessed_utc": "2026-10-04T18:53:03.633213+00:00",
+      "sha256": "f22eafd90b54ad2edc83eca904ac507d2400441018b5672dc8caf911603d4d84",
+      "bytes": 8653,
+      "status": "ok",
+      "source_id": "S10",
+      "locators": [
+        "L1-L44"
+      ],
+      "revision": "c02f72ca1540163a54019e845127fa52d5de175b"
+    },
+    {
+      "id": "sherpa__docs__source__onnx__sense-voice__pretrained.rst",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa/c02f72ca1540163a54019e845127fa52d5de175b/docs/source/onnx/sense-voice/pretrained.rst",
+      "accessed_utc": "2026-10-04T18:55:36.800362+00:00",
+      "sha256": "f3bf36ad097ef66d03a721502411d77d16dbbbf2a16f7aa3715c92ce9ca4b860",
+      "bytes": 31070,
+      "status": "ok",
+      "source_id": "S11",
+      "locators": [
+        "L1-L30",
+        "L100-L122"
+      ],
+      "revision": "c02f72ca1540163a54019e845127fa52d5de175b"
+    },
+    {
+      "id": "sherpa__docs__source__onnx__qwen3-asr__pretrained.rst",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa/c02f72ca1540163a54019e845127fa52d5de175b/docs/source/onnx/qwen3-asr/pretrained.rst",
+      "accessed_utc": "2026-10-04T18:55:36.026349+00:00",
+      "sha256": "1a2b25a400aa35d843cb73ed3b1f27c274100d9359ab6366ec8b62eda514cd47",
+      "bytes": 10560,
+      "status": "ok",
+      "source_id": "S12",
+      "locators": [
+        "L1-L84"
+      ],
+      "revision": "c02f72ca1540163a54019e845127fa52d5de175b"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__offline-qwen3-asr-model.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/offline-qwen3-asr-model.cc",
+      "accessed_utc": "2026-10-04T18:46:34.457806+00:00",
+      "sha256": "75bdb24f09884666d810b3119ae1e2a373d92041ac24d8afb1d06318ad6e44d5",
+      "bytes": 31135,
+      "status": "ok",
+      "source_id": "S13",
+      "locators": [
+        "L121-L146",
+        "L349-L356",
+        "L389-L396",
+        "L472-L479"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__LICENSE",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/LICENSE",
+      "accessed_utc": "2026-10-04T18:45:38.772399+00:00",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358,
+      "status": "ok",
+      "source_id": "S14",
+      "locators": [
+        "L1-L10"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sensevoice-github-README.md",
+      "url": "https://raw.githubusercontent.com/FunAudioLLM/SenseVoice/586bbdb2b052f4fe19322581825228b6810a9fb3/README.md",
+      "accessed_utc": "2026-10-04T18:58:19.417717+00:00",
+      "sha256": "ce31cd7c065d40fa95829a191870c6f9b25feb94d23500d6bc522927857f721f",
+      "bytes": 26816,
+      "status": "ok",
+      "source_id": "S15",
+      "locators": [
+        "L502-L507"
+      ],
+      "revision": "586bbdb2b052f4fe19322581825228b6810a9fb3"
+    },
+    {
+      "id": "funasr-model-license",
+      "url": "https://raw.githubusercontent.com/modelscope/FunASR/58830eca4012644aac0c3218c3ccc7d98f003fda/MODEL_LICENSE",
+      "accessed_utc": "2026-10-04T18:59:27.751255+00:00",
+      "sha256": "7dba975a2069691db4992b0592d70828b330d2f8a30a71450f4e152a554e84f8",
+      "bytes": 5306,
+      "status": "ok",
+      "source_id": "S16",
+      "locators": [
+        "L1-L29"
+      ],
+      "revision": "58830eca4012644aac0c3218c3ccc7d98f003fda"
+    },
+    {
+      "id": "sensevoice-license-clarification.json",
+      "url": "https://api.github.com/repos/FunAudioLLM/SenseVoice/issues/comments/5083546605",
+      "accessed_utc": "2026-10-04T18:59:26.455671+00:00",
+      "sha256": "ac9f6c04223ea520abe4762c685c1cc696b71ddfbd43c5255ac38050aa3dd078",
+      "bytes": 5746,
+      "status": "ok",
+      "source_id": "S17",
+      "locators": [],
+      "revision": "live snapshot; see accessed_utc"
+    },
+    {
+      "id": "sensevoice-license-followup.json",
+      "url": "https://api.github.com/repos/QwenAudio/SenseVoice/issues/comments/5463240506",
+      "accessed_utc": "2026-10-04T19:00:45.536607+00:00",
+      "sha256": "3bf0ae4f645a4ed45b1597f992fc6bd7106eed669beab2c6c4ffb90183d82fcd",
+      "bytes": 2082,
+      "status": "ok",
+      "source_id": "S18",
+      "locators": [],
+      "revision": "live snapshot; see accessed_utc"
+    },
+    {
+      "id": "sensevoice-license-issue.json",
+      "url": "https://api.github.com/repos/QwenAudio/SenseVoice/issues/334",
+      "accessed_utc": "2026-10-04T19:00:45.440391+00:00",
+      "sha256": "686de4a15532d9f3aba817b245ca7ea2898ee429a0791b7e7404195512a39f08",
+      "bytes": 4991,
+      "status": "ok",
+      "source_id": "S19",
+      "locators": [],
+      "revision": "live snapshot; see accessed_utc"
+    },
+    {
+      "id": "paraformer-modelscope-api.json",
+      "url": "https://www.modelscope.cn/api/v1/models/damo/speech_paraformer-large_asr_nat-zh-cn-16k-common-vocab8404-pytorch",
+      "accessed_utc": "2026-10-04T18:58:19.560705+00:00",
+      "sha256": "4e80177b8d0537dbd1cb384cc44f617fce3e6005a9efbb7f33c2e55c79772e95",
+      "bytes": 28177,
+      "status": "ok",
+      "source_id": "S20",
+      "locators": [],
+      "revision": "live snapshot; see accessed_utc"
+    },
+    {
+      "id": "sensevoice-modelscope-api.json",
+      "url": "https://www.modelscope.cn/api/v1/models/iic/SenseVoiceSmall",
+      "accessed_utc": "2026-10-04T18:58:19.719226+00:00",
+      "sha256": "87064b01d1ae848c8d8e5e7cd5da38bcb1a9fc2d0c1ea78e4594e80ac57d19e3",
+      "bytes": 19371,
+      "status": "ok",
+      "source_id": "S21",
+      "locators": [],
+      "revision": "live snapshot; see accessed_utc"
+    },
+    {
+      "id": "qwen-modelscope-api.json",
+      "url": "https://www.modelscope.cn/api/v1/models/Qwen/Qwen3-ASR-0.6B",
+      "accessed_utc": "2026-10-04T19:00:44.795994+00:00",
+      "sha256": "f3f3c2a03361a895f18a376b3cd7d22fae2496d67da06e227e8ed4d40224aaad",
+      "bytes": 80821,
+      "status": "ok",
+      "source_id": "S22",
+      "locators": [],
+      "revision": "live snapshot; see accessed_utc"
+    },
+    {
+      "id": "qwen-github-LICENSE",
+      "url": "https://raw.githubusercontent.com/QwenLM/Qwen3-ASR/7c6daf77a2421100f5fb066495372c00129d39ff/LICENSE",
+      "accessed_utc": "2026-10-04T18:58:20.006559+00:00",
+      "sha256": "a44a6081c73ad75f0255bb2bb5cab74ef1829565a895a24e53a4f11290ab7655",
+      "bytes": 11343,
+      "status": "ok",
+      "source_id": "S23",
+      "locators": [
+        "L1-L9"
+      ],
+      "revision": "7c6daf77a2421100f5fb066495372c00129d39ff"
+    },
+    {
+      "id": "silero-github-LICENSE",
+      "url": "https://raw.githubusercontent.com/snakers4/silero-vad/1e261b036686cd0017d500ee96acd1c4ba572a9d/LICENSE",
+      "accessed_utc": "2026-10-04T18:58:27.570547+00:00",
+      "sha256": "2e63e9a38b6e8fc0c7bc37ce174caca1862870856c6daf5697cfb785e925520b",
+      "bytes": 1075,
+      "status": "ok",
+      "source_id": "S24",
+      "locators": [
+        "L1-L12"
+      ],
+      "revision": "1e261b036686cd0017d500ee96acd1c4ba572a9d"
+    },
+    {
+      "id": "sherpa-onnx__build-android-arm64-v8a.sh",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/build-android-arm64-v8a.sh",
+      "accessed_utc": "2026-10-04T18:45:41.734725+00:00",
+      "sha256": "149923a58ba30b83fec3910ec09af6b5050a94a7d29aff994b28bb184480ed0a",
+      "bytes": 9892,
+      "status": "ok",
+      "source_id": "S25",
+      "locators": [
+        "L1-L13",
+        "L93-L120",
+        "L127-L133",
+        "L164-L198"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__android__SherpaOnnxAar__sherpa_onnx__build.gradle.kts",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/android/SherpaOnnxAar/sherpa_onnx/build.gradle.kts",
+      "accessed_utc": "2026-10-04T18:50:42.154898+00:00",
+      "sha256": "3adfa152822feaf28348275a471925ac052dd66e24d2a2a8c968f69b2070bfbd",
+      "bytes": 1062,
+      "status": "ok",
+      "source_id": "S26",
+      "locators": [
+        "L1-L33"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__android__SherpaOnnxAar__gradle__libs.versions.toml",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/android/SherpaOnnxAar/gradle/libs.versions.toml",
+      "accessed_utc": "2026-10-04T18:50:17.137247+00:00",
+      "sha256": "198ab638cc32b137e1eaf0879b414622546f2cd91b50a32177825269db6e053f",
+      "bytes": 998,
+      "status": "ok",
+      "source_id": "S27",
+      "locators": [
+        "L1-L13"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__.github__workflows__android.yaml",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/.github/workflows/android.yaml",
+      "accessed_utc": "2026-10-04T18:55:35.682294+00:00",
+      "sha256": "cd692cbc4f0dfa739c0877e4dad3a4bed510c08171d7a6be28d03b1bc4c25d67",
+      "bytes": 10495,
+      "status": "ok",
+      "source_id": "S28",
+      "locators": [
+        "L60-L68",
+        "L230-L246",
+        "L314-L322"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-release.json",
+      "url": "https://api.github.com/repos/k2-fsa/sherpa-onnx/releases/latest",
+      "accessed_utc": "2026-10-04T18:44:23.868827+00:00",
+      "sha256": "2cd5fc8ab566774b2740f5b1b409703157ab0d182e69ad3b46178fb7fffe9b04",
+      "bytes": 498069,
+      "status": "ok",
+      "source_id": "S29",
+      "locators": [],
+      "revision": "live snapshot; see accessed_utc"
+    },
+    {
+      "id": "sherpa-onnx__CMakeLists.txt",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/CMakeLists.txt",
+      "accessed_utc": "2026-10-04T18:45:40.556916+00:00",
+      "sha256": "4df4359dc8ad360eadd0d125059622c12bcac99f32e7cf2aabe44aaa16a0c09c",
+      "bytes": 23792,
+      "status": "ok",
+      "source_id": "S30",
+      "locators": [
+        "L74-L83",
+        "L204-L208",
+        "L390-L397"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__provider.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/provider.cc",
+      "accessed_utc": "2026-10-04T18:45:42.104310+00:00",
+      "sha256": "4920ddb6975464e0d42a3224e17f230f4a474fb0ee8d8547b7372fd51062557a",
+      "bytes": 1078,
+      "status": "ok",
+      "source_id": "S31",
+      "locators": [
+        "L15-L40"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__session.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/session.cc",
+      "accessed_utc": "2026-10-04T18:53:04.590936+00:00",
+      "sha256": "2ace7fcbc910ab41804ab93869c0eeceac8b0d416d6dbe76a4417c2b007a9e52",
+      "bytes": 21195,
+      "status": "ok",
+      "source_id": "S32",
+      "locators": [
+        "L140-L158",
+        "L241-L256",
+        "L389-L422"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "ort-nnapi.html",
+      "url": "https://onnxruntime.ai/docs/execution-providers/NNAPI-ExecutionProvider.html",
+      "accessed_utc": "2026-10-04T18:55:37.766863+00:00",
+      "sha256": "03d20a5c3c698e3307d06361826a78d97dd5f87719b5fb42f3e209ddbf081f4a",
+      "bytes": 47011,
+      "status": "ok",
+      "source_id": "S33",
+      "locators": [],
+      "revision": "live snapshot; see accessed_utc"
+    },
+    {
+      "id": "ort-xnnpack.html",
+      "url": "https://onnxruntime.ai/docs/execution-providers/Xnnpack-ExecutionProvider.html",
+      "accessed_utc": "2026-10-04T18:55:39.746877+00:00",
+      "sha256": "b6df1c6bc987e5d7766ed7343e652e398fdc2f992534224438408de198b3c1bf",
+      "bytes": 44066,
+      "status": "ok",
+      "source_id": "S34",
+      "locators": [],
+      "revision": "live snapshot; see accessed_utc"
+    },
+    {
+      "id": "ort-qnn.html",
+      "url": "https://onnxruntime.ai/docs/execution-providers/QNN-ExecutionProvider.html",
+      "accessed_utc": "2026-10-04T18:55:38.827326+00:00",
+      "sha256": "a4f10b738984d6ed9a242f0ece7f6747c9439971182b804dbbbd01448edf51a3",
+      "bytes": 113085,
+      "status": "ok",
+      "source_id": "S35",
+      "locators": [],
+      "revision": "live snapshot; see accessed_utc"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__offline-recognizer-impl.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/offline-recognizer-impl.cc",
+      "accessed_utc": "2026-10-04T18:55:35.695667+00:00",
+      "sha256": "c77715c9709325665437df0e1061afb9b9cee0799af73a13802b1b7daf67daf8",
+      "bytes": 36269,
+      "status": "ok",
+      "source_id": "S36",
+      "locators": [
+        "L189-L240"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__online-recognizer-impl.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/online-recognizer-impl.cc",
+      "accessed_utc": "2026-10-04T18:55:35.718465+00:00",
+      "sha256": "590b27e84d4369fb6387fb613e797c91f8a18f13edbd6511472092ee24d51c5f",
+      "bytes": 12446,
+      "status": "ok",
+      "source_id": "S37",
+      "locators": [
+        "L84-L105"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__qnn__qnn-model.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/qnn/qnn-model.cc",
+      "accessed_utc": "2026-10-04T18:53:06.022268+00:00",
+      "sha256": "af162be426400a9c8708e041ff220f32696504f0de7bbb0c97914f72154897f8",
+      "bytes": 23205,
+      "status": "ok",
+      "source_id": "S38",
+      "locators": [
+        "L473-L493"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa__docs__source__onnx__qnn__build-android-demo.rst",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa/c02f72ca1540163a54019e845127fa52d5de175b/docs/source/onnx/qnn/build-android-demo.rst",
+      "accessed_utc": "2026-10-04T18:53:03.577584+00:00",
+      "sha256": "8b8bf5c53d1641ac6c870798deab321e824d3ba56093ed9742d5cce620088a0f",
+      "bytes": 8121,
+      "status": "ok",
+      "source_id": "S39",
+      "locators": [
+        "L40-L73",
+        "L139-L159"
+      ],
+      "revision": "c02f72ca1540163a54019e845127fa52d5de175b"
+    },
+    {
+      "id": "sherpa__docs__source__onnx__qnn__download-qnn.rst",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa/c02f72ca1540163a54019e845127fa52d5de175b/docs/source/onnx/qnn/download-qnn.rst",
+      "accessed_utc": "2026-10-04T18:55:36.008906+00:00",
+      "sha256": "ebc1a6bdf110de58dd0dc4f83a572812f9481107b0c29f0b345e4dc040e71eee",
+      "bytes": 2445,
+      "status": "ok",
+      "source_id": "S40",
+      "locators": [
+        "L17-L24",
+        "L62-L68"
+      ],
+      "revision": "c02f72ca1540163a54019e845127fa52d5de175b"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__qnn-config.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/qnn-config.cc",
+      "accessed_utc": "2026-10-04T18:46:02.322686+00:00",
+      "sha256": "24afbda248aedcfc460498d77b39b289a9989b017525b73ed38e70ab005b0700",
+      "bytes": 2300,
+      "status": "ok",
+      "source_id": "S41",
+      "locators": [
+        "L17-L38"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__macros.h",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/macros.h",
+      "accessed_utc": "2026-10-04T19:00:44.418612+00:00",
+      "sha256": "25abcee5880edb481b299106058b272e8311bd6281829695babd6df6821b36b3",
+      "bytes": 11225,
+      "status": "ok",
+      "source_id": "S42",
+      "locators": [
+        "L22-L35",
+        "L54-L59"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__qnn__macros.h",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/qnn/macros.h",
+      "accessed_utc": "2026-10-04T19:00:44.335061+00:00",
+      "sha256": "ee78ccf07f087716e20aaafd9aa2584e7617b9362252a932be0fb48ac9db88d6",
+      "bytes": 779,
+      "status": "ok",
+      "source_id": "S43",
+      "locators": [
+        "L7-L19"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa__docs__source__onnx__rknn__install.rst",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa/c02f72ca1540163a54019e845127fa52d5de175b/docs/source/onnx/rknn/install.rst",
+      "accessed_utc": "2026-10-04T19:00:44.729479+00:00",
+      "sha256": "b1b6a5a29841b958f00c674a62307f20719006159101f7b22541f9881532eccc",
+      "bytes": 9908,
+      "status": "ok",
+      "source_id": "S44",
+      "locators": [
+        "L53-L64"
+      ],
+      "revision": "c02f72ca1540163a54019e845127fa52d5de175b"
+    },
+    {
+      "id": "sherpa__docs__source__onnx__ascend__install.rst",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa/c02f72ca1540163a54019e845127fa52d5de175b/docs/source/onnx/ascend/install.rst",
+      "accessed_utc": "2026-10-04T19:00:45.322295+00:00",
+      "sha256": "c7c18798c43b5b91ba8912f57f01987a6a349f36132783c724b4625f25a496d1",
+      "bytes": 808,
+      "status": "ok",
+      "source_id": "S45",
+      "locators": [
+        "L1-L35"
+      ],
+      "revision": "c02f72ca1540163a54019e845127fa52d5de175b"
+    },
+    {
+      "id": "android16-cn.html",
+      "url": "https://developer.android.google.cn/guide/practices/page-sizes?hl=en",
+      "accessed_utc": "2026-10-04T18:57:09.201004+00:00",
+      "sha256": "2f3c17415b89658344f3e40df989430faca46d8c9715b3108c31ea673f9ff709",
+      "bytes": 309245,
+      "status": "ok",
+      "source_id": "S46",
+      "locators": [],
+      "revision": "live snapshot; see accessed_utc"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__jni__offline-recognizer.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/jni/offline-recognizer.cc",
+      "accessed_utc": "2026-10-04T19:02:33.041106+00:00",
+      "sha256": "0580806e6875502fd0cf78159a50e09359715bb6f87e645a07ae5c5fd9c52219",
+      "bytes": 30573,
+      "status": "ok",
+      "source_id": "S47",
+      "locators": [
+        "L537-L552",
+        "L574-L577",
+        "L620-L635"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__android__SherpaOnnx__app__src__main__java__com__k2fsa__sherpa__onnx__MainActivity.kt",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/android/SherpaOnnx/app/src/main/java/com/k2fsa/sherpa/onnx/MainActivity.kt",
+      "accessed_utc": "2026-10-04T19:02:32.961548+00:00",
+      "sha256": "8e05f1453e0e1361b4ff23988ad878637876b85cb34770e46b63c7ada55953eb",
+      "bytes": 11548,
+      "status": "ok",
+      "source_id": "S48",
+      "locators": [
+        "L174-L210"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__scripts__apk__generate-qnn-asr-apk-script.py",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/scripts/apk/generate-qnn-asr-apk-script.py",
+      "accessed_utc": "2026-10-04T18:57:06.704834+00:00",
+      "sha256": "6848003d3d67b25db97d49f6ffae8c1b29d9581fce5a9ba170917b70b9f99de5",
+      "bytes": 4134,
+      "status": "ok",
+      "source_id": "S49",
+      "locators": [
+        "L37-L52",
+        "L81-L108"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__qnn__qnn-backend.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/qnn/qnn-backend.cc",
+      "accessed_utc": "2026-10-04T18:55:35.709421+00:00",
+      "sha256": "9de5785a5e7f03de6e517e5af1a8effecf500f552252eeb4bc99185974cbf404",
+      "bytes": 7704,
+      "status": "ok",
+      "source_id": "S50",
+      "locators": [
+        "L87-L97",
+        "L192-L203"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__CMakeLists.txt",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/CMakeLists.txt",
+      "accessed_utc": "2026-10-04T18:57:23.770574+00:00",
+      "sha256": "839210707b8957f46dcddec230f877f88d08aedafad73535da75a9def536394d",
+      "bytes": 27621,
+      "status": "ok",
+      "source_id": "S51",
+      "locators": [
+        "L259-L274",
+        "L452-L455"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__java-api__src__main__java__com__k2fsa__sherpa__onnx__OfflineRecognizer.java",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/java-api/src/main/java/com/k2fsa/sherpa/onnx/OfflineRecognizer.java",
+      "accessed_utc": "2026-10-04T18:57:06.109146+00:00",
+      "sha256": "5f834ede5d2a50bd95dceca1f3f8e3d51b71617af04c9ec596dcb42883216eda",
+      "bytes": 2253,
+      "status": "ok",
+      "source_id": "S52",
+      "locators": [
+        "L1-L55"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__android__SherpaOnnxSimulateStreamingAsr__app__src__main__java__com__k2fsa__sherpa__onnx__simulate__streaming__asr__SimulateStreamingAsr.kt",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/android/SherpaOnnxSimulateStreamingAsr/app/src/main/java/com/k2fsa/sherpa/onnx/simulate/streaming/asr/SimulateStreamingAsr.kt",
+      "accessed_utc": "2026-10-04T18:50:44.670692+00:00",
+      "sha256": "8d2c7417189811155855fcf4cd8a27ff619df679f903277140972693c8807c5f",
+      "bytes": 11088,
+      "status": "ok",
+      "source_id": "S53",
+      "locators": [
+        "L146-L166",
+        "L62-L83"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__cmake__onnxruntime-android-aarch64.cmake",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/cmake/onnxruntime-android-aarch64.cmake",
+      "accessed_utc": "2026-10-04T18:53:06.792109+00:00",
+      "sha256": "593cd72a365fb13f60858756fdb78925a20f6dcfa5343e1d4ed549f632cedeee",
+      "bytes": 2454,
+      "status": "ok",
+      "source_id": "S54",
+      "locators": [
+        "L15-L20"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__cmake__onnxruntime-android-aarch64-static.cmake",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/cmake/onnxruntime-android-aarch64-static.cmake",
+      "accessed_utc": "2026-10-04T18:53:07.098977+00:00",
+      "sha256": "ef8981acd131d6705c6eb8f0adf0b95e14950c7ba82b05c4920c34b55966422f",
+      "bytes": 2394,
+      "status": "ok",
+      "source_id": "S55",
+      "locators": [
+        "L15-L20"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__offline-recognizer-sense-voice-impl.h",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/offline-recognizer-sense-voice-impl.h",
+      "accessed_utc": "2026-10-04T19:00:43.823381+00:00",
+      "sha256": "4a4af3edaead30280c486aec05926f70ce2b7a5514fe61bb1fe81e0e8e2cd73d",
+      "bytes": 14799,
+      "status": "ok",
+      "source_id": "S56",
+      "locators": [
+        "L29-L56"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "sherpa-onnx__sherpa-onnx__csrc__qnn__offline-sense-voice-model-qnn.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/qnn/offline-sense-voice-model-qnn.cc",
+      "accessed_utc": "2026-10-04T18:57:06.702866+00:00",
+      "sha256": "43c09901aca24febec37f68487f8dd574de62cbd31de8dcbe12fa9a323bce387",
+      "bytes": 7595,
+      "status": "ok",
+      "source_id": "S57",
+      "locators": [
+        "L198-L213"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609"
+    },
+    {
+      "id": "revision-fix__jni__offline-recognizer.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/jni/offline-recognizer.cc",
+      "accessed_utc": "2026-10-04T19:32:26.838473+00:00",
+      "sha256": "0580806e6875502fd0cf78159a50e09359715bb6f87e645a07ae5c5fd9c52219",
+      "bytes": 30573,
+      "status": "ok",
+      "source_id": "S58",
+      "locators": [
+        "L480-L497",
+        "L511-L551",
+        "L582-L590",
+        "L620-L655"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609",
+      "review_finding": "F001"
+    },
+    {
+      "id": "revision-fix__jni__online-recognizer.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/jni/online-recognizer.cc",
+      "accessed_utc": "2026-10-04T19:32:26.832803+00:00",
+      "sha256": "102b882a83c2e2d1fb17a9656fd6b7806aa4497080bafd920d436f81d0ea67e1",
+      "bytes": 17512,
+      "status": "ok",
+      "source_id": "S59",
+      "locators": [
+        "L245-L262",
+        "L276-L315",
+        "L363-L385",
+        "L389-L402"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609",
+      "review_finding": "F001"
+    },
+    {
+      "id": "revision-fix__jni__common.h",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/jni/common.h",
+      "accessed_utc": "2026-10-04T19:32:26.822176+00:00",
+      "sha256": "8ad5c17177f78866ae2609b9fd6721aba2a5f3e5de343941d793c08338c38f1a",
+      "bytes": 11254,
+      "status": "ok",
+      "source_id": "S60",
+      "locators": [
+        "L159-L205"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609",
+      "review_finding": "F001"
+    },
+    {
+      "id": "revision-fix__csrc__offline-paraformer-model.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/offline-paraformer-model.cc",
+      "accessed_utc": "2026-10-04T19:32:26.840110+00:00",
+      "sha256": "2401fb302d8116e3a52e8b91ad9fd8dd3cc810b24c2a30658a61461a1703aa63",
+      "bytes": 5417,
+      "status": "ok",
+      "source_id": "S61",
+      "locators": [
+        "L32-L50",
+        "L75-L84"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609",
+      "review_finding": "F001"
+    },
+    {
+      "id": "revision-fix__csrc__offline-recognizer-qwen3-asr-impl.cc",
+      "url": "https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/040afe360a38e25daaa325ce8889abf93ea02609/sherpa-onnx/csrc/offline-recognizer-qwen3-asr-impl.cc",
+      "accessed_utc": "2026-10-04T19:32:27.131792+00:00",
+      "sha256": "d9daad0eafcd066fa088eb06d858ecfd394fef35ce1e6f595ab934e6e5525824",
+      "bytes": 41307,
+      "status": "ok",
+      "source_id": "S62",
+      "locators": [
+        "L211-L257",
+        "L873-L906",
+        "L908-L917",
+        "L928-L937",
+        "L1026-L1039",
+        "L1078-L1086",
+        "L1125-L1153",
+        "L1231-L1235"
+      ],
+      "revision": "040afe360a38e25daaa325ce8889abf93ea02609",
+      "review_finding": "F002"
+    }
+  ]
+}

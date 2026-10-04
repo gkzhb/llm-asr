@@ -47,3 +47,12 @@
 - PASS：2271带行号展示行与raw.rstrip匹配及locator覆盖；无尾空白；62source SHA/bytes；13local/base；技术报告/manifest/父review SHA不变；git ls-files --stage前后完全一致，研究者未操作index。
 - 两摘录工作树git diff --check通过；父暂存区仍是旧展示，须父重暂存再cached检查，不声称cached已通过。
 - 未stage/commit/close，task仍in_progress；单一Next Step：父重新暂存授权文本变更、完成cached格式检查并安全提交。
+
+## 2026-10-04T19:51:35Z 父研究提交与授权关闭
+- Git核父研究提交fullhash 9c753c480d9a681b9ea9ab089b3ed01102cad190：18限定纯文本，commit whitespace检查通过，技术报告复审SHA 1fd6fca5a037ce735cde4d020e1227a6037741cc3ea24e4588ab6073cb69f43a不变。
+- GPT6.1全审+窄复审（同家族隔离，不依赖MiniMax）F001/F002文稿关闭，父验收接受；产品风险/设备/性能质量仍未验证，不称已修复或接入。
+- 首次核验所有18文件current=commit因父supervision/progress并发追加assert失败；没有覆盖父改动。该批shell随后仍执行bd close，已如实记录；改为核commit范围/冻结报告证据与13base输入后PASS，不将首次失败称通过。
+- 最终PASS：commit身份/范围/纯文本/whitespace/报告SHA、reports提交/current相等、62source SHA/bytes、13base/current输入、index空。
+- 已读bd close --help，仅bd --actor sherpa-research close llm-asr-1lz --reason...；成功后bd show读回CLOSED、assignee本人；未关其他task、不创建/claim PoC。
+- 本次只改Beads关闭记录、本人三文件与status终态；技术报告/manifest/摘录/父review未改；未stage/commit/push/产品/构建/推理/设备。
+- 单一Next Step：父安全提交关闭状态文本；研究执行结束。

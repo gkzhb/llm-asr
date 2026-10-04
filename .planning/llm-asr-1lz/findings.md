@@ -29,4 +29,5 @@
 - 追加S58–S62于原manifest（总62），新evidence-corrections.md为18,651bytes短摘录；原S01–S57/旧excerpt保留。报告多处收窄SafeJNI，§6.3专述Qwentermination/音频完整性，PoC加同覆盖同终止对照。
 - 已重读memory全文原位更新sherpa-provider-verification-boundaries，保留原事实并追加F001/F002源码约束；recall成功。AGENTS无新导航不改。
 - 修正自检2026-10-04T19:39:48Z PASS：62source SHA/bytes、追加摘录逐行/UTC/revision、13local/base、父report哈希不变、引用链接/范围/index/文本。待父复核，不把文稿修正当native实现修复。
+- 最终研究验收：父提交9c753c480d9a681b9ea9ab089b3ed01102cad190（18文本），GPT6.1全审+窄复审F001/F002文稿关闭；复审report SHA不变、62source/13base核通过。显式授权只关闭llm-asr-1lz，bd close成功/show CLOSED。产品风险未实施修复/未引擎接入；质量性能/构建设备全部not run。最新状态以status.md为准，已冻结docs/manifest/摘录/父review不改。
 - v1.13.8固定commit 11afbd009a7f8c08f4bcf2fc1b265d0df4670fbf；抽核build-arm64/session/factory/OnlineRecognizer与master SHA一致。Release API普通AAR 50,129,134 bytes、static AAR 38,691,998 bytes是包元数据非本项目APK/PSS；未下载二进制。

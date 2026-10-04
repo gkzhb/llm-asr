@@ -47,5 +47,15 @@
 - cached diff-check发现新摘录`行号: `空行大量尾随空格exit2，commit尚未执行。先前普通git diff-check不覆盖untracked摘录，不能代替当前暂存检查。
 - 已退回唯一研究writer仅清理展示末尾空白并注明展示规范化（raw/manifestSHA/技术报告不改），更新实际自检状态，不stage/commit/close；父管理已暂存index。
 
+## 研究提交成功
+- writer清理展示末尾空白并声明展示省略行尾空白；2271定位行与原文rstrip匹配，raw/manifest/技术报告SHA不变。
+- 父重暂存18限定文本，cached diff-check/纯文本安全/62source/13base/GPT报告SHA1fd6fca5...43a检查通过，研究本地提交9c753c4成功。没有产品/模型/音频/APK/密钥/cache/他人目录或远端push。
+- 已授权唯一sherpa-research核成功commit后显式关闭研究llm-asr-1lz，仅更新plan/status/Beads，技术报告不改；父将另提交关闭文本。不创建/认领PoC，未进行推理/质量/性能/设备验证。
+
+## 研究task关闭与交付
+- sherpa-research按批准仅关闭llm-asr-1lz，报告closed读回；父复核Beads逻辑变化只该task。
+- 技术报告/manifest/摘录和父审查文件保持9c753c4提交版，62source/13inputs和复审SHA不变；仅5关闭状态文本+父supervision状态收尾。
+- 已向用户完整交付研究结论、报告路径/9c753c4与CPU→true streaming→设备profile路线，明确未产品接入/设备质量性能验证。父仅提交关闭文本，不push/自动创建PoC。
+
 ## Next Step
-接收摘录纯格式收尾，重暂存限定文件并完整cached安全/格式核对，通过再本地提交研究文本；不自动实施PoC。
+等待用户明确PoC目标模型、实施/下载/设备授权；本轮研究监管完成，不自动实施。

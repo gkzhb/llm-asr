@@ -1,6 +1,7 @@
 # sherpa研究状态与验证证据
 
-- Task：`llm-asr-1lz`；assignee/writer：`sherpa-research`；监管父：`sherpa-steward`。
+- Task：`llm-asr-1lz`；**最终研究状态：CLOSED（bd close成功，show读回）**；assignee/writer：`sherpa-research`；监管父：`sherpa-steward`。
+- 研究已由父提交：`9c753c480d9a681b9ea9ab089b3ed01102cad190`（短hash `9c753c4`）；本次关闭状态文本待父另提交。
 - PI session：`01a10839-8f25-7123-9f1f-11afd82546ea`；subagent：`6f2027b8-b02d-4b79-a9bf-acd22890f47a`；Herdr pane：`wJ:p5`（开工已核working）。
 - cwd/branch/base：`/home/zhb/gitrep/llm-asr` / `main` / `f07c487bb39a202d7f70e95771fb0a3c0e31c21e`。
 - 报告：`docs/sherpa-engine-evaluation.md`；证据：本目录；执行plan：`.planning/llm-asr-1lz/{task_plan,findings,progress}.md`。
@@ -31,7 +32,7 @@ PASS: 57 official source hashes/lengths, 13 local inputs identical to base, repo
 - 重点发布gate：SenseVoice许可冲突及最终确认待定；native `_Exit`错误路径与敏感热词logcat；hard cancel无已核支持；QNN direct SDK与SoC/模型条件；普通AAR实际EP/全依赖16KiB待二进制/设备验证。此次另补CPU初始化/online入口native异常包装与Qwen termination/实际音频覆盖完整性gate，均未设备复现、未实施修复。
 - 已更正草稿误记Qwen Kotlin selector为61；没有照搬SenseVoice过时商业答复作为最终许可。
 
-## Git与交接
+## Git与交接（研究过程历史，终态见末节）
 
 - 未stage、未commit、未close、未push/upload/install；任务保持in_progress等父审查，不宣称引擎替换或APK交付。
 - 本任务新文件：`docs/sherpa-engine-evaluation.md`、`reports/sherpa-research/`、`.planning/llm-asr-1lz/`；任务/memory写入导致`.beads/issues.jsonl`变化（父初始任务登记已有修改）。
@@ -68,4 +69,20 @@ PASS: 2271 numbered display lines match raw.rstrip; no trailing whitespace; 62 s
 
 两摘录工作树`git diff --check`退出0；index前后`git ls-files --stage`逐字相同，由父管理。**cached中仍是原展示，需父重新暂存再检查，不宣称cached已通过。** 未stage/commit/close、未产品/构建/推理/设备操作；task保持in_progress。
 
-**单一Next Step：父sherpa-steward重新暂存授权文本改动，完成cached格式检查并安全提交研究文本；研究者不提交/关闭。**
+以上为格式补齐阶段历史，随后父提交成功；最新终态如下。
+
+## 研究已提交并显式关闭（2026-10-04T19:51:35Z）
+
+- Git已核完整研究commit `9c753c480d9a681b9ea9ab089b3ed01102cad190`，18限定纯文本，无产品/构建/模型权重/音频/APK变更。commit whitespace检查通过，已提交报告SHA仍为`1fd6fca5a037ce735cde4d020e1227a6037741cc3ea24e4588ab6073cb69f43a`。
+- 62来源SHA/bytes、13本仓库base/current输入一致；父初稿5固定官方源码公开refetch match。GPT6.1全审+窄复审为同家族隔离上下文，不称cross-family、不依赖中断MiniMax；F001/F002**研究文稿**关闭，父接受研究验收。
+- 已按本次显式授权读取`bd close --help`，只关闭`llm-asr-1lz`；命令成功且`bd show llm-asr-1lz`读回CLOSED。关闭理由记录研究提交、证据/审查、结论和not run边界，不关闭其他task、不创建/领取PoC。
+- 结论仍是值得有条件可选provider PoC，不直接替换MNN；先许可清晰CPU offline，再另授权真streaming/逐设备EP。**未接入引擎、未修复产品风险、未设备验收，没有新APK。** 性能/质量/CER/WER/RAM/Java-JNI-APK/推理/设备全部not run。
+- 首次把全部18文件current=commit的检查因父独占supervision/progress并发追加失败；未修改父文件。shell随后仍执行了已授权close，此失败已记录。后续将current相等范围限定为冻结技术报告/证据，完整commit范围/格式及62source/13input重新核验PASS，未把首次失败冒充通过。
+
+```text
+PASS: full commit identity, 18 text-only authorized paths, committed whitespace/report reviewed SHA, committed/current reports unchanged, 62 source SHA/bytes, 13 base/current inputs, empty index
+```
+
+本文件为状态权威补充：已提交技术报告内“待父审查/in_progress”是研究时快照，不再改其正文以保持复审SHA；manifest/摘录/父review同样冻结。此次只有Beads关闭记录、本人plan三文件与本status终态变更，研究者未stage/commit/push，父另安全提交关闭文本。
+
+**单一Next Step：父sherpa-steward核查并安全提交关闭状态文本；研究执行结束，不自动开展PoC。**

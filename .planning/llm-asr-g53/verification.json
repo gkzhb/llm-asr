@@ -1,0 +1,16 @@
+{
+  "skill": {
+    "name": "llm-asr-dependencies",
+    "description": "本项目第三方依赖准入与使用规范。新增、升级、删除或排查 Gradle/JVM/AAR、Nix工具链、C++推理库/ORT、Python模型工具及模型资产依赖时使用；指导版本锁定、来源校验、许可、模块边界、native安全、离线验证与交付审计。"
+  },
+  "validation": "portable frontmatter/path/local links/fences/text-only/current-vs-proposed/authorization checks passed",
+  "tested_loader": "not run; reload/discovery check remains manual",
+  "product_tests": "not run; documentation-only",
+  "apk_build": "not run; no product/build input changes",
+  "files": {
+    "AGENTS.md": "9f569cc6470dc36f269c6d3c462a8ae2dacf2a82ad1bdcdba513862c8b95f6f6",
+    ".agents/skills/llm-asr-dependencies/SKILL.md": "83135492628c7186a76d8efac5f5011c185e16add8f4893c24d0429c40e0f0ec",
+    ".agents/skills/llm-asr-dependencies/references/change-workflow.md": "46229cd730ccbfb135955f91e28bd5d06ab5c5384bb538db512dd26b44bfb5e2",
+    ".agents/skills/llm-asr-dependencies/references/dependency-map.md": "552ce8ee122e824a2fad701992f2814d2f9557755bec5431b8900411186be51a"
+  }
+}

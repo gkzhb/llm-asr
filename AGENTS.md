@@ -23,6 +23,10 @@
 - 根 `task_plan.md` / `findings.md` / `progress.md` 保留累计执行历史；活动任务使用明确绑定任务 ID / owner 的 `.planning/<id>/`，一计划一 writer。旧阶段 TODO 不应绕过当前 Beads 重复分派。
 - Agent 运行状态以 Herdr 查询为准；`bd ready` 不等于实施授权。分派前核对依赖、owner、runtime 与任务范围。发现汇总与逐条记录不一致时以显式 `bd show <id>` / `bd list --status blocked` 核查，不只看 `bd status` 的计数。
 
+## 项目 Skills
+
+- 第三方库新增、升级、删除和排查：读取 [llm-asr-dependencies](.agents/skills/llm-asr-dependencies/SKILL.md)，按 Gradle/JVM、Nix 工具链、native 源码和模型资产分类管理，保留版本锁、来源校验、许可与分层验证。Skill 不扩大下载、设备或推送授权；Pi 可用 `/skill:llm-asr-dependencies` 显式加载。
+
 ## Project Knowledge
 
 长期项目知识保存在本项目 Beads memories；索引不代替任务状态或 memory 正文。

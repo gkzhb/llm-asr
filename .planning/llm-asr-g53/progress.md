@@ -9,4 +9,4 @@
 - 实际Pi skill loader/discovery未运行，需用户/reload后核，不能称实测可加载；项目.agents发现路径由完整Pi文档核实。
 - 直接自审：强制分层锁/校验与current-vs-proposed、权限/first-download trust/native/publisher/CVE限制；没有写可自动运行的下载脚本或批准工具frontmatter。
 - git no-index --check空输出exit1是新文件diff语义，不算whitespace failure；cached检查提交前再核。
-- 当前产品测试/构建/设备/下载not run；无产品或构建输入改动，文档轮不无关重建APK。下一步仅限定文本暂存审计及本地提交。
+- 当前产品测试/构建/设备/下载not run；无产品或构建输入改动，文档轮不无关重建APK。限定8个UTF-8文本/index==worktree、无权重/密钥/缓存/他人规划、cached --check核通过，功能文稿本地提交96fd996成功；未push。实际loader仍not run，后续/reload核发现。状态收尾只更新本计划，另新提交，不改已提交skill指纹或产品。

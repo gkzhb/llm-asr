@@ -10,7 +10,7 @@
 - 不下载/网络/设备/产品测试构建/依赖升级/push，不改历史提交。
 
 ## Current Phase
-Phase 2 skill/参考/导航与静态验证完成，限定文本安全提交待执行。
+Phase 2 complete：skill/参考/导航验证通过，8限定文本已安全本地提交96fd996；当前只收尾状态，不产品改动。
 
 ### Phase 1: 事实核查与编写
 - [x] 读取Pi skills/settings/configuration文档及项目依赖配置。
@@ -19,11 +19,11 @@ Phase 2 skill/参考/导航与静态验证完成，限定文本安全提交待�
 
 ### Phase 2: 验证及交付
 - [x] 检查frontmatter/链接/相对路径/现状/安全边界，verification.json保存指纹；实际loader未运行，需reload后检查。
-- [ ] 限定暂存审计与本地提交，关闭仅skill任务，不交付新APK。
-- **Status:** in_progress
+- [x] 限定8文本暂存安全审计/cached --check及本地提交96fd996成功；只关闭skill任务，无新APK。状态文本收尾另提交，不amend历史。
+- **Status:** complete
 
 ## Next Step
-审计限定skill/导航/本planning文本暂存并创建本地提交，不夹带未提交规划。
+在Pi执行/reload后检查/skill:llm-asr-dependencies发现；后续依赖变更另按显式task授权，不自动引入库或修改构建。
 
 ## Errors Encountered
 find不存在的可选skill目录返回非零，仅用于发现；确认可使用.agents/skills，无需改ignored .pi目录。

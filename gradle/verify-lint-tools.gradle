@@ -1,0 +1,132 @@
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+import java.security.MessageDigest
+import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.result.ResolvedDependencyResult
+// AGP classes supplied by the plugin-owning typed build script, not reflection.
+def consumerTypes = rootProject.ext.p1LintConsumerTypes
+
+// Fixed AGP8.6.1 typed getters only. Exact consumption gate, NOT a detached lock.
+def identityFile = rootProject.file('gradle/lint-tool-identity.json')
+def digest = { f ->
+    def md = MessageDigest.getInstance('SHA-256')
+    f.withInputStream { stream ->
+        byte[] buffer = new byte[65536]
+        int count
+        while ((count = stream.read(buffer)) != -1) md.update(buffer, 0, count)
+    }
+    md.digest().encodeHex().toString()
+}
+def bag = { rows -> rows.collect { JsonOutput.toJson(it) }.countBy { it } }
+// One shared implementation: production passes its actual immutable classpath;
+// an isolated fixture may exercise this exact closure with a mutable collection.
+def validateIdentity = { task, Configuration c, fc, phase ->
+    def resolvedRoot = c.incoming.resolutionResult.root.id
+    if (!(resolvedRoot instanceof org.gradle.api.artifacts.component.ProjectComponentIdentifier) ||
+        resolvedRoot.projectPath != task.project.path) {
+        throw new GradleException('Lint identity unexpected actual project root: ' + task.path)
+    }
+    def rootId = resolvedRoot.displayName
+    def owner = { id -> id == rootId ? '<owner>' : id }
+    def actual = [
+        root: '<owner>',
+        roots: c.allDependencies.collect { "${it.group}:${it.name}:${it.version}".toString() },
+        flags: [canBeResolved:c.canBeResolved, canBeConsumed:c.canBeConsumed, transitive:c.transitive],
+        attributes:c.attributes.keySet().collectEntries { k -> [(k.name):String.valueOf(c.attributes.getAttribute(k))] },
+        components:c.incoming.resolutionResult.allComponents.collect { owner(it.id.displayName) }.sort(),
+        edges:c.incoming.resolutionResult.allDependencies.collect { d ->
+            if (!(d instanceof ResolvedDependencyResult)) throw new GradleException('Lint identity unresolved edge')
+            [from:owner(d.from.id.displayName), requested:d.requested.displayName, selected:owner(d.selected.id.displayName),
+             constraint:d.isConstraint(), selector:[group:d.requested.group,module:d.requested.module,version:d.requested.version,
+                required:d.requested.versionConstraint.requiredVersion, strict:d.requested.versionConstraint.strictVersion,
+                preferred:d.requested.versionConstraint.preferredVersion, rejected:d.requested.versionConstraint.rejectedVersions,
+                branch:d.requested.versionConstraint.branch]]
+        },
+        artifacts:c.incoming.artifacts.artifacts.collect { a ->
+            [component:a.id.componentIdentifier.displayName,name:a.file.name,sha256:digest(a.file)]
+        }
+    ]
+    def approved = new JsonSlurper().parse(identityFile)
+    for (key in ['root','roots','flags','attributes','components']) {
+        if (actual[key] != approved[key]) throw new GradleException('Lint identity mismatch ' + key + ': ' + task.path)
+    }
+    // Canonicalize map key order, retain multiplicity (not set-based comparison).
+    def canonical
+    canonical = { v ->
+        if (v instanceof Map) return v.keySet().sort().collectEntries { k -> [(k):canonical(v[k])] }
+        if (v instanceof List) return v.collect { canonical(it) }
+        return v
+    }
+    for (key in ['edges','artifacts']) {
+        if (bag(actual[key].collect { canonical(it) }) != bag(approved[key].collect { canonical(it) })) {
+            throw new GradleException('Lint identity mismatch ' + key + ': ' + task.path)
+        }
+    }
+    def artifactFiles = c.incoming.artifacts.artifacts.collect { [path:it.file.canonicalPath,sha256:digest(it.file)] }
+    def classpathFiles = fc.files.collect { [path:it.canonicalPath,sha256:digest(it)] }
+    if (bag(classpathFiles) != bag(artifactFiles) ||
+        artifactFiles.collect { it.path }.unique(false).size() != artifactFiles.size() ||
+        classpathFiles.collect { it.path }.unique(false).size() != classpathFiles.size()) {
+        throw new GradleException('Lint identity actual classpath files mismatch: ' + task.path)
+    }
+    def report = task.project.layout.buildDirectory.file('lint-identity/' + task.name + '.json').get().asFile
+    report.parentFile.mkdirs()
+    report.text = JsonOutput.prettyPrint(JsonOutput.toJson([task:task.path,configuration:c.name,phase:phase,
+        manifest_sha256:digest(identityFile),actual:actual,classpathFiles:classpathFiles])) + '\n'
+    println "LINT_IDENTITY_PASS task=${task.path} phase=${phase} artifacts=${actual.artifacts.size()} edges=${actual.edges.size()}"
+}
+def attach = { p ->
+    def consumers = []
+    // Task-object identity, project-local; never a name-keyed/shared audit config.
+    def passed = new IdentityHashMap()
+    def gate = p.tasks.register('verifyLintToolIdentity') {
+        group = 'verification'
+        description = 'Read-only exact identity of actual debug AGP Lint consumption, no Lint/native action'
+        doLast {
+            passed.clear()
+            // Realize debug consumers; typed collections exclude copy/text-only tasks.
+            consumerTypes.each { type -> p.tasks.withType(type).findAll { it.name.contains('Debug') } }
+            def debug = consumers.findAll { it.name.contains('Debug') }
+            if (debug.empty) throw new GradleException('Lint identity no debug consumers: ' + p.path)
+            def checked = new IdentityHashMap()
+            debug.each { t ->
+                def fc = t.lintTool.classpath
+                def sources = fc.from.toList()
+                if (sources.size() != 1 || !(sources[0] instanceof Configuration)) {
+                    throw new GradleException('Lint identity classpath source must be one actual Configuration: ' + t.path)
+                }
+                def c = sources[0]
+                validateIdentity(t, c, fc, 'gate')
+                checked.put(t, [configuration:c,classpath:fc])
+            }
+            // Publish only after the whole gate succeeds: failure leaves no pass.
+            passed.putAll(checked)
+        }
+    }
+    def wire = { t ->
+        if (t.name.contains('Debug')) {
+            consumers.add(t)
+            t.dependsOn(gate)
+            t.doFirst {
+                def record = passed.get(t)
+                if (record == null || !record.classpath.is(t.lintTool.classpath)) {
+                    throw new GradleException('Lint identity missing successful actual gate record: ' + t.path)
+                }
+                // Gradle finalizes @Classpath sources into file adapters before
+                // actions. Recheck the captured actual graph AND current files;
+                // do not reinterpret finalized from-types or replace AGP state.
+                validateIdentity(t, record.configuration, t.lintTool.classpath, 'consumer')
+            }
+        }
+    }
+    consumerTypes.each { type -> p.tasks.withType(type).configureEach { wire(it) } }
+    // No main-project task/CLI/property bypass. The independent fixture installs
+    // its ordinary-task adapter explicitly in its own trusted build script.
+    if (p == rootProject && p.ext.has('p1LintFixtureAdapter')) {
+        p.ext.p1LintFixtureAdapter.call(gate, passed, validateIdentity)
+    }
+}
+allprojects { p ->
+    p.pluginManager.withPlugin('com.android.application') { attach(p) }
+    p.pluginManager.withPlugin('com.android.library') { attach(p) }
+}

@@ -1,0 +1,201 @@
+[
+  {
+    "source": "core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml",
+    "copy": ".work/p1-full/evidence/core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml",
+    "sha256": "2414eee357f800d26e08a1ee593eb0b9f666e806b2fccc37c524a861fb8ad5a5",
+    "bytes": 6424,
+    "tests": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "testcases": [
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "runtimeLogErrorIdentity",
+        "seconds": "0.01"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelReadiness",
+        "seconds": "0.004"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "imeSessionPrivacy",
+        "seconds": "0.023"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewWindow",
+        "seconds": "0.028"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewPublication",
+        "seconds": "0.015"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewDeletion",
+        "seconds": "0.001"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewLiveDeletion",
+        "seconds": "0.004"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "resultFiles",
+        "seconds": "0.005"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelPageHelpers",
+        "seconds": "0.034"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "recordingRaces",
+        "seconds": "0.003"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "kotlinJavaAbi",
+        "seconds": "0.009"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "logExportGenerations",
+        "seconds": "0.01"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelNotifications",
+        "seconds": "0.005"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "admissionOwnerBoundary",
+        "seconds": "0.008"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "privateModelRoot",
+        "seconds": "0.013"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewPlanning",
+        "seconds": "0.018"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelOperationControl",
+        "seconds": "0.001"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelWhitelistDeletion",
+        "seconds": "0.006"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewBoundary",
+        "seconds": "0.007"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelRepository",
+        "seconds": "0.016"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "runtimeLogCore",
+        "seconds": "0.181"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "nativeResponseProtocol",
+        "seconds": "0.002"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelCancelCleanup",
+        "seconds": "0.074"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "textExportFatalIdentity",
+        "seconds": "0.002"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "providerErrorAndStreamBoundary",
+        "seconds": "0.012"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "requestRunner",
+        "seconds": "0.009"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewTerminal",
+        "seconds": "0.003"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "textExport",
+        "seconds": "0.041"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "partRecoveryProductionMutant",
+        "seconds": "1.392"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "waveAndRecordingProtocol",
+        "seconds": "0.03"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelManagementController",
+        "seconds": "0.02"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "textExportSafety",
+        "seconds": "0.0"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewHistory",
+        "seconds": "0.005"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "taskCoordinator",
+        "seconds": "0.004"
+      }
+    ]
+  },
+  {
+    "source": "android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml",
+    "copy": ".work/p1-full/evidence/android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml",
+    "sha256": "ae26bb0fb48bb7abe7269c7aa70032f9cc7c27796bf097d2b76a22f8334e5201",
+    "bytes": 1190,
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "testcases": [
+      {
+        "class": "RuntimeRegressionJUnitTest",
+        "name": "inferenceAdapterAndJniConstruction",
+        "seconds": "0.077"
+      }
+    ]
+  }
+]

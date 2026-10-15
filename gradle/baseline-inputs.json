@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source_commit": "82a5563",
-  "revision_scope": "M6 window/back changes on source_commit; exact current inputs are pinned below, native/assets/signing unchanged",
+  "revision_scope": "M6 baseline plus authorized P1 Lint fixes: guarded ActivityWindow helper API contracts and ForegroundRecorder permission exception handling; exact source pins updated, native/assets/signing and legacy Manifest unchanged",
   "native": {
     "path": ".work/build/minimal-apk/package/lib/arm64-v8a/libqwen_asr_jni.so",
     "sha256": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416"
@@ -24,7 +24,7 @@
     "android/app/src/org/llmasr/minimal/LogsActivity.java": "89f921c43c9f5a92e962eb4d03e3b990121f73fe2b2ab0cdd3a5b8b4e2def801",
     "android/app/src/org/llmasr/minimal/MainActivity.java": "88f24a66d9f571c9ab659d4a095c730b90adb8e9a73e89205fa8c0c2156adadc",
     "android/app/src/org/llmasr/minimal/ModelManagementActivity.java": "c04da08c22c5530f87aa013af0beeceeb23c88dbac9fd650b4be5ba3a6e08a02",
-    "android/app/src/org/llmasr/minimal/platform/ActivityWindow.java": "d4d8603f0c1575e90cd5df5b6c11e6c8d007555540b40120e7a4370df10eed8b",
+    "android/app/src/org/llmasr/minimal/platform/ActivityWindow.java": "c581984eb27fb2cbbfe203e69df23d53d3a05d85da84862b67992375e06a6e36",
     "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.java": "7c4aa16a0d3174b397db839269033190cf34de531c1b395291f52c3c75a06ddc",
     "android/app/src/org/llmasr/minimal/asr/InferencePhase.java": "72bc9400537dc6c2c4769ea09f8f210642bc27922a6f5b7e4481a3157667f00a",
     "android/app/src/org/llmasr/minimal/asr/InferencePhaseListener.java": "1132c3c4d5040449b9f7e0d1e60872e5652b2d5a42edd07e1d5b5758311dca44",
@@ -33,7 +33,7 @@
     "android/app/src/org/llmasr/minimal/asr/NativeResponse.kt": "bd2620ec96a6030d66b7ce103227fc82d5a60ba1611808807bb81a547177f38a",
     "android/app/src/org/llmasr/minimal/asr/NativeTranscription.java": "76cecf33387a49107d13165a1cb92ebb1d5c484300ea2cb1bfc96d13c1c04b4e",
     "android/app/src/org/llmasr/minimal/audio/AsrText.kt": "c720692ffea1d69b88d5ddbe8233d72b86f90cc3068748bde7a2432f62f21d34",
-    "android/app/src/org/llmasr/minimal/audio/ForegroundRecorder.java": "11fb3a286b06cfcfb513676a03757ff4c2c47f9f85a0ecffa2d16162dbc25a9b",
+    "android/app/src/org/llmasr/minimal/audio/ForegroundRecorder.java": "fa4de7649c0d40ed168126d31e59beb60953f3ef60fe5f7ce5e7424081c6a16f",
     "android/app/src/org/llmasr/minimal/audio/PcmWave.kt": "ccf20aae11439ba259cc927168011634c15430cf865aa470d83710119e193620",
     "android/app/src/org/llmasr/minimal/audio/RecordingControl.kt": "dfa9ac879776138aca236aeb2216582e37221fd79c5dc56485d77c2a33e690ac",
     "android/app/src/org/llmasr/minimal/audio/WaveInput.java": "b46d023aa69cc8eb74d3e6dc1ac815f7c0e1417c82c4534ef7b622ffe5103c83",

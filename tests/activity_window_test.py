@@ -13,6 +13,9 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'android/app/src/org/llmasr/minimal/platform/ActivityWindow.java'
 STUBS = {
+    'android/annotation/TargetApi.java': '''package android.annotation;
+public @interface TargetApi { int value(); }
+''',
     'android/os/Build.java': '''package android.os;
 public class Build { public static class VERSION { public static int SDK_INT; } }
 ''',
@@ -33,7 +36,8 @@ public class WindowInsets {
 public static class Type { public static int systemBars(){return 1;}
 public static int displayCutout(){return 2;} public static int ime(){return 4;} }
 public int requested; public DisplayCutout cutout=new DisplayCutout();
-public android.graphics.Insets getInsets(int types) { requested=types;
+public android.graphics.Insets getInsets(int types) {
+if(android.os.Build.VERSION.SDK_INT<30)throw new AssertionError("API30 insets below boundary"); requested=types;
 return new android.graphics.Insets(41,22,43,(types & 4)!=0 ? 300 : 24); }
 public DisplayCutout getDisplayCutout(){return cutout;}
 public int getSystemWindowInsetLeft(){return 21;}
@@ -66,7 +70,8 @@ public int layoutInDisplayCutoutMode; } }
 public class Window {
 public View decor=new View(); public boolean fits=true,contrast;
 public int status=-1,nav=-1; public WindowManager.LayoutParams attrs=new WindowManager.LayoutParams();
-public void setDecorFitsSystemWindows(boolean x){fits=x;}
+public void setDecorFitsSystemWindows(boolean x){
+if(android.os.Build.VERSION.SDK_INT<30)throw new AssertionError("API30 window below boundary"); fits=x;}
 public View getDecorView(){return decor;}
 public void setStatusBarColor(int x){status=x;} public void setNavigationBarColor(int x){nav=x;}
 public void setNavigationBarContrastEnforced(boolean x){contrast=x;}
@@ -92,7 +97,8 @@ if(c!=callback)throw new AssertionError("unregister identity"); unregistered++;c
 public class Activity { public android.view.Window window=new android.view.Window();
 public android.window.OnBackInvokedDispatcher dispatcher=new android.window.OnBackInvokedDispatcher();
 public android.view.Window getWindow(){return window;}
-public android.window.OnBackInvokedDispatcher getOnBackInvokedDispatcher(){return dispatcher;}
+public android.window.OnBackInvokedDispatcher getOnBackInvokedDispatcher(){
+if(android.os.Build.VERSION.SDK_INT<33)throw new AssertionError("API33 back below boundary");return dispatcher;}
 }
 ''',
     'WindowContractTest.java': '''import org.llmasr.minimal.platform.ActivityWindow;
@@ -101,7 +107,7 @@ public class WindowContractTest {
 static int checks;
 static void check(boolean b,String message){checks++;if(!b)throw new AssertionError(message);}
 public static void main(String[] args){
-for(int sdk:new int[]{29,30,32,33,35}){
+for(int sdk:new int[]{29,30,31,32,33,35}){
 Build.VERSION.SDK_INT=sdk; Activity a=new Activity(); View v=new View();
 v.setPadding(1,2,3,4); a.window.decor.flags=64;
 ActivityWindow.configure(a,v); WindowInsets i=new WindowInsets();
@@ -161,6 +167,14 @@ class WindowTests(unittest.TestCase):
             ('IME omission', ' | WindowInsets.Type.ime()', ''),
             ('padding accumulation', 'left + safe[0]', 'view.getPaddingLeft() + safe[0]'),
             ('duplicate callbacks', 'callback == null', 'true'),
+            ('API30 window guard removed', 'if (Build.VERSION.SDK_INT >= 30) Api30.edgeToEdge(window);',
+             'if (true) Api30.edgeToEdge(window);'),
+            ('API30 insets guard too low', 'if (Build.VERSION.SDK_INT >= 30) return Api30.safeInsets(insets);',
+             'if (Build.VERSION.SDK_INT >= 29) return Api30.safeInsets(insets);'),
+            ('API33 register guard too low', 'Build.VERSION.SDK_INT >= 33 && callback == null',
+             'Build.VERSION.SDK_INT >= 32 && callback == null'),
+            ('API33 unregister guard too high', 'Build.VERSION.SDK_INT >= 33 && callback != null',
+             'Build.VERSION.SDK_INT >= 34 && callback != null'),
         ]
         for name, before, after in mutants:
             with self.subTest(name=name):
@@ -168,7 +182,7 @@ class WindowTests(unittest.TestCase):
                 result = run_contract(source.replace(before, after))
                 self.assertNotEqual(result.returncode, 0, name)
                 self.assertIn('AssertionError', result.stderr)
-        print('PASS 3 compiling production ActivityWindow mutants rejected by behavioral assertions')
+        print('PASS 7 compiling production ActivityWindow mutants rejected by behavioral assertions')
 
 
 if __name__ == '__main__':

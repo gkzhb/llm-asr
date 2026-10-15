@@ -5,6 +5,11 @@ plugins {
     id("org.jetbrains.kotlin.android") version "2.0.21" apply false
 }
 
+extra["p1LintConsumerTypes"] = listOf(
+    com.android.build.gradle.internal.lint.AndroidLintTask::class.java,
+    com.android.build.gradle.internal.lint.AndroidLintAnalysisTask::class.java)
+apply(from = "gradle/verify-lint-tools.gradle")
+
 // Exact source ownership, shared by real module compilers; physical paths stay
 // stable during this first extraction. No source is compiled by two modules.
 extra["appSources"] = listOf("AppGraph.java", "AsrImeService.java", "MainActivity.java",
@@ -72,9 +77,55 @@ val verifyJni by tasks.registering(Exec::class) {
         fileTree("native/apk"), fileTree("scripts"))
     commandLine("bash", "scripts/compile-jni-object.sh")
 }
+val verifyFormat by tasks.registering(Exec::class) {
+    group = "verification"
+    description = "Read-only UTF-8/whitespace gate for explicit maintained text, not raw evidence"
+    commandLine("python3", "scripts/check-maintained-text.py")
+}
+val verifyLocalGuards by tasks.registering(Exec::class) {
+    group = "verification"
+    description = "Entry allowlist/cache-only and format-checker target negative fixtures"
+    commandLine("bash", "-euo", "pipefail", "-c",
+        "python3 tests/local_verify_entry_test.py && python3 tests/local_verify_fault_test.py && " +
+        "python3 tests/fast_task_graph_test.py && python3 tests/dependency_checksum_fixture_test.py && " +
+        "python3 tests/maintained_text_test.py && python3 -O tests/maintained_text_test.py")
+}
+val verifyArchitecture by tasks.registering(Exec::class) {
+    group = "verification"
+    description = "Source architecture and platform/privacy checker negative fixtures (not runtime)"
+    commandLine("bash", "-euo", "pipefail", "-c",
+        "python3 tests/architecture_boundary_test.py && python3 tests/activity_window_source_test.py && " +
+        "python3 tests/model_android_source_test.py && python3 tests/text_export_source_test.py && " +
+        "python3 tests/app_report_source_test.py")
+}
+tasks.register("verifyFast") {
+    group = "verification"
+    description = "35 JUnit/ABI/latch + actual module compile boundaries + source/entry/format negatives; no native/APK"
+    dependsOn(":core:test", ":asr-runtime:testDebugUnitTest", verifyArchitecture,
+        verifyFormat, verifyLocalGuards)
+}
+val verifyDependencyEvidence by tasks.registering(Exec::class) {
+    group = "verification"
+    description = "Isolated real AGP checksum mutant must fail with its target diagnostic"
+    commandLine("bash", "tests/gradle_dependency_verification_test.sh")
+}
+val verifyLintEvidence by tasks.registering(Exec::class) {
+    group = "verification"
+    description = "Isolated actual library Lint error/restore and tool identity gate evidence"
+    commandLine("python3", "tests/gradle_lint_verification_test.py")
+    // Parent single worker still has a JVM; run the child only after heavy peers.
+    mustRunAfter(verifyHost, verifyJni, verifyDependencyEvidence,
+        ":app:lintDebug", ":asr-runtime:lintDebug", ":app:verifyDebugPackage")
+}
+val verifyLint by tasks.registering {
+    group = "verification"
+    description = "AGP native debug Lint, no baseline/suppression; app input provenance gates retained"
+    dependsOn(":app:lintDebug", ":asr-runtime:lintDebug")
+}
 tasks.register("verifyDebug") {
     group = "verification"
     description = "Host + JNI + AGP signed APK + fail-closed package/identity evidence"
     dependsOn(verifyHost, verifyBuildInputs, verifyNativeInputs, verifyApkChecker, verifyJni,
-        ":core:test", ":asr-runtime:testDebugUnitTest", ":app:verifyDebugPackage")
+        ":core:test", ":asr-runtime:testDebugUnitTest", ":app:verifyDebugPackage",
+        verifyArchitecture, verifyFormat, verifyLocalGuards, verifyLint, verifyDependencyEvidence, verifyLintEvidence)
 }

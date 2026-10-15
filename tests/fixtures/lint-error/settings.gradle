@@ -1,0 +1,11 @@
+pluginManagement {
+    resolutionStrategy.eachPlugin {
+        if (requested.id.id == 'com.android.library') useModule('com.android.tools.build:gradle:8.6.1')
+    }
+    repositories { google(); mavenCentral() }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories { google(); mavenCentral() }
+}
+rootProject.name = 'p1-lint-error-fixture'

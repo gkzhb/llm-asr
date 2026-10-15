@@ -38,11 +38,42 @@ def check_pages(pages, manifest):
         raise ValueError('model cancel confirmation must retain real owner cleanup')
 
 
+def check_api_contract(source):
+    # Lexical contract only; actual boundary dispatch runs in activity_window_test.py.
+    for level in (30, 33):
+        if not re.search(r'@(?:android\.annotation\.)?TargetApi\(' + str(level) +
+                         r'\)\s+private static final class Api' + str(level), source):
+            raise ValueError('helper API contract missing: ' + str(level))
+    for guarded in (
+        'if (Build.VERSION.SDK_INT >= 30) Api30.edgeToEdge(window);',
+        'if (Build.VERSION.SDK_INT >= 30) return Api30.safeInsets(insets);',
+        'if (Build.VERSION.SDK_INT >= 33 && callback == null)',
+        'if (Build.VERSION.SDK_INT >= 33 && callback != null)',
+    ):
+        if source.count(guarded) != 1:
+            raise ValueError('helper outer SDK guard missing or changed')
+    if 'SuppressLint' in source:
+        raise ValueError('API diagnostic suppression is not an API contract')
+
+
 class WiringTests(unittest.TestCase):
     def setUp(self):
         self.pages = {name: (BASE / (name + '.java')).read_text()
                       for name in ['MainActivity', 'ModelManagementActivity', 'LogsActivity']}
         self.manifest = (ROOT / 'android/app/AndroidManifest.xml').read_text()
+
+    def test_api_contract_and_guard_negatives(self):
+        source = (BASE / 'platform/ActivityWindow.java').read_text()
+        check_api_contract(source)
+        for level in (30, 33):
+            before = '@android.annotation.TargetApi(' + str(level) + ')'
+            self.assertEqual(source.count(before), 1)
+            for replacement in ('', '@android.annotation.TargetApi(29)'):
+                with self.assertRaisesRegex(ValueError, 'helper API contract missing'):
+                    check_api_contract(source.replace(before, replacement))
+        for before in ('SDK_INT >= 30', 'SDK_INT >= 33'):
+            with self.assertRaisesRegex(ValueError, 'outer SDK guard'):
+                check_api_contract(source.replace(before, 'SDK_INT >= 29'))
 
     def test_current_wiring(self):
         check_pages(self.pages, self.manifest)

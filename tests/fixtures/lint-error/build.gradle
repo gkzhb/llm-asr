@@ -1,0 +1,13 @@
+buildscript { configurations.classpath { resolutionStrategy.activateDependencyLocking() } }
+plugins { id 'com.android.library' version '8.6.1' }
+android {
+    namespace 'org.llmasr.lintfixture'
+    compileSdk 35
+    buildToolsVersion '35.0.0'
+    defaultConfig { minSdk 29 }
+    buildFeatures { buildConfig false }
+    lint { xmlReport true; xmlOutput file('build/reports/lint-target.xml') }
+}
+ext.p1LintConsumerTypes = [com.android.build.gradle.internal.lint.AndroidLintTask,
+                          com.android.build.gradle.internal.lint.AndroidLintAnalysisTask]
+apply from: 'gradle/verify-lint-tools.gradle'

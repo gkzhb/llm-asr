@@ -76,6 +76,10 @@ native显式M2构建与打包任务暂留app，runtime持有Java JNI桥；不改
 
 JUnit依赖仅test配置，JUnit/Hamcrest不入APK；版本、5jar/pom(含Hamcrest parent)SHA256固定，Maven Central HTTPS+官方SHA1 sidecar交叉，SHA256为本地真实计算；不声称官方发布SHA256/独立签名认证。传递Hamcrest1.3由Gradle锁定。offline仅缓存后验证，非hermetic。
 
+## P1-A 分层入口（保留本页 M3 历史证据）
+
+后续任务 `llm-asr-76d.5` 新增同源 `scripts/verify-local.sh fast|full|lint|format|graph-fast`，旧 `scripts/verify-gradle.sh` 仍为 full，所有上述原 gate 保留。fast 执行35JUnit/ABI/实际module编译边界及轻量source/入口/格式负例，不触发native/APK；Lint独立分层，full额外依赖Lint/限定格式。不新增baseline或绕过strict。外层Nix也必须使用 `apk --cache-only`，否则内层Gradle `--offline` 不会阻止宿主工具下载。具体契约与本轮未验收边界见[本地分层验证](local-verification.md)，新结果不能复用本页M3身份。
+
 ## 验证入口
 
 ```bash

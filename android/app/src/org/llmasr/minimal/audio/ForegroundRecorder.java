@@ -13,6 +13,7 @@ public final class ForegroundRecorder {
     public static byte[] capture(RecordingControl control,Progress progress) throws IOException {
         AudioRecord recorder=null;
         try {
+          try {
             if(control.cancelled())throw new CancellationException("录音已取消");
             int minimum=AudioRecord.getMinBufferSize(PcmWave.RATE,AudioFormat.CHANNEL_IN_MONO,AudioFormat.ENCODING_PCM_16BIT);
             if(minimum<=0 || minimum>1024*1024)throw new IOException("设备不支持16kHz单声道PCM录音，请使用WAV文件");
@@ -47,6 +48,11 @@ public final class ForegroundRecorder {
                     finally { recorder.release(); }
                 }
             } finally { control.captureReleased(); }
+          }
+        } catch(SecurityException denied) {
+            // Permission may be revoked after UI checks, including during cleanup.
+            // Never retain the platform exception's private message/cause.
+            throw new IOException("麦克风权限不可用，请重新授权后重试");
         }
     }
 }

@@ -74,6 +74,7 @@ public final class ActivityWindow {
         }
     }
 
+    @android.annotation.TargetApi(30)
     private static final class Api30 {
         static void edgeToEdge(android.view.Window window) { window.setDecorFitsSystemWindows(false); }
         static int[] safeInsets(WindowInsets insets) {
@@ -84,6 +85,7 @@ public final class ActivityWindow {
         }
     }
 
+    @android.annotation.TargetApi(33)
     private static final class Api33 {
         static Object register(Activity activity, Runnable action) {
             android.window.OnBackInvokedCallback callback = action::run;

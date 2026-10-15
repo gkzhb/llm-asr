@@ -9,6 +9,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+from manifest_permission_test import check_manifest
+
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('gradle_inputs', ROOT / 'scripts/prepare-gradle-inputs.py')
 module = importlib.util.module_from_spec(spec)
@@ -49,7 +51,36 @@ class InputTests(unittest.TestCase):
         self.assertIsNone(manifest.find('uses-sdk'))
         self.assertEqual(len(manifest.find('application').findall('activity')), 3)
         self.assertEqual(len(manifest.find('application').findall('service')), 1)
+        check_manifest(manifest, 'app-staged')
         self.command.assert_called_once()
+
+    def test_staged_debug_owned_by_dsl_only(self):
+        output = self.root / 'build'
+        original = (self.root / 'android/app/AndroidManifest.xml').read_bytes()
+        module.stage(self.root, output, self.native)
+        source = module.ET.fromstring(original)
+        staged = module.ET.parse(output / 'AndroidManifest.xml').getroot()
+        android = '{http://schemas.android.com/apk/res/android}'
+        self.assertEqual(source.find('application').get(android + 'debuggable'), 'true')
+        self.assertNotIn(android + 'debuggable', staged.find('application').attrib)
+        # Whole XML tree equality after exactly the existing AGP-owned fields
+        # and the newly redundant debug field are removed. Permissions/components
+        # and all other policies must remain exact, not just component counts.
+        for key in ('package', android + 'versionCode', android + 'versionName'):
+            source.attrib.pop(key, None)
+        source.remove(source.find('uses-sdk'))
+        for key in ('extractNativeLibs', 'debuggable'):
+            source.find('application').attrib.pop(android + key, None)
+        self.assertEqual(module.ET.tostring(staged), module.ET.tostring(source))
+        self.assertEqual((self.root / 'android/app/AndroidManifest.xml').read_bytes(), original)
+        self.assertIn('isDebuggable = true', (ROOT / 'android/app/build.gradle.kts').read_text())
+        # Hardcoding a different value in the source is product drift, not a
+        # reason to accept arbitrary debug/permission/component changes.
+        (self.root / 'android/app/AndroidManifest.xml').write_bytes(
+            original.replace(b'android:debuggable="true"', b'android:debuggable="false"'))
+        with self.assertRaisesRegex(ValueError, 'Frozen product input mismatch'):
+            module.stage(self.root, self.root / 'rejected', self.native)
+        self.assertFalse((self.root / 'rejected').exists())
 
     def test_added_asset_rejected(self):
         (self.root / 'android/app/assets/extra.txt').write_text('fixture')

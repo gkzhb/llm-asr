@@ -79,7 +79,10 @@ def stage(root, output, native_path):
         manifest.getroot().remove(sdk)
     # AGP owns the packaging switch and generates extractNativeLibs=true from
     # useLegacyPackaging. Remove only the redundant generated-copy attribute.
-    manifest.getroot().find('application').attrib.pop(android + 'extractNativeLibs', None)
+    application = manifest.getroot().find('application')
+    application.attrib.pop(android + 'extractNativeLibs', None)
+    # Debug mode is owned by the existing AGP buildType, not the staged source.
+    application.attrib.pop(android + 'debuggable', None)
     manifest.write(output / 'AndroidManifest.xml', encoding='utf-8', xml_declaration=True)
     (output / 'provenance.json').write_text(json.dumps(baseline, indent=2) + '\n')
     print('PASS frozen product/assets and explicit current native artifact')

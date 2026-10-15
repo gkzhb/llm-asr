@@ -11,6 +11,7 @@ case "$mode" in
   lint) task=verifyLint;;
   format) task=verifyFormat;;
   graph-fast) task=verifyFast;;
+  android-test-build) task=verifyAndroidTestBuild;;
   *) echo "FATAL: unknown verification layer: $mode" >&2; exit 2;;
 esac
 # Allowlist: Gradle flags can override strict, skip tasks or rewrite evidence.

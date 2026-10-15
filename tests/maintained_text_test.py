@@ -29,7 +29,7 @@ with tempfile.TemporaryDirectory(prefix='maintained-text-') as temporary:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text('clean\n')
     raw = root / 'reports/historical-readelf.txt'
-    raw.parent.mkdir()
+    raw.parent.mkdir(exist_ok=True)
     raw.write_bytes(b'raw evidence with trailing spaces   \n')
     checker.check_inventory(root)
     if raw.read_bytes() != b'raw evidence with trailing spaces   \n':

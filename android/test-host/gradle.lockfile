@@ -1,0 +1,8 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+junit:junit:4.13.2=debugUnitTestCompileClasspath,debugUnitTestRuntimeClasspath
+org.hamcrest:hamcrest-core:1.3=debugUnitTestCompileClasspath,debugUnitTestRuntimeClasspath
+org.jetbrains.kotlin:kotlin-stdlib:2.0.21=debugAndroidTestCompileClasspath,debugCompileClasspath,debugRuntimeClasspath,debugUnitTestCompileClasspath,debugUnitTestRuntimeClasspath
+org.jetbrains:annotations:13.0=debugAndroidTestCompileClasspath,debugCompileClasspath,debugRuntimeClasspath,debugUnitTestCompileClasspath,debugUnitTestRuntimeClasspath
+empty=androidApis,androidJdkImage,coreLibraryDesugaring,debugAndroidTestAnnotationProcessorClasspath,debugAndroidTestRuntimeClasspath,debugAnnotationProcessorClasspath,debugUnitTestAnnotationProcessorClasspath,debugWearBundling

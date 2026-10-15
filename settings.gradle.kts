@@ -23,6 +23,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "llm-asr"
-include(":app", ":core", ":asr-runtime")
+include(":app", ":core", ":asr-runtime", ":test-host")
 project(":app").projectDir = file("android/app")
 project(":asr-runtime").projectDir = file("android/asr-runtime")
+project(":test-host").projectDir = file("android/test-host")

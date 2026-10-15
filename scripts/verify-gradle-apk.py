@@ -21,6 +21,30 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def collect_build_inputs(root):
+    """Live build inventory; shared by actual receipts and isolated input-negative tests."""
+    baseline = json.loads((root / 'gradle/baseline-inputs.json').read_text())
+    inputs = set(baseline['files'])
+    for relative in ['settings.gradle.kts', 'build.gradle.kts', 'gradle.properties',
+                     'flake.nix', 'flake.lock', 'gradlew', 'gradlew.bat',
+                     'buildscript-gradle.lockfile', 'android/app/gradle.lockfile',
+                     'core/build.gradle.kts', 'core/gradle.lockfile',
+                     'android/asr-runtime/build.gradle.kts', 'android/asr-runtime/gradle.lockfile']:
+        inputs.add(relative)
+    for folder in ['gradle', 'scripts', 'tests', 'android/app/res', 'native/cmake',
+                   'core/src', 'android/asr-runtime/src']:
+        inputs.update(str(p.relative_to(root)) for p in (root / folder).rglob('*')
+                      if p.is_file() and '__pycache__' not in p.parts)
+    inputs.add('android/app/build.gradle.kts')
+    inputs.add('native/source-lock.json')
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('android_test_inputs', ROOT / 'scripts/verify-android-test-apk.py')
+    checker = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(checker)
+    inputs.update(checker.module_inputs(root))
+    return {relative: sha(root / relative) for relative in sorted(inputs)}
+
+
 def check_identity(apk, baseline, reports):
     signature = (reports / 'signature.txt').read_text()
     certificates = re.findall(r'Signer #\d+ certificate SHA-256 digest: ([0-9a-f]{64})', signature)
@@ -170,20 +194,7 @@ def verify(apk_dir, report_dir, native_build):
         shutil.copyfile(destination / 'apk-report-binding.json', report / 'apk-report-binding.json')
         shutil.copyfile(destination / 'native-link-provenance.json', report / 'native-link-provenance.json')
     shutil.copyfile(native_build / 'artifact/verification.json', report / 'native-verification.json')
-    inputs = set(baseline['files'])
-    for relative in ['settings.gradle.kts', 'build.gradle.kts', 'gradle.properties',
-                     'flake.nix', 'flake.lock', 'gradlew', 'gradlew.bat',
-                     'buildscript-gradle.lockfile', 'android/app/gradle.lockfile',
-                     'core/build.gradle.kts', 'core/gradle.lockfile',
-                     'android/asr-runtime/build.gradle.kts', 'android/asr-runtime/gradle.lockfile']:
-        inputs.add(relative)
-    for folder in ['gradle', 'scripts', 'tests', 'android/app/res', 'native/cmake',
-                   'core/src', 'android/asr-runtime/src']:
-        inputs.update(str(p.relative_to(ROOT)) for p in (ROOT / folder).rglob('*')
-                      if p.is_file() and '__pycache__' not in p.parts)
-    inputs.add('android/app/build.gradle.kts')
-    inputs.add('native/source-lock.json')
-    fingerprints = {relative: sha(ROOT / relative) for relative in sorted(inputs)}
+    fingerprints = collect_build_inputs(ROOT)
     (report / 'build-input-sha256.json').write_text(json.dumps(fingerprints, indent=2) + '\n')
     result = {
         'schema': 1, 'artifact': str(apk.relative_to(ROOT)), 'bytes': apk.stat().st_size,

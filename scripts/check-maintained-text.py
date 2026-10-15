@@ -31,7 +31,35 @@ INVENTORY = (
     'tests/fixtures/lint-error/src/main/java/org/llmasr/lintfixture/LintProbe.java',
     'docs/local-verification.md',
     'docs/module-test-map.md',
+    'settings.gradle.kts',
+    'scripts/verify-gradle-apk.py',
+    'scripts/verify-android-test-apk.py',
+    'tests/android_test_apk_test.py',
+    'tests/android_test_inputs_test.py',
+    'tests/android_test_fixture_test.py',
+    'reports/android-test-p1/status.md',
+    'android/test-host/build.gradle.kts',
+    'android/test-host/gradle.lockfile',
+    'android/test-host/src/main/AndroidManifest.xml',
+    'android/test-host/src/main/java/org/llmasr/minimal/testhost/ImeHostActivity.java',
+    'android/test-host/src/androidTest/AndroidManifest.xml',
+    'android/test-host/src/androidTest/java/org/llmasr/minimal/testhost/FixtureInstrumentationTest.java',
+    'android/test-host/src/androidTest/java/org/llmasr/minimal/testhost/FakeDocumentsProvider.java',
+    'android/test-host/src/test/java/org/llmasr/minimal/testhost/FixtureContractTest.java',
+    'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.java',
+    'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FixtureChecks.java',
 )
+
+
+def maintained_inventory(root):
+    # Share the same live module collector; newly added source is checked too.
+    import importlib.util
+    if str(ROOT / 'scripts') not in sys.path:
+        sys.path.insert(0, str(ROOT / 'scripts'))
+    spec = importlib.util.spec_from_file_location('android_text_inputs', ROOT / 'scripts/verify-android-test-apk.py')
+    checker = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(checker)
+    return sorted(set(INVENTORY).union(checker.module_inputs(root)))
 
 
 def check_bytes(data, label):
@@ -53,12 +81,13 @@ def check_bytes(data, label):
 
 
 def check_inventory(root):
-    for relative in INVENTORY:
+    inventory = maintained_inventory(root)
+    for relative in inventory:
         path = root / relative
         if path.is_symlink() or not path.is_file():
             raise ValueError(f'{relative}: missing file or symlink')
         check_bytes(path.read_bytes(), relative)
-    print(f'PASS maintained text: {len(INVENTORY)} explicit files (read-only)')
+    print(f'PASS maintained text: {len(inventory)} explicit/live module files (read-only)')
 
 
 if __name__ == '__main__':

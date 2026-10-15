@@ -122,10 +122,37 @@ val verifyLint by tasks.registering {
     description = "AGP native debug Lint, no baseline/suppression; app input provenance gates retained"
     dependsOn(":app:lintDebug", ":asr-runtime:lintDebug")
 }
+val verifyAndroidTestChecks by tasks.registering(Exec::class) {
+    group = "verification"
+    description = "Shared three-APK policy/DEX/input/format target negatives (no devices)"
+    commandLine("bash", "-euo", "pipefail", "-c",
+        "python3 tests/android_test_apk_test.py && python3 -O tests/android_test_apk_test.py && " +
+        "python3 tests/android_test_inputs_test.py && python3 -O tests/android_test_inputs_test.py")
+}
+val verifyAndroidTestPackage by tasks.registering(Exec::class) {
+    group = "verification"
+    description = "Current signed product/host/instrumentation APK isolation and JVM receipt, compiled-only"
+    dependsOn(":test-host:testDebugUnitTest", ":test-host:assembleDebug", ":test-host:assembleDebugAndroidTest",
+        ":app:assembleDebug", verifyAndroidTestChecks)
+    commandLine("python3", "scripts/verify-android-test-apk.py", "--report-dir",
+        layout.buildDirectory.dir("verification/android-test").get().asFile)
+}
+val verifyAndroidTestBuild by tasks.registering {
+    group = "verification"
+    description = "Build-only standard instrumentation host; never install or run Android tests"
+    dependsOn(verifyAndroidTestPackage)
+}
+val verifyAndroidTestFixtureEvidence by tasks.registering(Exec::class) {
+    group = "verification"
+    description = "Isolated compiling fixture behavior mutants, JVM only (once per full graph)"
+    commandLine("python3", "tests/android_test_fixture_test.py")
+    mustRunAfter(verifyAndroidTestBuild, verifyHost, verifyJni, verifyDependencyEvidence, verifyLintEvidence)
+}
 tasks.register("verifyDebug") {
     group = "verification"
     description = "Host + JNI + AGP signed APK + fail-closed package/identity evidence"
     dependsOn(verifyHost, verifyBuildInputs, verifyNativeInputs, verifyApkChecker, verifyJni,
         ":core:test", ":asr-runtime:testDebugUnitTest", ":app:verifyDebugPackage",
-        verifyArchitecture, verifyFormat, verifyLocalGuards, verifyLint, verifyDependencyEvidence, verifyLintEvidence)
+        verifyArchitecture, verifyFormat, verifyLocalGuards, verifyLint, verifyDependencyEvidence, verifyLintEvidence,
+        verifyAndroidTestBuild, verifyAndroidTestFixtureEvidence)
 }

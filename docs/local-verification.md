@@ -2,6 +2,26 @@
 
 任务 `llm-asr-76d.5`，P1-A 本地护栏切片。**当前 B3b 完整工程验证通过，待安全本地提交，尚非 APK 交付或 M4 关闭**；当前证据见 [full 报告](../reports/local-verify-p1/full.md) 与 [状态](../reports/local-verify-p1/status.md)。下文 B2/三修复/权限修复的 not-run/blocked 描述均为各自历史检查点，不代表本次 full 未执行。命令是未来 CI-ready 的同源入口；**未选择远端 provider，未创建远端 workflow、触发 CI 或上传产物**。当前 runtime 静态录音权限契约补全以 [权限修复状态](../reports/local-verify-p1/permission-fix.md) 及 `.work/p1-permission-fix/` 为准；三处生产 Lint 修复的历史 blocked 检查点见 [窄修复状态](../reports/local-verify-p1/lint-fix.md) 及 `.work/p1-lint-fix/handoff.md`（当时 runtime library 静态权限声明尚缺，不能当作补全后的 current 身份）；旧 B2 执行结果见 [B2 状态](../reports/local-verify-p1/b2.md)、`.work/p1-b2/final-handoff.md` 及 `.planning/llm-asr-76d.5/`；`.work/p1-build/handoff.md`、`.work/p1-repair/batch-a-handoff.md` 和 `.work/p1-b2/handoff.md` 均为历史检查点，不能拿旧 M3 报告或旧 A freeze 当 B2 当前通过。
 
+## P1-B 2B 测试工程层（非设备验收）
+
+任务`llm-asr-76d.6`新增`android-test-build`层；2A/B1已接受，2B fresh上下文隔离审查NO BLOCKING已由父接受（非跨家族独立审查）。最终唯一cache-only strict offline full已真实通过，仍未安全本地提交，不据此交付APK/关闭M5；当前结果见[full报告](../reports/android-test-p1/full.md)及[状态](../reports/android-test-p1/status.md)。Android runner/SAF/Binder/grant/InputConnection及生产Service系统生命周期均not run；SDK deprecated标准runner仅编译候选，不自造runner。
+
+```bash
+bash scripts/nix-env.sh apk --cache-only bash scripts/verify-local.sh android-test-build --offline --rerun-tasks
+```
+
+固定`verifyAndroidTestBuild`依赖host 7 JVM、宿主/仪器两APK与当前产品APKassemble、正式三包checker与纯checker负例。无install/connected/managed-device/ADB任务；它会触发产品原native/prepare链，不是fast。原`verifyFast`精确35任务图/35JUnit不纳新模块；full保留全部旧host/JNI/native/Lint/checksum/签名门槛，并新增此工程层和**一次**隔离fixture行为driver。该前序targeted阶段不提前full；冻结审查接受后，本次验证leaf已唯一执行完整入口，实际exit0/174actions全部executed、原35及新7host JUnit全零、生产app/runtime Lint Error/Fatal0，warnings分类defer；host Lint未接根任务所以未执行（不以identity resolve冒执行）。full内一次fixture行为7case五阶段0/1/0/1/0、隔离Lint真实NewApi与checksum目标拒绝恢复、三包/独立产品receipt当前209build及80native绑定完成，详full报告。docs/report为supplemental，旧P1-A历史不重写。
+
+`scripts/verify-android-test-apk.py`从三个AGP debug output-metadata精确单APK读取，调用当次SDK apksigner/aapt2/zipalign生成独立`build/verification/android-test/run-*/receipt.json`：原证书/v3三包一致，测试两包无权限/native/assets/意外组件或launcher、Backup false、正确标准runner/target/base与runner required库；全部DEX class_def无重复/产品无fixture/JUnit/mock/runner、test不重复target生产类，class_data精确12个public concrete `()V`方法（不是runner发现）。记录7host JUnit XML、完整新module含未跟踪源码库存及SHA、当前build collector、SDK optional/tool输入、三APK/hash/命令/退出/raw hash，拒执行中输入漂移。正式产品旧包身份/native/assets门槛不放松，仍由`:app:verifyDebugPackage`在full独立完成。
+
+纯`tests/android_test_apk_test.py`普通/-O调用同checker策略和DEX解析，有限坏runner/target/权限/export/backup/library/native/assets/class/method及产品泄漏拒绝；它们是parsed-report/DEX fixture，不是签名APK变异或设备运行。`tests/android_test_inputs_test.py`在临时tree真实新增未跟踪源、变更/遗漏/SHA错/格式错、缺lock及build/cache排除，调用相同module/product/format collector，非源码grep。新module maintained全库存动态扫描src/fixtures+build.gradle.kts/lock，排除生成build/cache。
+
+### N1：依赖prepare安全边界
+
+**旧ignored历史主树`deactivateDependencyLocking + --write-locks`路径已废弃，禁止重放；它曾删除root旧锁，不能作为推荐入口。** 历史日志/init只为事故审计保留。正常verify入口始终拒绝所有写锁/metadata/init/任意属性覆盖。2B不重做prepare、无新依赖/下载或锁变更。
+
+未来仅在另行明确prepare授权后：复制必要受维护配置/源码到全新temp项目（无key/权重/音频/缓存/产物），正常启用已有locking，strict/offline固定cache与wrapper；在隔离副本解析实际配置并生成锁，**仅导出获准的新模块锁**，校验主树所有旧锁/metadata在复制前、导出前后SHA一致，并逐项审图/工件SHA/新锁scope。不得deactivate旧锁或主树--write-locks，不使用--write-verification-metadata/宽trusted/下载凑绿；缺cache或strict不符停报。事故恢复已审，不抹历史或无理由重跑旧成功链。
+
 ## 统一入口
 
 ```bash
@@ -76,4 +96,4 @@ ignored freeze-a.py仅读真实collector库存span和native input_hashes span，
 
 ## 未覆盖/授权边界
 
-P1-B仪器runner/fake provider/engine/IME host、P1-C策略ADR、远端CI配置、release/R8/新签名、模型性能和设备运行均非本slice。若宿主工具或Lint缺缓存，保留入口代码及可验证检查点，报告所缺准备输入，由父决定后续授权；不交旧APK、不称本轮全部完成或M4关闭。
+上述P1-A历史slice未覆盖P1-B；当前新增P1-B本地测试工程范围见本文2B章节及reports/android-test-p1/status.md。P1-C策略ADR、远端CI配置、release/R8/新签名、模型性能和设备运行仍不在本slice。若宿主工具或Lint缺缓存，保留入口代码及可验证检查点，报告所缺准备输入，由父决定后续授权；不交旧APK、不称本轮全部完成或M4关闭。

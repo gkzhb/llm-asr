@@ -38,14 +38,15 @@ with tempfile.TemporaryDirectory(prefix='verify-entry-') as temporary:
                  '-I', '--init-script=evil', '-Pandroid.aapt2FromMavenOverride=evil',
                  '--dry-run', '--continue', '--max-workers=99', 'help', ':core:test',
                  '--write-ver', '--offline=true'):
-        for entry, prefix in (('verify-local.sh', ('fast',)), ('verify-gradle.sh', ())):
+        for entry, prefix in (('verify-local.sh', ('fast',)), ('verify-local.sh', ('android-test-build',)), ('verify-gradle.sh', ())):
             result = run(entry, *prefix, flag)
             require(result.returncode == 2 and 'unsupported verification argument' in result.stderr,
                     f'{entry} failed target refusal: {flag}: {result.stderr}')
             require(not arguments.exists(), f'Gradle invoked for rejected argument: {flag}')
     require(run('verify-local.sh', 'unknown').returncode == 2, 'unknown layer accepted')
     for layer, task in (('fast', 'verifyFast'), ('full', 'verifyDebug'),
-                        ('lint', 'verifyLint'), ('format', 'verifyFormat'), ('graph-fast', 'verifyFast')):
+                        ('lint', 'verifyLint'), ('format', 'verifyFormat'), ('graph-fast', 'verifyFast'),
+                        ('android-test-build', 'verifyAndroidTestBuild')):
         result = run('verify-local.sh', layer, '--offline', '--rerun-tasks',
                      extra={'MOCK_OUTPUT': ':verifyFast SKIPPED'} if layer == 'graph-fast' else None)
         require(result.returncode == 0, result.stderr)
@@ -62,6 +63,11 @@ with tempfile.TemporaryDirectory(prefix='verify-entry-') as temporary:
     require(result.returncode == 1 and 'forbidden heavy task' in result.stderr, 'native fast graph accepted')
     result = run('verify-local.sh', 'fast', extra={'MOCK_EXIT': '7'})
     require(result.returncode == 7, 'Gradle failure hidden by tee')
+    result = run('verify-local.sh', 'android-test-build', '--offline', extra={'MOCK_EXIT': '7'})
+    require(result.returncode == 7, 'Android test layer failure hidden by tee')
+    result = run('verify-local.sh', 'android-test-build', extra={'MOCK_OUTPUT': 'WARNING: D8 metadata'})
+    require(result.returncode == 1 and 'DEX diagnostics require review' in result.stderr,
+            'Android test layer DEX warning accepted')
 
     # Verify actual nix-env.sh argument construction, not an assumed env switch.
     for name in ('flake.nix', 'flake.lock'):
@@ -92,6 +98,14 @@ for token in ('verifyHost', 'verifyBuildInputs', 'verifyNativeInputs', 'verifyAp
               'verifyFormat', 'verifyLocalGuards', 'verifyLint', 'verifyDependencyEvidence', 'verifyLintEvidence'):
     require(token in full, f'full gate lost: {token}')
 require(':app:lintDebug' in build and ':asr-runtime:lintDebug' in build, 'AGP lint wiring lost')
+require('verifyAndroidTestBuild' in full and 'verifyAndroidTestFixtureEvidence' in full,
+        'full lost Android test build/behavior evidence')
+android_layer = build.split('val verifyAndroidTestPackage', 1)[1].split('tasks.register("verifyDebug")', 1)[0]
+for token in (':test-host:testDebugUnitTest', ':test-host:assembleDebug', ':test-host:assembleDebugAndroidTest',
+              ':app:assembleDebug', 'scripts/verify-android-test-apk.py'):
+    require(token in android_layer, 'Android build-only layer lost: ' + token)
+for token in ('connectedDebugAndroidTest', 'installDebug', 'managedDevice', 'adb'):
+    require(token not in android_layer, 'device task added to build-only layer: ' + token)
 require('apply(from = "gradle/verify-lint-tools.gradle")' in build, 'actual Lint identity gate lost')
 require('tests/gradle_lint_verification_test.py' in build and 'mustRunAfter(verifyHost' in build,
         'Lint evidence driver or heavy-child ordering lost')

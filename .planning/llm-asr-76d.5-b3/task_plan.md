@@ -2,7 +2,7 @@
 
 ## Binding
 - task llm-asr-76d.5；父 owner / 唯一 Beads writer p1-steward。
-- role project-agent；当前 B3b 唯一验证/本目录 writer p1full-test（Herdr wY:p1C，session 01a13e31-a17e-71ba-9b87-5ec2f5ca575e）；permfix-build/review、lintfix-build/review 已完成停写，以下历史完整保留。父 session 01a13d7f-ed59-777f-8029-01440851d699。
+- 当前目录状态收尾writer p1-steward（用户明确授权更新规划后接管，原leaf均已停写）；不再执行产品修改或测试。历史role project-agent；B3b验证writer p1full-test（Herdr wY:p1C，session 01a13e31-a17e-71ba-9b87-5ec2f5ca575e）；permfix-build/review、lintfix-build/review 已完成停写，以下历史完整保留。父 session 01a13d7f-ed59-777f-8029-01440851d699。
 - cwd /home/zhb/gitrep/llm-asr；main；base 7eace17a8ea636db6010f95d2229c28dc2f78467；无 worktree。
 - 当前用户明确授权自主补 runtime library 既有 RECORD_AUDIO 声明（与App相同且无附加属性、无新权限种类），必要精确测试/构建输入接线/文档及统一Lint。此前 ActivityWindow/录音安全异常/stage三修复已审无阻塞，不重开。不 claim/update/close/stage/commit/push/amend、不二级委派、不读私人 session。
 - 本轮临时证据只写 .work/p1-permission-fix/；原 .work/p1-lint-fix/、review、.work/p1-b3/、B2 freeze/plan/evidence 及父监督目录只读。无依赖/锁/版本/ABI/录音gate/IME隐私/签名变更，无下载、设备/private/权重/key 内容访问。
@@ -11,12 +11,21 @@
 固定 Nix cache-only，Gradle strict/offline/no-daemon、workers1/JVM1536m，实际串行运行统一入口 lint --offline --rerun-tasks，保留生产 app preBuild/native 必需链。保存启动脚本/argv/SHA、当前195build/80native输入前后及对旧blocked194的delta、六份旧生成XML备份、任务/log/XML/HTML/exit/SHA。本轮只取meminfo前后、不宣称峰值资源采样，给父fresh差异review后full的证据。
 
 ## Current Phase
+本地交付已完成：功能提交 `2d869e5`，reviewagent提交后19项committed195build/80native/current/APK报告绑定通过，父已实核并报告APK；无开发/构建后台。本段为用户要求的提交后规划收尾；旧full冻结及报告保留原提交前证据字节，后续不得拿其supplemental域宣称这些已更新规划仍同SHA。
+
+## 历史：full提交前证据状态
 B3b FULL complete：唯一bg b619c639e durable completed0/428.052s/111action全executed；35JUnit零fail/error/skip、生产Lint两份0blocking及本次真实fixture/checksum红绿恢复、原host/JNI/native/APK包checker通过。195build/80native/currentAPK报告exact，578对象及DSO保持；632history保持。工程验证通过待安全提交，最终报告/freeze/handoff交父后停止写入，不stage/commit。以下PF1与LF/B3a均历史。
 
 PF1 complete：旧空Manifest目标红→唯一声明最小修复/normal-O纯测试/stage/原host全通过；原唯一生产Lint终态exit0/123.521s/72actions全部executed，两模块0Error/Fatal，App17/runtime10同源warning类别保持明确defer。六份fresh XML精确权限/完整树检查通过；新195build对旧blocked194为3changed+1added/191保持，native80保持/protected94仅授权runtimeManifest变而93保持，528旧证据保持。LF历史blocked freeze957051...不改、不冒current。完整handoff/freeze收尾后停写。
 
 ## Next Step
-父消费 `.work/p1-full/handoff.md` / `final-input-freeze.json` 与 full 报告，另授reviewagent只读交付证据/安全清单审，随后限定本地提交；p1full-test完成终态收尾后停止全部写入，不stage/commit/push。
+本执行计划归档，不再派B3任务。下一轮由协调者按Beads核M4剩余CI/M5切片并用独立计划推进；当前身份与提交以Git、.work/p1-ship-review/commit-receipt.json为准。
+
+### Phase SHIP: 提交与交付收尾
+- [x] 同模型fresh最后证据/安全审查101项通过，reviewagent限定72路径安全提交2d869e5。
+- [x] EOF多余LF仅文档修复，cached检查全过；提交后19项绑定核对通过，index空，原excluded20保持。
+- [x] 父实核Git/receipt、Beads记录并交用户手动验证，设备/远端CI仍not run，不关整个M4。
+- **Status:** complete
 
 ### Phase FULL: 完整验证与最终交接
 - [x] 读权限修复及同模型fresh只读无阻塞review、依赖规范/两参考、入口实际任务、监督与执行历史；HEAD7eace17/index空，Herdr仅父及本leaf，无相关构建冲突。

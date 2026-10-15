@@ -15,3 +15,10 @@
 - M4 in_progress/p1-steward，blocks仅M3 closed，epic parent-child不阻塞；ap5 deferred/llm-asr-kotlin保持。HEAD7eace17/index空。
 - fixture-shared-validator.exit=0；run-ukwens2p/result.json记录默认AGP Lint0/1/0、green源SHA相同、identity artifact/edge及files三负例exit1/restore0。父只读消费记录，完整源码/日志身份验收委派leaf，非父重跑。
 - 当前6 tracked差异及多份新文本与交接范围一致；旧分析目录/mqn/v07/多引擎规划及.beads.gate.lock保留，不纳入自动提交。
+
+## 提交后当前真相（2026-10-15）
+- P1-A已完成功能提交2d869e5，完整证据reports/local-verify-p1/full.md；提交后195build/80native绑定receipt在.work/p1-ship-review/commit-receipt.json。此处旧6tracked描述仅恢复时事实，不是当前Git状态。
+- M4剩余CI provider/workflow/静态验证未完成；M5(llm-asr-76d.6)仍open/未分派/assignee空，唯一blocks前置M3closed，epic只是parent-child；ap5仍deferred/原owner保持。
+- 本次成功full自然保存driver启动SHA并重新实际执行fixture/checksum，旧B2缺launchSHA局限不追溯抹掉；shared validator负例仍不等默认AGP可变性测试。
+- 规划完成记录属于提交后协调文本，不改原测试报告/freeze；旧supplemental域与已更新规划有预期差异，应核195产品域或用Git2d869e5还原旧文档字节，不能重跑已完成开发弥补状态文字。
+- 后续遵守父只协调、所有开发/下载/校验/构建由leaf执行，同sol模型fresh审查；普通final的started/yield会被视为completed，不把它当实际bg终态。通知丢失时有明确异常才一次性核runtime/exit，磁盘已有终态则收尾而非重复计算。

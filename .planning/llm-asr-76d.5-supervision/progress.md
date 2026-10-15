@@ -294,3 +294,14 @@
 - 两项旧文档文字为已明确历史/非阻塞数量标签，defer，不为此改冻结docs/重跑full。最终APK195/80/freeze/HEAD/index首尾未变，证据支持安全提交。
 - 父现冻结本监督目录全部写入，另阶段resume同reviewer执行精确72路径stage/完整cached审计/commit，并在stage前只读复核本次监督task_plan/progress末次delta及8动态候选SHA，记录新版allowlist摘要；无其他candidate变更授权。非动态任一漂移/owner冲突即停。
 - 不stage-A/forceadd/夹旧研究，不模型音频APK密钥cache/session入Git、不push/amend/rewrite。成功后reviewer核committed195输入与当前APK/证书/报告及无多余stage，输出ignoredcommit-receipt；准确成功/短哈希以Git及receipt为准。父在receipt前不宣称已提交交付；本记录是提交前真实状态。
+
+## 2026-10-15 提交完成与本轮交付
+- p1ship-review真实commit exit0，2d869e578278f07dcb88967b677eb9fb1018e552，parent7eace17，精确72文本；仅EOF多余LF按授权删除，cached whitespace/safety全过，无push/amend。
+- 提交后19项核对通过：committed195build/80native=current=APKreport、原APK及签名/fullfreeze不变、index空、仅原20excluded untracked。父读receipt并Git实核，Beads更新，已向用户交付APK身份与手动建议。
+- APK android/app/build/outputs/apk/debug/app-debug.apk，5216237bytes，SHA3fe42d623e8f9b60e7d34fd63f432de2aa780520395fc8aeeb5bbbc1ca32df10，0.6-debug/code6。full111actions/35JUnit全零及真实负例、两模块Lint/JNI/native/包签名通过。原报告是提交前冻结证据，准确提交身份看Git/receipt，不重写测试历史。
+
+## 用户要求状态更新与后续交接
+- 明确授权恢复仅规划收尾写权限：监督三文件、B3计划及历史主执行导航同步提交完成，保留旧检查点；这些规划不再声称等旧freeze supplemental哈希，195产品输入不改。未重跑产品测试/构建，原APK绑定不因协调文档变化失效。
+- 实核Herdr仅当前父本项目pane，无child；ps无相关Gradle/Lint/full后台，不等旧通知。M4保持in_progress/p1-steward：本地P1-A完成，CI provider/workflow未定/远端未跑；不关整个M4。
+- 建议下一实施切片P1-B / llm-asr-76d.6(M5)：先查实际test runner/fixtures/缓存与纯本地testAPK边界，给fake provider/engine/IME host最小闭环；尚未claim/分派，不以ready当授权或抢owner。设备/麦克风/private/权重/远端触发/push仍不在授权；常规本轮修复无需逐项问用户。
+- 交接置系统临时目录，不写仓库。此轮只更新协作文本，由reviewagent窄审并限定本地文档提交，产物不重建；准确文档提交身份以Git及最终交接为准。

@@ -11,10 +11,13 @@
 - 不改生产业务/native数学/权限/包名/签名/录音gate/IME字段及owner世代；无设备/麦克风/private/模型权重操作，无新依赖下载/自动拉工具/远端CI。
 
 ## Current Phase
+本文件为A/B2历史执行计划，现已归档。后续B3生产Lint修复/full及安全提交已完成，功能提交 `2d869e5`；当前195build/80native与APK报告绑定通过。当前状态/后续协调见 `.planning/llm-asr-76d.5-supervision/task_plan.md`，最终产品证据见 `reports/local-verify-p1/full.md` 及 `.work/p1-ship-review/commit-receipt.json`。不按下文历史待review重复分派。
+
+## 历史：B2交接时状态
 B2实现/有界回归完成，最终分域freeze及handoff供父只读review；唯一writer p1b2-build交接后停止写入。普通DefaultTask调用同production validator闭包/真实passed Configuration负例，与默认AGP真正NewApi0/1/0分域；production外围record/fc identity保持。typed模拟路线永久停止。A/B1不重开，B3/full/APK/设备/提交未做。
 
 ## Next Step
-父只读 review 当前 B2 代码、metadata保护、实际证据语义及 `.work/p1-b2/final-handoff.md` / 全新最终freeze。
+本历史执行计划不再分派；新协调者从监督计划及Beads恢复下一轮。B2旧freeze作为历史证据保留，本文件提交后说明不冒其supplemental哈希仍为current。
 
 ### Phase 0: 恢复与冲突核验
 - [x] AGENTS/skills/references/mqn三文件/监督plan/Beads M4与M3已读。

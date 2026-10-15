@@ -1,5 +1,8 @@
 # B3a Findings
 
+## 当前提交后导航（2026-10-15）
+本执行切片已结束并成功提交2d869e5。完整验收证据reports/local-verify-p1/full.md，提交后绑定receipt在.work/p1-ship-review/commit-receipt.json；下文blocked/待提交均历史。当前本目录由父p1-steward按用户明确请求做状态归档，后续恢复走监督plan和Beads，不重开旧错误。设备及远端CI尚未验证，M4未整体关闭。
+
 ## 2026-10-15 lintfix-build 接管
 - 用户三处scope已授权；Beads p1-steward/in_progress，Herdr wY:p17本leaf working/父idle，无其他同项目leaf或GradleLint。HEAD7eace17/index空，旧B2/B3只读保留。
 - 诊断已有确定性真实统一Lint红基线：12 blocking/18warning；不重复145秒旧失败。窄source/helper、真实capture fakes及真实stage测试先旧红，最后统一Lint原反馈复验。假设排序：①已有guard但helper缺API契约→精确TargetApi关闭10NewApi及InlinedApi；②平台权限可在check后撤销且无SecurityException规范化→固定IOException及真实finally；③staged冗余debuggable→仅去生成属性，debugDSL保持。依赖升级/权限扩展不能解释这些具体fileline，排除为本轮路径。因根因由真实诊断精确确定，跳过无必要的二分/日志instrument与再红Lint，不增加调试框架。

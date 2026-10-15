@@ -60,7 +60,14 @@ def instrument(p):
     return c.only(p['test']['manifest']['children'], 'instrumentation')['attrs']
 
 
+NEW_SAF_METHODS = ['testSafImportOpenFailureThenRetryPreservesHistory',
+                   'testSafImportCancellationWaitsForOpen']
+c.require(len(c.METHODS) == 14 and len(set(c.METHODS)) == 14
+          and all(name in c.METHODS for name in NEW_SAF_METHODS), 'exact 14 method inventory')
 c.check_packages(fixture(), 'approved')
+for name in NEW_SAF_METHODS:
+    reject(lambda p, name=name: p['test']['methods'].remove(name), 'instrumentation method inventory mismatch')
+    reject(lambda p, name=name: p['test']['methods'].append(name), 'instrumentation method inventory mismatch')
 with_resources = fixture()
 with_resources['host']['classes'] += [c.PREFIX + 'R;', c.PREFIX + 'R$string;']
 c.check_packages(with_resources, 'approved')
@@ -111,27 +118,39 @@ for blobs, diagnostic in [([b'bad'], 'invalid DEX header'), ([dex(), dex()], 'du
 
 # Minimal real class_data for the suite: wrong flags/signature/code must be rejected
 # by the same parser used on signed APKs, not just by editing a method-name list.
-def suite_dex(flags=1, code=300, return_type=2):
-    data = bytearray(640)
+def suite_dex(flags=1, code=2048, return_type=2, names=None, bad_name=None, argc=0):
+    names = ['testProbe'] if names is None else names
+    strings = [c.SUITE, 'Landroid/test/InstrumentationTestCase;', 'V'] + names
+    data = bytearray(8192)
     data[:8] = b'dex\n035\0'
     struct.pack_into('<I', data, 40, 0x12345678)
-    struct.pack_into('<II', data, 56, 4, 112)
-    struct.pack_into('<II', data, 64, 3, 128)
-    struct.pack_into('<II', data, 72, 1, 140)
-    struct.pack_into('<II', data, 88, 1, 152)
-    struct.pack_into('<II', data, 96, 1, 160)
-    struct.pack_into('<III', data, 128, 0, 1, 2)
-    struct.pack_into('<III', data, 140, 2, return_type, 0)
-    struct.pack_into('<HHI', data, 152, 0, 0, 3)
-    struct.pack_into('<I', data, 160 + 8, 1)
-    struct.pack_into('<I', data, 160 + 24, 200)
-    # fields=0/0, methods=0/1; delta=0, flags, code ULEB (only these small fixture values).
-    encoded_code = bytes([code]) if code < 128 else bytes([(code & 127) | 128, code >> 7])
-    data[200:206 + len(encoded_code)] = bytes([0, 0, 0, 1, 0, flags]) + encoded_code
-    offset = 320
-    for i, text in enumerate([c.SUITE, 'Landroid/test/InstrumentationTestCase;', 'V', 'testProbe']):
+    struct.pack_into('<II', data, 56, len(strings), 112)
+    struct.pack_into('<II', data, 64, 3, 256)
+    struct.pack_into('<II', data, 72, 2, 272)
+    struct.pack_into('<II', data, 88, len(names), 320)
+    struct.pack_into('<II', data, 96, 1, 512)
+    struct.pack_into('<III', data, 256, 0, 1, 2)
+    struct.pack_into('<III', data, 272, 2, 2, 0)  # legal ()V
+    struct.pack_into('<III', data, 284, 2, return_type, 560 if argc else 0)
+    struct.pack_into('<I', data, 560, argc)
+    struct.pack_into('<I', data, 512 + 8, 1)
+    struct.pack_into('<I', data, 512 + 24, 576)
+    def uleb(value):
+        result = bytearray()
+        while value >= 128:
+            result.append((value & 127) | 128); value >>= 7
+        result.append(value)
+        return bytes(result)
+    encoded = bytearray([0, 0, 0, len(names)])
+    for i, name in enumerate(names):
+        bad = bad_name is None or name == bad_name
+        struct.pack_into('<HHI', data, 320 + 8 * i, 0, 1 if bad else 0, 3 + i)
+        encoded += uleb(0 if i == 0 else 1) + uleb(flags if bad else 1) + uleb(code if bad else 2048)
+    data[576:576 + len(encoded)] = encoded
+    offset = 1024
+    for i, text in enumerate(strings):
         raw = text.encode(); struct.pack_into('<I', data, 112 + 4 * i, offset)
-        encoded = bytes([len(raw)]) + raw + b'\0'
+        encoded = uleb(len(raw)) + raw + b'\0'
         data[offset:offset + len(encoded)] = encoded; offset += len(encoded)
     return bytes(data)
 
@@ -144,6 +163,29 @@ for data in [suite_dex(flags=9), suite_dex(code=0), suite_dex(return_type=0)]:
         c.require('signature/code mismatch' in str(error), 'wrong method parser rejection')
     else:
         raise ValueError('bad concrete JUnit3 signature/code accepted')
+
+# Bind legal full class_data through the actual all-DEX parser and package policy.
+legal_classes, legal_methods = c.dex_inventory([suite_dex(names=c.METHODS)])
+c.require(legal_classes == [c.SUITE] and sorted(legal_methods) == c.METHODS, '14 real DEX methods')
+p = fixture(); p['test']['methods'] = legal_methods
+c.check_packages(p, 'approved')
+for name in NEW_SAF_METHODS:
+    for names in [[method for method in c.METHODS if method != name], c.METHODS + [name]]:
+        p = fixture(); p['test']['methods'] = c.dex_inventory([suite_dex(names=names)])[1]
+        try:
+            c.check_packages(p, 'approved')
+        except ValueError as error:
+            c.require('instrumentation method inventory mismatch' in str(error), 'wrong SAF inventory rejection')
+        else:
+            raise ValueError('missing/duplicate SAF DEX method accepted: ' + name)
+    for bad in [{'flags': 0}, {'flags': 2}, {'flags': 9}, {'flags': 257}, {'flags': 1025},
+                {'return_type': 0}, {'argc': 1}, {'code': 0}, {'code': 2049}]:
+        try:
+            c.dex_inventory([suite_dex(names=c.METHODS, bad_name=name, **bad)])
+        except ValueError as error:
+            c.require('JUnit3 method signature/code mismatch' in str(error), 'wrong SAF DEX shape rejection')
+        else:
+            raise ValueError('bad SAF JUnit3 method accepted: ' + name + ' ' + str(bad))
 
 # Real AGP single-variant metadata selection rejects stale extras and unsafe names.
 with tempfile.TemporaryDirectory(prefix='apk-selection-') as temp:

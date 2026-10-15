@@ -23,7 +23,8 @@ METHODS = sorted(['testEnginePayloadAndOrder', 'testReadinessRejectsBeforeLoad',
                   'testSingleConfirmationAndPassword', 'testLateResultIsInvalidated', 'testCleanupRetainsOwner',
                   'testReusedBackendQueuedCancellation', 'testProviderEnumerationClosesCursor',
                   'testProviderQueryErrorIsPrivate', 'testProviderCloseErrorIsPrivate',
-                  'testProviderCancellationWaitsForQuery', 'testInputConnectionAndManualInvalidation'])
+                  'testProviderCancellationWaitsForQuery', 'testInputConnectionAndManualInvalidation',
+                  'testSafImportOpenFailureThenRetryPreservesHistory', 'testSafImportCancellationWaitsForOpen'])
 JVM_METHODS = sorted(['enginePayloadAndOrder', 'readinessRejectsBeforeLoad', 'badBytesAreSafe',
                       'singleConfirmationAndPassword', 'lateResultIsInvalidated', 'cleanupRetainsOwner',
                       'reusedBackendQueuedCancellation'])
@@ -329,7 +330,7 @@ def verify(root, output):
                'limitations': ['Compiled/static packages only; no Binder/SAF grant/InputConnection execution',
                                'Product full/JNI/Lint acceptance is a separate required gate']}
     (report / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
-    print('PASS three APK current signature/Manifest/all-DEX/test isolation; 7 JVM, 12 compiled-only methods')
+    print('PASS three APK current signature/Manifest/all-DEX/test isolation; 7 JVM, 14 compiled-only methods')
     print('ANDROID_TEST_REPORT ' + str(report))
     return report
 

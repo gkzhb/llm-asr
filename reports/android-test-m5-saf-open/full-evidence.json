@@ -1,0 +1,548 @@
+{
+  "schema": 1,
+  "attestation": false,
+  "task": "llm-asr-76d.6",
+  "executor": "m5saf-test",
+  "terminal_consumption": {
+    "task_id": "b587dbfa6",
+    "task_name": "M5 SAF offline full",
+    "launcher_pid": 1085257,
+    "disk_runner_pid": 1085270,
+    "disk_command_pid": 1085271,
+    "disk_runner_starttime": "73590883",
+    "disk_command_starttime": "73590886",
+    "disk_exit": 0,
+    "disk_execution_finished_utc": "2026-10-15T17:42:59.071590+00:00",
+    "complete_log_lines": 802,
+    "log_sha256": "9c22560d5d38f49a86fe0bcd8900786c1447851fb60ecbd4a3d3abaf16a1f985",
+    "launcher_runner_command_pids_absent": true,
+    "automatic_terminal_notification_received_before_consumption": false,
+    "one_exact_registry_recovery": {
+      "task_id": "b587dbfa6",
+      "status": "completed",
+      "pid": 1085257,
+      "exit_code": 0
+    },
+    "note": "\u81ea\u52a8\u901a\u77e5\u6d88\u8d39\u524d\u672a\u5230\uff1b\u754c\u9762\u9519\u8bef\u540e\u7528\u6237Continue\u6062\u590d\uff0c\u5b8c\u6574disk exit0/execution/log\u53calauncher/runner/command PID\u5747\u5df2\u6d88\u5931\u3002\u4ec5\u4e00\u6b21exact bg registry\u6062\u590dcompleted0\uff0c\u4e0d\u5faa\u73afpoll\u3001\u4e0d\u4f2a\u9020\u901a\u77e5\u3001\u4e0d\u91cd\u590dfull\u3002\u6700\u7ec8\u8eab\u4efd\u4ee5\u672c\u6587\u4ef6\u6240\u5217\u5f53\u524d\u78c1\u76d8execution/log SHA\u4e0ePID-start\u4e3a\u51c6\uff0clauncher PID\u4e0e\u5b9e\u9645Python runner PID\u5206\u522b\u8bb0\u5f55\u3002",
+    "attestation": false
+  },
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "bash",
+    "scripts/verify-gradle.sh",
+    "--offline",
+    "--rerun-tasks"
+  ],
+  "started_utc": "2026-10-15T17:34:44.896456+00:00",
+  "finished_utc": "2026-10-15T17:42:59.071590+00:00",
+  "exit": 0,
+  "duration_seconds": 494.1745985110756,
+  "log": ".work/m5saf-full/full.log",
+  "log_sha256": "9c22560d5d38f49a86fe0bcd8900786c1447851fb60ecbd4a3d3abaf16a1f985",
+  "actionable": 174,
+  "executed_actions": 174,
+  "task_line_count": 222,
+  "task_status_counts": {
+    "NO_STATUS": 185,
+    "NO-SOURCE": 22,
+    "SKIPPED": 4,
+    "UP-TO-DATE": 11
+  },
+  "required_tasks": [
+    ":app:buildNativeArtifact",
+    ":app:prepareInputs",
+    ":core:compileKotlin",
+    ":core:compileJava",
+    ":asr-runtime:compileDebugJavaWithJavac",
+    ":app:compileDebugJavaWithJavac",
+    ":test-host:compileDebugJavaWithJavac",
+    ":test-host:compileDebugUnitTestJavaWithJavac",
+    ":test-host:compileDebugAndroidTestJavaWithJavac",
+    ":app:lintReportDebug",
+    ":asr-runtime:lintReportDebug",
+    ":verifyDebug",
+    ":verifyHost",
+    ":verifyBuildInputs",
+    ":verifyNativeInputs",
+    ":verifyApkChecker",
+    ":verifyJni",
+    ":core:test",
+    ":asr-runtime:testDebugUnitTest",
+    ":app:verifyDebugPackage",
+    ":verifyArchitecture",
+    ":verifyFormat",
+    ":verifyLocalGuards",
+    ":verifyLint",
+    ":verifyDependencyEvidence",
+    ":verifyLintEvidence",
+    ":app:lintDebug",
+    ":asr-runtime:lintDebug",
+    ":verifyAndroidTestChecks",
+    ":verifyAndroidTestPackage",
+    ":verifyAndroidTestBuild",
+    ":verifyAndroidTestFixtureEvidence",
+    ":test-host:testDebugUnitTest",
+    ":test-host:assembleDebug",
+    ":test-host:assembleDebugAndroidTest",
+    ":app:assembleDebug"
+  ],
+  "production_lint": [
+    {
+      "module": "android/app",
+      "counts": {
+        "Warning": 17
+      },
+      "warning_ids": {
+        "UnusedAttribute": 3,
+        "GradleDependency": 1,
+        "ChromeOsAbiSupport": 1,
+        "DataExtractionRules": 1,
+        "UsableSpace": 1,
+        "MissingApplicationIcon": 1,
+        "SetTextI18n": 9
+      }
+    },
+    {
+      "module": "android/asr-runtime",
+      "counts": {
+        "Warning": 10
+      },
+      "warning_ids": {
+        "UsableSpace": 1,
+        "SetTextI18n": 9
+      }
+    }
+  ],
+  "actual_lint_consumers": [
+    ":asr-runtime:lintAnalyzeDebug",
+    ":app:lintAnalyzeDebug",
+    ":app:lintAnalyzeDebugAndroidTest",
+    ":app:lintAnalyzeDebugUnitTest",
+    ":asr-runtime:lintAnalyzeDebugAndroidTest",
+    ":asr-runtime:lintAnalyzeDebugUnitTest",
+    ":app:lintReportDebug",
+    ":asr-runtime:lintReportDebug"
+  ],
+  "host_lint_executed": false,
+  "runtime_warning_nonduplicates": [],
+  "behavior": {
+    "path": ".work/p1b-build/2b/behavior-3qvy_1wn",
+    "exits": [
+      0,
+      1,
+      0,
+      1,
+      0
+    ],
+    "tests_per_phase": 7,
+    "driver_launch_sha256": "fbb4af0660042b8f2992bc4fb1ee92f126294af6ddc03bf927f4bf5bfb0ff89a",
+    "evidence": [
+      {
+        "source": ".work/p1b-build/2b/behavior-3qvy_1wn/green-payload-restored.log",
+        "copy": ".work/m5saf-full/evidence/.work/p1b-build/2b/behavior-3qvy_1wn/green-payload-restored.log",
+        "sha256": "a42da8ce68fd07e7bf5b6fc6a554479b6ae9281561dab1d613ae280233dc66fc",
+        "bytes": 3115
+      },
+      {
+        "source": ".work/p1b-build/2b/behavior-3qvy_1wn/red-payload.xml",
+        "copy": ".work/m5saf-full/evidence/.work/p1b-build/2b/behavior-3qvy_1wn/red-payload.xml",
+        "sha256": "0d421cde121a7e6871a2ab6424c1d0f44096d3ef2d7142864e706d9d1b72b23a",
+        "bytes": 5518
+      },
+      {
+        "source": ".work/p1b-build/2b/behavior-3qvy_1wn/green-initial.log",
+        "copy": ".work/m5saf-full/evidence/.work/p1b-build/2b/behavior-3qvy_1wn/green-initial.log",
+        "sha256": "28ea226b056b97e3adf434be808af733bf2a811c93dd1c65237f11dcc0697c7e",
+        "bytes": 3115
+      },
+      {
+        "source": ".work/p1b-build/2b/behavior-3qvy_1wn/green-final.log",
+        "copy": ".work/m5saf-full/evidence/.work/p1b-build/2b/behavior-3qvy_1wn/green-final.log",
+        "sha256": "a42da8ce68fd07e7bf5b6fc6a554479b6ae9281561dab1d613ae280233dc66fc",
+        "bytes": 3115
+      },
+      {
+        "source": ".work/p1b-build/2b/behavior-3qvy_1wn/result.json",
+        "copy": ".work/m5saf-full/evidence/.work/p1b-build/2b/behavior-3qvy_1wn/result.json",
+        "sha256": "da3c2caafcbe50d483da73d660770bc3efee3c79d7d995cab79265b4226a1787",
+        "bytes": 6113
+      },
+      {
+        "source": ".work/p1b-build/2b/behavior-3qvy_1wn/green-initial.xml",
+        "copy": ".work/m5saf-full/evidence/.work/p1b-build/2b/behavior-3qvy_1wn/green-initial.xml",
+        "sha256": "ca01e6bef95e8df2fe9412f44be7210471c845645c880cb878bc5f68b516a7ee",
+        "bytes": 1151
+      },
+      {
+        "source": ".work/p1b-build/2b/behavior-3qvy_1wn/red-cleanup.xml",
+        "copy": ".work/m5saf-full/evidence/.work/p1b-build/2b/behavior-3qvy_1wn/red-cleanup.xml",
+        "sha256": "c4bc9e773eed22d04267996f636aa900ac47bdb597fd7abc9997354b1c3ed88e",
+        "bytes": 5529
+      },
+      {
+        "source": ".work/p1b-build/2b/behavior-3qvy_1wn/red-payload.log",
+        "copy": ".work/m5saf-full/evidence/.work/p1b-build/2b/behavior-3qvy_1wn/red-payload.log",
+        "sha256": "cd5020ed578c2ae0ac7e4497fb851b2f137adb57c41d7b4294ed70915e77a1ed",
+        "bytes": 3538
+      },
+      {
+        "source": ".work/p1b-build/2b/behavior-3qvy_1wn/red-cleanup.log",
+        "copy": ".work/m5saf-full/evidence/.work/p1b-build/2b/behavior-3qvy_1wn/red-cleanup.log",
+        "sha256": "0f5782cf31230953e1a91b8fc2b21f4e602d6cefe255221fad60cf4017770c06",
+        "bytes": 3539
+      },
+      {
+        "source": ".work/p1b-build/2b/behavior-3qvy_1wn/green-final.xml",
+        "copy": ".work/m5saf-full/evidence/.work/p1b-build/2b/behavior-3qvy_1wn/green-final.xml",
+        "sha256": "2165e42320e3f943555a725feb212fb266af00016dbb723ce648465cd66ab2c2",
+        "bytes": 1152
+      },
+      {
+        "source": ".work/p1b-build/2b/behavior-3qvy_1wn/green-payload-restored.xml",
+        "copy": ".work/m5saf-full/evidence/.work/p1b-build/2b/behavior-3qvy_1wn/green-payload-restored.xml",
+        "sha256": "0ff4cc1da0ddea1c5d52128344ceb9b7c30eeeab3b80c9aabe761356170927e4",
+        "bytes": 1152
+      }
+    ]
+  },
+  "isolated_lint": {
+    "path": ".work/gradle-lint-negative/run-m8y1lcao",
+    "phases": [
+      {
+        "phase": "green0",
+        "exit": 0,
+        "source_sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+        "xml_sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+        "log_sha256": "5ed812cc82d761eaa4d03b51f0ea8f0ad8f040ca2068b5a2aa36eb480392d82b"
+      },
+      {
+        "phase": "red",
+        "exit": 1,
+        "source_sha256": "7f0cfde58056dadfe1643c9b6e4331103c71044822d1a70032e591da06f96509",
+        "xml_sha256": "ba2b1d255dc26c7d9a9af7844ee65cf5aa35b42246762deb0f4ff4c579a5739a",
+        "log_sha256": "aabcab3b52c4d3733dd34628738bb7a929dacfc451287beae49c4686dd0dfc0e"
+      },
+      {
+        "phase": "green1",
+        "exit": 0,
+        "source_sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+        "xml_sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+        "log_sha256": "be79f76f80558601ab13acc699ae4f36ed08f051845a28bdcbb935c717287417"
+      }
+    ],
+    "negatives": [
+      {
+        "phase": "identity-artifact-negative",
+        "exit": 1,
+        "log_sha256": "2d0068ee77374da74ec0a0722a361e6c54a7a2cceb323c741b3acf05c4fd4fef"
+      },
+      {
+        "phase": "identity-edge-negative",
+        "exit": 1,
+        "log_sha256": "3818166b74e36a7f43678cc1b74ea3022ac0aeb6c98e18f2b90244df52eb4523"
+      },
+      {
+        "phase": "classpath-missing-negative",
+        "exit": 1,
+        "log_sha256": "9eaede08719e4c0fec8371dc617d05294e2bb8041fd2685a9b53ada242e9b3dd"
+      },
+      {
+        "phase": "classpath-extra-negative",
+        "exit": 1,
+        "log_sha256": "4df96584d836ebb724ee88f847404e8a36c9b8153ece0e7c637d4a51fb5eb467"
+      },
+      {
+        "phase": "classpath-replacement-negative",
+        "exit": 1,
+        "log_sha256": "ae00c77b07fb641678f96f9c4ddfa3be7fd0161836ff7c26d6dd2047fbaf521f"
+      },
+      {
+        "phase": "classpath-restore",
+        "exit": 0,
+        "log_sha256": "99c4e90e9875e6dc16b54c9963adfb09c85b3ef3ad168ff77036fa15eb67d4e3"
+      }
+    ],
+    "driver_launch_sha256": "d07d69757b599dc50ebbe73d4ebe8f1fe8c69a6afef852b6db2c4b478d3e690f"
+  },
+  "checksum": {
+    "path": ".work/gradle-m1/dependency-negative-wKmvzp",
+    "exits": [
+      0,
+      1,
+      0
+    ],
+    "target": "com.android.tools.build:gradle:8.6.1/gradle-8.6.1.jar",
+    "expected_mutant": "0000000000000000000000000000000000000000000000000000000000000000",
+    "actual_cache_sha256": "9697733a215f2ed42e5b2fc4053484ec832eab29584ebced94d92c91090051c1",
+    "driver_launch_sha256": "06a1890c835b3fda1430d6035334a730382963bc9aa780ec5191d636a6d6668f",
+    "evidence": [
+      {
+        "source": ".work/gradle-m1/dependency-negative-wKmvzp/original.exit",
+        "copy": ".work/m5saf-full/evidence/.work/gradle-m1/dependency-negative-wKmvzp/original.exit",
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "bytes": 2
+      },
+      {
+        "source": ".work/gradle-m1/dependency-negative-wKmvzp/original.log",
+        "copy": ".work/m5saf-full/evidence/.work/gradle-m1/dependency-negative-wKmvzp/original.log",
+        "sha256": "73a455f3c5ecf881d5cf349b04022609db1ba088b680eb39237be87a1a98a2aa",
+        "bytes": 1132
+      },
+      {
+        "source": ".work/gradle-m1/dependency-negative-wKmvzp/rejection.exit",
+        "copy": ".work/m5saf-full/evidence/.work/gradle-m1/dependency-negative-wKmvzp/rejection.exit",
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "bytes": 2
+      },
+      {
+        "source": ".work/gradle-m1/dependency-negative-wKmvzp/rejection.log",
+        "copy": ".work/m5saf-full/evidence/.work/gradle-m1/dependency-negative-wKmvzp/rejection.log",
+        "sha256": "a30182f6c1268acc93baaff9986912473e52f105b10872532996f80424b21fa3",
+        "bytes": 1705
+      },
+      {
+        "source": ".work/gradle-m1/dependency-negative-wKmvzp/restored.exit",
+        "copy": ".work/m5saf-full/evidence/.work/gradle-m1/dependency-negative-wKmvzp/restored.exit",
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "bytes": 2
+      },
+      {
+        "source": ".work/gradle-m1/dependency-negative-wKmvzp/restored.log",
+        "copy": ".work/m5saf-full/evidence/.work/gradle-m1/dependency-negative-wKmvzp/restored.log",
+        "sha256": "73a455f3c5ecf881d5cf349b04022609db1ba088b680eb39237be87a1a98a2aa",
+        "bytes": 1132
+      },
+      {
+        "source": ".work/gradle-m1/dependency-negative-wKmvzp/build/reports/dependency-verification/at-1792085779363/dependency-verification-report.html",
+        "copy": ".work/m5saf-full/evidence/.work/gradle-m1/dependency-negative-wKmvzp/build/reports/dependency-verification/at-1792085779363/dependency-verification-report.html",
+        "sha256": "f6408ca7d46b7ccb938ebf4c2069707ad90a4795140ce68e90eecd49053a28bc",
+        "bytes": 8991
+      },
+      {
+        "source": ".work/gradle-m1/dependency-negative-wKmvzp/build/reports/dependency-verification/at-1792085779363/css/uikit.min.css",
+        "copy": ".work/m5saf-full/evidence/.work/gradle-m1/dependency-negative-wKmvzp/build/reports/dependency-verification/at-1792085779363/css/uikit.min.css",
+        "sha256": "a79e1826064b21b29d0fd082a24bf09c699947769052f261adb2e26ee74df6c9",
+        "bytes": 263360
+      },
+      {
+        "source": ".work/gradle-m1/dependency-negative-wKmvzp/build/reports/dependency-verification/at-1792085779363/img/gradle-logo.png",
+        "copy": ".work/m5saf-full/evidence/.work/gradle-m1/dependency-negative-wKmvzp/build/reports/dependency-verification/at-1792085779363/img/gradle-logo.png",
+        "sha256": "631c8fc0ef10dd92ef723c4422c53e12ab224f65c17a33e521121014c2571d15",
+        "bytes": 10776
+      },
+      {
+        "source": ".work/gradle-m1/dependency-negative-wKmvzp/build/reports/dependency-verification/at-1792085779363/js/uikit.min.js",
+        "copy": ".work/m5saf-full/evidence/.work/gradle-m1/dependency-negative-wKmvzp/build/reports/dependency-verification/at-1792085779363/js/uikit.min.js",
+        "sha256": "0aea16c9ee8edf6403bcf4bfd8b45fb1b419c4d60cf9052fdbac2a178900db5e",
+        "bytes": 133590
+      },
+      {
+        "source": ".work/gradle-m1/dependency-negative-wKmvzp/build/reports/dependency-verification/at-1792085779363/js/uikit-icons.min.js",
+        "copy": ".work/m5saf-full/evidence/.work/gradle-m1/dependency-negative-wKmvzp/build/reports/dependency-verification/at-1792085779363/js/uikit-icons.min.js",
+        "sha256": "cba9581e8b30e447939362364f099b8d04ab9cbba6d4e858a6a5178c120674ac",
+        "bytes": 63985
+      },
+      {
+        "source": ".work/gradle-m1/dependency-negative-wKmvzp/gradle/verification-metadata.xml",
+        "copy": ".work/m5saf-full/evidence/.work/gradle-m1/dependency-negative-wKmvzp/gradle/verification-metadata.xml",
+        "sha256": "c2ad4bfd7e430df923faa14e4cb3a309b4c1e73bc3adad937d7a15ff55fc219a",
+        "bytes": 114376
+      }
+    ]
+  },
+  "packages": {
+    "product": {
+      "apk": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "bytes": 5216237,
+      "sha256": "3fe42d623e8f9b60e7d34fd63f432de2aa780520395fc8aeeb5bbbc1ca32df10",
+      "metadata_sha256": "6a436665e72cca179545d50650d607f49ceaf965b7f3e76f74bdf68ff3586c8a",
+      "classes": 1327,
+      "methods": [],
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "evidence": [
+        {
+          "source": "android/app/build/outputs/apk/debug/app-debug.apk",
+          "copy": ".work/m5saf-full/evidence/android/app/build/outputs/apk/debug/app-debug.apk",
+          "sha256": "3fe42d623e8f9b60e7d34fd63f432de2aa780520395fc8aeeb5bbbc1ca32df10",
+          "bytes": 5216237
+        },
+        {
+          "source": "android/app/build/outputs/apk/debug/output-metadata.json",
+          "copy": ".work/m5saf-full/evidence/android/app/build/outputs/apk/debug/output-metadata.json",
+          "sha256": "6a436665e72cca179545d50650d607f49ceaf965b7f3e76f74bdf68ff3586c8a",
+          "bytes": 406
+        }
+      ]
+    },
+    "host": {
+      "apk": "android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+      "bytes": 2584412,
+      "sha256": "856536f13c8fb7a975663bb27f35f8ce6ca586f2ffee36907d3aca757f58ee7d",
+      "metadata_sha256": "343379a880059c602d4011bfe4cdeaf01ab32648d9c6cd87e07cdf321b722a1a",
+      "classes": 1235,
+      "methods": [],
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "evidence": [
+        {
+          "source": "android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+          "copy": ".work/m5saf-full/evidence/android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+          "sha256": "856536f13c8fb7a975663bb27f35f8ce6ca586f2ffee36907d3aca757f58ee7d",
+          "bytes": 2584412
+        },
+        {
+          "source": "android/test-host/build/outputs/apk/debug/output-metadata.json",
+          "copy": ".work/m5saf-full/evidence/android/test-host/build/outputs/apk/debug/output-metadata.json",
+          "sha256": "343379a880059c602d4011bfe4cdeaf01ab32648d9c6cd87e07cdf321b722a1a",
+          "bytes": 424
+        }
+      ]
+    },
+    "test": {
+      "apk": "android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+      "bytes": 52318,
+      "sha256": "950619bd90608e77c73cf7152a5d7c027f4f28fdfaeed8a4770a8655c0e6ba41",
+      "metadata_sha256": "d61475692d336c0ec6039fbf628d2643da9eb90a45d22f5e3e22c225dac60ab8",
+      "classes": 43,
+      "methods": [
+        "testBadBytesAreSafe",
+        "testCleanupRetainsOwner",
+        "testEnginePayloadAndOrder",
+        "testInputConnectionAndManualInvalidation",
+        "testLateResultIsInvalidated",
+        "testProviderCancellationWaitsForQuery",
+        "testProviderCloseErrorIsPrivate",
+        "testProviderEnumerationClosesCursor",
+        "testProviderQueryErrorIsPrivate",
+        "testReadinessRejectsBeforeLoad",
+        "testReusedBackendQueuedCancellation",
+        "testSafImportCancellationWaitsForOpen",
+        "testSafImportOpenFailureThenRetryPreservesHistory",
+        "testSingleConfirmationAndPassword"
+      ],
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "evidence": [
+        {
+          "source": "android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+          "copy": ".work/m5saf-full/evidence/android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+          "sha256": "950619bd90608e77c73cf7152a5d7c027f4f28fdfaeed8a4770a8655c0e6ba41",
+          "bytes": 52318
+        },
+        {
+          "source": "android/test-host/build/outputs/apk/androidTest/debug/output-metadata.json",
+          "copy": ".work/m5saf-full/evidence/android/test-host/build/outputs/apk/androidTest/debug/output-metadata.json",
+          "sha256": "d61475692d336c0ec6039fbf628d2643da9eb90a45d22f5e3e22c225dac60ab8",
+          "bytes": 440
+        }
+      ]
+    }
+  },
+  "three_report": "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69",
+  "product_report": "android/app/build/verification/debug/run-58447c85ca574d19b9d5c20d664a2908",
+  "sdk_tool_optional_inputs": {
+    "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2": "70cd2d97c18ea25fc3ad1e6bc2c7e2e86c7c9076cf2549b3609f304b182cc246",
+    "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/zipalign": "cab08208e28ebf26e37c91a1f9ef4a871c175c8dabd55c78b0074f4d3a47a03a",
+    "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/lib/apksigner.jar": "00ef9948f843fe395d2440ae3ef41405b8040a6d5d46493bd1902ac0ee6deae7",
+    "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/platforms/android-35/optional/android.test.base.jar": "c9583729e5cd1695ba93f9aa8e83adeb621fa028e765520b53c6e23f92f25b96",
+    "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/platforms/android-35/optional/android.test.runner.jar": "b0ed5e396b0d35cb02a6626f3c2a6c0e9d5f69ad1d189e19d426ffb65bfc580d"
+  },
+  "native": {
+    "native_input_count": 80,
+    "object_count": 578,
+    "all_MNN_objects_sha256_unchanged": true,
+    "artifact_sha256": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416",
+    "prepared_sources_report_sha256": "9fe088c58f748f4d9181029f74f5d8335f3a93e805b356763cff3ed9cb11d41b",
+    "scope": "JNI source/header/object recompile and incremental final link; not clean native rebuild",
+    "standalone_jni_object": {
+      "source": "build/jni-check/asr_jni.o",
+      "copy": ".work/m5saf-full/evidence/build/jni-check/asr_jni.o",
+      "sha256": "abf9d1ed638766f46ebd23d85eecc51d0183ca50b51d5f33f76207e872253ba6",
+      "bytes": 24344
+    },
+    "standalone_jni_header": {
+      "source": "build/jni-check/headers/org_llmasr_minimal_asr_JniNativeTranscription.h",
+      "copy": ".work/m5saf-full/evidence/build/jni-check/headers/org_llmasr_minimal_asr_JniNativeTranscription.h",
+      "sha256": "576b4077be74ae5dad94b5e833bf09c7651a9f7d6d21c1260d01cd4ec874bbd6",
+      "bytes": 1089
+    },
+    "evidence": [
+      {
+        "source": "android/app/build/native-debug/artifact/native-link-provenance.json",
+        "copy": ".work/m5saf-full/evidence/android/app/build/native-debug/artifact/native-link-provenance.json",
+        "sha256": "56e60d23294d1998299eb738ee4c0a204023e30625c61aa0fa0573147d670263",
+        "bytes": 95950
+      },
+      {
+        "source": "android/app/build/native-debug/artifact/verification.json",
+        "copy": ".work/m5saf-full/evidence/android/app/build/native-debug/artifact/verification.json",
+        "sha256": "8b902ee16926bae147abc5297073766de787eb7dedf7f2d72ca1ee3b2090d4e1",
+        "bytes": 12691
+      },
+      {
+        "source": "android/app/build/native-debug/CMakeCache.txt",
+        "copy": ".work/m5saf-full/evidence/android/app/build/native-debug/CMakeCache.txt",
+        "sha256": "eb8d1b172e99e317f4a33f7e18e121ae88903eb2921e223147eebc321bebb9bd",
+        "bytes": 31070
+      },
+      {
+        "source": "android/app/build/native-debug/qwen-objects.txt",
+        "copy": ".work/m5saf-full/evidence/android/app/build/native-debug/qwen-objects.txt",
+        "sha256": "a4296800885a3daa2477e01714a4582105c885be6e98b8ccb82a144ef4ec51c6",
+        "bytes": 85530
+      },
+      {
+        "source": "android/app/build/native-debug/jni-check/headers/org_llmasr_minimal_asr_JniNativeTranscription.h",
+        "copy": ".work/m5saf-full/evidence/android/app/build/native-debug/jni-check/headers/org_llmasr_minimal_asr_JniNativeTranscription.h",
+        "sha256": "576b4077be74ae5dad94b5e833bf09c7651a9f7d6d21c1260d01cd4ec874bbd6",
+        "bytes": 1089
+      }
+    ]
+  },
+  "history": {
+    "count": 2209,
+    "all_sha256_match": true,
+    "new_behavior_directory": ".work/p1b-build/2b/behavior-3qvy_1wn"
+  },
+  "backup": {
+    "file_count": 289,
+    "manifest": ".work/m5saf-full/baseline-index.json",
+    "cleaned_paths": [
+      "android/app/build/intermediates/javac",
+      "android/app/build/outputs/apk",
+      "android/asr-runtime/build/intermediates/javac",
+      "android/asr-runtime/build/test-results",
+      "android/asr-runtime/build/reports/tests",
+      "android/test-host/build/intermediates/javac",
+      "android/test-host/build/test-results",
+      "android/test-host/build/reports/tests",
+      "android/test-host/build/outputs/apk",
+      "core/build/classes",
+      "core/build/kotlin",
+      "core/build/test-results",
+      "core/build/reports/tests"
+    ]
+  },
+  "notrun": [
+    "SAF assertion Android red/green",
+    "14 instrumentation runner discovery/execution/failure sentinel",
+    "system DocumentsProvider/Binder/grant/revocation/InputConnection",
+    "real Activity/IME/Service lifecycle",
+    "JNI-device/AudioRecord/microphone/private files",
+    "4KiB/16KiB device runtime",
+    "model weights computation/download",
+    "remote CI/release/R8/new signing"
+  ],
+  "commit": "not performed",
+  "not_deliverable": true
+}

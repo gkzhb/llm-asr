@@ -5,7 +5,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,6 +22,34 @@ public final class FakeDocumentsProvider extends ContentProvider {
     public final CountDownLatch release = new CountDownLatch(1);
     public final AtomicInteger closes = new AtomicInteger();
     public final AtomicInteger queries = new AtomicInteger();
+    public volatile boolean failOpen, blockOpen;
+    public final CountDownLatch openEntered = new CountDownLatch(1);
+    public final CountDownLatch openRelease = new CountDownLatch(1);
+    public final AtomicInteger opens = new AtomicInteger();
+    private File syntheticFile;
+
+    /** Only this suite's UUID cache/source/model.bin is eligible; never a selected model. */
+    void setSyntheticFile(File file) throws IOException {
+        File cache = getContext().getCacheDir().getCanonicalFile();
+        File canonical = file.getCanonicalFile();
+        String relative = cache.toPath().relativize(canonical.toPath()).toString();
+        if (!canonical.equals(file.getAbsoluteFile()) || !file.isFile()
+                || !relative.matches("m5saf-[0-9a-f-]{36}/source/model\\.bin"))
+            throw new IOException("synthetic cache file required");
+        syntheticFile = canonical;
+    }
+    @Override public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+        Uri tree = DocumentsContract.buildTreeDocumentUri(AUTHORITY, "synthetic-root");
+        Uri expected = DocumentsContract.buildDocumentUriUsingTree(tree, "synthetic-root/model.bin");
+        if (!expected.equals(uri) || !"r".equals(mode))
+            throw new FileNotFoundException("synthetic document/read-only mode required");
+        opens.incrementAndGet();
+        openEntered.countDown();
+        if (blockOpen) FakePorts.await(openRelease, "provider open release");
+        if (failOpen) throw new SecurityException(CANARY);
+        if (syntheticFile == null) throw new FileNotFoundException("synthetic file not configured");
+        return ParcelFileDescriptor.open(syntheticFile, ParcelFileDescriptor.MODE_READ_ONLY);
+    }
     @Override public boolean onCreate() { return true; }
     @Override public Cursor query(Uri uri, String[] projection, String selection,
                                   String[] args, String order) {

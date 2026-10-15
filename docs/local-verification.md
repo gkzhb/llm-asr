@@ -97,3 +97,17 @@ ignored freeze-a.py仅读真实collector库存span和native input_hashes span，
 ## 未覆盖/授权边界
 
 上述P1-A历史slice未覆盖P1-B；当前新增P1-B本地测试工程范围见本文2B章节及reports/android-test-p1/status.md。P1-C策略ADR、远端CI配置、release/R8/新签名、模型性能和设备运行仍不在本slice。若宿主工具或Lint缺缓存，保留入口代码及可验证检查点，报告所缺准备输入，由父决定后续授权；不交旧APK、不称本轮全部完成或M4关闭。
+
+## M5 SAF open 后续编译工程（2026-10-15）
+
+上述12方法/full/待提交文字为P1-B历史冻结快照，P1-B实际已提交`add5d2c`，不回写旧结果。本批在原suite增加`testSafImportOpenFailureThenRetryPreservesHistory`与`testSafImportCancellationWaitsForOpen`，正式checker精确14个public concrete `()V`方法；原7个JVM名单/行为不变。当次结果另见[状态](../reports/android-test-m5-saf-open/status.md)与[构建证据](../reports/android-test-m5-saf-open/build.md)，不继承旧输入SHA/数量或旧full结论。
+
+新增仪器方法直接构造生产`SafModelSource`→`ModelRepository`→`ModelManagementController`、真实owner/control/state/readiness。provider实际是同进程`ContentProvider`，使用`ContentResolver.wrap`；只读自有target cache UUID/source内3字节合成文件，repository另目录，实算SHA。覆盖候选为open拒绝的安全失败/inspect保留历史/同controller重试，以及open阻塞取消必须等worker终态才释放owner。所有新增断言在外部测试线程，worker错误带出，有界latch/join和失败finally清理；cursor/PFD计数不冒InputStream关闭故障证据。不改生产装配、Graph、manifest、依赖或权限。
+
+本批只批准普通/-O checker/input回归及统一`android-test-build --offline --rerun-tasks`、`format --offline`，外层固定Nix cache-only。checker负例经同生产DEX解析与三包策略逐名拒绝新增方法遗漏/重复/非public-concrete-()V形状，合法14库存通过；不是设备runner发现。新增SAF断言的Android运行red/green、runner发现/执行、Binder/grant/系统DocumentsProvider/真实生命周期仍全部**not run**，无自制Android runtime替代。本阶段不full/prepare/download/设备/提交；父接受targeted后安排fresh只读审、必要完整验证及另阶段安全本地提交，不能据本页宣称本轮APK已交付或M5关闭。
+
+## M5 SAF open 本轮正式full最新状态（2026-10-15）
+
+前述targeted/未full文字为当时历史。本轮R1 fresh同sol上下文隔离定点CLOSED经父接受后，唯一cache-only strict/offline统一full真实exit0：174 actions全部executed，原35+新7 JVM零failure/error/skip，14仪器方法仅编译/全DEX；当次209build/10module80native/current/三包与独立产品receipt绑定。生产app/runtime Lint Error/Fatal0，warnings分类defer，host Lint未执行（identity resolve不是执行）；fixture五阶段0/1/0/1/0、真实NewApi及checksum目标拒绝恢复、原host/ABI/mutants/module/JNI/native/签名权限资产gate均实际执行。详细新[full报告](../reports/android-test-m5-saf-open/full.md)与[状态](../reports/android-test-m5-saf-open/status.md)，旧P1A/P1B与targeted/R1报告字节不回写。
+
+578 MNN对象缓存保持，仅JNI复编/增量链接，非全native clean或hermetic。新增SAF行为Android red/green、14方法runner发现/执行/sentinel、系统SAF/Binder/grant/真实生命周期、JNI-device/4K16K/mic/private/模型计算下载/远端CI/release/R8均not run；同sol fresh为上下文隔离非跨家族。当前未安全本地提交，不宣称本轮APK交付或整个M5关闭；父消费封口后另派reviewagent清单安全审及限定本地提交。

@@ -1,0 +1,939 @@
+{
+  "required": [
+    ":app:buildNativeArtifact",
+    ":app:prepareInputs",
+    ":core:compileKotlin",
+    ":core:compileJava",
+    ":asr-runtime:compileDebugJavaWithJavac",
+    ":app:compileDebugJavaWithJavac",
+    ":test-host:compileDebugJavaWithJavac",
+    ":test-host:compileDebugUnitTestJavaWithJavac",
+    ":test-host:compileDebugAndroidTestJavaWithJavac",
+    ":app:lintReportDebug",
+    ":asr-runtime:lintReportDebug",
+    ":verifyDebug",
+    ":verifyHost",
+    ":verifyBuildInputs",
+    ":verifyNativeInputs",
+    ":verifyApkChecker",
+    ":verifyJni",
+    ":core:test",
+    ":asr-runtime:testDebugUnitTest",
+    ":app:verifyDebugPackage",
+    ":verifyArchitecture",
+    ":verifyFormat",
+    ":verifyLocalGuards",
+    ":verifyLint",
+    ":verifyDependencyEvidence",
+    ":verifyLintEvidence",
+    ":app:lintDebug",
+    ":asr-runtime:lintDebug",
+    ":verifyAndroidTestChecks",
+    ":verifyAndroidTestPackage",
+    ":verifyAndroidTestBuild",
+    ":verifyAndroidTestFixtureEvidence",
+    ":test-host:testDebugUnitTest",
+    ":test-host:assembleDebug",
+    ":test-host:assembleDebugAndroidTest",
+    ":app:assembleDebug"
+  ],
+  "tasks": [
+    {
+      "path": ":verifyAndroidTestChecks",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:buildNativeArtifact",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:prepareInputs",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:preBuild",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:preDebugBuild",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:mergeDebugNativeDebugMetadata",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":core:checkKotlinGradlePluginConfigurationErrors",
+      "status": "SKIPPED"
+    },
+    {
+      "path": ":core:compileKotlin",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":core:compileJava",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":core:processResources",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":core:classes",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":core:jar",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:checkKotlinGradlePluginConfigurationErrors",
+      "status": "SKIPPED"
+    },
+    {
+      "path": ":asr-runtime:preBuild",
+      "status": "UP-TO-DATE"
+    },
+    {
+      "path": ":asr-runtime:preDebugBuild",
+      "status": "UP-TO-DATE"
+    },
+    {
+      "path": ":asr-runtime:writeDebugAarMetadata",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:checkDebugAarMetadata",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:generateDebugResValues",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:generateDebugResValues",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:generateDebugResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:packageDebugResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:mapDebugSourceSetPaths",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:generateDebugResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:mergeDebugResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:packageDebugResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:parseDebugLocalResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:createDebugCompatibleScreenManifests",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:extractDeepLinksDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:extractDeepLinksDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:processDebugManifest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:processDebugMainManifest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:processDebugManifest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:processDebugManifestForPackage",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:compileDebugLibraryResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:parseDebugLocalResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:generateDebugRFile",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:processDebugResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:javaPreCompileDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:compileDebugJavaWithJavac",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:bundleLibCompileToJarDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:compileDebugKotlin",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":app:javaPreCompileDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:compileDebugJavaWithJavac",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:mergeDebugShaders",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:compileDebugShaders",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":app:generateDebugAssets",
+      "status": "UP-TO-DATE"
+    },
+    {
+      "path": ":asr-runtime:mergeDebugShaders",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:compileDebugShaders",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":asr-runtime:generateDebugAssets",
+      "status": "UP-TO-DATE"
+    },
+    {
+      "path": ":asr-runtime:packageDebugAssets",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:mergeDebugAssets",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:compressDebugAssets",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:processDebugJavaRes",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":asr-runtime:processDebugJavaRes",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":app:mergeDebugJavaResource",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:checkDebugDuplicateClasses",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:desugarDebugFileDependencies",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:mergeExtDexDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:bundleLibRuntimeToDirDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:mergeLibDexDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:dexBuilderDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:mergeProjectDexDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:mergeDebugJniLibFolders",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:mergeDebugJniLibFolders",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:mergeDebugNativeLibs",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":asr-runtime:copyDebugJniLibsProjectOnly",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:mergeDebugNativeLibs",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:stripDebugDebugSymbols",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:validateSigningDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:writeDebugAppMetadata",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:writeDebugSigningConfigVersions",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:packageDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:createDebugApkListingFileRedirect",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:assembleDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:preBuild",
+      "status": "UP-TO-DATE"
+    },
+    {
+      "path": ":test-host:preDebugBuild",
+      "status": "UP-TO-DATE"
+    },
+    {
+      "path": ":test-host:mergeDebugNativeDebugMetadata",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":test-host:javaPreCompileDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:checkDebugAarMetadata",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:generateDebugResValues",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mapDebugSourceSetPaths",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:generateDebugResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeDebugResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:packageDebugResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:parseDebugLocalResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:createDebugCompatibleScreenManifests",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:extractDeepLinksDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:processDebugMainManifest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:processDebugManifest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:processDebugManifestForPackage",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:processDebugResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:compileDebugJavaWithJavac",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeDebugShaders",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:compileDebugShaders",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":test-host:generateDebugAssets",
+      "status": "UP-TO-DATE"
+    },
+    {
+      "path": ":test-host:mergeDebugAssets",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:compressDebugAssets",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:processDebugJavaRes",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":test-host:mergeDebugJavaResource",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:checkDebugDuplicateClasses",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:desugarDebugFileDependencies",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeExtDexDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeLibDexDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:dexBuilderDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeProjectDexDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeDebugJniLibFolders",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeDebugNativeLibs",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":test-host:stripDebugDebugSymbols",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":test-host:validateSigningDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:writeDebugAppMetadata",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:writeDebugSigningConfigVersions",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:packageDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:createDebugApkListingFileRedirect",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:assembleDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:bundleDebugClassesToCompileJar",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:preDebugAndroidTestBuild",
+      "status": "SKIPPED"
+    },
+    {
+      "path": ":test-host:javaPreCompileDebugAndroidTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:checkDebugAndroidTestAarMetadata",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:generateDebugAndroidTestResValues",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mapDebugAndroidTestSourceSetPaths",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:generateDebugAndroidTestResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeDebugAndroidTestResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:processDebugAndroidTestManifest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:processDebugAndroidTestResources",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:compileDebugAndroidTestJavaWithJavac",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeDebugAndroidTestShaders",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:compileDebugAndroidTestShaders",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":test-host:generateDebugAndroidTestAssets",
+      "status": "UP-TO-DATE"
+    },
+    {
+      "path": ":test-host:mergeDebugAndroidTestAssets",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:compressDebugAndroidTestAssets",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:processDebugAndroidTestJavaRes",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":test-host:mergeDebugAndroidTestJavaResource",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:checkDebugAndroidTestDuplicateClasses",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:desugarDebugAndroidTestFileDependencies",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeExtDexDebugAndroidTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeLibDexDebugAndroidTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:dexBuilderDebugAndroidTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeProjectDexDebugAndroidTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeDebugAndroidTestJniLibFolders",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:mergeDebugAndroidTestNativeLibs",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":test-host:stripDebugAndroidTestDebugSymbols",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":test-host:validateSigningDebugAndroidTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:writeDebugAndroidTestSigningConfigVersions",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:packageDebugAndroidTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:createDebugAndroidTestApkListingFileRedirect",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:assembleDebugAndroidTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:bundleLibRuntimeToJarDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:bundleDebugClassesToRuntimeJar",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:preDebugUnitTestBuild",
+      "status": "UP-TO-DATE"
+    },
+    {
+      "path": ":test-host:javaPreCompileDebugUnitTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:compileDebugUnitTestJavaWithJavac",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":test-host:processDebugUnitTestJavaRes",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":test-host:testDebugUnitTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyAndroidTestPackage",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyAndroidTestBuild",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyDependencyEvidence",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyHost",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyJni",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:stripDebugDebugSymbols",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":asr-runtime:copyDebugJniLibsProjectAndLocalJars",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:extractDebugAnnotations",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:extractDeepLinksForAarDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:mergeDebugGeneratedProguardFiles",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:mergeDebugConsumerProguardFiles",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:prepareDebugArtProfile",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:prepareLintJarForPublish",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:mergeDebugJavaResource",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:syncDebugLibJars",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:bundleDebugLocalLintAar",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:bundleDebugClassesToCompileJar",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:preDebugAndroidTestBuild",
+      "status": "SKIPPED"
+    },
+    {
+      "path": ":app:generateDebugAndroidTestResValues",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:createFullJarDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:writeDebugLintModelMetadata",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:generateDebugAndroidTestLintModel",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:extractProguardFiles",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:extractProguardFiles",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:generateDebugLintModel",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:generateDebugLintReportModel",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:preDebugUnitTestBuild",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:generateDebugUnitTestLintModel",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:verifyLintToolIdentity",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:verifyLintToolIdentity",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:lintAnalyzeDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:lintAnalyzeDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:lintAnalyzeDebugAndroidTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:lintAnalyzeDebugUnitTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:preDebugAndroidTestBuild",
+      "status": "UP-TO-DATE"
+    },
+    {
+      "path": ":asr-runtime:generateDebugAndroidTestResValues",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:generateDebugAndroidTestLintModel",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:preDebugUnitTestBuild",
+      "status": "UP-TO-DATE"
+    },
+    {
+      "path": ":asr-runtime:generateDebugUnitTestLintModel",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:lintAnalyzeDebugAndroidTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:lintAnalyzeDebugUnitTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:lintReportDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:lintDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":app:verifyDebugPackage",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:generateDebugLintReportModel",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:lintReportDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:lintDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyLintEvidence",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyAndroidTestFixtureEvidence",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyApkChecker",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyArchitecture",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyBuildInputs",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyFormat",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyLint",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyLocalGuards",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyNativeInputs",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:generateDebugUnitTestStubRFile",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:javaPreCompileDebugUnitTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:compileDebugUnitTestJavaWithJavac",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:processDebugUnitTestJavaRes",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":asr-runtime:verifyModuleBoundary",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":asr-runtime:testDebugUnitTest",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":core:compileTestKotlin",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":core:compileTestJava",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":core:processTestResources",
+      "status": "NO-SOURCE"
+    },
+    {
+      "path": ":core:testClasses",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":core:verifyModuleBoundary",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":core:test",
+      "status": "EXECUTED_OR_AGGREGATE"
+    },
+    {
+      "path": ":verifyDebug",
+      "status": "EXECUTED_OR_AGGREGATE"
+    }
+  ],
+  "task_line_count": 222,
+  "status_counts": {
+    "NO_STATUS": 185,
+    "NO-SOURCE": 22,
+    "SKIPPED": 4,
+    "UP-TO-DATE": 11
+  },
+  "actionable": 174,
+  "executed_actions": 174
+}

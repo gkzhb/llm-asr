@@ -1,0 +1,23 @@
+{
+  "task_id": "b4f62b430",
+  "launch_pid": 1432767,
+  "launch_pid_absent": true,
+  "exact_registry_once": "Unknown background task ID: b4f62b430",
+  "terminal_evidence": {
+    "label": "fixture-behavior-fixed",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/android_test_fixture_test.py"
+    ],
+    "started_utc": "2026-10-16T10:09:16.127558+00:00",
+    "finished_utc": "2026-10-16T10:10:33.886762+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fixture-input/fixture-behavior-fixed.log",
+    "log_sha256": "8a989fe8c9ab84d761614694eb0e2e2fb3cbe88d3faa3124c78cc9310b76eeee"
+  },
+  "notification_gap": "After resume to consume original chain, disk has complete execution/exit0/full log and original PID absent while ledger still pending; one exact registry recovery returned unknown. No automatic terminal notification visible; do not fabricate it or rerun."
+}

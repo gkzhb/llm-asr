@@ -1,0 +1,36 @@
+{
+  "workers": [
+    {
+      "pid": 1453874,
+      "start": "79734476",
+      "state": "S",
+      "pgid": 1453873,
+      "sid": 1453870
+    },
+    {
+      "pid": 1453875,
+      "start": "79734476",
+      "state": "R",
+      "pgid": 1453873,
+      "sid": 1453870
+    }
+  ],
+  "live_before_cleanup": [],
+  "tree_exists": true,
+  "records": [
+    {
+      "phase": "javac-timeout",
+      "command": [
+        "bash",
+        "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+        "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/tree-cr_43u84/classes",
+        "",
+        "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/tree-cr_43u84/Probe.java"
+      ],
+      "exit": 124,
+      "timeout": true,
+      "log": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/actual-run.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

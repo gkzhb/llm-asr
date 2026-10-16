@@ -1,0 +1,3 @@
+PASS actual collector deleted tracked Java excluded; untracked Kotlin included
+PASS actual collector four roots/configs/fixture source byte identities; generated/private/symlink exclusion; missing required config fails
+PASS current project collector matches expected maintained Git+untracked source inventory: 74

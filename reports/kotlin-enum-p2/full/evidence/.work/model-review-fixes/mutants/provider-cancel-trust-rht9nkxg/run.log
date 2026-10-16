@@ -1,0 +1,5 @@
+Exception in thread "main" java.util.concurrent.CancellationException: Private account alice@example.test Confidential
+	at ModelProviderBoundaryTest.providerFailure(ModelProviderBoundaryTest.java:19)
+	at ModelProviderBoundaryTest.lambda$main$0(ModelProviderBoundaryTest.java:37)
+	at org.llmasr.minimal.model.ModelProviderBoundary.call(ModelProviderBoundary.java:15)
+	at ModelProviderBoundaryTest.main(ModelProviderBoundaryTest.java:37)

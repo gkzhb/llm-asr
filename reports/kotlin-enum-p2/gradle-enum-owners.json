@@ -1,0 +1,8 @@
+{
+  "RuntimeLogSource": {
+    "core/build/classes/kotlin/main/org/llmasr/minimal/diagnostics/RuntimeLogSource.class": "bea9a5f530c3f138b5bc6344bd3dcbf29bdeb37faee1fc0c1946c7184788fdf5"
+  },
+  "RuntimeLogEventKind": {
+    "core/build/classes/kotlin/main/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.class": "91fe77f5f0c8a8f5c543b8a1726e0c3fef55d350875d22586dd69421fb7711ac"
+  }
+}

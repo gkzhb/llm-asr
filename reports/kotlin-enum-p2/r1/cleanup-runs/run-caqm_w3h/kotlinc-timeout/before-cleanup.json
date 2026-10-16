@@ -1,0 +1,34 @@
+{
+  "workers": [
+    {
+      "pid": 1361908,
+      "start": "78663043",
+      "state": "R",
+      "pgid": 1361904
+    },
+    {
+      "pid": 1361909,
+      "start": "78663046",
+      "state": "R",
+      "pgid": 1361904
+    }
+  ],
+  "live_before_cleanup": [],
+  "tree_exists": true,
+  "records": [
+    {
+      "phase": "kotlinc-timeout",
+      "command": [
+        "bash",
+        "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+        "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/cleanup/run-caqm_w3h/kotlinc-timeout/owned-tree-d0qeip_z/classes",
+        "",
+        "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/cleanup/run-caqm_w3h/kotlinc-timeout/owned-tree-d0qeip_z/Probe.kt"
+      ],
+      "exit": 124,
+      "timeout": true,
+      "log": ".work/p2enum-build/r1-fix/cleanup/run-caqm_w3h/kotlinc-timeout/actual-run.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

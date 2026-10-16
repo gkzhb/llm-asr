@@ -1,0 +1,18 @@
+{
+  "label": "retention-red",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "python3",
+    "tests/runtime_log_enum_cleanup_test.py",
+    "--case",
+    "unconfirmed-kotlinc"
+  ],
+  "started_utc": "2026-10-16T08:27:31.052452+00:00",
+  "finished_utc": "2026-10-16T08:27:34.061746+00:00",
+  "exit": 1,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-local/retention-red.log",
+  "log_sha256": "c453a76cb26d2d3cb4cac302dfc42136e9a2660a0850fd2357db7bd8bc9d86d3"
+}

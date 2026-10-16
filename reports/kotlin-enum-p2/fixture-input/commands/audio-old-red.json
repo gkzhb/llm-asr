@@ -1,0 +1,17 @@
+{
+  "label": "audio-old-red",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "python3",
+    "tests/android_test_fixture_inputs_test.py",
+    "--audio-only"
+  ],
+  "started_utc": "2026-10-16T10:06:17.753543+00:00",
+  "finished_utc": "2026-10-16T10:06:19.864038+00:00",
+  "exit": 1,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fixture-input/audio-old-red.log",
+  "log_sha256": "d08edad9acff040b8b46b43388b2cb5f0cbc93544dcf793a315f00069d3000fe"
+}

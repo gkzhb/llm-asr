@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="RuntimeRegressionJUnitTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-16T10:45:35" hostname="zhb-nixos" time="0.073">
+  <properties/>
+  <testcase name="inferenceAdapterAndJniConstruction" classname="RuntimeRegressionJUnitTest" time="0.073"/>
+  <system-out><![CDATA[PASS App/IME validated result, task IDs, phase timestamps and monotonic durations
+PASS one shared adapter, lazy JNI construction and per-request APP/IME listeners
+PASS real ModelAccess cold SHA/cached readiness and verify failure
+PASS readiness/library/native IOException RuntimeException LinkageError VM error identity
+PASS null and malformed native protocol never request success
+PASS load/inference failure boundaries
+PASS missing duplicate out-of-order stale wrong-thread callbacks fail telemetry closed
+PASS listener/store Throwable isolation and persisted/exported privacy
+PASS production RequestRunner owner/cleanup and external commit boundary
+PASS actual App/IME wiring and real JNI source contracts (not JNI runtime)
+PASS InferenceAdapterTest: 10 groups, 354 checks
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

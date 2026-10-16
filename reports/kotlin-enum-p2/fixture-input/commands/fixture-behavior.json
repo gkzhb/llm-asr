@@ -1,0 +1,16 @@
+{
+  "label": "fixture-behavior",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "python3",
+    "tests/android_test_fixture_test.py"
+  ],
+  "started_utc": "2026-10-16T09:58:58.968991+00:00",
+  "finished_utc": "2026-10-16T09:59:12.341495+00:00",
+  "exit": 1,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fixture-input/fixture-behavior.log",
+  "log_sha256": "dd53a39596ed353082b4e0f7b535c7070339e1e0cd38fee85d817c8f75e9d62b"
+}

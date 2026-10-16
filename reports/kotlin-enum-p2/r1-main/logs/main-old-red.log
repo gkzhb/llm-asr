@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 314, in <module>
+    main()
+    ~~~~^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 309, in main
+    case(evidence, tool, fault)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 245, in case
+    require(observed['source_sha256_after'] == observed['mutant_sha256'], 'R1 main restored live mutant source after StopUnconfirmed')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 26, in require
+    raise RuntimeError(message)
+RuntimeError: R1 main restored live mutant source after StopUnconfirmed

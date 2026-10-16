@@ -1,0 +1,28 @@
+{
+  "core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml": {
+    "sha256": "88414d9b276f8ddf143a92f1a207ec19662d5614dbad5e9c2cdd61aadce27845",
+    "attributes": {
+      "name": "CoreRegressionJUnitTest",
+      "tests": "34",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T07:46:47",
+      "hostname": "zhb-nixos",
+      "time": "2.024"
+    }
+  },
+  "android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml": {
+    "sha256": "3a3b697a918003bee2756f06c6368adb7926cb57bf148da152319ea2e020500c",
+    "attributes": {
+      "name": "RuntimeRegressionJUnitTest",
+      "tests": "1",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T07:46:44",
+      "hostname": "zhb-nixos",
+      "time": "0.077"
+    }
+  }
+}

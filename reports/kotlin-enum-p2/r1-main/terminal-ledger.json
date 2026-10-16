@@ -1,0 +1,47 @@
+{
+  "tasks": [
+    {
+      "id": "bd1b39b8f",
+      "terminal": "failed",
+      "exit": 1,
+      "kind": "actual-main target red; notification consumed"
+    },
+    {
+      "id": "b976771dc",
+      "terminal": "failed",
+      "exit": 1,
+      "kind": "development test-finally ESRCH; not target red; notification consumed"
+    },
+    {
+      "id": "b4c07aa4c",
+      "terminal": "completed",
+      "exit": 0,
+      "kind": "ordinary13case; notification consumed"
+    },
+    {
+      "id": "b138d56ff",
+      "terminal": "completed",
+      "exit": 0,
+      "kind": "optimized13case; notification consumed"
+    },
+    {
+      "id": "b99fa3745",
+      "terminal": "completed",
+      "exit": 0,
+      "kind": "real production mutants; notification consumed"
+    },
+    {
+      "id": "b444d17fb",
+      "terminal": "completed",
+      "exit": 0,
+      "kind": "complete-host actual automatic notification consumed; full log read; no recovery needed"
+    },
+    {
+      "id": "be4f97c69",
+      "terminal": "completed",
+      "exit": 0,
+      "kind": "format offline automatic terminal consumed;1action/pipeline0-0-1"
+    }
+  ],
+  "pending": []
+}

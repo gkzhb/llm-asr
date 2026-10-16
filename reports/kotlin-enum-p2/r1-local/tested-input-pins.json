@@ -1,0 +1,42 @@
+[
+  {
+    "path": "tests/runtime_log_enum_mutant_test.py",
+    "bytes": 10955,
+    "sha256": "fa09a1178c2f3df20a1d3a7500b9520f25d7f860c9037ed71bf03b9c52f09e7b"
+  },
+  {
+    "path": "tests/runtime_log_enum_cleanup_test.py",
+    "bytes": 12657,
+    "sha256": "d0db0057f21e102be87b6338d79b8a1859595990fc2f1450e09b67d36457cb1f"
+  },
+  {
+    "path": "scripts/compile-jvm-sources.sh",
+    "bytes": 1668,
+    "sha256": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf"
+  },
+  {
+    "path": "scripts/test-minimal-apk.sh",
+    "bytes": 5493,
+    "sha256": "4fad1e43870fa77b7de50c307fa200f8c4356faaa9e8e632dce66fc183aa9c86"
+  },
+  {
+    "path": "tests/KotlinMigrationTest.java",
+    "bytes": 17039,
+    "sha256": "d1c8fd3093f1a64d256be8456c82dc326502ecd0c16265a4568945586046b8e7"
+  },
+  {
+    "path": "gradle/baseline-inputs.json",
+    "bytes": 10667,
+    "sha256": "c93e1a772d5a606fc05c27fc3c8a30f0931475debaee6ab6c1caa0b2b19de4f4"
+  },
+  {
+    "path": "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt",
+    "bytes": 238,
+    "sha256": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3"
+  },
+  {
+    "path": "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.kt",
+    "bytes": 1179,
+    "sha256": "10712467665202aa6fd6b9deae4223f945051bd69b63d649c317bad00a477390"
+  }
+]

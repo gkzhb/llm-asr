@@ -1,0 +1,15 @@
+package: name='org.llmasr.minimal.testhost' versionCode='1' versionName='p1b-testhost' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+minSdkVersion:'29'
+targetSdkVersion:'35'
+application: label='P1-B test host' icon=''
+application-debuggable
+uses-library:'android.test.runner'
+uses-library:'android.test.base'
+feature-group: label=''
+  uses-feature: name='android.hardware.faketouch'
+  uses-implied-feature: name='android.hardware.faketouch' reason='default feature for all apps'
+other-activities
+supports-screens: 'small' 'normal' 'large' 'xlarge'
+supports-any-density: 'true'
+locales:
+densities:

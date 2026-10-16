@@ -1,0 +1,7 @@
+{
+  "only_mutant_restoration_block_changed": true,
+  "before_sha256": "fa09a1178c2f3df20a1d3a7500b9520f25d7f860c9037ed71bf03b9c52f09e7b",
+  "after_sha256": "aff8d184177ac526c1261469b0c9fdd89decc61975d451ef04ef5df54ea65c16",
+  "before_block": "                    try:\n                        target.write_bytes(original.replace(old, new, 1))\n                        mutated_sha = sha(target)\n                        require(mutated_sha != original_sha, 'mutant did not change production bytes ' + name)\n                        compile_and_run(name + '-red', name + ' inventory/order mismatch')\n                    finally:\n                        target.write_bytes(original)\n",
+  "after_block": "                    restore_source = True\n                    try:\n                        target.write_bytes(original.replace(old, new, 1))\n                        mutated_sha = sha(target)\n                        require(mutated_sha != original_sha, 'mutant did not change production bytes ' + name)\n                        compile_and_run(name + '-red', name + ' inventory/order mismatch')\n                    except StopUnconfirmed:\n                        # The compiler may still read this exact mutant input.\n                        restore_source = False\n                        raise\n                    finally:\n                        if restore_source:\n                            target.write_bytes(original)\n"
+}

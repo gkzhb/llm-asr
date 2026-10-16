@@ -1,0 +1,146 @@
+/home/zhb/gitrep/llm-asr/android/app/build/controlled-inputs/AndroidManifest.xml:6: Warning: Attribute enableOnBackInvokedCallback is only used in API level 33 and higher (current min is 29) [UnusedAttribute]
+        <activity android:name=".MainActivity" android:launchMode="singleTask" android:exported="true" android:configChanges="orientation|screenSize|keyboardHidden" android:windowSoftInputMode="adjustResize" android:enableOnBackInvokedCallback="true">
+                                                                                                                                                                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zhb/gitrep/llm-asr/android/app/build/controlled-inputs/AndroidManifest.xml:12: Warning: Attribute enableOnBackInvokedCallback is only used in API level 33 and higher (current min is 29) [UnusedAttribute]
+        <activity android:name=".ModelManagementActivity" android:exported="false" android:windowSoftInputMode="adjustResize" android:enableOnBackInvokedCallback="true" />
+                                                                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zhb/gitrep/llm-asr/android/app/build/controlled-inputs/AndroidManifest.xml:13: Warning: Attribute enableOnBackInvokedCallback is only used in API level 33 and higher (current min is 29) [UnusedAttribute]
+        <activity android:name=".LogsActivity" android:exported="false" android:windowSoftInputMode="adjustResize" android:enableOnBackInvokedCallback="true" />
+                                                                                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedAttribute":
+   This check finds attributes set in XML files that were introduced in a
+   version newer than the oldest version targeted by your application (with
+   the minSdkVersion attribute).
+
+   This is not an error; the application will simply ignore the attribute.
+   However, if the attribute is important to the appearance or functionality
+   of your application, you should consider finding an alternative way to
+   achieve the same result with only available attributes, and then you can
+   optionally create a copy of the layout in a layout-vNN folder which will be
+   used on API NN or higher where you can take advantage of the newer
+   attribute.
+
+   Note: This check does not only apply to attributes. For example, some tags
+   can be unused too, such as the new <tag> element in layouts introduced in
+   API 21.
+
+/home/zhb/gitrep/llm-asr/android/app/build.gradle.kts:143: Warning: A newer version of org.jetbrains:annotations than 13.0 is available: 23.0.0 [GradleDependency]
+    implementation("org.jetbrains:annotations:13.0")
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "GradleDependency":
+   This detector looks for usages of libraries where the version you are using
+   is not the current stable release. Using older versions is fine, and there
+   are cases where you deliberately want to stick with an older version.
+   However, you may simply not be aware that a more recent version is
+   available, and that is what this lint check helps find.
+
+/home/zhb/gitrep/llm-asr/android/app/build.gradle.kts:60: Warning: Missing x86_64 ABI support for ChromeOS [ChromeOsAbiSupport]
+        ndk { abiFilters += "arm64-v8a" }
+                            ~~~~~~~~~~~
+
+   Explanation for issues of type "ChromeOsAbiSupport":
+   To properly support ChromeOS, your Android application should have an x86
+   and/or x86_64 binary as part of the build configuration. To fix the issue,
+   ensure your files are properly optimized for ARM; the binary translator
+   will then ensure compatibility with x86. Alternatively, add an abiSplit for
+   x86 within your build.gradle file and create the required x86
+   dependencies.
+
+   https://developer.android.com/ndk/guides/abis
+
+/home/zhb/gitrep/llm-asr/android/app/build/controlled-inputs/AndroidManifest.xml:5: Warning: The attribute android:allowBackup is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute android:dataExtractionRules specifying an @xml resource which configures cloud backups and device transfers on Android 12 and higher. [DataExtractionRules]
+    <application android:label="Qwen ASR Minimal" android:theme="@android:style/Theme.Material.Light.NoActionBar" android:allowBackup="false" android:supportsRtl="true">
+                                                                                                                                       ~~~~~
+
+   Explanation for issues of type "DataExtractionRules":
+   Before Android 12, the attributes android:allowBackup and
+   android:fullBackupContent were used to configure all forms of backup,
+   including cloud backups, device-to-device transfers and adb backup.
+
+   In Android 12 and higher, these attributes have been deprecated and will
+   only apply to cloud backups. You should instead use the attribute
+   android:dataExtractionRules, specifying an @xml resource that configures
+   which files to back up, for cloud backups and for device-to-device
+   transfers, separately. If your minSdkVersion supports older versions,
+   you'll still want to specify an android:fullBackupContent resource if the
+   default behavior is not right for your app.
+
+   https://developer.android.com/about/versions/12/backup-restore#xml-changes
+   https://goo.gle/DataExtractionRules
+
+/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/AppGraph.java:69: Warning: Consider also using StorageManager#getAllocatableBytes and allocateBytes which will consider clearable cached data [UsableSpace]
+            ModelRepository.SpaceProvider space = () -> opCtx.filesDir().getUsableSpace();
+                                                                         ~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UsableSpace":
+   When you need to allocate disk space for large files, consider using the
+   new allocateBytes(FileDescriptor, long) API, which will automatically clear
+   cached files belonging to other apps (as needed) to meet your request.
+
+   When deciding if the device has enough disk space to hold your new data,
+   call getAllocatableBytes(UUID) instead of using getUsableSpace(), since the
+   former will consider any cached data that the system is willing to clear on
+   your behalf.
+
+   Note that these methods require API level 26. If your app is running on
+   older devices, you will probably need to use both APIs, conditionally
+   switching on Build.VERSION.SDK_INT. Lint only looks in the same compilation
+   unit to see if you are already using both APIs, so if it warns even though
+   you are already using the new API, consider moving the calls to the same
+   file or suppressing the warning.
+
+/home/zhb/gitrep/llm-asr/android/app/build/controlled-inputs/AndroidManifest.xml:5: Warning: Should explicitly set android:icon, there is no default [MissingApplicationIcon]
+    <application android:label="Qwen ASR Minimal" android:theme="@android:style/Theme.Material.Light.NoActionBar" android:allowBackup="false" android:supportsRtl="true">
+     ~~~~~~~~~~~
+
+   Explanation for issues of type "MissingApplicationIcon":
+   You should set an icon for the application as whole because there is no
+   default. This attribute must be set as a reference to a drawable resource
+   containing the image (for example @drawable/icon).
+
+   https://developer.android.com/studio/publish/preparing#publishing-configure
+
+/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/LogsActivity.java:106: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        summary.setText("最近 "+snapshot.size()+" / 1000 条；本进程淘汰 "+graph.runtimeLogStore().droppedCount()
+                        ^
+/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/LogsActivity.java:106: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        summary.setText("最近 "+snapshot.size()+" / 1000 条；本进程淘汰 "+graph.runtimeLogStore().droppedCount()
+                                              ~~~~~~~~~~~~~~~~~~
+/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/MainActivity.java:40: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                failure.setText("初始化失败：" + ioe.getMessage() + "\n请重新安装完整APK后重试。");
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/MainActivity.java:52: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        TextView title=new TextView(this); title.setText("Qwen3-ASR · 最小离线原型"); title.setTextSize(22); root.addView(title);
+                                                         ~~~~~~~~~~~~~~~~~~~~
+/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/MainActivity.java:100: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        Button exportBtn = new Button(this); exportBtn.setText("导出 TXT"); exportBtn.setAllCaps(false);
+                                                               ~~~~~~~~
+/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/MainActivity.java:114: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        exportNote.setText("TXT保存快照：清除结果可撤销尚未开始的写入；已经开始的外部写入不能撤回。云存储提供方可能联网同步。"); root.addView(exportNote);
+                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/ModelManagementActivity.java:175: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        readiness.setText("模型："+ModelUiText.readiness(r.state)+"\nepoch "+r.epoch);
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/ModelManagementActivity.java:177: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        storage.setText("预期模型："+ModelUiText.bytes(expected)+"\n内部正式文件："+ModelUiText.bytes(s.installedBytes)
+                        ^
+/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/ModelManagementActivity.java:182: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        task.setText(ModelUiText.task(s)+(s.inspectBusy ? "\n正在刷新内部概况（最近操作保留）" : "")
+                     ^
+
+   Explanation for issues of type "SetTextI18n":
+   When calling TextView#setText
+   * Never call Number#toString() to format numbers; it will not handle
+   fraction separators and locale-specific digits properly. Consider using
+   String#format with proper format specifications (%d or %f) instead.
+   * Do not pass a string literal (e.g. "Hello") to display text. Hardcoded
+   text can not be properly translated to other languages. Consider using
+   Android resource strings instead.
+   * Do not build messages by concatenating text chunks. Such messages can not
+   be properly translated.
+
+   https://developer.android.com/guide/topics/resources/localization.html
+
+0 errors, 17 warnings

@@ -1,0 +1,12 @@
+PASS cleanup kotlinc/term actual-driver/wrapper nonzero; no live workers before tree deletion
+PASS cleanup kotlinc/hup actual-driver/wrapper nonzero; no live workers before tree deletion
+PASS cleanup kotlinc/timeout actual-driver/wrapper nonzero; no live workers before tree deletion
+PASS cleanup javac/term actual-driver/wrapper nonzero; no live workers before tree deletion
+PASS cleanup javac/hup actual-driver/wrapper nonzero; no live workers before tree deletion
+PASS cleanup javac/timeout actual-driver/wrapper nonzero; no live workers before tree deletion
+PASS cleanup java/term actual-driver/wrapper nonzero; no live workers before tree deletion
+PASS cleanup java/hup actual-driver/wrapper nonzero; no live workers before tree deletion
+PASS cleanup java/timeout actual-driver/wrapper nonzero; no live workers before tree deletion
+PASS cleanup kotlinc/deadline actual-driver/wrapper nonzero; no live workers before tree deletion
+PASS cleanup javac/deadline actual-driver/wrapper nonzero; no live workers before tree deletion
+PASS enum cleanup lifecycle cases=11 evidence=.work/p2enum-build/r1-fix/cleanup/run-caqm_w3h

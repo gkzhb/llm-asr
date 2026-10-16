@@ -1,0 +1,54 @@
+{
+  "tasks": [
+    {
+      "id": "b47c59792",
+      "name": "R1 retention target red",
+      "terminal": "failed",
+      "exit": 1,
+      "basis": "automatic durable notification consumed; precise retention target red"
+    },
+    {
+      "id": "b597a44f9",
+      "name": "R1 SID cleanup green",
+      "terminal": "failed",
+      "exit": 1,
+      "basis": "automatic durable notification consumed; development fixture deadline failure, not behavioral red"
+    },
+    {
+      "id": "bb5f43d67",
+      "name": "R1 final cleanup matrix",
+      "terminal": "completed",
+      "exit": 0,
+      "basis": "automatic durable notification consumed"
+    },
+    {
+      "id": "b162207f5",
+      "name": "R1 optimized cleanup matrix",
+      "terminal": "completed",
+      "exit": 0,
+      "basis": "automatic durable notification consumed"
+    },
+    {
+      "id": "b65d6d6fd",
+      "name": "R1 production enum mutants",
+      "terminal": "completed",
+      "exit": 0,
+      "basis": "automatic durable notification consumed"
+    },
+    {
+      "id": "be9979346",
+      "name": "R1 complete host gates",
+      "terminal": "recovered disk terminal",
+      "exit": 0,
+      "basis": "one exact registry lookup unknown after concrete parent contradiction; original launch PID absent, full execution/exit/log SHA consumed, host-terminal-recovery.json; not fabricated notification"
+    },
+    {
+      "id": "b140453af",
+      "name": "R1 offline fast format",
+      "terminal": "completed",
+      "exit": 0,
+      "basis": "automatic durable notification consumed; separate fast/format executions exit0"
+    }
+  ],
+  "pending_tasks": []
+}

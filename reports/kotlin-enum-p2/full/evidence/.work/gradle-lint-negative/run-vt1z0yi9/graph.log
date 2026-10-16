@@ -1,0 +1,54 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+
+> Configure project :
+WARNING: The option setting 'android.aapt2FromMavenOverride=/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2' is experimental.
+WARNING: The option setting 'android.experimental.lint.heapSize=768m' is experimental.
+:preBuild SKIPPED
+:preDebugBuild SKIPPED
+:mergeDebugJniLibFolders SKIPPED
+:mergeDebugNativeLibs SKIPPED
+:stripDebugDebugSymbols SKIPPED
+:copyDebugJniLibsProjectAndLocalJars SKIPPED
+:generateDebugResValues SKIPPED
+:generateDebugResources SKIPPED
+:packageDebugResources SKIPPED
+:parseDebugLocalResources SKIPPED
+:generateDebugRFile SKIPPED
+:extractDebugAnnotations SKIPPED
+:extractDeepLinksForAarDebug SKIPPED
+:javaPreCompileDebug SKIPPED
+:compileDebugJavaWithJavac SKIPPED
+:mergeDebugGeneratedProguardFiles SKIPPED
+:mergeDebugConsumerProguardFiles SKIPPED
+:mergeDebugShaders SKIPPED
+:compileDebugShaders SKIPPED
+:generateDebugAssets SKIPPED
+:packageDebugAssets SKIPPED
+:prepareDebugArtProfile SKIPPED
+:prepareLintJarForPublish SKIPPED
+:processDebugManifest SKIPPED
+:processDebugJavaRes SKIPPED
+:mergeDebugJavaResource SKIPPED
+:syncDebugLibJars SKIPPED
+:writeDebugAarMetadata SKIPPED
+:bundleDebugLocalLintAar SKIPPED
+:bundleLibRuntimeToJarDebug SKIPPED
+:createFullJarDebug SKIPPED
+:preDebugAndroidTestBuild SKIPPED
+:generateDebugAndroidTestResValues SKIPPED
+:writeDebugLintModelMetadata SKIPPED
+:generateDebugAndroidTestLintModel SKIPPED
+:extractProguardFiles SKIPPED
+:generateDebugLintReportModel SKIPPED
+:preDebugUnitTestBuild SKIPPED
+:generateDebugUnitTestLintModel SKIPPED
+:verifyLintToolIdentity SKIPPED
+:lintAnalyzeDebug SKIPPED
+:lintAnalyzeDebugAndroidTest SKIPPED
+:lintAnalyzeDebugUnitTest SKIPPED
+:lintReportDebug SKIPPED
+:lintDebug SKIPPED
+:copyDebugLintReports SKIPPED
+
+BUILD SUCCESSFUL in 5s

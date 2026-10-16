@@ -1,0 +1,1 @@
+["./gradlew", "lintFilesProbe", "--offline", "--rerun-tasks", "--no-daemon", "--console=plain", "--dependency-verification", "strict", "-Pandroid.aapt2FromMavenOverride=/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2", "-Pp1LintClasspathMutation=missing"]

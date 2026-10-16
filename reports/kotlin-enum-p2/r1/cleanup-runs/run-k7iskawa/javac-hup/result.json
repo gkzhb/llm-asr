@@ -1,0 +1,40 @@
+{
+  "tool": "javac",
+  "fault": "hup",
+  "exit": 129,
+  "worker_identities": [
+    {
+      "pid": 1364392,
+      "start": "78685423",
+      "state": "R",
+      "pgid": 1364388
+    },
+    {
+      "pid": 1364393,
+      "start": "78685426",
+      "state": "R",
+      "pgid": 1364388
+    }
+  ],
+  "observation": {
+    "workers": [
+      {
+        "pid": 1364392,
+        "start": "78685423",
+        "state": "R",
+        "pgid": 1364388
+      },
+      {
+        "pid": 1364393,
+        "start": "78685426",
+        "state": "R",
+        "pgid": 1364388
+      }
+    ],
+    "live_before_cleanup": [],
+    "tree_exists": true,
+    "records": []
+  },
+  "no_live_worker_after_exit": true,
+  "scaled_inner_deadline": false
+}

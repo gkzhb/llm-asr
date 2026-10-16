@@ -1,0 +1,19 @@
+{
+  "pass_": true,
+  "domains": {
+    "build": 212,
+    "module": 10,
+    "native": 80,
+    "source_owners": 63
+  },
+  "candidates": 513,
+  "review6_bound_files": 14,
+  "backups": 1237,
+  "native_objects": 578,
+  "excluded_lstat_only": 26,
+  "historical_samples": 16,
+  "inherited_historical_files": 2561,
+  "old_isolated_evidence": 783,
+  "cleaned_paths": [],
+  "preserved_cache": "Nix/Gradle/native objects unchanged; no clean or output strategy override"
+}

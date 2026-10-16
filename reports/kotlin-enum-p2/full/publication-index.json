@@ -1,0 +1,1497 @@
+{
+  "files": {
+    "full-execution.json": {
+      "source": ".work/p2enum-full/full-execution.json",
+      "sha256": "5a314e1ec3a8b63e1625892c449fb7d936aea1bf924f870f5188a53933f020b2",
+      "bytes": 2910
+    },
+    "full-launch.json": {
+      "source": ".work/p2enum-full/full-launch.json",
+      "sha256": "382f76df71a4c739f56b821efb8734464783ffe2fe790934b654b215cc3d8a7a",
+      "bytes": 2714
+    },
+    "full.log": {
+      "source": ".work/p2enum-full/full.log",
+      "sha256": "8ae5048bfe5ad66eaa36e5b1c20181752b99acff62f714f69e70ac076233a0c5",
+      "bytes": 44470
+    },
+    "preflight-summary.json": {
+      "source": ".work/p2enum-full/preflight-summary.json",
+      "sha256": "46fe4f1b9de88355ab33b192f3a346a4bc12bb5d3c854810bb4a3259bce8b497",
+      "bytes": 460
+    },
+    "preflight-terminal.json": {
+      "source": ".work/p2enum-full/preflight-terminal.json",
+      "sha256": "4764fc9fb08530fcc35a2a4ed5ec6fcbe4811e206fdcf30a774355124fb1c293",
+      "bytes": 455
+    },
+    "preflight-syntax-failure.log": {
+      "source": ".work/p2enum-full/preflight-syntax-failure.log",
+      "sha256": "29ef96551b11240abf6dd4506adf5cae936781c68eaf50ea4dd188bb30b86dde",
+      "bytes": 300
+    },
+    "preflight.log": {
+      "source": ".work/p2enum-full/preflight.log",
+      "sha256": "45b65bb669c87816bc7ad54c0fe32eacfaec7326558d0fbd0dd7ac6963afde36",
+      "bytes": 133
+    },
+    "inputs-before.json": {
+      "source": ".work/p2enum-full/inputs-before.json",
+      "sha256": "75beddeb62484350f00092e11ceb704d9fb806daa2fa5eaf0e3447389809b80e",
+      "bytes": 45824
+    },
+    "inputs-after.json": {
+      "source": ".work/p2enum-full/inputs-after.json",
+      "sha256": "75beddeb62484350f00092e11ceb704d9fb806daa2fa5eaf0e3447389809b80e",
+      "bytes": 45824
+    },
+    "tools-before.json": {
+      "source": ".work/p2enum-full/tools-before.json",
+      "sha256": "8969873656dd3b762eb7f709c17532a0dc3150ad8505552aa9b414d026714e6b",
+      "bytes": 5697
+    },
+    "tasks.json": {
+      "source": ".work/p2enum-full/tasks.json",
+      "sha256": "37e19b907efd3f863fa23d561aa49baeaad0417466387fbf76b164c4079db23c",
+      "bytes": 23683
+    },
+    "junit.json": {
+      "source": ".work/p2enum-full/junit.json",
+      "sha256": "9e4dab3117fe1f45573debb4ff6753861f5fdccb5aa91dcd475e50f27d6ba261",
+      "bytes": 5673
+    },
+    "lint.json": {
+      "source": ".work/p2enum-full/lint.json",
+      "sha256": "b9d413eb587ba07d8b4b2c0c63ae63a46c8ae6bfcd56afe09c2349664877efa0",
+      "bytes": 53603
+    },
+    "lint-fixture.json": {
+      "source": ".work/p2enum-full/lint-fixture.json",
+      "sha256": "30c140f6500de883672f760570fb949e932f0dbb0a6ba993fc86aa330ad6620f",
+      "bytes": 20129
+    },
+    "checksum.json": {
+      "source": ".work/p2enum-full/checksum.json",
+      "sha256": "a79288522b573613a2128aecbf6ca72e94f3496dd4c526e5469dab60a56d03fa",
+      "bytes": 4659
+    },
+    "behavior.json": {
+      "source": ".work/p2enum-full/behavior.json",
+      "sha256": "dc29ee9451a2ea8233a29dc8cf50c653b56c9c1892cc552ebad8f3af5bb572af",
+      "bytes": 22437
+    },
+    "packages.json": {
+      "source": ".work/p2enum-full/packages.json",
+      "sha256": "0eb70120e7970bbe6d6a3ac324b3fcb4f35b80569616ff5d0d6031cef9945842",
+      "bytes": 16600
+    },
+    "native-delta.json": {
+      "source": ".work/p2enum-full/native-delta.json",
+      "sha256": "2e5ea9f4a4577092dba449a027cf0c1473ec76b6084e4e48dd36bd23125287c7",
+      "bytes": 2534
+    },
+    "host-gates.json": {
+      "source": ".work/p2enum-full/host-gates.json",
+      "sha256": "3d5553004c0cd007308af1da7b820dfba35f92fb717211454e19dee05ba807c7",
+      "bytes": 27750
+    },
+    "summary.json": {
+      "source": ".work/p2enum-full/summary.json",
+      "sha256": "2ac5d1e5dccbae7ea1da65e98858bd59ff240bc8ed5f9127171f46f899e6a4fe",
+      "bytes": 5223
+    },
+    "enum-evidence.json": {
+      "source": ".work/p2enum-full/enum-evidence.json",
+      "sha256": "844b9e1b79332af7c42c5a7370be3bbc9610f0dbfa8612a57b0996d84ec17d2f",
+      "bytes": 76486
+    },
+    "supplement-checks.json": {
+      "source": ".work/p2enum-full/supplement-checks.json",
+      "sha256": "4c15a4e8279596bb12653d8e03d49f19f446c02ee544a28ca9eb47a619aedd58",
+      "bytes": 8046
+    },
+    "protection-after.json": {
+      "source": ".work/p2enum-full/protection-after.json",
+      "sha256": "f19f98391f733fc9d916187a3a6d061aa668d856c1f24e549f3e2809a7b2212a",
+      "bytes": 21144
+    },
+    "background-ledger.json": {
+      "source": ".work/p2enum-full/background-ledger.json",
+      "sha256": "0e0cbd7155db3568a6a61c11134f6fd6999989bee863e693c66d2edbd482b056",
+      "bytes": 1144
+    },
+    "notification-recovery.json": {
+      "source": ".work/p2enum-full/notification-recovery.json",
+      "sha256": "4956b14d6fa5c903dff801a576be6d9bf5d7d08a34fa0dbdb725a5409315721b",
+      "bytes": 4772
+    },
+    "resources-summary.json": {
+      "source": ".work/p2enum-full/resources-summary.json",
+      "sha256": "13c477039c36c83de258a5db719c55ad4632ae907db09c76d80b254574e9c970",
+      "bytes": 28810
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/build.gradle": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/build.gradle",
+      "sha256": "229439ac21ddb5e016fdbe0d86c9a277f28e3658d4423a2cb6ec6482f847824a",
+      "bytes": 2027
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.command.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.command.json",
+      "sha256": "cae183de2d6a64b9d32a28a54b09f4bbc2eea81d078cf37eab2068697d2b6eef",
+      "bytes": 306
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.execution.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.execution.json",
+      "sha256": "128bb971deb29f7a84f180f54d4d4eb42d48a275df03af857b7b713b97a1ed60",
+      "bytes": 419
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.log",
+      "sha256": "6b94a38375c620c87e4b71d8a0763b825ad090a94a00465407536b713cf78623",
+      "bytes": 1777
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.command.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.command.json",
+      "sha256": "835e7d99cdc3d198ad6d4ae34e5f7a5039914045cff9eef263281c4cf18ee645",
+      "bytes": 308
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.execution.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.execution.json",
+      "sha256": "2d683dbc37973ad14fd490e264dc0758ba267e967a2a3fc13fa400c12311dea5",
+      "bytes": 421
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.log",
+      "sha256": "d00bbb9c856885590cfcbddb33653455b6a28ac24d9bbf8332a106f8da3d01a5",
+      "bytes": 1779
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.command.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.command.json",
+      "sha256": "0f0ab770c77218e86cf87bdac0e9329b91f86d9ef629b04c8af3a5788c045d21",
+      "bytes": 312
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.execution.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.execution.json",
+      "sha256": "0ca82a1592e1c1c63138b682090d91f4e2de484459b9be3db3ee73b3debef2cc",
+      "bytes": 425
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.log",
+      "sha256": "010d8a03a24f27748dd1a018274eac488a7213e72091d61a06ba8ed48328c9f3",
+      "bytes": 1783
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.command.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.command.json",
+      "sha256": "36806e170cdb16826938c9e97141b59c01b19c76a6b2b7f2ab9648528db1a80f",
+      "bytes": 271
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.execution.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.execution.json",
+      "sha256": "7be644742d01cdb7e22281960dbf0d5f66e35c4fe836a4df5d46517bf08ef7f3",
+      "bytes": 384
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.log",
+      "sha256": "b92c4453e0d1b8f3a9b6160e38d58c42052eb3678db0dcc4e9b6d6dffd085ab1",
+      "bytes": 1359
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradle/lint-tool-identity.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradle/lint-tool-identity.json",
+      "sha256": "54043cd3b63f494ab0182d6122b152680c5e54041b3f4998e428e41a970c3fbf",
+      "bytes": 97700
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradle/verification-metadata.xml": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradle/verification-metadata.xml",
+      "sha256": "c2ad4bfd7e430df923faa14e4cb3a309b4c1e73bc3adad937d7a15ff55fc219a",
+      "bytes": 114376
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradle/verify-lint-tools.gradle": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradle/verify-lint-tools.gradle",
+      "sha256": "a4001f33fd3692166c9510cf402fe357678e3157e977828a76b170c3fda1faef",
+      "bytes": 7564
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradle.properties": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradle.properties",
+      "sha256": "af8d3250ca93159b7ffb890371b86625a9ebee028c7cf6a1f0dfc6b22e2e347e",
+      "bytes": 464
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/graph.command.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/graph.command.json",
+      "sha256": "621a30a1b2a497489150029f1f03310d372d5b7f204d2273fde9a33beb5acc7b",
+      "bytes": 279
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/graph.execution.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/graph.execution.json",
+      "sha256": "6f06b9d2b6ebb62b40598cf8336a589d4a1ca973d3affbff971293bb25bc92a7",
+      "bytes": 392
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/graph.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/graph.log",
+      "sha256": "5f4a18c609a91dcd4d66bfc3d6bef50f5595bde71c5aa639abf26f6a0410bd71",
+      "bytes": 2069
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.command.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.command.json",
+      "sha256": "9b9adb330c0cb55aab4bcaeeffd8073ef94b60ca38036f2d23b60eec07c6eb9d",
+      "bytes": 266
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.execution.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.execution.json",
+      "sha256": "39134571196e986545bb19506a1bec27ea9b99c08c5f98527d754d77bb1dd590",
+      "bytes": 379
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.log",
+      "sha256": "bb1600811d6111502c6f303ff6b6e50ad088c44b290f1c9e08db8f48abe86b36",
+      "bytes": 3178
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.source.java": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.source.java",
+      "sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+      "bytes": 249
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.xml": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.xml",
+      "sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+      "bytes": 86
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.command.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.command.json",
+      "sha256": "9b9adb330c0cb55aab4bcaeeffd8073ef94b60ca38036f2d23b60eec07c6eb9d",
+      "bytes": 266
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.execution.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.execution.json",
+      "sha256": "ef654ea02faeb1911d9c35166fd51774607dc911a2ba48ec014eb7c3e27073dc",
+      "bytes": 379
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.log",
+      "sha256": "aef92617a5647223c158867a55961cb1a96efbfd7dfb831858dfd2f48b07d097",
+      "bytes": 3178
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.source.java": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.source.java",
+      "sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+      "bytes": 249
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.xml": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.xml",
+      "sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+      "bytes": 86
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.command.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.command.json",
+      "sha256": "9b9adb330c0cb55aab4bcaeeffd8073ef94b60ca38036f2d23b60eec07c6eb9d",
+      "bytes": 266
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.execution.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.execution.json",
+      "sha256": "72442af6a805c40a356fca23737ab4fbf17b83358789069a1e514593cdc6a879",
+      "bytes": 379
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.log",
+      "sha256": "8064235960b899fc8752ef954c238ea089e0db9f786ebfb178545e032f389f38",
+      "bytes": 2490
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.command.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.command.json",
+      "sha256": "9b9adb330c0cb55aab4bcaeeffd8073ef94b60ca38036f2d23b60eec07c6eb9d",
+      "bytes": 266
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.execution.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.execution.json",
+      "sha256": "5c0adee488f0d0e0c6895d11010867c8eb28513ebde3d41fec40ca9d9b824fca",
+      "bytes": 379
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.log",
+      "sha256": "3c2cda8115a471081c2e99ca8a5daac7e75aef96983d8b4e4cae8d7cbbccdbde",
+      "bytes": 2486
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/phases.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/phases.json",
+      "sha256": "4611cabcc69dc427305d539bf945b79c541a2a9212bb56dbc6653b35262768b9",
+      "bytes": 921
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.command.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.command.json",
+      "sha256": "9b9adb330c0cb55aab4bcaeeffd8073ef94b60ca38036f2d23b60eec07c6eb9d",
+      "bytes": 266
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.execution.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.execution.json",
+      "sha256": "f545fa995dc0813a00b3e02a5562f8139d9d2047c20fdbb5875b7a30dcac1ce7",
+      "bytes": 379
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.log",
+      "sha256": "4a0e69cd0c2aa52880deda0babad59d4485fe3fbf9692319b3c3c3533e48ee47",
+      "bytes": 7945
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.source.java": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.source.java",
+      "sha256": "7f0cfde58056dadfe1643c9b6e4331103c71044822d1a70032e591da06f96509",
+      "bytes": 185
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.xml": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.xml",
+      "sha256": "b99c488ead11746caf24f8b9b149002181139256ee410545af4f836810117af6",
+      "bytes": 2048
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/result.json": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/result.json",
+      "sha256": "158ed00da644e2f9c23b769a8dceda4d4f57b4ddb7677d4ed96b3f490fc3771c",
+      "bytes": 2246
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/settings.gradle": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/settings.gradle",
+      "sha256": "7159cb8c44421044df49aaff4510df600ffd0834be6042f86225271589d7148e",
+      "bytes": 402
+    },
+    "evidence/.work/gradle-lint-negative/run-vt1z0yi9/src/main/java/org/llmasr/lintfixture/LintProbe.java": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/src/main/java/org/llmasr/lintfixture/LintProbe.java",
+      "sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+      "bytes": 249
+    },
+    "evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/css/uikit.min.css": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/css/uikit.min.css",
+      "sha256": "a79e1826064b21b29d0fd082a24bf09c699947769052f261adb2e26ee74df6c9",
+      "bytes": 263360
+    },
+    "evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/dependency-verification-report.html": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/dependency-verification-report.html",
+      "sha256": "df59a2c78498a5f195a3de7ce0ce308536cb8d58ce6949fbc3004dfd85294508",
+      "bytes": 8991
+    },
+    "evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/js/uikit-icons.min.js": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/js/uikit-icons.min.js",
+      "sha256": "cba9581e8b30e447939362364f099b8d04ab9cbba6d4e858a6a5178c120674ac",
+      "bytes": 63985
+    },
+    "evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/js/uikit.min.js": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/js/uikit.min.js",
+      "sha256": "0aea16c9ee8edf6403bcf4bfd8b45fb1b419c4d60cf9052fdbac2a178900db5e",
+      "bytes": 133590
+    },
+    "evidence/.work/gradle-m1/dependency-negative-ucX7Lt/gradle/verification-metadata.xml": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/gradle/verification-metadata.xml",
+      "sha256": "c2ad4bfd7e430df923faa14e4cb3a309b4c1e73bc3adad937d7a15ff55fc219a",
+      "bytes": 114376
+    },
+    "evidence/.work/gradle-m1/dependency-negative-ucX7Lt/original.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/original.log",
+      "sha256": "73a455f3c5ecf881d5cf349b04022609db1ba088b680eb39237be87a1a98a2aa",
+      "bytes": 1132
+    },
+    "evidence/.work/gradle-m1/dependency-negative-ucX7Lt/rejection.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/rejection.log",
+      "sha256": "5d018458acbf060127d5775dbcc0aa5c9323732f9102f2360ea6176f150b6e3c",
+      "bytes": 1705
+    },
+    "evidence/.work/gradle-m1/dependency-negative-ucX7Lt/restored.log": {
+      "source": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/restored.log",
+      "sha256": "73a455f3c5ecf881d5cf349b04022609db1ba088b680eb39237be87a1a98a2aa",
+      "bytes": 1132
+    },
+    "evidence/.work/model-review-fixes/mutants/provider-cancel-trust-rht9nkxg/ModelProviderBoundary.java": {
+      "source": ".work/p2enum-full/evidence/.work/model-review-fixes/mutants/provider-cancel-trust-rht9nkxg/ModelProviderBoundary.java",
+      "sha256": "d042958fc26265935d75a73fe695761f485cb101a62d41535a86ce105da39130",
+      "bytes": 1786
+    },
+    "evidence/.work/model-review-fixes/mutants/provider-cancel-trust-rht9nkxg/compile.log": {
+      "source": ".work/p2enum-full/evidence/.work/model-review-fixes/mutants/provider-cancel-trust-rht9nkxg/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/model-review-fixes/mutants/provider-cancel-trust-rht9nkxg/run.log": {
+      "source": ".work/p2enum-full/evidence/.work/model-review-fixes/mutants/provider-cancel-trust-rht9nkxg/run.log",
+      "sha256": "6ae3fb18b26a7a745a3b864cd9d0a6745e166fe2a35f45a8cf8545f94528aef7",
+      "bytes": 436
+    },
+    "evidence/.work/model-review-fixes/mutants/readiness-monitor-86obakwx/ModelReadiness.java": {
+      "source": ".work/p2enum-full/evidence/.work/model-review-fixes/mutants/readiness-monitor-86obakwx/ModelReadiness.java",
+      "sha256": "869b77a0466b359c0ed2a4a5c36e7d7e7192b498854b67f68aa03aa49f789793",
+      "bytes": 6524
+    },
+    "evidence/.work/model-review-fixes/mutants/readiness-monitor-86obakwx/compile.log": {
+      "source": ".work/p2enum-full/evidence/.work/model-review-fixes/mutants/readiness-monitor-86obakwx/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/model-review-fixes/mutants/readiness-monitor-86obakwx/run.log": {
+      "source": ".work/p2enum-full/evidence/.work/model-review-fixes/mutants/readiness-monitor-86obakwx/run.log",
+      "sha256": "79bbc890dda0f1fe6da146aca0fb8b3837ab544ddb736cab862b2f255bd99b0b",
+      "bytes": 499
+    },
+    "evidence/.work/model-review-fixes/mutants/terminal-cancel-9m8gdaud/ModelOperationControl.java": {
+      "source": ".work/p2enum-full/evidence/.work/model-review-fixes/mutants/terminal-cancel-9m8gdaud/ModelOperationControl.java",
+      "sha256": "b89ba7ce7aecba0756b3b1459558654397b82994172ffdb2ef8e33bbcfbe676c",
+      "bytes": 3286
+    },
+    "evidence/.work/model-review-fixes/mutants/terminal-cancel-9m8gdaud/compile.log": {
+      "source": ".work/p2enum-full/evidence/.work/model-review-fixes/mutants/terminal-cancel-9m8gdaud/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/model-review-fixes/mutants/terminal-cancel-9m8gdaud/run.log": {
+      "source": ".work/p2enum-full/evidence/.work/model-review-fixes/mutants/terminal-cancel-9m8gdaud/run.log",
+      "sha256": "67acd5ec146ce4f8edb9ed28a09a25ac288df6987583546b2ab57e85c5270ecc",
+      "bytes": 277
+    },
+    "evidence/.work/p1b-build/2b/behavior-yj6aaz3a/green-final.log": {
+      "source": ".work/p2enum-full/evidence/.work/p1b-build/2b/behavior-yj6aaz3a/green-final.log",
+      "sha256": "a42da8ce68fd07e7bf5b6fc6a554479b6ae9281561dab1d613ae280233dc66fc",
+      "bytes": 3115
+    },
+    "evidence/.work/p1b-build/2b/behavior-yj6aaz3a/green-final.xml": {
+      "source": ".work/p2enum-full/evidence/.work/p1b-build/2b/behavior-yj6aaz3a/green-final.xml",
+      "sha256": "2b95fec310b6c9d2e6c12b773278de66edc66afd0ef57a1e56358988788d6ba7",
+      "bytes": 1154
+    },
+    "evidence/.work/p1b-build/2b/behavior-yj6aaz3a/green-initial.log": {
+      "source": ".work/p2enum-full/evidence/.work/p1b-build/2b/behavior-yj6aaz3a/green-initial.log",
+      "sha256": "28ea226b056b97e3adf434be808af733bf2a811c93dd1c65237f11dcc0697c7e",
+      "bytes": 3115
+    },
+    "evidence/.work/p1b-build/2b/behavior-yj6aaz3a/green-initial.xml": {
+      "source": ".work/p2enum-full/evidence/.work/p1b-build/2b/behavior-yj6aaz3a/green-initial.xml",
+      "sha256": "4ceb899756fbdafa492b65a504f87794b1328db5cae6b29886a05ea82aef32fe",
+      "bytes": 1152
+    },
+    "evidence/.work/p1b-build/2b/behavior-yj6aaz3a/green-payload-restored.log": {
+      "source": ".work/p2enum-full/evidence/.work/p1b-build/2b/behavior-yj6aaz3a/green-payload-restored.log",
+      "sha256": "a42da8ce68fd07e7bf5b6fc6a554479b6ae9281561dab1d613ae280233dc66fc",
+      "bytes": 3115
+    },
+    "evidence/.work/p1b-build/2b/behavior-yj6aaz3a/green-payload-restored.xml": {
+      "source": ".work/p2enum-full/evidence/.work/p1b-build/2b/behavior-yj6aaz3a/green-payload-restored.xml",
+      "sha256": "0e34d6ec03b1b2d828dba1772f0a9f4c0af6c7dc13953f92ec74aaec7590b3f6",
+      "bytes": 1154
+    },
+    "evidence/.work/p1b-build/2b/behavior-yj6aaz3a/red-cleanup.log": {
+      "source": ".work/p2enum-full/evidence/.work/p1b-build/2b/behavior-yj6aaz3a/red-cleanup.log",
+      "sha256": "01935aebc0d22707f808a6bfde6261d502d25b2e7ff9d7fdc907396c80088d54",
+      "bytes": 3539
+    },
+    "evidence/.work/p1b-build/2b/behavior-yj6aaz3a/red-cleanup.xml": {
+      "source": ".work/p2enum-full/evidence/.work/p1b-build/2b/behavior-yj6aaz3a/red-cleanup.xml",
+      "sha256": "35f0344fb828c23dfdf7594f5d8ebd12b9a85e6a7ada29f7a5b34bcc21532704",
+      "bytes": 5530
+    },
+    "evidence/.work/p1b-build/2b/behavior-yj6aaz3a/red-payload.log": {
+      "source": ".work/p2enum-full/evidence/.work/p1b-build/2b/behavior-yj6aaz3a/red-payload.log",
+      "sha256": "313840cbd5ad0843d6142c83ea95d313f58ff46181e896e492ba1077ca0dd349",
+      "bytes": 3538
+    },
+    "evidence/.work/p1b-build/2b/behavior-yj6aaz3a/red-payload.xml": {
+      "source": ".work/p2enum-full/evidence/.work/p1b-build/2b/behavior-yj6aaz3a/red-payload.xml",
+      "sha256": "9499994f3644008b672d31d12a87d295e0ffb26b499fec72fd80413507244aad",
+      "bytes": 5519
+    },
+    "evidence/.work/p1b-build/2b/behavior-yj6aaz3a/result.json": {
+      "source": ".work/p2enum-full/evidence/.work/p1b-build/2b/behavior-yj6aaz3a/result.json",
+      "sha256": "0cac3b47d1f9bec2e9057b1c96d08fb0f4998e025d978a671b9d5559cb032d59",
+      "bytes": 18522
+    },
+    "evidence/android/app/build/controlled-inputs/AndroidManifest.xml": {
+      "source": ".work/p2enum-full/evidence/android/app/build/controlled-inputs/AndroidManifest.xml",
+      "sha256": "73a9195e26f7ec64131eb2ab284a2453111a54ab08a063324b11a61cbff3ef72",
+      "bytes": 1676
+    },
+    "evidence/android/app/build/intermediates/merged_manifest/debug/processDebugMainManifest/AndroidManifest.xml": {
+      "source": ".work/p2enum-full/evidence/android/app/build/intermediates/merged_manifest/debug/processDebugMainManifest/AndroidManifest.xml",
+      "sha256": "757a61c41b21a5c8b3a76cb13f599a2ffe81b8470c909523d0de13ae2f897f28",
+      "bytes": 2318
+    },
+    "evidence/android/app/build/intermediates/merged_manifests/debug/processDebugManifest/AndroidManifest.xml": {
+      "source": ".work/p2enum-full/evidence/android/app/build/intermediates/merged_manifests/debug/processDebugManifest/AndroidManifest.xml",
+      "sha256": "757a61c41b21a5c8b3a76cb13f599a2ffe81b8470c909523d0de13ae2f897f28",
+      "bytes": 2318
+    },
+    "evidence/android/app/build/intermediates/packaged_manifests/debug/processDebugManifestForPackage/AndroidManifest.xml": {
+      "source": ".work/p2enum-full/evidence/android/app/build/intermediates/packaged_manifests/debug/processDebugManifestForPackage/AndroidManifest.xml",
+      "sha256": "757a61c41b21a5c8b3a76cb13f599a2ffe81b8470c909523d0de13ae2f897f28",
+      "bytes": 2318
+    },
+    "evidence/android/app/build/lint-identity/lintAnalyzeDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/lint-identity/lintAnalyzeDebug.json",
+      "sha256": "b1a9bbcc534159fa2f10d27f825a1248d3e7d985041562a2ceaf02dd03566533",
+      "bytes": 159492
+    },
+    "evidence/android/app/build/lint-identity/lintAnalyzeDebugAndroidTest.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/lint-identity/lintAnalyzeDebugAndroidTest.json",
+      "sha256": "811b3ef8774a7b4f2b707ab56f8fe37adceb8ce99d3e240609992fb072517a31",
+      "bytes": 159503
+    },
+    "evidence/android/app/build/lint-identity/lintAnalyzeDebugUnitTest.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/lint-identity/lintAnalyzeDebugUnitTest.json",
+      "sha256": "1a1c06e3edd74448d235cdfd313a321c973e158f44ad5e51bb3c78149d1129e6",
+      "bytes": 159500
+    },
+    "evidence/android/app/build/lint-identity/lintFixDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/lint-identity/lintFixDebug.json",
+      "sha256": "f9b1901b55ec646b50283f7d47e7681c6ab049e7b7853584443ad5df007a8dce",
+      "bytes": 159484
+    },
+    "evidence/android/app/build/lint-identity/lintReportDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/lint-identity/lintReportDebug.json",
+      "sha256": "e6c54c39bdb4a70ec08526d81114db6488c5f6d4b567f58e37ef6da9eeaff6bc",
+      "bytes": 159491
+    },
+    "evidence/android/app/build/lint-identity/updateLintBaselineDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/lint-identity/updateLintBaselineDebug.json",
+      "sha256": "3998669e1aa6554cbdc02472000cb83e90d7b028372cff62832b5d0e2824c6cb",
+      "bytes": 159495
+    },
+    "evidence/android/app/build/native-debug/CMakeCache.txt": {
+      "source": ".work/p2enum-full/evidence/android/app/build/native-debug/CMakeCache.txt",
+      "sha256": "eb8d1b172e99e317f4a33f7e18e121ae88903eb2921e223147eebc321bebb9bd",
+      "bytes": 31070
+    },
+    "evidence/android/app/build/native-debug/artifact/native-link-provenance.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/native-debug/artifact/native-link-provenance.json",
+      "sha256": "56e60d23294d1998299eb738ee4c0a204023e30625c61aa0fa0573147d670263",
+      "bytes": 95950
+    },
+    "evidence/android/app/build/native-debug/artifact/verification.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/native-debug/artifact/verification.json",
+      "sha256": "63e24c0a8253dcea4bd131a4e557606e7a0e930edf58e4919e4745c8a4ea9dd5",
+      "bytes": 12687
+    },
+    "evidence/android/app/build/native-debug/qwen-objects.txt": {
+      "source": ".work/p2enum-full/evidence/android/app/build/native-debug/qwen-objects.txt",
+      "sha256": "a4296800885a3daa2477e01714a4582105c885be6e98b8ccb82a144ef4ec51c6",
+      "bytes": 85530
+    },
+    "evidence/android/app/build/outputs/apk/debug/output-metadata.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/outputs/apk/debug/output-metadata.json",
+      "sha256": "6a436665e72cca179545d50650d607f49ceaf965b7f3e76f74bdf68ff3586c8a",
+      "bytes": 406
+    },
+    "evidence/android/app/build/reports/lint-results-debug.html": {
+      "source": ".work/p2enum-full/evidence/android/app/build/reports/lint-results-debug.html",
+      "sha256": "fe1492041498e28bbdd417d4a7770d538ba3d2f33f0111dbc8be31c1e6a5e51c",
+      "bytes": 92590
+    },
+    "evidence/android/app/build/reports/lint-results-debug.txt": {
+      "source": ".work/p2enum-full/evidence/android/app/build/reports/lint-results-debug.txt",
+      "sha256": "31cffb076c79154d0aa9d5afbe0afd8768a7d8b37de08d92e2abe4f43651708e",
+      "bytes": 11794
+    },
+    "evidence/android/app/build/reports/lint-results-debug.xml": {
+      "source": ".work/p2enum-full/evidence/android/app/build/reports/lint-results-debug.xml",
+      "sha256": "6fc8964b6e020d845d6508eae2a0fd0a1403f0b655e98dc429d2ac6b9adeb62f",
+      "bytes": 25069
+    },
+    "evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/apk-report-binding.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/apk-report-binding.json",
+      "sha256": "df8e0740466dc86d31fd0913c2a41cb1bec390e18834c6e06a9d499085898698",
+      "bytes": 643
+    },
+    "evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/badging.txt": {
+      "source": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/badging.txt",
+      "sha256": "83982ff372f8511bcd93b6ef1689dfdca51dbac4772c250d9f35cbef9349519b",
+      "bytes": 891
+    },
+    "evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/build-input-sha256.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/build-input-sha256.json",
+      "sha256": "40f350d57d86f13661d3027929dab0cfdb849b4f25e0bbe2fd59d8362e924898",
+      "bytes": 24652
+    },
+    "evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/ime-method-tree.txt": {
+      "source": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/ime-method-tree.txt",
+      "sha256": "48ff1e4fbeea55c5ec3cbfb5f2373f01a8deb53b7b0b098e27cec499ee350583",
+      "bytes": 488
+    },
+    "evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/manifest-tree.txt": {
+      "source": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/manifest-tree.txt",
+      "sha256": "031b6cbade4e66174c1adc0f1e417281692b898d96ba862973184206ce16e7eb",
+      "bytes": 4867
+    },
+    "evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/native-link-provenance.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/native-link-provenance.json",
+      "sha256": "56e60d23294d1998299eb738ee4c0a204023e30625c61aa0fa0573147d670263",
+      "bytes": 95950
+    },
+    "evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/native-verification.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/native-verification.json",
+      "sha256": "63e24c0a8253dcea4bd131a4e557606e7a0e930edf58e4919e4745c8a4ea9dd5",
+      "bytes": 12687
+    },
+    "evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/permissions.txt": {
+      "source": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/permissions.txt",
+      "sha256": "d8401caa7b230ffe49ccf26c52353d6a658a558ee78f86ef434762edb4912b4f",
+      "bytes": 84
+    },
+    "evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/result.json": {
+      "source": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/result.json",
+      "sha256": "7cc51ed5fa0e297d2186270439cfec5d049692c735d2dce3fe7ff131e13febb7",
+      "bytes": 1681
+    },
+    "evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/signature.txt": {
+      "source": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/signature.txt",
+      "sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9",
+      "bytes": 955
+    },
+    "evidence/android/asr-runtime/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml",
+      "sha256": "34c49887cf2185da59e71eba7e3de2b9aa31f395cc1f22db7684159fb92455a5",
+      "bytes": 272
+    },
+    "evidence/android/asr-runtime/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml",
+      "sha256": "34c49887cf2185da59e71eba7e3de2b9aa31f395cc1f22db7684159fb92455a5",
+      "bytes": 272
+    },
+    "evidence/android/asr-runtime/build/lint-identity/lintAnalyzeDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/lintAnalyzeDebug.json",
+      "sha256": "3b50b95678a4614d2cb2689f5d269a695f34537da8baa3c5e12f18609c6f4ce3",
+      "bytes": 159500
+    },
+    "evidence/android/asr-runtime/build/lint-identity/lintAnalyzeDebugAndroidTest.json": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/lintAnalyzeDebugAndroidTest.json",
+      "sha256": "9a4fb956493d973bf02bdea7f8c944d6eeec36fc4cc6791496e73f01fda53dbf",
+      "bytes": 159511
+    },
+    "evidence/android/asr-runtime/build/lint-identity/lintAnalyzeDebugUnitTest.json": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/lintAnalyzeDebugUnitTest.json",
+      "sha256": "18aca8c06471766b869feefd7094cbef51f20b49fea547197fcdeef3469985f3",
+      "bytes": 159508
+    },
+    "evidence/android/asr-runtime/build/lint-identity/lintFixDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/lintFixDebug.json",
+      "sha256": "fbf434a94cdb506cde1814434ab986ec4ce3fc0f2afb6f2265361ceac7b62526",
+      "bytes": 159492
+    },
+    "evidence/android/asr-runtime/build/lint-identity/lintReportDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/lintReportDebug.json",
+      "sha256": "ca8d489f9c2775cc6ab0f9b896a407ee26a54008511ce9ce3b748e17aed8b4a3",
+      "bytes": 159499
+    },
+    "evidence/android/asr-runtime/build/lint-identity/lintVitalAnalyzeDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/lintVitalAnalyzeDebug.json",
+      "sha256": "43acc0b6ded6e93e8ac4f9e83d68411f4d81445f804ead632e487ba68629abe0",
+      "bytes": 159501
+    },
+    "evidence/android/asr-runtime/build/lint-identity/updateLintBaselineDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/updateLintBaselineDebug.json",
+      "sha256": "ac0139133453521c73f49756f380ae483fa7becce6531e8036c19795a919270f",
+      "bytes": 159503
+    },
+    "evidence/android/asr-runtime/build/reports/lint-results-debug.html": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/reports/lint-results-debug.html",
+      "sha256": "4335cfb11c03a274b3e6f49c240e8c8b2258ea1c11b92d6d10baa638eff7c5a2",
+      "bytes": 61932
+    },
+    "evidence/android/asr-runtime/build/reports/lint-results-debug.txt": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/reports/lint-results-debug.txt",
+      "sha256": "df2d5d3e05759af869d5d51b9e432ba8aa8ecd260ec3724aa3ace070ccaf99f0",
+      "bytes": 5455
+    },
+    "evidence/android/asr-runtime/build/reports/lint-results-debug.xml": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/reports/lint-results-debug.xml",
+      "sha256": "54f11ee95e5f86aa3dabba916fc4f5feb416c5ca86677a394b1485ecf9bc1c3d",
+      "bytes": 14689
+    },
+    "evidence/android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml": {
+      "source": ".work/p2enum-full/evidence/android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml",
+      "sha256": "6ac519d19cfd73e39c6ef7ba5c0cb038a0c878e4ab78b8be12153a97fc85ee03",
+      "bytes": 1190
+    },
+    "evidence/android/test-host/build/lint-identity/lintAnalyzeDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/test-host/build/lint-identity/lintAnalyzeDebug.json",
+      "sha256": "0b648643e884a9061c796733468873b81b60a34dcf066cb190cf8e456ab52b99",
+      "bytes": 159494
+    },
+    "evidence/android/test-host/build/lint-identity/lintAnalyzeDebugAndroidTest.json": {
+      "source": ".work/p2enum-full/evidence/android/test-host/build/lint-identity/lintAnalyzeDebugAndroidTest.json",
+      "sha256": "44e959509e5b864564faed271d293cd898c427e6073e9d1bef43fdf3c6301db8",
+      "bytes": 159505
+    },
+    "evidence/android/test-host/build/lint-identity/lintAnalyzeDebugUnitTest.json": {
+      "source": ".work/p2enum-full/evidence/android/test-host/build/lint-identity/lintAnalyzeDebugUnitTest.json",
+      "sha256": "3686af9ac0aec449a31f9fe6b231630bd5fa7c17ef61fb38ca9ff00b053a0424",
+      "bytes": 159502
+    },
+    "evidence/android/test-host/build/lint-identity/lintFixDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/test-host/build/lint-identity/lintFixDebug.json",
+      "sha256": "334161cbdbbb22b9cd24af0c6cd060c7ee70446c8f441379f8c76abad29b5bc4",
+      "bytes": 159490
+    },
+    "evidence/android/test-host/build/lint-identity/lintReportDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/test-host/build/lint-identity/lintReportDebug.json",
+      "sha256": "d83499514c7c5ae86d8a286fafcf3c0673543abfb3a6d0f2b4522164b3ad8cd5",
+      "bytes": 159493
+    },
+    "evidence/android/test-host/build/lint-identity/updateLintBaselineDebug.json": {
+      "source": ".work/p2enum-full/evidence/android/test-host/build/lint-identity/updateLintBaselineDebug.json",
+      "sha256": "a612b30373b9731f5790953bd0ded4019123e27fdea65693227c8d2f7dbd238f",
+      "bytes": 159501
+    },
+    "evidence/android/test-host/build/outputs/apk/androidTest/debug/output-metadata.json": {
+      "source": ".work/p2enum-full/evidence/android/test-host/build/outputs/apk/androidTest/debug/output-metadata.json",
+      "sha256": "d61475692d336c0ec6039fbf628d2643da9eb90a45d22f5e3e22c225dac60ab8",
+      "bytes": 440
+    },
+    "evidence/android/test-host/build/outputs/apk/debug/output-metadata.json": {
+      "source": ".work/p2enum-full/evidence/android/test-host/build/outputs/apk/debug/output-metadata.json",
+      "sha256": "343379a880059c602d4011bfe4cdeaf01ab32648d9c6cd87e07cdf321b722a1a",
+      "bytes": 424
+    },
+    "evidence/android/test-host/build/test-results/testDebugUnitTest/TEST-org.llmasr.minimal.testhost.FixtureContractTest.xml": {
+      "source": ".work/p2enum-full/evidence/android/test-host/build/test-results/testDebugUnitTest/TEST-org.llmasr.minimal.testhost.FixtureContractTest.xml",
+      "sha256": "0798d57c1755b48d24fdba6fae819193220779bee1c91819ba9bb02c8c0dacad",
+      "bytes": 1152
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-badging.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-badging.txt",
+      "sha256": "26e92f78dc50c6e1617889887112d8b6cb38989feb3a471faf94a631c76b5f65",
+      "bytes": 665
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-manifest.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-manifest.txt",
+      "sha256": "b53569ad7515a2124f14ccc92c413fdb1d143c16913b8e0b8126cccd5c29d59b",
+      "bytes": 1988
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-permissions.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-permissions.txt",
+      "sha256": "1f0603a9543901e4bdd4f73ad7237e41a485d8a38816b762c5c3f8a66e4fea10",
+      "bytes": 37
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-signature.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-signature.txt",
+      "sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9",
+      "bytes": 955
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-zipalign.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-zipalign.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-badging.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-badging.txt",
+      "sha256": "83982ff372f8511bcd93b6ef1689dfdca51dbac4772c250d9f35cbef9349519b",
+      "bytes": 891
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-manifest.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-manifest.txt",
+      "sha256": "031b6cbade4e66174c1adc0f1e417281692b898d96ba862973184206ce16e7eb",
+      "bytes": 4867
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-permissions.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-permissions.txt",
+      "sha256": "d8401caa7b230ffe49ccf26c52353d6a658a558ee78f86ef434762edb4912b4f",
+      "bytes": 84
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-signature.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-signature.txt",
+      "sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9",
+      "bytes": 955
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-zipalign.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-zipalign.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/receipt.json": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/receipt.json",
+      "sha256": "e256e435c0eae12adc7f712658a2e8d626b2cfb51e2ac7b824e6843b9735c0ef",
+      "bytes": 218766
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-badging.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-badging.txt",
+      "sha256": "b667f8b27da83ede5ec432a784a7a53c968d343e76d3b693e928395059eed436",
+      "bytes": 626
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-manifest.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-manifest.txt",
+      "sha256": "e0fe21064ad94cbe1e92a2343f0cf693990b60865293aeb562e32d59365cb6f2",
+      "bytes": 2082
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-permissions.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-permissions.txt",
+      "sha256": "02201047c25c1e19b6c97f250280e3525ff1d97ef887499fb20bb6915d90f04d",
+      "bytes": 42
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-signature.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-signature.txt",
+      "sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9",
+      "bytes": 955
+    },
+    "evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-zipalign.txt": {
+      "source": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-zipalign.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml": {
+      "source": ".work/p2enum-full/evidence/core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml",
+      "sha256": "eb51fa41d343bd77fe665d11de0ba7636b10b93a04679cc29f400b11b0fd7371",
+      "bytes": 6514
+    },
+    "evidence/.work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogEventKind-red-compile.log": {
+      "source": ".work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogEventKind-red-compile.log",
+      "sha256": "413fcc2fe9f977f1b269126913257b3c8b870f1fceb734bbec95907ec0cce983",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogEventKind-red-run.log": {
+      "source": ".work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogEventKind-red-run.log",
+      "sha256": "040da57191b40a8cf2e4fd628c9bb8fefc0de068837134dfbe3d0676736bdc4e",
+      "bytes": 349
+    },
+    "evidence/.work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogEventKind-restored-compile.log": {
+      "source": ".work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogEventKind-restored-compile.log",
+      "sha256": "413fcc2fe9f977f1b269126913257b3c8b870f1fceb734bbec95907ec0cce983",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogEventKind-restored-run.log": {
+      "source": ".work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogEventKind-restored-run.log",
+      "sha256": "3cc34046a13672662400b4973b7ce6190627bfd154b68cc50d8a52ed0708f45c",
+      "bytes": 137
+    },
+    "evidence/.work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogSource-red-compile.log": {
+      "source": ".work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogSource-red-compile.log",
+      "sha256": "413fcc2fe9f977f1b269126913257b3c8b870f1fceb734bbec95907ec0cce983",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogSource-red-run.log": {
+      "source": ".work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogSource-red-run.log",
+      "sha256": "0a3cc58561c7c492f4c6869819f7f0afc58a27a81c185948351a246c235ad74c",
+      "bytes": 346
+    },
+    "evidence/.work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogSource-restored-compile.log": {
+      "source": ".work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogSource-restored-compile.log",
+      "sha256": "413fcc2fe9f977f1b269126913257b3c8b870f1fceb734bbec95907ec0cce983",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogSource-restored-run.log": {
+      "source": ".work/p2enum-build/mutants/run-gb4z2l6r/RuntimeLogSource-restored-run.log",
+      "sha256": "3cc34046a13672662400b4973b7ce6190627bfd154b68cc50d8a52ed0708f45c",
+      "bytes": 137
+    },
+    "evidence/.work/p2enum-build/mutants/run-gb4z2l6r/green0-compile.log": {
+      "source": ".work/p2enum-build/mutants/run-gb4z2l6r/green0-compile.log",
+      "sha256": "413fcc2fe9f977f1b269126913257b3c8b870f1fceb734bbec95907ec0cce983",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/mutants/run-gb4z2l6r/green0-run.log": {
+      "source": ".work/p2enum-build/mutants/run-gb4z2l6r/green0-run.log",
+      "sha256": "3cc34046a13672662400b4973b7ce6190627bfd154b68cc50d8a52ed0708f45c",
+      "bytes": 137
+    },
+    "evidence/.work/p2enum-build/mutants/run-gb4z2l6r/result.json": {
+      "source": ".work/p2enum-build/mutants/run-gb4z2l6r/result.json",
+      "sha256": "1260a7e418019d161cf9c5257d66c02cde905874c2e2036067a8829cf6e3e47b",
+      "bytes": 53914
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/inputs.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/inputs.json",
+      "sha256": "d027f2843b740f1991302db9ca5c6a07ad99b33cd58fd8c1061bcb3d50f827b2",
+      "bytes": 330
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/actual-run.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/actual-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/after-scope.json",
+      "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+      "bytes": 23
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/before-cleanup.json",
+      "sha256": "a88ebc7e6bc75a5726ad6b0338477463b1d746e242a35d820cf53057e34480a8",
+      "bytes": 343
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/ready.json",
+      "sha256": "11fad6f7ea7612b837b65ee93e49456d5cfaa48bef1534dd10009e5220fba8d2",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/reclaim-identities.json",
+      "sha256": "2a053ce835dae8eb1fb2d9820f2df7d14f73e1cd90e209c1ed4b217428a953ae",
+      "bytes": 227
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/result.json",
+      "sha256": "881ecf7ab1f01f4c8c8b67fb031f55800cd8178820abdb78a8bc3c53d5b971a7",
+      "bytes": 796
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/tree.json",
+      "sha256": "3bc3b05be6685bed5ab5a0c77a2a9a9c832e2015ba893da557af41dc90a3247f",
+      "bytes": 97
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-hup/worker.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/actual-run.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/actual-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/after-scope.json",
+      "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+      "bytes": 23
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/before-cleanup.json",
+      "sha256": "91cd15fbd7f6df677137da2135455799da50cfc3209aed7ef6f6c9a6ecc0e38d",
+      "bytes": 343
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/ready.json",
+      "sha256": "d9d7dcfa83dcbf01c8fbff3c2a9c45eac5a4cbf8a735b16ae973755206fcc9af",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/reclaim-identities.json",
+      "sha256": "62d7a31e58e09ebd7fc8c0b7262d199a7ad52f21ad9bf2f570f4ae38f7242c53",
+      "bytes": 227
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/result.json",
+      "sha256": "d6afec6556bdcb808c2a8569c43165bd6fccdbb8d9628327629078346be75d35",
+      "bytes": 797
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/tree.json",
+      "sha256": "181df375c7743894cce379d3974601473b0e6c3de06c68826842d85012366476",
+      "bytes": 98
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-term/worker.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/actual-run.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/actual-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/after-scope.json",
+      "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+      "bytes": 23
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/before-cleanup.json",
+      "sha256": "d023b1eb7148d330d90a7a6a620365ea4ad2c86aaf7e68b7fe6c907c2b39397b",
+      "bytes": 743
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/ready.json",
+      "sha256": "48b97e2b0cd92680fe218fca98c7eb4ddcb96acddc2be97124005dab043ba764",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/reclaim-identities.json",
+      "sha256": "57d09f9c88913c9942b1d935de16b315869319f4eda06ef21508b0b189808b5a",
+      "bytes": 227
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/result.json",
+      "sha256": "b250e76a4a8dd65d31c531c229957c7278b9e0992f3c11b3944e8f01cdfe3720",
+      "bytes": 1220
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/tree.json",
+      "sha256": "00725f68d1cfe9bb92e965625646f22d4ba41c431640244c7391bd371a3b8d24",
+      "bytes": 101
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/worker.log",
+      "sha256": "6eb404331a3394f5825c2fe0b9d15385bf3c2846de0275d2f45a60aca14e9769",
+      "bytes": 1260
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/actual-run.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/actual-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/after-scope.json",
+      "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+      "bytes": 23
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/before-cleanup.json",
+      "sha256": "cbf65095311310a52f447b40e11b5dbf475b4b11e7895175b0fd481d6d1b438d",
+      "bytes": 982
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/ready.json",
+      "sha256": "87a80a2c5920c19badf843a12db7ad07e84de075a53868fba1f2592651b65fd1",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/reclaim-identities.json",
+      "sha256": "2e87a6d9ef6ccb7bbf1a5eeb1915a14f06d686faf929a3ba43ddcdbfa41a1286",
+      "bytes": 451
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/result.json",
+      "sha256": "af23f6e8c16c4e84dbbcdd47402cf239a14e2e3a309e3cadee8f0e23d4b5771c",
+      "bytes": 1470
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/timeout-args.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/timeout-args.json",
+      "sha256": "e7f56549d86dbf531ed9f3f4932c801ccb10c896705c228d67d851c7d319bf1d",
+      "bytes": 655
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/tree.json",
+      "sha256": "6c071a2583b245e45f3a5f4c7ee25b33854e1e3cdabe420693bd3d076f334fb9",
+      "bytes": 103
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/worker.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/actual-run.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/actual-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/after-scope.json",
+      "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+      "bytes": 23
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/before-cleanup.json",
+      "sha256": "1661c591c91720f42de723e35e003afb6318d831e2db0c8a33ba823a75f3a2ef",
+      "bytes": 343
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/ready.json",
+      "sha256": "8ec30607297dc728a5dcbab7a5a23c6f9629ad3876e1d23068723001849ca223",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/reclaim-identities.json",
+      "sha256": "e761c9675123d06a6476835dfdef10dba1a7de4c73955b35b3dc19747f9feaf9",
+      "bytes": 451
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/result.json",
+      "sha256": "34577ecc17edf56be7d812a24c05fc253d84cba2609d907f7e6120b3a03c90f5",
+      "bytes": 797
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/tree.json",
+      "sha256": "32584cedef1f3fe6a62f649419d56148521c91aefeb344cd4b5747478d764cf2",
+      "bytes": 98
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-hup/worker.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/actual-run.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/actual-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/after-scope.json",
+      "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+      "bytes": 23
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/before-cleanup.json",
+      "sha256": "0cb701e6d941e04851144f6303a547dcd83f320e93a8d510ae2b6b5be7e95768",
+      "bytes": 343
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/ready.json",
+      "sha256": "d44827e68dec4793efee98db10992d73b7cc9197d8981a439252b4e8e9906fbd",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/reclaim-identities.json",
+      "sha256": "cf02ab803f7b7398526602dbb6691bf9c2b97bfe1c7ef1a592eeb320f2cf5fe6",
+      "bytes": 451
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/result.json",
+      "sha256": "ad8e458fc0a9a199f0307d3f37c9cec35b1b2fbd0fc55086be416a54f1425bf5",
+      "bytes": 798
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/tree.json",
+      "sha256": "583ad1f4f46944c0537e83bff4e56fd41636f46b9892d03a1de40745322fc368",
+      "bytes": 99
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-term/worker.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/actual-run.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/actual-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/after-scope.json",
+      "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+      "bytes": 23
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/before-cleanup.json",
+      "sha256": "f063f9eed2d187d4d6475c065703edc36d7c0bc3958eea1b387163498329fef0",
+      "bytes": 977
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/ready.json",
+      "sha256": "664aab940ad4973811738afd90d503977c05c47bfce42fcc55858bc33842e93a",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/reclaim-identities.json",
+      "sha256": "e4bc14bfb2c1f0c95100707cd845f7cf910cfc8ad91f376588915d5475b9a0a9",
+      "bytes": 451
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/result.json",
+      "sha256": "317d1dfd27dd475065a17361930e40900cede22e1c216c9b27e8dde9c3c62568",
+      "bytes": 1463
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/tree.json",
+      "sha256": "fe01421223dae516cb31cac8553a3f2615b63f93b4ba241a70e0c27424a66005",
+      "bytes": 102
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-timeout/worker.log",
+      "sha256": "5ec73e1aabc6eeee6f4a9c73dd0773a4fef0729bb678806ea5d026ddb7ab37e8",
+      "bytes": 1261
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/actual-run.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/actual-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/after-scope.json",
+      "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+      "bytes": 23
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/before-cleanup.json",
+      "sha256": "939237dc976d96d9020b44c8244b40176f1c9b29df0b11408c15c2870c60d91c",
+      "bytes": 988
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/ready.json",
+      "sha256": "855b52769d8f58782278ced6d7576c7890cd2091c22f81e98f61588b32462045",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/reclaim-identities.json",
+      "sha256": "83d606160d79112c846c040ff2adc91179284cb0d734f54f84ac6b0d9de09d88",
+      "bytes": 451
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/result.json",
+      "sha256": "d3d160d57628adcf850fed97cdbf4ec1e02a854b981a0ac3466d1db3259c84ab",
+      "bytes": 1478
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/timeout-args.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/timeout-args.json",
+      "sha256": "bebf8b4d078f64d557e9d1679a75d03ea9a80cb67cdfe6a4fc1fbff4fbf9dfa6",
+      "bytes": 697
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/tree.json",
+      "sha256": "dc2c37d5bad4d0a1684d2dcec08565057015e5361aa700eeaf83912194c51180",
+      "bytes": 105
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/worker.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/actual-run.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/actual-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/after-scope.json",
+      "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+      "bytes": 23
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/before-cleanup.json",
+      "sha256": "8aaf961a43a97df2565164ca40e7246b8a38194cc07af7c3893e15e613ed7f68",
+      "bytes": 343
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/ready.json",
+      "sha256": "735c6aa82a54b7e00810b22a44f18d79947cb7c5abf06c9295d5377ac9b94877",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/reclaim-identities.json",
+      "sha256": "7092a1ccff5eb5e78ae16f71cc5800f7a496c56d363e8b8b6804203247cacc81",
+      "bytes": 451
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/result.json",
+      "sha256": "7557178f63aaeb977d4639c6dfe72ba47a9c78472b6ef523dd63e46a8144a302",
+      "bytes": 799
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/tree.json",
+      "sha256": "d483223be06c1cf1532c61d3bb61bc706971b12f671d03c73264f6ac280ebf04",
+      "bytes": 100
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-hup/worker.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/after-scope.json",
+      "sha256": "26f1e5ac5e17705367c95775b2d39d8a2037056443804b9444364fe9d9995f41",
+      "bytes": 22
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/before-cleanup.json",
+      "sha256": "2e2ce6b4535887e3dd7d23d65282304774d8c3335e4e402e85c9db25e819fb64",
+      "bytes": 597
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/main-observation.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/main-observation.json",
+      "sha256": "5b66e2969c1efab34a479928a39fa1b8f9a5fce9287bfc481ce985cb95182a47",
+      "bytes": 929
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/ready.json",
+      "sha256": "5fbff5a7fed29318485ea6ad1c59ff2f7677b6d73001ed57897a12c354e40efb",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/reclaim-identities.json",
+      "sha256": "fe8263fe93a9dd1b779d8a90a88fe0976522bbb1d92a7a717c9264d16d069f76",
+      "bytes": 451
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/result.json",
+      "sha256": "d47b66b3c60cfb8ef1bf6ab59e2a5187e8b94b25b6178c5f169a2ad845107a7b",
+      "bytes": 1093
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/tree.json",
+      "sha256": "41192c045e29dbf9ce33f500e040acca832e5b3617cb48adef2ef35d144de28c",
+      "bytes": 80
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-main-unconfirmed/worker.log",
+      "sha256": "76943a3052408d55a8e20cda16dac85ad0737eca5b17ebd080c94d2576014b62",
+      "bytes": 2628
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/actual-run.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/actual-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/after-scope.json",
+      "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+      "bytes": 23
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/before-cleanup.json",
+      "sha256": "9f70348fbcd72f1e3f27d1c63f8857a17f8bf3c1fce8b2fdfc126a64868530b7",
+      "bytes": 343
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/ready.json",
+      "sha256": "5a5add10382f2cbb67f13ff232f51e86a9601915bd196ffa6bc8bd617b667787",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/reclaim-identities.json",
+      "sha256": "fbc72ba22a2e6520c2d190adb41e2042b71a8baf3ff39513f3eb5993c25a9d7f",
+      "bytes": 451
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/result.json",
+      "sha256": "e9b4a51932bea33f9ba876588f885e76e568d712fd15a3dcf4ba6242f48a53f8",
+      "bytes": 800
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/tree.json",
+      "sha256": "e710f727933ce62c6233085945c2e1cc58d05474584cb8a420f23f5e9096ae95",
+      "bytes": 101
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-term/worker.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/actual-run.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/actual-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/after-scope.json",
+      "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+      "bytes": 23
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/before-cleanup.json",
+      "sha256": "5483540337307d596b1cdf87e6d2ac130c19b37d2c95ba66baeffa046ce0c98f",
+      "bytes": 983
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/ready.json",
+      "sha256": "9084606bf56ad29d09ce0ccf86378f1fbd525413b0a30107c2d50326e44f4dfe",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/reclaim-identities.json",
+      "sha256": "48c0f88aef601c831ad1ba4ed49eb90e09a69a29665b3c769c9d9f8e038f3501",
+      "bytes": 451
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/result.json",
+      "sha256": "92d5c2637daf91d50838a8bbc3e944874c544100f23a894a19b5c8667a059d34",
+      "bytes": 1471
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/tree.json",
+      "sha256": "9eda5009470c7737908ee6f717023220757208852b14ed936a2388e875d81f4f",
+      "bytes": 104
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-timeout/worker.log",
+      "sha256": "e5296f9c6643e9aa7c4c698d7a81f6da816f9987422b22658ada402f6a4d6bb6",
+      "bytes": 1263
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/actual-run.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/actual-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/after-scope.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/after-scope.json",
+      "sha256": "26f1e5ac5e17705367c95775b2d39d8a2037056443804b9444364fe9d9995f41",
+      "bytes": 22
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/before-cleanup.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/before-cleanup.json",
+      "sha256": "74fcb0dff0500f9a36629421ae443238b875c129454c3b462c7ddd61e2207e31",
+      "bytes": 597
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/finally.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/finally.json",
+      "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+      "bytes": 52
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/ready.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/ready.json",
+      "sha256": "c3d7516ff47d92162427178ccd52363406297a5a7a60a9744bbad02a28d1f456",
+      "bytes": 172
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/reclaim-identities.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/reclaim-identities.json",
+      "sha256": "e1d3cff5876fa3232943b263e111ee2c19eb563db40ea753a16cb4ab907cd709",
+      "bytes": 451
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/result.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/result.json",
+      "sha256": "55f8acafba8494a249928f076aa448cac34d49594fe980e58338d06ed5956a98",
+      "bytes": 1088
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/tree.json": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/tree.json",
+      "sha256": "db3d029eb33f4ce734188cc253163af692daea1b6f081182d9ccc1da8265a3a0",
+      "bytes": 108
+    },
+    "evidence/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/worker.log": {
+      "source": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/worker.log",
+      "sha256": "1433892da7bed8e95358649613ff7444c6fbb5da73a7a818e19bb02a33c1d3cc",
+      "bytes": 1831
+    }
+  },
+  "notrun": [
+    "Android runner discovery/execution and14 instrumented method behavioral red-green/sentinel",
+    "device/ADB/emulator/SAF Binder grants/InputConnection/real Activity IME Service lifecycle",
+    "device JNI/4KiB16KiB runtime/microphone/AudioRecord/private inputs/model computation",
+    "download/prepare/dependency changes/remote CI/release R8/new signing/push",
+    "stage/commit/Beads writes/delegation; ap5 not Java0 remains open"
+  ],
+  "forbidden_binary_artifacts_published": false
+}

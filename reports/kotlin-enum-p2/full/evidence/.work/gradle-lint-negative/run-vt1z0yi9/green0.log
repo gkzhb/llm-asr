@@ -1,0 +1,75 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+
+> Configure project :
+WARNING: The option setting 'android.aapt2FromMavenOverride=/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2' is experimental.
+WARNING: The option setting 'android.experimental.lint.heapSize=768m' is experimental.
+
+> Task :preBuild UP-TO-DATE
+> Task :preDebugBuild UP-TO-DATE
+> Task :mergeDebugJniLibFolders
+> Task :mergeDebugNativeLibs NO-SOURCE
+> Task :stripDebugDebugSymbols NO-SOURCE
+> Task :copyDebugJniLibsProjectAndLocalJars
+> Task :generateDebugResValues
+> Task :generateDebugResources
+> Task :packageDebugResources
+> Task :parseDebugLocalResources
+> Task :generateDebugRFile
+> Task :extractDebugAnnotations
+> Task :extractDeepLinksForAarDebug
+> Task :javaPreCompileDebug
+> Task :compileDebugJavaWithJavac
+> Task :mergeDebugGeneratedProguardFiles
+> Task :mergeDebugConsumerProguardFiles
+> Task :mergeDebugShaders
+> Task :compileDebugShaders NO-SOURCE
+> Task :generateDebugAssets UP-TO-DATE
+> Task :packageDebugAssets
+> Task :prepareDebugArtProfile
+> Task :prepareLintJarForPublish
+> Task :processDebugManifest
+> Task :processDebugJavaRes NO-SOURCE
+> Task :mergeDebugJavaResource
+> Task :syncDebugLibJars
+> Task :writeDebugAarMetadata
+> Task :bundleDebugLocalLintAar
+> Task :bundleLibRuntimeToJarDebug
+> Task :createFullJarDebug
+> Task :preDebugAndroidTestBuild UP-TO-DATE
+> Task :generateDebugAndroidTestResValues
+> Task :writeDebugLintModelMetadata
+> Task :generateDebugAndroidTestLintModel
+> Task :extractProguardFiles
+> Task :generateDebugLintReportModel
+> Task :preDebugUnitTestBuild UP-TO-DATE
+> Task :generateDebugUnitTestLintModel
+
+> Task :verifyLintToolIdentity
+LINT_IDENTITY_PASS task=:lintReportDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintAnalyzeDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintAnalyzeDebugAndroidTest phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintAnalyzeDebugUnitTest phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:updateLintBaselineDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintVitalAnalyzeDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintFixDebug phase=gate artifacts=66 edges=171
+
+> Task :lintAnalyzeDebug
+LINT_IDENTITY_PASS task=:lintAnalyzeDebug phase=consumer artifacts=66 edges=171
+
+> Task :lintAnalyzeDebugAndroidTest
+LINT_IDENTITY_PASS task=:lintAnalyzeDebugAndroidTest phase=consumer artifacts=66 edges=171
+
+> Task :lintAnalyzeDebugUnitTest
+LINT_IDENTITY_PASS task=:lintAnalyzeDebugUnitTest phase=consumer artifacts=66 edges=171
+
+> Task :lintReportDebug
+LINT_IDENTITY_PASS task=:lintReportDebug phase=consumer artifacts=66 edges=171
+
+> Task :lintDebug
+
+> Task :copyDebugLintReports
+Copying lint XML report to /home/zhb/gitrep/llm-asr/.work/gradle-lint-negative/run-vt1z0yi9/build/reports/lint-target.xml
+
+BUILD SUCCESSFUL in 23s
+37 actionable tasks: 37 executed

@@ -1,0 +1,22 @@
+{
+  "new_behavior_directory": ".work/p1b-build/2b/behavior-wouf1ujv",
+  "phase_exits": [
+    0,
+    1,
+    0,
+    1,
+    0
+  ],
+  "phase_tests": [
+    7,
+    7,
+    7,
+    7,
+    7
+  ],
+  "fixture_input_count": 94,
+  "current_source_kotlin": 12,
+  "current_source_java": 59,
+  "old_fixture_files_unchanged": 276,
+  "receipt_sha256": "5e938f17731c79cf8059fd1ecb407aa02be12ed31bf2865e07af68266679124c"
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "run": "run-6oyx3ngg",
+    "live_before_confirmation_failure": [
+      {
+        "pid": 1389738,
+        "start": "79034730",
+        "state": "S",
+        "pgid": 1389737,
+        "sid": 1389734
+      },
+      {
+        "pid": 1389739,
+        "start": "79034730",
+        "state": "R",
+        "pgid": 1389737,
+        "sid": 1389734
+      }
+    ],
+    "retained_after_production_tree_scope": true,
+    "finally": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  {
+    "run": "run-vh3nm0g_",
+    "live_before_confirmation_failure": [
+      {
+        "pid": 1390670,
+        "start": "79048571",
+        "state": "S",
+        "pgid": 1390669,
+        "sid": 1390666
+      },
+      {
+        "pid": 1390671,
+        "start": "79048572",
+        "state": "R",
+        "pgid": 1390669,
+        "sid": 1390666
+      }
+    ],
+    "retained_after_production_tree_scope": true,
+    "finally": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  }
+]

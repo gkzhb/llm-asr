@@ -1,0 +1,7 @@
+{
+  "task": "bb2c54bfc",
+  "exit": 1,
+  "cause": "placeholder command omitted executable arguments; not lifecycle red",
+  "log": ".pi/tasks/01a1437f-fd77-7189-ae24-34e9bd423ccd-1359437/bb2c54bfc.output",
+  "sha256": "7f3048f2c7b899afa84028e0f58cf9149ce326faa2c092e77fc08d61f3a7085e"
+}

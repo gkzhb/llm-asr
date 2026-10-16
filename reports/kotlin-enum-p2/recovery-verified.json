@@ -1,0 +1,25 @@
+{
+  "leaf": "p2enum-build-2",
+  "old_java_execution_verified": {
+    "label": "old-java-green",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/runtime_log_enum_mutant_test.py",
+      "--green-only"
+    ],
+    "started_utc": "2026-10-16T06:54:09.693766+00:00",
+    "finished_utc": "2026-10-16T06:54:17.654406+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/old-java-green.log",
+    "log_sha256": "e21b381d4f6cd2ebd7d7fbd64a928ccf0f0eeb1020ed9c5bfa44334d1c33c823"
+  },
+  "old_java_result_sha256": "e72c24be41652807b892422b1c774bca566140a0d5d3714a1ec87464602bec2b",
+  "old_java_compile_run_verified": true,
+  "old_java_inputs_verified": 52,
+  "excluded_verified": 26,
+  "baseline_rerun": false
+}

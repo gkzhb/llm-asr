@@ -1,0 +1,83 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+
+> Configure project :app
+WARNING: The option setting 'android.aapt2FromMavenOverride=/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2' is experimental.
+
+> Task :core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:compileKotlin
+> Task :core:compileJava
+> Task :core:processResources NO-SOURCE
+> Task :core:classes
+> Task :core:jar
+> Task :asr-runtime:preBuild UP-TO-DATE
+> Task :asr-runtime:preDebugBuild UP-TO-DATE
+> Task :asr-runtime:generateDebugResValues
+> Task :asr-runtime:generateDebugResources
+> Task :asr-runtime:packageDebugResources
+> Task :asr-runtime:parseDebugLocalResources
+> Task :asr-runtime:generateDebugRFile
+> Task :asr-runtime:javaPreCompileDebug
+> Task :asr-runtime:compileDebugJavaWithJavac
+> Task :asr-runtime:bundleLibRuntimeToJarDebug
+> Task :asr-runtime:processDebugJavaRes NO-SOURCE
+> Task :asr-runtime:bundleLibCompileToJarDebug
+> Task :test-host:preBuild UP-TO-DATE
+> Task :test-host:preDebugBuild UP-TO-DATE
+> Task :test-host:javaPreCompileDebug
+> Task :asr-runtime:compileDebugLibraryResources
+> Task :asr-runtime:writeDebugAarMetadata
+> Task :test-host:checkDebugAarMetadata
+> Task :test-host:generateDebugResValues
+> Task :test-host:mapDebugSourceSetPaths
+> Task :test-host:generateDebugResources
+> Task :test-host:mergeDebugResources
+> Task :test-host:packageDebugResources
+> Task :test-host:parseDebugLocalResources
+> Task :test-host:createDebugCompatibleScreenManifests
+> Task :asr-runtime:extractDeepLinksDebug
+> Task :asr-runtime:processDebugManifest
+> Task :test-host:extractDeepLinksDebug
+> Task :test-host:processDebugMainManifest
+> Task :test-host:processDebugManifest
+> Task :test-host:processDebugManifestForPackage
+> Task :test-host:processDebugResources
+> Task :test-host:compileDebugJavaWithJavac
+> Task :test-host:bundleDebugClassesToRuntimeJar
+> Task :test-host:bundleDebugClassesToCompileJar
+> Task :test-host:preDebugUnitTestBuild UP-TO-DATE
+> Task :test-host:javaPreCompileDebugUnitTest
+> Task :test-host:compileDebugUnitTestJavaWithJavac
+> Task :test-host:processDebugJavaRes NO-SOURCE
+> Task :test-host:processDebugUnitTestJavaRes NO-SOURCE
+
+> Task :test-host:testDebugUnitTest FAILED
+
+org.llmasr.minimal.testhost.FixtureContractTest > badBytesAreSafe PASSED
+
+org.llmasr.minimal.testhost.FixtureContractTest > enginePayloadAndOrder FAILED
+    java.lang.AssertionError at FixtureContractTest.java:7
+
+org.llmasr.minimal.testhost.FixtureContractTest > lateResultIsInvalidated PASSED
+
+org.llmasr.minimal.testhost.FixtureContractTest > singleConfirmationAndPassword PASSED
+
+org.llmasr.minimal.testhost.FixtureContractTest > cleanupRetainsOwner PASSED
+
+org.llmasr.minimal.testhost.FixtureContractTest > readinessRejectsBeforeLoad PASSED
+
+org.llmasr.minimal.testhost.FixtureContractTest > reusedBackendQueuedCancellation PASSED
+
+7 tests completed, 1 failed
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':test-host:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///tmp/nix-shell.a9eDGA/p1b-fixture-os7hun3n/android/test-host/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 14s
+36 actionable tasks: 36 executed

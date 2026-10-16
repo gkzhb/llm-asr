@@ -1,0 +1,19 @@
+{
+  "label": "fast",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "bash",
+    "scripts/verify-local.sh",
+    "fast",
+    "--offline",
+    "--rerun-tasks"
+  ],
+  "started_utc": "2026-10-16T07:07:03.329980+00:00",
+  "finished_utc": "2026-10-16T07:07:28.435513+00:00",
+  "exit": 0,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fast.log",
+  "log_sha256": "75b183eb680796686b688dece66b821463fb964a569206806ae99f397459656a"
+}

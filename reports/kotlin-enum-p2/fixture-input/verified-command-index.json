@@ -1,0 +1,134 @@
+[
+  {
+    "label": "inputs-old-red",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/android_test_fixture_inputs_test.py",
+      "--migration-only"
+    ],
+    "started_utc": "2026-10-16T09:54:18.162987+00:00",
+    "finished_utc": "2026-10-16T09:54:20.271963+00:00",
+    "exit": 1,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fixture-input/inputs-old-red.log",
+    "log_sha256": "da76088f275be5d1e16284201695409235208f4ca882b8e4c92a5a06418ac41e"
+  },
+  {
+    "label": "inputs-green",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/android_test_fixture_inputs_test.py"
+    ],
+    "started_utc": "2026-10-16T09:56:04.311156+00:00",
+    "finished_utc": "2026-10-16T09:56:06.429001+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fixture-input/inputs-green.log",
+    "log_sha256": "30beca7f515775ffe02322b8939286cdfa8f95539562cd9c51c8b410cff72ae4"
+  },
+  {
+    "label": "inputs-optimized",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "-O",
+      "tests/android_test_fixture_inputs_test.py"
+    ],
+    "started_utc": "2026-10-16T09:57:42.205956+00:00",
+    "finished_utc": "2026-10-16T09:57:44.321929+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fixture-input/inputs-optimized.log",
+    "log_sha256": "30beca7f515775ffe02322b8939286cdfa8f95539562cd9c51c8b410cff72ae4"
+  },
+  {
+    "label": "fixture-behavior",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/android_test_fixture_test.py"
+    ],
+    "started_utc": "2026-10-16T09:58:58.968991+00:00",
+    "finished_utc": "2026-10-16T09:59:12.341495+00:00",
+    "exit": 1,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fixture-input/fixture-behavior.log",
+    "log_sha256": "dd53a39596ed353082b4e0f7b535c7070339e1e0cd38fee85d817c8f75e9d62b"
+  },
+  {
+    "label": "audio-old-red",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/android_test_fixture_inputs_test.py",
+      "--audio-only"
+    ],
+    "started_utc": "2026-10-16T10:06:17.753543+00:00",
+    "finished_utc": "2026-10-16T10:06:19.864038+00:00",
+    "exit": 1,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fixture-input/audio-old-red.log",
+    "log_sha256": "d08edad9acff040b8b46b43388b2cb5f0cbc93544dcf793a315f00069d3000fe"
+  },
+  {
+    "label": "inputs-audio-green",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/android_test_fixture_inputs_test.py"
+    ],
+    "started_utc": "2026-10-16T10:07:28.107886+00:00",
+    "finished_utc": "2026-10-16T10:07:30.253042+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fixture-input/inputs-audio-green.log",
+    "log_sha256": "e5d0b304ac689c067452a4d212fa536a31bd20c8fc95c6300f23b928dfb8d03d"
+  },
+  {
+    "label": "inputs-audio-optimized",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "-O",
+      "tests/android_test_fixture_inputs_test.py"
+    ],
+    "started_utc": "2026-10-16T10:08:38.845307+00:00",
+    "finished_utc": "2026-10-16T10:08:41.017184+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fixture-input/inputs-audio-optimized.log",
+    "log_sha256": "e5d0b304ac689c067452a4d212fa536a31bd20c8fc95c6300f23b928dfb8d03d"
+  },
+  {
+    "label": "fixture-behavior-fixed",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/android_test_fixture_test.py"
+    ],
+    "started_utc": "2026-10-16T10:09:16.127558+00:00",
+    "finished_utc": "2026-10-16T10:10:33.886762+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fixture-input/fixture-behavior-fixed.log",
+    "log_sha256": "8a989fe8c9ab84d761614694eb0e2e2fb3cbe88d3faa3124c78cc9310b76eeee"
+  }
+]

@@ -1,0 +1,52 @@
+{
+  "native_input_count": 80,
+  "object_count": 578,
+  "all_MNN_objects_sha256_unchanged": true,
+  "artifact_sha256": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416",
+  "prepared_sources_report_sha256": "9fe088c58f748f4d9181029f74f5d8335f3a93e805b356763cff3ed9cb11d41b",
+  "scope": "JNI source/header/object recompile and incremental final link; not clean native rebuild",
+  "standalone_jni_object": {
+    "source": "build/jni-check/asr_jni.o",
+    "copy": ".work/p2enum-full/evidence/build/jni-check/asr_jni.o",
+    "sha256": "abf9d1ed638766f46ebd23d85eecc51d0183ca50b51d5f33f76207e872253ba6",
+    "bytes": 24344
+  },
+  "standalone_jni_header": {
+    "source": "build/jni-check/headers/org_llmasr_minimal_asr_JniNativeTranscription.h",
+    "copy": ".work/p2enum-full/evidence/build/jni-check/headers/org_llmasr_minimal_asr_JniNativeTranscription.h",
+    "sha256": "576b4077be74ae5dad94b5e833bf09c7651a9f7d6d21c1260d01cd4ec874bbd6",
+    "bytes": 1089
+  },
+  "evidence": [
+    {
+      "source": "android/app/build/native-debug/artifact/native-link-provenance.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/native-debug/artifact/native-link-provenance.json",
+      "sha256": "56e60d23294d1998299eb738ee4c0a204023e30625c61aa0fa0573147d670263",
+      "bytes": 95950
+    },
+    {
+      "source": "android/app/build/native-debug/artifact/verification.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/native-debug/artifact/verification.json",
+      "sha256": "63e24c0a8253dcea4bd131a4e557606e7a0e930edf58e4919e4745c8a4ea9dd5",
+      "bytes": 12687
+    },
+    {
+      "source": "android/app/build/native-debug/CMakeCache.txt",
+      "copy": ".work/p2enum-full/evidence/android/app/build/native-debug/CMakeCache.txt",
+      "sha256": "eb8d1b172e99e317f4a33f7e18e121ae88903eb2921e223147eebc321bebb9bd",
+      "bytes": 31070
+    },
+    {
+      "source": "android/app/build/native-debug/qwen-objects.txt",
+      "copy": ".work/p2enum-full/evidence/android/app/build/native-debug/qwen-objects.txt",
+      "sha256": "a4296800885a3daa2477e01714a4582105c885be6e98b8ccb82a144ef4ec51c6",
+      "bytes": 85530
+    },
+    {
+      "source": "android/app/build/native-debug/jni-check/headers/org_llmasr_minimal_asr_JniNativeTranscription.h",
+      "copy": ".work/p2enum-full/evidence/android/app/build/native-debug/jni-check/headers/org_llmasr_minimal_asr_JniNativeTranscription.h",
+      "sha256": "576b4077be74ae5dad94b5e833bf09c7651a9f7d6d21c1260d01cd4ec874bbd6",
+      "bytes": 1089
+    }
+  ]
+}

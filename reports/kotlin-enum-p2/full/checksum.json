@@ -1,0 +1,86 @@
+{
+  "path": ".work/gradle-m1/dependency-negative-ucX7Lt",
+  "exits": [
+    0,
+    1,
+    0
+  ],
+  "target": "com.android.tools.build:gradle:8.6.1/gradle-8.6.1.jar",
+  "expected_mutant": "0000000000000000000000000000000000000000000000000000000000000000",
+  "actual_cache_sha256": "9697733a215f2ed42e5b2fc4053484ec832eab29584ebced94d92c91090051c1",
+  "driver_launch_sha256": "06a1890c835b3fda1430d6035334a730382963bc9aa780ec5191d636a6d6668f",
+  "evidence": [
+    {
+      "source": ".work/gradle-m1/dependency-negative-ucX7Lt/original.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/original.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-m1/dependency-negative-ucX7Lt/original.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/original.log",
+      "sha256": "73a455f3c5ecf881d5cf349b04022609db1ba088b680eb39237be87a1a98a2aa",
+      "bytes": 1132
+    },
+    {
+      "source": ".work/gradle-m1/dependency-negative-ucX7Lt/rejection.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/rejection.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-m1/dependency-negative-ucX7Lt/rejection.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/rejection.log",
+      "sha256": "5d018458acbf060127d5775dbcc0aa5c9323732f9102f2360ea6176f150b6e3c",
+      "bytes": 1705
+    },
+    {
+      "source": ".work/gradle-m1/dependency-negative-ucX7Lt/restored.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/restored.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-m1/dependency-negative-ucX7Lt/restored.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/restored.log",
+      "sha256": "73a455f3c5ecf881d5cf349b04022609db1ba088b680eb39237be87a1a98a2aa",
+      "bytes": 1132
+    },
+    {
+      "source": ".work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/dependency-verification-report.html",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/dependency-verification-report.html",
+      "sha256": "df59a2c78498a5f195a3de7ce0ce308536cb8d58ce6949fbc3004dfd85294508",
+      "bytes": 8991
+    },
+    {
+      "source": ".work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/css/uikit.min.css",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/css/uikit.min.css",
+      "sha256": "a79e1826064b21b29d0fd082a24bf09c699947769052f261adb2e26ee74df6c9",
+      "bytes": 263360
+    },
+    {
+      "source": ".work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/img/gradle-logo.png",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/img/gradle-logo.png",
+      "sha256": "631c8fc0ef10dd92ef723c4422c53e12ab224f65c17a33e521121014c2571d15",
+      "bytes": 10776
+    },
+    {
+      "source": ".work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/js/uikit.min.js",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/js/uikit.min.js",
+      "sha256": "0aea16c9ee8edf6403bcf4bfd8b45fb1b419c4d60cf9052fdbac2a178900db5e",
+      "bytes": 133590
+    },
+    {
+      "source": ".work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/js/uikit-icons.min.js",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/js/uikit-icons.min.js",
+      "sha256": "cba9581e8b30e447939362364f099b8d04ab9cbba6d4e858a6a5178c120674ac",
+      "bytes": 63985
+    },
+    {
+      "source": ".work/gradle-m1/dependency-negative-ucX7Lt/gradle/verification-metadata.xml",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-m1/dependency-negative-ucX7Lt/gradle/verification-metadata.xml",
+      "sha256": "c2ad4bfd7e430df923faa14e4cb3a309b4c1e73bc3adad937d7a15ff55fc219a",
+      "bytes": 114376
+    }
+  ]
+}

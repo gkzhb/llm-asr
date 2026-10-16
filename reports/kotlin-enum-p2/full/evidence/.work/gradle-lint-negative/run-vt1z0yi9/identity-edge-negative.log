@@ -1,0 +1,65 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+
+> Configure project :
+WARNING: The option setting 'android.aapt2FromMavenOverride=/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2' is experimental.
+WARNING: The option setting 'android.experimental.lint.heapSize=768m' is experimental.
+
+> Task :preBuild UP-TO-DATE
+> Task :preDebugBuild UP-TO-DATE
+> Task :mergeDebugJniLibFolders
+> Task :mergeDebugNativeLibs NO-SOURCE
+> Task :stripDebugDebugSymbols NO-SOURCE
+> Task :copyDebugJniLibsProjectAndLocalJars
+> Task :generateDebugResValues
+> Task :generateDebugResources
+> Task :packageDebugResources
+> Task :parseDebugLocalResources
+> Task :generateDebugRFile
+> Task :extractDebugAnnotations
+> Task :extractDeepLinksForAarDebug
+> Task :javaPreCompileDebug
+> Task :compileDebugJavaWithJavac
+> Task :mergeDebugGeneratedProguardFiles
+> Task :mergeDebugConsumerProguardFiles
+> Task :mergeDebugShaders
+> Task :compileDebugShaders NO-SOURCE
+> Task :generateDebugAssets UP-TO-DATE
+> Task :packageDebugAssets
+> Task :prepareDebugArtProfile
+> Task :prepareLintJarForPublish
+> Task :processDebugManifest
+> Task :processDebugJavaRes NO-SOURCE
+> Task :mergeDebugJavaResource
+> Task :syncDebugLibJars
+> Task :writeDebugAarMetadata
+> Task :bundleDebugLocalLintAar
+> Task :bundleLibRuntimeToJarDebug
+> Task :createFullJarDebug
+> Task :preDebugAndroidTestBuild UP-TO-DATE
+> Task :generateDebugAndroidTestResValues
+> Task :writeDebugLintModelMetadata
+> Task :generateDebugAndroidTestLintModel
+> Task :extractProguardFiles
+> Task :generateDebugLintReportModel
+> Task :preDebugUnitTestBuild UP-TO-DATE
+> Task :generateDebugUnitTestLintModel
+> Task :verifyLintToolIdentity FAILED
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Script '/home/zhb/gitrep/llm-asr/.work/gradle-lint-negative/run-vt1z0yi9/gradle/verify-lint-tools.gradle' line: 62
+
+* What went wrong:
+Execution failed for task ':verifyLintToolIdentity'.
+> Lint identity mismatch edges: :lintReportDebug
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 7s
+31 actionable tasks: 31 executed

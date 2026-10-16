@@ -1,0 +1,18 @@
+{
+  "label": "graph-fast",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "bash",
+    "scripts/verify-local.sh",
+    "graph-fast",
+    "--offline"
+  ],
+  "started_utc": "2026-10-16T07:09:15.350147+00:00",
+  "finished_utc": "2026-10-16T07:09:24.783948+00:00",
+  "exit": 0,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/graph-fast.log",
+  "log_sha256": "81912184bd8978cfa6bf42af2b2ac593c0b954e54cbcf8d97d1cf0cc22527d3e"
+}

@@ -1,0 +1,14 @@
+{
+  "status": "blocked; no successful fixture chain",
+  "task": "b5919fca4",
+  "exit": 1,
+  "new_behavior_directory": ".work/p1b-build/2b/behavior-c8y1ugqj",
+  "green_initial_log_sha256": "64f75e14cd310e5e9108c97f3c875e1e405e01313608cd9a03122b260324f525",
+  "exact_diagnostic": "NativeResponse.kt Unresolved reference 'audio' / 'AsrText'",
+  "cause": "collector excluded set contains audio globally, thereby omitting legitimate maintained android/app/src/.../audio/AsrText.kt package, not just private audio assets",
+  "not_target_red": true,
+  "old_fixture_files_checked_unchanged": 276,
+  "no_result_or_XML": true,
+  "needed": "parent disposition authorize source-package-safe filtering/test correction and a second fresh behavior directory for the required real five-phase rerun; do not overwrite/relabel failed first directory",
+  "no_full_or_commit": true
+}

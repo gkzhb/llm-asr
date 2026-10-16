@@ -1,0 +1,1 @@
+{"command": ["./gradlew", "lintDebug", "--offline", "--rerun-tasks", "--no-daemon", "--console=plain", "--dependency-verification", "strict", "-Pandroid.aapt2FromMavenOverride=/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2"], "started_ns": 1792147319509823994, "finished_ns": 1792147327342756972, "exit": 1, "timeout": false}

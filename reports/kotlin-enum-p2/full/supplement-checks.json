@@ -1,0 +1,241 @@
+{
+  "pass_": true,
+  "fixture_copied_inputs": 94,
+  "fixture_current_all_SHA_exact": true,
+  "dynamic_actual_collector_inventory_exact": true,
+  "fixture_compile_phases": {
+    "green-initial": {
+      "exit": 0,
+      "actual_actions": 36,
+      "exact_JUnit": 7
+    },
+    "red-payload": {
+      "exit": 1,
+      "actual_actions": 36,
+      "exact_JUnit": 7
+    },
+    "green-payload-restored": {
+      "exit": 0,
+      "actual_actions": 36,
+      "exact_JUnit": 7
+    },
+    "red-cleanup": {
+      "exit": 1,
+      "actual_actions": 36,
+      "exact_JUnit": 7
+    },
+    "green-final": {
+      "exit": 0,
+      "actual_actions": 36,
+      "exact_JUnit": 7
+    }
+  },
+  "actual_local_log": {
+    "path": ".work/verify-local/full-Egn9aV/build.log",
+    "sha256": "4f642079c37b8009606a511f7e953369818dd2c82634f0c0800b40ae2a0f5fd3",
+    "bytes": 44268,
+    "exit": 0
+  },
+  "outer_full_log_SHA": "8ae5048bfe5ad66eaa36e5b1c20181752b99acff62f714f69e70ac076233a0c5",
+  "pipeline": {
+    "Gradle": 0,
+    "tee": 0,
+    "scan": 1
+  },
+  "scan_hits": [],
+  "actual_SDK_inspection_commands": [
+    {
+      "package": "product",
+      "kind": "signature",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/apksigner",
+        "verify",
+        "--verbose",
+        "--print-certs",
+        "/home/zhb/gitrep/llm-asr/android/app/build/outputs/apk/debug/app-debug.apk"
+      ],
+      "exit": 0,
+      "raw_sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9"
+    },
+    {
+      "package": "product",
+      "kind": "badging",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2",
+        "dump",
+        "badging",
+        "/home/zhb/gitrep/llm-asr/android/app/build/outputs/apk/debug/app-debug.apk"
+      ],
+      "exit": 0,
+      "raw_sha256": "83982ff372f8511bcd93b6ef1689dfdca51dbac4772c250d9f35cbef9349519b"
+    },
+    {
+      "package": "product",
+      "kind": "permissions",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2",
+        "dump",
+        "permissions",
+        "/home/zhb/gitrep/llm-asr/android/app/build/outputs/apk/debug/app-debug.apk"
+      ],
+      "exit": 0,
+      "raw_sha256": "d8401caa7b230ffe49ccf26c52353d6a658a558ee78f86ef434762edb4912b4f"
+    },
+    {
+      "package": "product",
+      "kind": "manifest",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2",
+        "dump",
+        "xmltree",
+        "/home/zhb/gitrep/llm-asr/android/app/build/outputs/apk/debug/app-debug.apk",
+        "--file",
+        "AndroidManifest.xml"
+      ],
+      "exit": 0,
+      "raw_sha256": "031b6cbade4e66174c1adc0f1e417281692b898d96ba862973184206ce16e7eb"
+    },
+    {
+      "package": "product",
+      "kind": "zipalign",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/zipalign",
+        "-c",
+        "-p",
+        "4",
+        "/home/zhb/gitrep/llm-asr/android/app/build/outputs/apk/debug/app-debug.apk"
+      ],
+      "exit": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "package": "host",
+      "kind": "signature",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/apksigner",
+        "verify",
+        "--verbose",
+        "--print-certs",
+        "/home/zhb/gitrep/llm-asr/android/test-host/build/outputs/apk/debug/test-host-debug.apk"
+      ],
+      "exit": 0,
+      "raw_sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9"
+    },
+    {
+      "package": "host",
+      "kind": "badging",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2",
+        "dump",
+        "badging",
+        "/home/zhb/gitrep/llm-asr/android/test-host/build/outputs/apk/debug/test-host-debug.apk"
+      ],
+      "exit": 0,
+      "raw_sha256": "26e92f78dc50c6e1617889887112d8b6cb38989feb3a471faf94a631c76b5f65"
+    },
+    {
+      "package": "host",
+      "kind": "permissions",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2",
+        "dump",
+        "permissions",
+        "/home/zhb/gitrep/llm-asr/android/test-host/build/outputs/apk/debug/test-host-debug.apk"
+      ],
+      "exit": 0,
+      "raw_sha256": "1f0603a9543901e4bdd4f73ad7237e41a485d8a38816b762c5c3f8a66e4fea10"
+    },
+    {
+      "package": "host",
+      "kind": "manifest",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2",
+        "dump",
+        "xmltree",
+        "/home/zhb/gitrep/llm-asr/android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+        "--file",
+        "AndroidManifest.xml"
+      ],
+      "exit": 0,
+      "raw_sha256": "b53569ad7515a2124f14ccc92c413fdb1d143c16913b8e0b8126cccd5c29d59b"
+    },
+    {
+      "package": "host",
+      "kind": "zipalign",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/zipalign",
+        "-c",
+        "-p",
+        "4",
+        "/home/zhb/gitrep/llm-asr/android/test-host/build/outputs/apk/debug/test-host-debug.apk"
+      ],
+      "exit": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "package": "test",
+      "kind": "signature",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/apksigner",
+        "verify",
+        "--verbose",
+        "--print-certs",
+        "/home/zhb/gitrep/llm-asr/android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk"
+      ],
+      "exit": 0,
+      "raw_sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9"
+    },
+    {
+      "package": "test",
+      "kind": "badging",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2",
+        "dump",
+        "badging",
+        "/home/zhb/gitrep/llm-asr/android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk"
+      ],
+      "exit": 0,
+      "raw_sha256": "b667f8b27da83ede5ec432a784a7a53c968d343e76d3b693e928395059eed436"
+    },
+    {
+      "package": "test",
+      "kind": "permissions",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2",
+        "dump",
+        "permissions",
+        "/home/zhb/gitrep/llm-asr/android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk"
+      ],
+      "exit": 0,
+      "raw_sha256": "02201047c25c1e19b6c97f250280e3525ff1d97ef887499fb20bb6915d90f04d"
+    },
+    {
+      "package": "test",
+      "kind": "manifest",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2",
+        "dump",
+        "xmltree",
+        "/home/zhb/gitrep/llm-asr/android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+        "--file",
+        "AndroidManifest.xml"
+      ],
+      "exit": 0,
+      "raw_sha256": "e0fe21064ad94cbe1e92a2343f0cf693990b60865293aeb562e32d59365cb6f2"
+    },
+    {
+      "package": "test",
+      "kind": "zipalign",
+      "argv": [
+        "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/zipalign",
+        "-c",
+        "-p",
+        "4",
+        "/home/zhb/gitrep/llm-asr/android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk"
+      ],
+      "exit": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "receipt_APK_current_fully_reparsed": true
+}

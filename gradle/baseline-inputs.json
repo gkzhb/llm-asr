@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source_commit": "82a5563",
-  "revision_scope": "M6 baseline plus authorized P1 Lint fixes: guarded ActivityWindow helper API contracts and ForegroundRecorder permission exception handling; exact source pins updated, native/assets/signing and legacy Manifest unchanged",
+  "revision_scope": "M6 baseline plus authorized P1 Lint fixes and P2 RuntimeLogSource/RuntimeLogEventKind equivalent Kotlin migration; only the two enum source paths/SHA updated in P2, native/assets/signing and legacy Manifest unchanged",
   "native": {
     "path": ".work/build/minimal-apk/package/lib/arm64-v8a/libqwen_asr_jni.so",
     "sha256": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416"
@@ -42,10 +42,10 @@
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogClock.java": "5bee09a28ac02855d981aaf3bf497c9bade6f4c0faf742dbe28b69bd72b04e40",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogCodec.java": "63b698de2118955204e0a4e7621f77cc64c49aff61835edac5b4d383f9db68f2",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEvent.java": "ca0eadef27b02602e0dc1b388b05a89a778be976aea487b582ab18869c23375c",
-    "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.java": "22c3fa4571328f8c4452563b76b8ad43fa4f456d61c4707d07d8e10014a2c13e",
+    "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.kt": "10712467665202aa6fd6b9deae4223f945051bd69b63d649c317bad00a477390",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogPersistence.java": "0be6031cefef8deb1ab90eb9970a56c7f27c286bfdb22899bce8f5410c66d58c",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSink.java": "d4cc560272f969c6e22e9d574459bafb8e07babb9cbe40ff6f8b2b33af7aadff",
-    "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.java": "01d99199ad0c279b9065738b2c3e75a18e1faf7800901c465a5c5a5f4ddba098",
+    "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogStore.java": "4e7dac5068556b79fc67c8fc24882172e37d552809be14a07ea122432d2a2e8c",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogText.java": "ecb3c0dd2e14640a0a819778c8d748245d11ddc64e73fab083b062e7e6455eb5",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogWorker.java": "ee02ac79845a77a5360f080b5e8f134cf4df367c6c644198c482407cf5334cd7",

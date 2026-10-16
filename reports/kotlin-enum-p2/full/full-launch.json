@@ -1,0 +1,42 @@
+{
+  "task": "llm-asr-ap5",
+  "leaf": "p2enum-test",
+  "owner_Beads_writer": "p1-steward",
+  "cwd": "/home/zhb/gitrep/llm-asr",
+  "argv": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "bash",
+    "scripts/verify-local.sh",
+    "full",
+    "--offline",
+    "--rerun-tasks"
+  ],
+  "started_utc": "2026-10-16T10:36:46.133813+00:00",
+  "runner_pid": 1444473,
+  "runner_proc_stat": "1444473 (python3) R 1444461 1444461 1444461 0 -1 4194304 2286 0 0 0 2 0 0 0 20 0 1 0 79723007 33013760 5041 18446744073709551615 99035749675008 99035749675353 140734654541008 0 0 0 0 16781312 2 0 0 0 17 0 0 0 0 0 0 99035749686616 99035749687312 99036663500800 140734654544788 140734654544829 140734654544829 140734654566357 0\n",
+  "sources_sha256": {
+    ".work/p2enum-full/run-full.py": "41fb0d7dfb7ad05eff19d836f3b50343fbd7713f56d23398d533d599de616dc4",
+    ".work/p2enum-full/preflight.py": "e8507224291b71d6720b6d861ee6ffb665729fe05dc5a387c3c0a2b74d94435b",
+    "scripts/nix-env.sh": "1e56fb4297ffa6569de095fef630a620f14f324289af5e678f5fad472008e753",
+    "scripts/verify-local.sh": "3b465e83da8f3920e6d75f654111f6ca13ae0f6b7a7f3ab7d22ed163dce0a920",
+    "gradlew": "fc977a94723af68aaffa4e5d60496fb4aeed1884b6b19e5e2f2fd7612673313d",
+    "gradle.properties": "f74fd6b21d9422f9202d862a6d841f273134854ecfcbd0310a3f00d6b57ff825",
+    "scripts/test-minimal-apk.sh": "1442b02b927232b4fc5eb7518b980f0c71c0ca9bf73b49f233707dee0360e9aa",
+    "tests/runtime_log_enum_mutant_test.py": "aff8d184177ac526c1261469b0c9fdd89decc61975d451ef04ef5df54ea65c16",
+    "tests/runtime_log_enum_cleanup_test.py": "38e6283ecf313458eda556b16cd24faca2f89ac491b492ee824c145e154786ab",
+    "tests/android_test_fixture_test.py": "856579128d11280577d387a71f2f06fe3aaf58dd1651d81ea498399a448838b8",
+    "tests/gradle_lint_verification_test.py": "d07d69757b599dc50ebbe73d4ebe8f1fe8c69a6afef852b6db2c4b478d3e690f",
+    "tests/gradle_dependency_verification_test.sh": "06a1890c835b3fda1430d6035334a730382963bc9aa780ec5191d636a6d6668f",
+    "tests/dependency_checksum_fixture.py": "fbfc2ad3d857fd94bfb91228c16e9361feb4db0c2bb006de7c54be1347b43ee9"
+  },
+  "preflight_summary_sha256": "46fe4f1b9de88355ab33b192f3a346a4bc12bb5d3c854810bb4a3259bce8b497",
+  "attestation": false,
+  "log": ".work/p2enum-full/full.log",
+  "sample_interval_seconds": 5,
+  "sample_maximum": 1080,
+  "command_pid": 1444474,
+  "command_proc_stat": "1444474 (bash) R 1444473 1444474 1444474 0 -1 4194304 26 0 0 0 0 0 0 0 20 0 1 0 79723010 1622016 108 18446744073709551615 95931579719680 95931580457893 140720557817120 0 0 0 0 0 0 0 0 0 17 9 0 0 0 0 0 95931580663568 95931580687480 95932606533632 140720557820765 140720557820864 140720557820864 140720557842392 0\n"
+}

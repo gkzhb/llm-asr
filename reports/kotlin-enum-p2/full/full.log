@@ -1,0 +1,823 @@
+gradle/wrapper/gradle-wrapper.jar: OK
+VERIFY_LAYER full task=verifyDebug
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+
+> Configure project :app
+WARNING: The option setting 'android.aapt2FromMavenOverride=/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2' is experimental.
+
+> Task :verifyAndroidTestChecks
+PASS shared APK policy/DEX target negatives (parsed fixtures, not signed APK mutants)
+PASS shared APK policy/DEX target negatives (parsed fixtures, not signed APK mutants)
+PASS maintained text: 41 explicit/live module files (read-only)
+PASS shared live module/product/format inventory add/change/omit/SHA/build-exclusion negatives
+PASS maintained text: 41 explicit/live module files (read-only)
+PASS shared live module/product/format inventory add/change/omit/SHA/build-exclusion negatives
+
+> Task :app:buildNativeArtifact
+PASS pinned offline native sources/patches/tree inventory
+注: 某些输入文件使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+PASS mixed JVM compile: 12 Kotlin + 51 Java sources
+Compiled from "JniNativeTranscription.java"
+public final class org.llmasr.minimal.asr.JniNativeTranscription implements org.llmasr.minimal.asr.NativeTranscription {
+  public org.llmasr.minimal.asr.JniNativeTranscription();
+    descriptor: ()V
+
+  private static native byte[] transcribe(java.lang.String, java.lang.String, java.lang.String, java.lang.String);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)[B
+
+  private static native byte[] transcribeWithListener(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.llmasr.minimal.asr.InferencePhaseListener);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/llmasr/minimal/asr/InferencePhaseListener;)[B
+
+  public byte[] invokeWithListener(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.llmasr.minimal.asr.InferencePhaseListener);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/llmasr/minimal/asr/InferencePhaseListener;)[B
+}
+0000000000000000 T Java_org_llmasr_minimal_asr_JniNativeTranscription_transcribe
+0000000000000008 T Java_org_llmasr_minimal_asr_JniNativeTranscription_transcribeWithListener
+PASS compiled Java native descriptors / actual JNI symbols: /home/zhb/gitrep/llm-asr/android/app/build/native-debug/jni-check/asr_jni.o
+PASS Android arm64 JNI object compile (not linked or executed)
+CMake Warning (deprecated) at CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+-- Use Threadpool, forbid openmp
+-- >>>>>>>>>>>>>
+-- MNN BUILD INFO:
+-- 	System: Android
+-- 	Processor: aarch64
+-- 	Version: 3.6.1
+-- 	Metal: OFF
+-- 	OpenCL: OFF
+-- 	OpenGL: OFF
+-- 	Vulkan: OFF
+-- 	ARM82: ON
+-- 	KleidiAI: ON
+-- 	oneDNN: OFF
+-- 	TensorRT: OFF
+-- 	CoreML: OFF
+-- 	NNAPI: OFF
+-- 	QNN: OFF
+-- 	CUDA: OFF
+-- 	MUSA: OFF
+-- 	OpenMP: OFF
+-- 	BF16: OFF
+-- 	ThreadPool: ON
+-- 	Hidden: TRUE
+-- 	Build Path: /home/zhb/gitrep/llm-asr/android/app/build/native-debug
+-- 	CUDA PROFILE: OFF
+-- WIN_USE_ASM:
+-- Enabling AArch64 Assemblies
+-- MNN_IMGCODECS: ON
+-- Configuring done (0.1s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/zhb/gitrep/llm-asr/android/app/build/native-debug
+[1/1] Generating artifact/libqwen_asr_jni.so, artifact/native-link-provenance.json
+PASS explicit native link d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416
+Compiled from "JniNativeTranscription.java"
+public final class org.llmasr.minimal.asr.JniNativeTranscription implements org.llmasr.minimal.asr.NativeTranscription {
+  public org.llmasr.minimal.asr.JniNativeTranscription();
+    descriptor: ()V
+
+  private static native byte[] transcribe(java.lang.String, java.lang.String, java.lang.String, java.lang.String);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)[B
+
+  private static native byte[] transcribeWithListener(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.llmasr.minimal.asr.InferencePhaseListener);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/llmasr/minimal/asr/InferencePhaseListener;)[B
+
+  public byte[] invokeWithListener(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.llmasr.minimal.asr.InferencePhaseListener);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/llmasr/minimal/asr/InferencePhaseListener;)[B
+}
+000000000011bd60 T Java_org_llmasr_minimal_asr_JniNativeTranscription_transcribe
+000000000011bd68 T Java_org_llmasr_minimal_asr_JniNativeTranscription_transcribeWithListener
+PASS compiled Java native descriptors / actual JNI symbols: /home/zhb/gitrep/llm-asr/android/app/build/native-debug/artifact/libqwen_asr_jni.so
+PASS native byte identity/config/explicit objects/JNI/ELF16KiB/static runtime
+
+> Task :app:prepareInputs
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
+PASS frozen product/assets and explicit current native artifact
+
+> Task :app:preBuild
+> Task :app:preDebugBuild
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:compileKotlin
+> Task :core:compileJava
+> Task :core:processResources NO-SOURCE
+> Task :core:classes
+> Task :core:jar
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :asr-runtime:preBuild UP-TO-DATE
+> Task :asr-runtime:preDebugBuild UP-TO-DATE
+> Task :asr-runtime:writeDebugAarMetadata
+> Task :app:checkDebugAarMetadata
+> Task :app:generateDebugResValues
+> Task :asr-runtime:generateDebugResValues
+> Task :asr-runtime:generateDebugResources
+> Task :asr-runtime:packageDebugResources
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:mergeDebugResources
+> Task :app:packageDebugResources
+> Task :app:parseDebugLocalResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :asr-runtime:extractDeepLinksDebug
+> Task :asr-runtime:processDebugManifest
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :asr-runtime:compileDebugLibraryResources
+> Task :asr-runtime:parseDebugLocalResources
+> Task :asr-runtime:generateDebugRFile
+> Task :app:processDebugResources
+> Task :asr-runtime:javaPreCompileDebug
+> Task :asr-runtime:compileDebugJavaWithJavac
+> Task :asr-runtime:bundleLibCompileToJarDebug
+> Task :app:compileDebugKotlin NO-SOURCE
+> Task :app:javaPreCompileDebug
+
+> Task :app:compileDebugJavaWithJavac
+注: 某些输入文件使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :asr-runtime:mergeDebugShaders
+> Task :asr-runtime:compileDebugShaders NO-SOURCE
+> Task :asr-runtime:generateDebugAssets UP-TO-DATE
+> Task :asr-runtime:packageDebugAssets
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:processDebugJavaRes NO-SOURCE
+> Task :asr-runtime:processDebugJavaRes NO-SOURCE
+> Task :app:mergeDebugJavaResource
+> Task :app:checkDebugDuplicateClasses
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeExtDexDebug
+> Task :asr-runtime:bundleLibRuntimeToDirDebug
+> Task :app:mergeLibDexDebug
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJniLibFolders
+> Task :asr-runtime:mergeDebugJniLibFolders
+> Task :asr-runtime:mergeDebugNativeLibs NO-SOURCE
+> Task :asr-runtime:copyDebugJniLibsProjectOnly
+> Task :app:mergeDebugNativeLibs
+> Task :app:stripDebugDebugSymbols
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+> Task :test-host:preBuild UP-TO-DATE
+> Task :test-host:preDebugBuild UP-TO-DATE
+> Task :test-host:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :test-host:javaPreCompileDebug
+> Task :test-host:checkDebugAarMetadata
+> Task :test-host:generateDebugResValues
+> Task :test-host:mapDebugSourceSetPaths
+> Task :test-host:generateDebugResources
+> Task :test-host:mergeDebugResources
+> Task :test-host:packageDebugResources
+> Task :test-host:parseDebugLocalResources
+> Task :test-host:createDebugCompatibleScreenManifests
+> Task :test-host:extractDeepLinksDebug
+> Task :test-host:processDebugMainManifest
+> Task :test-host:processDebugManifest
+> Task :test-host:processDebugManifestForPackage
+> Task :test-host:processDebugResources
+> Task :test-host:compileDebugJavaWithJavac
+> Task :test-host:mergeDebugShaders
+> Task :test-host:compileDebugShaders NO-SOURCE
+> Task :test-host:generateDebugAssets UP-TO-DATE
+> Task :test-host:mergeDebugAssets
+> Task :test-host:compressDebugAssets
+> Task :test-host:processDebugJavaRes NO-SOURCE
+> Task :test-host:mergeDebugJavaResource
+> Task :test-host:checkDebugDuplicateClasses
+> Task :test-host:desugarDebugFileDependencies
+> Task :test-host:mergeExtDexDebug
+> Task :test-host:mergeLibDexDebug
+> Task :test-host:dexBuilderDebug
+> Task :test-host:mergeProjectDexDebug
+> Task :test-host:mergeDebugJniLibFolders
+> Task :test-host:mergeDebugNativeLibs NO-SOURCE
+> Task :test-host:stripDebugDebugSymbols NO-SOURCE
+> Task :test-host:validateSigningDebug
+> Task :test-host:writeDebugAppMetadata
+> Task :test-host:writeDebugSigningConfigVersions
+> Task :test-host:packageDebug
+> Task :test-host:createDebugApkListingFileRedirect
+> Task :test-host:assembleDebug
+> Task :test-host:bundleDebugClassesToCompileJar
+> Task :test-host:preDebugAndroidTestBuild SKIPPED
+> Task :test-host:javaPreCompileDebugAndroidTest
+> Task :test-host:checkDebugAndroidTestAarMetadata
+> Task :test-host:generateDebugAndroidTestResValues
+> Task :test-host:mapDebugAndroidTestSourceSetPaths
+> Task :test-host:generateDebugAndroidTestResources
+> Task :test-host:mergeDebugAndroidTestResources
+> Task :test-host:processDebugAndroidTestManifest
+> Task :test-host:processDebugAndroidTestResources
+
+> Task :test-host:compileDebugAndroidTestJavaWithJavac
+注: /home/zhb/gitrep/llm-asr/android/test-host/src/androidTest/java/org/llmasr/minimal/testhost/FixtureInstrumentationTest.java使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+
+> Task :test-host:mergeDebugAndroidTestShaders
+> Task :test-host:compileDebugAndroidTestShaders NO-SOURCE
+> Task :test-host:generateDebugAndroidTestAssets UP-TO-DATE
+> Task :test-host:mergeDebugAndroidTestAssets
+> Task :test-host:compressDebugAndroidTestAssets
+> Task :test-host:processDebugAndroidTestJavaRes NO-SOURCE
+> Task :test-host:mergeDebugAndroidTestJavaResource
+> Task :test-host:checkDebugAndroidTestDuplicateClasses
+> Task :test-host:desugarDebugAndroidTestFileDependencies
+> Task :test-host:mergeExtDexDebugAndroidTest
+> Task :test-host:mergeLibDexDebugAndroidTest
+> Task :test-host:dexBuilderDebugAndroidTest
+> Task :test-host:mergeProjectDexDebugAndroidTest
+> Task :test-host:mergeDebugAndroidTestJniLibFolders
+> Task :test-host:mergeDebugAndroidTestNativeLibs NO-SOURCE
+> Task :test-host:stripDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :test-host:validateSigningDebugAndroidTest
+> Task :test-host:writeDebugAndroidTestSigningConfigVersions
+> Task :test-host:packageDebugAndroidTest
+> Task :test-host:createDebugAndroidTestApkListingFileRedirect
+> Task :test-host:assembleDebugAndroidTest
+> Task :asr-runtime:bundleLibRuntimeToJarDebug
+> Task :test-host:bundleDebugClassesToRuntimeJar
+> Task :test-host:preDebugUnitTestBuild UP-TO-DATE
+> Task :test-host:javaPreCompileDebugUnitTest
+> Task :test-host:compileDebugUnitTestJavaWithJavac
+> Task :test-host:processDebugUnitTestJavaRes NO-SOURCE
+
+> Task :test-host:testDebugUnitTest
+
+org.llmasr.minimal.testhost.FixtureContractTest > badBytesAreSafe PASSED
+
+org.llmasr.minimal.testhost.FixtureContractTest > enginePayloadAndOrder PASSED
+
+org.llmasr.minimal.testhost.FixtureContractTest > lateResultIsInvalidated PASSED
+
+org.llmasr.minimal.testhost.FixtureContractTest > singleConfirmationAndPassword PASSED
+
+org.llmasr.minimal.testhost.FixtureContractTest > cleanupRetainsOwner PASSED
+
+org.llmasr.minimal.testhost.FixtureContractTest > readinessRejectsBeforeLoad PASSED
+
+org.llmasr.minimal.testhost.FixtureContractTest > reusedBackendQueuedCancellation PASSED
+
+> Task :verifyAndroidTestPackage
+PASS three APK current signature/Manifest/all-DEX/test isolation; 7 JVM, 14 compiled-only methods
+ANDROID_TEST_REPORT /home/zhb/gitrep/llm-asr/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f
+
+> Task :verifyAndroidTestBuild
+
+> Task :verifyDependencyEvidence
+PASS specific checksum mismatch expected=0000000000000000000000000000000000000000000000000000000000000000 actual=9697733a215f2ed42e5b2fc4053484ec832eab29584ebced94d92c91090051c1 report=/home/zhb/gitrep/llm-asr/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/dependency-verification-report.html
+PASS strict checksum original=0 mutant=1 restored=0 log=/home/zhb/gitrep/llm-asr/.work/gradle-m1/dependency-negative-ucX7Lt/rejection.log
+
+> Task :verifyHost
+................
+----------------------------------------------------------------------
+Ran 16 tests in 1.430s
+
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+OK
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
+VERIFIED config.json 617 fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d
+VERIFIED llm_config.json 1104 8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85
+PASS actual collector deleted tracked Java excluded; untracked Kotlin included
+PASS actual collector four roots/configs/fixture source byte identities; generated/private/symlink exclusion; missing required config fails
+PASS current project collector matches expected maintained Git+untracked source inventory: 74
+PASS mixed JVM compile: 12 Kotlin + 67 Java sources
+PASS runtime log enums Java ABI/order/switch/errors and production persistence/codec
+PASS Kotlin migration Java ABI/behavior: 322 checks
+PASS cleanup kotlinc/term actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/hup actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/timeout actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/term actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/hup actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/timeout actual-driver/base-wrapper; no live work before deletion
+PASS cleanup java/term actual-driver/base-wrapper; no live work before deletion
+PASS cleanup java/hup actual-driver/base-wrapper; no live work before deletion
+PASS cleanup java/timeout actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/deadline actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/deadline actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/unconfirmed actual-driver/base-wrapper; unconfirmed stop retains tree/source
+PASS cleanup kotlinc/main-unconfirmed actual-driver/base-wrapper; unconfirmed stop retains tree/source
+PASS enum cleanup lifecycle cases=13 evidence=.work/p2enum-build/r1-main/cleanup/run-9nlovwkp
+PASS enum mutant RuntimeLogSource compile=0 target-red=1 exact-source-restored-green=0
+PASS enum mutant RuntimeLogEventKind compile=0 target-red=1 exact-source-restored-green=0
+PASS runtime log enum real mixed compilation evidence=.work/p2enum-build/mutants/run-gb4z2l6r
+PASS 32 minimal APK Java checks
+PASS 20 recording lifecycle gate checks (fake backend; not device release latency)
+PASS 34 result cleanup/export checks (host only)
+PASS 25 native response parser checks (host only; strict UTF-8, 128 token cap, empty raw allowed)
+PASS 33 model repository checks (host only; no test backdoors)
+PASS private-root alias import/inspect/verify/reuse/delete and symlink safety (host filesystem only)
+PASS 15 part-recovery red/green checks (host only)
+PASS 57 request runner checks (host only; covers success/failure/cancel/report-failure/owner/cleanup-id/clear-text policy)
+PASS 22 task coordinator checks (host only; no Thread.sleep busy polling)
+PASS 70 production admission/owner/recording/export boundary checks (host only)
+PASS 177 IME production controller checks (not Android hardware/InputConnection tests)
+PASS 33 model readiness state checks (shared ASR/IME truth)
+PASS 39 model operation control checks (cancel/publish/terminal arbitration)
+PASS 117 deterministic repository cancel/IO/progress checks
+PASS 27 model repository delete whitelist / partial / no-recursion checks
+PASS 223 deterministic model controller/connected runner isolation checks
+PASS Android production policy/lazy helpers 100 checks (host, not Android runtime)
+PASS typed privacy boundary, canonical UUID, timestamp/elapsed formatting, immutable bounded snapshots
+PASS real concurrent sequence/eviction, serialized coalescing sinks, reentrancy and listener fault isolation
+PASS real file reopen, strict complete parser (all truncated prefixes), corrupt/private/oversize rejection, hard caps and stale part
+PASS real final/part symlinks including dangling, leaf directories, trusted parent alias pinning, failed atomic staging and permission-denied IO
+PASS plain/injected executors, first asynchronous recovery preserving early events, blocked write + 10000 appends, latest coalescing/close/retry
+PASS production-owned background executor: no synchronous startup disk, nonblocking close and graceful accepted drain
+PASS observable/deduped disk failure, recursive callback isolation, recovery from failure and hostile sequence overflow
+PASS immutable picker-time UTF8 export through RuntimeLogCodec, exact byte preflight/cap, write/flush failures, close owned by caller
+PASS RuntimeLogCoreTest: 8 groups
+PASS RuntimeLogStoreErrorTest: 20 recovery/fatal/concurrent/reentrant checks
+PASS App/IME validated result, task IDs, phase timestamps and monotonic durations
+PASS one shared adapter, lazy JNI construction and per-request APP/IME listeners
+PASS real ModelAccess cold SHA/cached readiness and verify failure
+PASS readiness/library/native IOException RuntimeException LinkageError VM error identity
+PASS null and malformed native protocol never request success
+PASS load/inference failure boundaries
+PASS missing duplicate out-of-order stale wrong-thread callbacks fail telemetry closed
+PASS listener/store Throwable isolation and persisted/exported privacy
+PASS production RequestRunner owner/cleanup and external commit boundary
+PASS actual App/IME wiring and real JNI source contracts (not JNI runtime)
+PASS InferenceAdapterTest: 10 groups, 354 checks
+PASS LogExportTest: 100 checks (production tickets/owner/streams; not Android runtime)
+PASS TextExportTest: 104 checks; full code exhaustion and open/write/close interleavings
+PASS clear-before-admission production regression
+PASS compound write/close exact fatal propagation and cleanup
+PASS controller inspect/cancel notifications outside monitor
+.
+PASS production capture fake Android phase=minimum (NOT device)
+----------------------------------------------------------------------
+PASS production capture fake Android phase=constructor (NOT device)
+PASS production capture fake Android phase=state (NOT device)
+Ran 1 test in 4.508s
+PASS production capture fake Android phase=start (NOT device)
+
+PASS production capture fake Android phase=read (NOT device)
+OK
+PASS production capture fake Android phase=recordingState (NOT device)
+PASS production capture fake Android phase=stop (NOT device)
+PASS production capture fake Android phase=release (NOT device)
+PASS production capture fake Android phase=cancel (NOT device)
+PASS production capture fake Android phase=fatal (NOT device)
+PASS production capture fake Android phase=success (NOT device)
+PASS production capture fake Android phase=illegalStop (NOT device)
+..
+PASS 7 compiling production ActivityWindow mutants rejected by behavioral assertions
+----------------------------------------------------------------------
+PASS ActivityWindow fake platform 82 checks (NOT Android runtime)
+Ran 2 tests in 4.495s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.006s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+PASS Android source wiring/manifest policy and checker clause mutation fixtures (not compiled APK)
+PASS log page source wiring and isolated log component negative fixtures (not Android runtime)
+PASS R5 Activity lifecycle/observer/atomic edit/export status wiring and 8 negative fixtures (not Android runtime)
+PASS model dependency boundaries and forbidden-reference negative fixtures (lexical, not AST)
+PASS R2 mechanism/policy/private-feature boundaries, direct lifecycle wiring and negative fixtures (lexical, not Android runtime)
+PASS R3 graph/shared-adapter/JNI/report boundaries and negative fixtures (lexical, not runtime)
+PASS R6 complete recursive package map, allowed edges and 15 actual-checker negative fixtures (lexical)
+PASS frozen pre-R3 report bodies + 8 negative fixtures; native source identical except JNI class symbol prefix (not runtime)
+PASS JNI symbol checker Java ABI and missing/stale/extra export negative fixtures
+PASS review regression history
+PASS review regression terminal
+PASS review regression window
+PASS review regression boundary
+PASS review regression deletion
+PASS review regression liveDeletion
+PASS review regression planning
+PASS review regression publication
+PASS production provider boundary exception/stream/owner regressions
+PASS compiled mutant killed: readiness-monitor exit 1 logs .work/model-review-fixes/mutants/readiness-monitor-86obakwx
+PASS compiled mutant killed: provider-cancel-trust exit 1 logs .work/model-review-fixes/mutants/provider-cancel-trust-rht9nkxg
+PASS compiled mutant killed: terminal-cancel exit 1 logs .work/model-review-fixes/mutants/terminal-cancel-9m8gdaud
+PASS actual checker fixture bound-fixture exit 0
+PASS actual checker fixture missing-kotlin-runtime exit 1
+PASS actual checker fixture multidex-definitions exit 0
+PASS actual checker fixture multidex-missing-owners exit 1
+PASS actual checker fixture multidex-duplicate-owners exit 1
+PASS actual checker fixture stale-apk exit 1
+PASS actual checker fixture modified-permissions.txt exit 1
+PASS actual checker fixture modified-badging.txt exit 1
+PASS actual checker fixture modified-signature.txt exit 1
+PASS actual checker fixture modified-manifest-tree.txt exit 1
+PASS actual checker fixture modified-ime-method-tree.txt exit 1
+PASS actual checker fixture modified-native-link-provenance.json exit 1
+PASS actual checker fixture missing-binding exit 1
+PASS archive/report binding rejects stale and every modified report; logs .work/model-review-fixes/apk-binding-lmraw1cf
+
+> Task :verifyJni
+注: 某些输入文件使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+PASS mixed JVM compile: 12 Kotlin + 51 Java sources
+Compiled from "JniNativeTranscription.java"
+public final class org.llmasr.minimal.asr.JniNativeTranscription implements org.llmasr.minimal.asr.NativeTranscription {
+  public org.llmasr.minimal.asr.JniNativeTranscription();
+    descriptor: ()V
+
+  private static native byte[] transcribe(java.lang.String, java.lang.String, java.lang.String, java.lang.String);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)[B
+
+  private static native byte[] transcribeWithListener(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.llmasr.minimal.asr.InferencePhaseListener);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/llmasr/minimal/asr/InferencePhaseListener;)[B
+
+  public byte[] invokeWithListener(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.llmasr.minimal.asr.InferencePhaseListener);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/llmasr/minimal/asr/InferencePhaseListener;)[B
+}
+0000000000000000 T Java_org_llmasr_minimal_asr_JniNativeTranscription_transcribe
+0000000000000008 T Java_org_llmasr_minimal_asr_JniNativeTranscription_transcribeWithListener
+PASS compiled Java native descriptors / actual JNI symbols: /home/zhb/gitrep/llm-asr/build/jni-check/asr_jni.o
+PASS Android arm64 JNI object compile (not linked or executed)
+
+> Task :asr-runtime:stripDebugDebugSymbols NO-SOURCE
+> Task :asr-runtime:copyDebugJniLibsProjectAndLocalJars
+> Task :asr-runtime:extractDebugAnnotations
+> Task :asr-runtime:extractDeepLinksForAarDebug
+> Task :asr-runtime:mergeDebugGeneratedProguardFiles
+> Task :asr-runtime:mergeDebugConsumerProguardFiles
+> Task :asr-runtime:prepareDebugArtProfile
+> Task :asr-runtime:prepareLintJarForPublish
+> Task :asr-runtime:mergeDebugJavaResource
+> Task :asr-runtime:syncDebugLibJars
+> Task :asr-runtime:bundleDebugLocalLintAar
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:generateDebugAndroidTestResValues
+> Task :asr-runtime:createFullJarDebug
+> Task :asr-runtime:writeDebugLintModelMetadata
+> Task :app:generateDebugAndroidTestLintModel
+> Task :app:extractProguardFiles
+> Task :asr-runtime:extractProguardFiles
+> Task :asr-runtime:generateDebugLintModel
+> Task :app:generateDebugLintReportModel
+> Task :app:preDebugUnitTestBuild
+> Task :app:generateDebugUnitTestLintModel
+
+> Task :app:verifyLintToolIdentity
+LINT_IDENTITY_PASS task=:app:lintReportDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:app:lintAnalyzeDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:app:lintAnalyzeDebugAndroidTest phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:app:lintAnalyzeDebugUnitTest phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:app:updateLintBaselineDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:app:lintFixDebug phase=gate artifacts=66 edges=171
+
+> Task :asr-runtime:verifyLintToolIdentity
+LINT_IDENTITY_PASS task=:asr-runtime:lintAnalyzeDebugAndroidTest phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:asr-runtime:lintAnalyzeDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:asr-runtime:lintVitalAnalyzeDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:asr-runtime:lintAnalyzeDebugUnitTest phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:asr-runtime:lintReportDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:asr-runtime:updateLintBaselineDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:asr-runtime:lintFixDebug phase=gate artifacts=66 edges=171
+
+> Task :asr-runtime:lintAnalyzeDebug
+LINT_IDENTITY_PASS task=:asr-runtime:lintAnalyzeDebug phase=consumer artifacts=66 edges=171
+
+> Task :app:lintAnalyzeDebug
+LINT_IDENTITY_PASS task=:app:lintAnalyzeDebug phase=consumer artifacts=66 edges=171
+
+> Task :app:lintAnalyzeDebugAndroidTest
+LINT_IDENTITY_PASS task=:app:lintAnalyzeDebugAndroidTest phase=consumer artifacts=66 edges=171
+
+> Task :app:lintAnalyzeDebugUnitTest
+LINT_IDENTITY_PASS task=:app:lintAnalyzeDebugUnitTest phase=consumer artifacts=66 edges=171
+
+> Task :asr-runtime:preDebugAndroidTestBuild UP-TO-DATE
+> Task :asr-runtime:generateDebugAndroidTestResValues
+> Task :asr-runtime:generateDebugAndroidTestLintModel
+> Task :asr-runtime:preDebugUnitTestBuild UP-TO-DATE
+> Task :asr-runtime:generateDebugUnitTestLintModel
+
+> Task :asr-runtime:lintAnalyzeDebugAndroidTest
+LINT_IDENTITY_PASS task=:asr-runtime:lintAnalyzeDebugAndroidTest phase=consumer artifacts=66 edges=171
+
+> Task :asr-runtime:lintAnalyzeDebugUnitTest
+LINT_IDENTITY_PASS task=:asr-runtime:lintAnalyzeDebugUnitTest phase=consumer artifacts=66 edges=171
+
+> Task :app:lintReportDebug
+LINT_IDENTITY_PASS task=:app:lintReportDebug phase=consumer artifacts=66 edges=171
+Wrote HTML report to file:///home/zhb/gitrep/llm-asr/android/app/build/reports/lint-results-debug.html
+
+> Task :app:lintDebug
+
+> Task :app:verifyDebugPackage
+PASS current unique module production owners: app 8
+PASS current unique module production owners: asr-runtime 5
+PASS current unique module production owners: core 50
+Compiled from "JniNativeTranscription.java"
+public final class org.llmasr.minimal.asr.JniNativeTranscription implements org.llmasr.minimal.asr.NativeTranscription {
+  public org.llmasr.minimal.asr.JniNativeTranscription();
+    descriptor: ()V
+
+  private static native byte[] transcribe(java.lang.String, java.lang.String, java.lang.String, java.lang.String);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)[B
+
+  private static native byte[] transcribeWithListener(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.llmasr.minimal.asr.InferencePhaseListener);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/llmasr/minimal/asr/InferencePhaseListener;)[B
+
+  public byte[] invokeWithListener(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.llmasr.minimal.asr.InferencePhaseListener);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/llmasr/minimal/asr/InferencePhaseListener;)[B
+}
+000000000011bd60 T Java_org_llmasr_minimal_asr_JniNativeTranscription_transcribe
+000000000011bd68 T Java_org_llmasr_minimal_asr_JniNativeTranscription_transcribeWithListener
+PASS compiled Java native descriptors / actual JNI symbols: /home/zhb/gitrep/llm-asr/android/app/build/native-debug/artifact/libqwen_asr_jni.so
+Compiled from "JniNativeTranscription.java"
+public final class org.llmasr.minimal.asr.JniNativeTranscription implements org.llmasr.minimal.asr.NativeTranscription {
+  public org.llmasr.minimal.asr.JniNativeTranscription();
+    descriptor: ()V
+
+  private static native byte[] transcribe(java.lang.String, java.lang.String, java.lang.String, java.lang.String);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)[B
+
+  private static native byte[] transcribeWithListener(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.llmasr.minimal.asr.InferencePhaseListener);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/llmasr/minimal/asr/InferencePhaseListener;)[B
+
+  public byte[] invokeWithListener(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.llmasr.minimal.asr.InferencePhaseListener);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/llmasr/minimal/asr/InferencePhaseListener;)[B
+}
+000000000011bd60 T Java_org_llmasr_minimal_asr_JniNativeTranscription_transcribe
+000000000011bd68 T Java_org_llmasr_minimal_asr_JniNativeTranscription_transcribeWithListener
+PASS compiled Java native descriptors / actual JNI symbols: /home/zhb/gitrep/llm-asr/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/jni-classes-gakbjuaz/libqwen_asr_jni.so
+PASS signed APK archive, one combined arm64 DSO, exact assets, RECORD_AUDIO-only permission, API29/35, IME service declared (0.6-debug)
+PASS native byte identity/config/explicit objects/JNI/ELF16KiB/static runtime
+PASS AGP actual APK signature/identity/assets/DEX/native/report binding
+VERIFIED_REPORT /home/zhb/gitrep/llm-asr/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88
+
+> Task :asr-runtime:generateDebugLintReportModel
+
+> Task :asr-runtime:lintReportDebug
+LINT_IDENTITY_PASS task=:asr-runtime:lintReportDebug phase=consumer artifacts=66 edges=171
+Wrote HTML report to file:///home/zhb/gitrep/llm-asr/android/asr-runtime/build/reports/lint-results-debug.html
+
+> Task :asr-runtime:lintDebug
+> Task :verifyLintEvidence
+PASS actual Lint identity rejection/ordinary task shared production validator negatives+restore; default AGP green0/NewApi red/green1 restore reports=/home/zhb/gitrep/llm-asr/.work/gradle-lint-negative/run-vt1z0yi9
+
+> Task :verifyAndroidTestFixtureEvidence
+green-initial Gradle exit 0 exact XML {'methods': ['badBytesAreSafe', 'cleanupRetainsOwner', 'enginePayloadAndOrder', 'lateResultIsInvalidated', 'readinessRejectsBeforeLoad', 'reusedBackendQueuedCancellation', 'singleConfirmationAndPassword'], 'tests': 7, 'failures': [], 'sha256': '4ceb899756fbdafa492b65a504f87794b1328db5cae6b29886a05ea82aef32fe'}
+red-payload Gradle exit 1 exact XML {'methods': ['badBytesAreSafe', 'cleanupRetainsOwner', 'enginePayloadAndOrder', 'lateResultIsInvalidated', 'readinessRejectsBeforeLoad', 'reusedBackendQueuedCancellation', 'singleConfirmationAndPassword'], 'tests': 7, 'failures': ['enginePayloadAndOrder'], 'sha256': '9499994f3644008b672d31d12a87d295e0ffb26b499fec72fd80413507244aad'}
+green-payload-restored Gradle exit 0 exact XML {'methods': ['badBytesAreSafe', 'cleanupRetainsOwner', 'enginePayloadAndOrder', 'lateResultIsInvalidated', 'readinessRejectsBeforeLoad', 'reusedBackendQueuedCancellation', 'singleConfirmationAndPassword'], 'tests': 7, 'failures': [], 'sha256': '0e34d6ec03b1b2d828dba1772f0a9f4c0af6c7dc13953f92ec74aaec7590b3f6'}
+red-cleanup Gradle exit 1 exact XML {'methods': ['badBytesAreSafe', 'cleanupRetainsOwner', 'enginePayloadAndOrder', 'lateResultIsInvalidated', 'readinessRejectsBeforeLoad', 'reusedBackendQueuedCancellation', 'singleConfirmationAndPassword'], 'tests': 7, 'failures': ['cleanupRetainsOwner'], 'sha256': '35f0344fb828c23dfdf7594f5d8ebd12b9a85e6a7ada29f7a5b34bcc21532704'}
+green-final Gradle exit 0 exact XML {'methods': ['badBytesAreSafe', 'cleanupRetainsOwner', 'enginePayloadAndOrder', 'lateResultIsInvalidated', 'readinessRejectsBeforeLoad', 'reusedBackendQueuedCancellation', 'singleConfirmationAndPassword'], 'tests': 7, 'failures': [], 'sha256': '2b95fec310b6c9d2e6c12b773278de66edc66afd0ef57a1e56358988788d6ba7'}
+PASS two legal compiling fixture behavior mutants, both restored green; report /home/zhb/gitrep/llm-asr/.work/p1b-build/2b/behavior-yj6aaz3a
+
+> Task :verifyApkChecker
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 1.892s
+
+OK
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.128s
+
+PASS current unique module production owners: app 8
+OK
+PASS current unique module production owners: asr-runtime 5
+PASS current unique module production owners: core 50
+PASS current unique module production owners: app 8
+PASS current unique module production owners: asr-runtime 5
+PASS current unique module production owners: app 8
+PASS current unique module production owners: asr-runtime 5
+PASS current unique module production owners: app 8
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.126s
+
+OK
+PASS current unique module production owners: app 8
+PASS current unique module production owners: asr-runtime 5
+PASS current unique module production owners: core 50
+PASS current unique module production owners: app 8
+PASS current unique module production owners: asr-runtime 5
+PASS current unique module production owners: app 8
+PASS current unique module production owners: asr-runtime 5
+PASS current unique module production owners: app 8
+
+> Task :verifyArchitecture
+PASS model dependency boundaries and forbidden-reference negative fixtures (lexical, not AST)
+PASS R2 mechanism/policy/private-feature boundaries, direct lifecycle wiring and negative fixtures (lexical, not Android runtime)
+PASS R3 graph/shared-adapter/JNI/report boundaries and negative fixtures (lexical, not runtime)
+PASS R6 complete recursive package map, allowed edges and 15 actual-checker negative fixtures (lexical)
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.006s
+
+OK
+PASS Android source wiring/manifest policy and checker clause mutation fixtures (not compiled APK)
+PASS log page source wiring and isolated log component negative fixtures (not Android runtime)
+PASS R5 Activity lifecycle/observer/atomic edit/export status wiring and 8 negative fixtures (not Android runtime)
+PASS frozen pre-R3 report bodies + 8 negative fixtures; native source identical except JNI class symbol prefix (not runtime)
+
+> Task :verifyBuildInputs
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.258s
+PASS frozen product/assets and explicit current native artifact
+
+PASS frozen product/assets and explicit current native artifact
+OK
+
+> Task :verifyFormat
+PASS maintained text: 41 explicit/live module files (read-only)
+
+> Task :verifyLint
+
+> Task :verifyLocalGuards
+PASS static fast/full/Lint/checksum wiring (not a real Gradle task graph)
+PASS local entry target refusals, strict/full/graph/DEX/exit contracts and Nix cache-only argument construction (mock executables)
+tee failure: actual=23 expected=23 target='log capture failed' PASS
+Gradle and tee arbitration: actual=7 expected=7 target='log capture failed' PASS
+tee recovery: actual=0 expected=0 target='' PASS
+grep log read failure: actual=2 expected=2 target='DEX log scan failed' PASS
+log read recovery: actual=0 expected=0 target='' PASS
+grep execution failure: actual=2 expected=2 target='DEX log scan failed' PASS
+grep recovery: actual=0 expected=0 target='' PASS
+DEX target: actual=1 expected=1 target='DEX diagnostics require review' PASS
+graph forbidden lintAnalyzeDebug: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden verifyDependencyEvidence: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden verifyHost: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden verifyJniObject: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden configureCMakeDebug: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden buildNativeArtifact: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden assembleDebug: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden packageDebug: actual=1 expected=1 target='forbidden heavy task' PASS
+unknown core task: actual=1 expected=1 target='unreviewed task path' PASS
+leading whitespace task ' ': actual=1 expected=1 target='unrecognized' PASS
+leading whitespace task '\t': actual=1 expected=1 target='unrecognized' PASS
+graph recovery: actual=0 expected=0 target='' PASS
+PASS real-entry executable-fault/graph target refusals and recovery (mock Gradle)
+PASS fast graph: 5 complete dry-run tasks; no heavy families
+PASS fast graph: 5 complete dry-run tasks; no heavy families
+PASS complete graph parser heavy-family/scope/malformed target negatives and recovery
+PASS unique checksum mutation and target-row expected/actual negatives/recovery (not real Gradle)
+PASS maintained text: 41 explicit/live module files (read-only)
+PASS maintained-text target negatives and raw evidence exclusion (no writes to repository)
+PASS maintained text: 41 explicit/live module files (read-only)
+PASS maintained-text target negatives and raw evidence exclusion (no writes to repository)
+
+> Task :verifyNativeInputs
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.017s
+
+OK
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.014s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.092s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.094s
+
+OK
+
+> Task :asr-runtime:generateDebugUnitTestStubRFile
+> Task :asr-runtime:javaPreCompileDebugUnitTest
+> Task :asr-runtime:compileDebugUnitTestJavaWithJavac
+> Task :asr-runtime:processDebugUnitTestJavaRes NO-SOURCE
+
+> Task :asr-runtime:verifyModuleBoundary
+PASS actual module compile boundary: asr-runtime -> core positive exit 0
+PASS actual module compile boundary: runtime -> JNI/Android positive exit 0
+PASS actual module compile boundary: runtime !-> app exit 1
+
+> Task :asr-runtime:testDebugUnitTest
+
+RuntimeRegressionJUnitTest > inferenceAdapterAndJniConstruction PASSED
+
+> Task :core:compileTestKotlin NO-SOURCE
+> Task :core:compileTestJava
+> Task :core:processTestResources NO-SOURCE
+> Task :core:testClasses
+
+> Task :core:verifyModuleBoundary
+PASS actual module compile boundary: core -> core positive exit 0
+PASS actual module compile boundary: core !-> android.content.Context exit 1
+PASS actual module compile boundary: core !-> org.json.JSONObject exit 1
+PASS actual module compile boundary: core !-> org.llmasr.minimal.asr.JniNativeTranscription exit 1
+PASS actual module compile boundary: core !-> org.llmasr.minimal.AppGraph exit 1
+
+> Task :core:test
+
+CoreRegressionJUnitTest > runtimeLogErrorIdentity PASSED
+
+CoreRegressionJUnitTest > modelReadiness PASSED
+
+CoreRegressionJUnitTest > imeSessionPrivacy PASSED
+
+CoreRegressionJUnitTest > reviewWindow PASSED
+
+CoreRegressionJUnitTest > reviewPublication PASSED
+
+CoreRegressionJUnitTest > reviewDeletion PASSED
+
+CoreRegressionJUnitTest > reviewLiveDeletion PASSED
+
+CoreRegressionJUnitTest > resultFiles PASSED
+
+CoreRegressionJUnitTest > modelPageHelpers PASSED
+
+CoreRegressionJUnitTest > recordingRaces PASSED
+
+CoreRegressionJUnitTest > kotlinJavaAbi PASSED
+
+CoreRegressionJUnitTest > logExportGenerations PASSED
+
+CoreRegressionJUnitTest > modelNotifications PASSED
+
+CoreRegressionJUnitTest > admissionOwnerBoundary PASSED
+
+CoreRegressionJUnitTest > privateModelRoot PASSED
+
+CoreRegressionJUnitTest > reviewPlanning PASSED
+
+CoreRegressionJUnitTest > modelOperationControl PASSED
+
+CoreRegressionJUnitTest > modelWhitelistDeletion PASSED
+
+CoreRegressionJUnitTest > reviewBoundary PASSED
+
+CoreRegressionJUnitTest > modelRepository PASSED
+
+CoreRegressionJUnitTest > runtimeLogCore PASSED
+
+CoreRegressionJUnitTest > nativeResponseProtocol PASSED
+
+CoreRegressionJUnitTest > modelCancelCleanup PASSED
+
+CoreRegressionJUnitTest > textExportFatalIdentity PASSED
+
+CoreRegressionJUnitTest > providerErrorAndStreamBoundary PASSED
+
+CoreRegressionJUnitTest > requestRunner PASSED
+
+CoreRegressionJUnitTest > reviewTerminal PASSED
+
+CoreRegressionJUnitTest > textExport PASSED
+
+CoreRegressionJUnitTest > partRecoveryProductionMutant PASSED
+
+CoreRegressionJUnitTest > waveAndRecordingProtocol PASSED
+
+CoreRegressionJUnitTest > modelManagementController PASSED
+
+CoreRegressionJUnitTest > textExportSafety PASSED
+
+CoreRegressionJUnitTest > reviewHistory PASSED
+
+CoreRegressionJUnitTest > taskCoordinator PASSED
+
+> Task :verifyDebug
+
+BUILD SUCCESSFUL in 8m 51s
+174 actionable tasks: 174 executed
+PIPELINE_STATUS Gradle=0 tee=0 scan=1
+GRADLE_VERIFY_LOG /home/zhb/gitrep/llm-asr/.work/verify-local/full-Egn9aV/build.log exit=0

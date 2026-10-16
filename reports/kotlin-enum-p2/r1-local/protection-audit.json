@@ -1,0 +1,42 @@
+{
+  "pass": true,
+  "deltas_from_r1_local_before": {
+    "build": {
+      "scripts/compile-jvm-sources.sh": {
+        "before": "5d8b22c6f81b100642a12a621415634c836a2aa00b1b35c0496848494f11c79e",
+        "current": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf"
+      },
+      "tests/runtime_log_enum_cleanup_test.py": {
+        "before": "198c46eefe0c31f8d991826e1d6c43def73bb4a88bfe6b343a8e0d1cc19d0c94",
+        "current": "d0db0057f21e102be87b6338d79b8a1859595990fc2f1450e09b67d36457cb1f"
+      },
+      "tests/runtime_log_enum_mutant_test.py": {
+        "before": "2074be1a6bea0624a86539d40e80d7a18550f24646a7154a484dcbb7f6fa196a",
+        "current": "fa09a1178c2f3df20a1d3a7500b9520f25d7f860c9037ed71bf03b9c52f09e7b"
+      }
+    },
+    "module": {},
+    "native": {
+      "scripts/compile-jvm-sources.sh": {
+        "before": "5d8b22c6f81b100642a12a621415634c836a2aa00b1b35c0496848494f11c79e",
+        "current": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf"
+      }
+    },
+    "source_owners": {},
+    "tracked": {
+      "docs/kotlin-migration.md": {
+        "before": "14a306d92a5521010fa858fd464025b2207ec088cf3953fbe81f4387efbcd590",
+        "current": "6cbbef08b3a34e86428acb497dfadee384abce6551f5d9282347450b57937308"
+      },
+      "scripts/compile-jvm-sources.sh": {
+        "before": "5d8b22c6f81b100642a12a621415634c836a2aa00b1b35c0496848494f11c79e",
+        "current": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf"
+      }
+    }
+  },
+  "historical_files_preserved": 820,
+  "excluded26_unchanged": true,
+  "native578_DSO_provenance_unchanged": true,
+  "old32_artifact_evidence_unchanged": true,
+  "index_empty": true
+}

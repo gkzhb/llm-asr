@@ -1,0 +1,8 @@
+{
+  "tests/android_test_fixture_test.py": "856579128d11280577d387a71f2f06fe3aaf58dd1651d81ea498399a448838b8",
+  "tests/android_test_fixture_inputs_test.py": "2356a170fb9ef9839f25f17a45152f5b28cc5ce4b7d46252ae7829b64a8b5bf5",
+  "scripts/test-minimal-apk.sh": "1442b02b927232b4fc5eb7518b980f0c71c0ca9bf73b49f233707dee0360e9aa",
+  "tests/runtime_log_enum_mutant_test.py": "aff8d184177ac526c1261469b0c9fdd89decc61975d451ef04ef5df54ea65c16",
+  "tests/runtime_log_enum_cleanup_test.py": "38e6283ecf313458eda556b16cd24faca2f89ac491b492ee824c145e154786ab",
+  "scripts/compile-jvm-sources.sh": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf"
+}

@@ -49,34 +49,76 @@ def xml_result(path, expected_method=None, diagnostic=None):
     return {'methods': METHODS, 'tests': len(cases), 'failures': [n for n, _ in failures], 'sha256': sha(path)}
 
 
+def fixture_inputs(root):
+    """Current maintained inputs, independent of staging; no generated/private tree copy."""
+    root = Path(root)
+    exact = {'settings.gradle.kts', 'build.gradle.kts', 'gradle.properties',
+             'buildscript-gradle.lockfile', 'gradlew', 'gradlew.bat',
+             'core/build.gradle.kts', 'core/gradle.lockfile',
+             'android/app/build.gradle.kts', 'android/app/gradle.lockfile',
+             'android/asr-runtime/build.gradle.kts', 'android/asr-runtime/gradle.lockfile',
+             'android/test-host/build.gradle.kts', 'android/test-host/gradle.lockfile',
+             'gradle/wrapper/gradle-wrapper.jar', 'gradle/wrapper/gradle-wrapper.properties',
+             'gradle/verification-metadata.xml'}
+    excluded = {'build', '.gradle', '.cache', '__pycache__', '.git', 'assets',
+                'private', 'models', 'weights', 'keys', 'secrets'}
+
+    def safe(relative):
+        parts = Path(relative).parts
+        return not any(part in excluded for part in parts)
+
+    def regular(relative):
+        path = root / relative
+        return path.is_file() and not any((root / Path(*Path(relative).parts[:i])).is_symlink()
+                                          for i in range(1, len(Path(relative).parts) + 1))
+
+    def current_files(directory):
+        base = root / directory
+        if base.is_symlink():
+            return
+        for parent, dirs, files in os.walk(base, followlinks=False):
+            dirs[:] = sorted(d for d in dirs if d not in excluded and not (Path(parent) / d).is_symlink())
+            for name in sorted(files):
+                relative = str((Path(parent) / name).relative_to(root))
+                if safe(relative) and regular(relative):
+                    yield relative
+
+    # Keep all maintained Gradle definitions/evidence, and fail on a missing
+    # tracked config rather than silently skipping required dependency inputs.
+    def gradle_config(relative):
+        return safe(relative) and (Path(relative).suffix in ('.kts', '.gradle', '.json', '.xml', '.properties', '.lockfile')
+                                   or relative == 'gradle/wrapper/gradle-wrapper.jar')
+
+    tracked = subprocess.check_output(['git', 'ls-files', '-z', '--', 'gradle/'], cwd=root).decode().split('\0')
+    required = exact | {p for p in tracked if p and gradle_config(p)}
+    for relative in sorted(required):
+        if not regular(relative):
+            raise FileNotFoundError('required fixture config missing or non-regular: ' + relative)
+    inputs = set(required)
+    inputs.update(p for p in current_files('gradle') if gradle_config(p))
+    for directory in ('android/app/src', 'android/asr-runtime/src', 'core/src', 'android/test-host/src',
+                      'android/test-host/fixtures/java'):
+        inputs.update(p for p in current_files(directory) if p.endswith(('.java', '.kt', '.xml')))
+    return sorted(inputs)
+
+
 def main():
     output = ROOT / '.work/p1b-build/2b'
     output.mkdir(parents=True, exist_ok=True)
     run = Path(tempfile.mkdtemp(prefix='behavior-', dir=output))
     source = ROOT / 'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.java'
     original = source.read_text()
+    inputs = fixture_inputs(ROOT)
     receipt = {'driver_sha256': sha(Path(__file__)), 'pid': os.getpid(), 'runs': [],
-               'android_runtime': 'not run', 'main_source_sha256': sha(source)}
+               'android_runtime': 'not run', 'main_source_sha256': sha(source),
+               'fixture_inputs': {p: sha(ROOT / p) for p in inputs}}
     # No existing/generated build outputs or private/large inputs enter the copy.
     with tempfile.TemporaryDirectory(prefix='p1b-fixture-') as temporary:
         work = Path(temporary)
-        tracked = subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT).decode().split('\0')
-        exact = {'settings.gradle.kts', 'build.gradle.kts', 'gradle.properties',
-                 'buildscript-gradle.lockfile', 'gradlew', 'gradlew.bat',
-                 'core/build.gradle.kts', 'core/gradle.lockfile',
-                 'android/app/build.gradle.kts', 'android/app/gradle.lockfile',
-                 'android/asr-runtime/build.gradle.kts', 'android/asr-runtime/gradle.lockfile'}
-        for relative in tracked:
-            if not relative:
-                continue
-            if relative in exact or relative.startswith('gradle/') or (
-                    relative.startswith(('android/app/src/', 'android/asr-runtime/src/', 'core/src/'))
-                    and relative.endswith(('.java', '.kt', '.xml'))):
-                target = work / relative
-                target.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(ROOT / relative, target)
-        shutil.copytree(ROOT / 'android/test-host', work / 'android/test-host',
-                        ignore=shutil.ignore_patterns('build', '.gradle', '__pycache__'))
+        for relative in inputs:
+            target = work / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / relative, target)
         wrapper = work / 'gradle/wrapper/gradle-wrapper.jar'
         if sha(wrapper) != WRAPPER_SHA:
             raise AssertionError('wrapper identity mismatch')

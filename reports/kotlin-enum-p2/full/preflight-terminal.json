@@ -1,0 +1,17 @@
+{
+  "preflight_tasks": [
+    {
+      "id": "b12f2ff53",
+      "exit": 1,
+      "kind": "auxiliary syntax failure; full not launched",
+      "log_sha256": "29ef96551b11240abf6dd4506adf5cae936781c68eaf50ea4dd188bb30b86dde"
+    },
+    {
+      "id": "bd9a59eb3",
+      "exit": 0,
+      "kind": "actual corrected preparation completed",
+      "log_sha256": "45b65bb669c87816bc7ad54c0fe32eacfaec7326558d0fbd0dd7ac6963afde36"
+    }
+  ],
+  "full_started": false
+}

@@ -1,0 +1,41 @@
+buildscript { configurations.classpath { resolutionStrategy.activateDependencyLocking() } }
+plugins { id 'com.android.library' version '8.6.1' }
+android {
+    namespace 'org.llmasr.lintfixture'
+    compileSdk 35
+    buildToolsVersion '35.0.0'
+    defaultConfig { minSdk 29 }
+    buildFeatures { buildConfig false }
+    lint { xmlReport true; xmlOutput file('build/reports/lint-target.xml') }
+}
+ext.p1LintConsumerTypes = [com.android.build.gradle.internal.lint.AndroidLintTask,
+                          com.android.build.gradle.internal.lint.AndroidLintAnalysisTask]
+
+ext.p1LintFixtureAdapter = { gate, passed, validator ->
+    tasks.register('lintFilesProbe') { probe ->
+        dependsOn(gate)
+        doFirst {
+            def consumer = tasks.named('lintAnalyzeDebug').get()
+            def record = passed.get(consumer)
+            if (record == null || !record.classpath.is(consumer.lintTool.classpath)) {
+                throw new GradleException('Fixture missing real successful consumer record')
+            }
+            def files = record.classpath.files.toList()
+            def fc = objects.fileCollection().from(files)
+            if (providers.gradleProperty('p1LintClasspathMutation').isPresent()) {
+                def mutation = providers.gradleProperty('p1LintClasspathMutation').get()
+                def unknown = file('unknown-lint-tool.jar')
+                unknown.text = 'non-executable target negative fixture'
+                if (mutation == 'missing') files.remove(0)
+                else if (mutation == 'extra') files.add(unknown)
+                else if (mutation == 'replacement') files[0] = unknown
+                else throw new GradleException('Unknown test mutation')
+                fc.setFrom(files)
+                println 'LINT_TEST_ADAPTER_MUTATION=' + mutation
+            }
+            validator.call(probe, record.configuration, fc, 'fixture-validator')
+        }
+        doLast { println 'LINT_SHARED_VALIDATOR_RESTORE_PASS' }
+    }
+}
+apply from: 'gradle/verify-lint-tools.gradle'

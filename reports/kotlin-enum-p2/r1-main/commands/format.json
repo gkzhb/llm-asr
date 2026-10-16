@@ -1,0 +1,18 @@
+{
+  "label": "format",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "bash",
+    "scripts/verify-local.sh",
+    "format",
+    "--offline"
+  ],
+  "started_utc": "2026-10-16T09:19:49.357733+00:00",
+  "finished_utc": "2026-10-16T09:19:58.218495+00:00",
+  "exit": 0,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/format.log",
+  "log_sha256": "0df77f72007306f39d1d9cb2f9f025289ce0ac29e0118e09301331a7e34ee400"
+}

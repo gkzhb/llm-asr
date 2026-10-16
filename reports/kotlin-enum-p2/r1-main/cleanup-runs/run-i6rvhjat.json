@@ -1,0 +1,2263 @@
+{
+  "inputs.json": {
+    "bytes": 330,
+    "sha256": "d027f2843b740f1991302db9ca5c6a07ad99b33cd58fd8c1061bcb3d50f827b2",
+    "json": {
+      "tests/runtime_log_enum_mutant_test.py": "aff8d184177ac526c1261469b0c9fdd89decc61975d451ef04ef5df54ea65c16",
+      "scripts/compile-jvm-sources.sh": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf",
+      "tests/runtime_log_enum_cleanup_test.py": "38e6283ecf313458eda556b16cd24faca2f89ac491b492ee824c145e154786ab"
+    }
+  },
+  "java-hup/actual-run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "java-hup/after-scope.json": {
+    "bytes": 23,
+    "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+    "json": {
+      "tree_exists": false
+    }
+  },
+  "java-hup/before-cleanup.json": {
+    "bytes": 343,
+    "sha256": "bdf127a4a592aa3882a803c6ea216f7eee4508e0db971b9d522821ff3e70d159",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410476,
+          "start": "79248249",
+          "state": "S",
+          "pgid": 1410476,
+          "sid": 1410476
+        },
+        {
+          "pid": 1410477,
+          "start": "79248249",
+          "state": "R",
+          "pgid": 1410476,
+          "sid": 1410476
+        }
+      ],
+      "live_before_cleanup": [],
+      "tree_exists": true,
+      "records": []
+    }
+  },
+  "java-hup/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "java-hup/ready.json": {
+    "bytes": 172,
+    "sha256": "24b9adee0d2c4adcc41ae13505615ea9edafc43acd88042a90be360e36c8af6b",
+    "json": [
+      {
+        "pid": 1410476,
+        "start": "79248249",
+        "state": "S",
+        "pgid": 1410476,
+        "sid": 1410476
+      },
+      {
+        "pid": 1410477,
+        "start": "79248249",
+        "state": "R",
+        "pgid": 1410476,
+        "sid": 1410476
+      }
+    ]
+  },
+  "java-hup/reclaim-identities.json": {
+    "bytes": 227,
+    "sha256": "ddaf91222997bbb08a9b9f23bf7cc4bad2253381817fd51000ec496d52665c9a",
+    "json": [
+      {
+        "pid": 1410476,
+        "start": "79248249",
+        "state": "S",
+        "pgid": 1410476,
+        "sid": 1410476
+      },
+      {
+        "pid": 1410477,
+        "start": "79248249",
+        "state": "S",
+        "pgid": 1410476,
+        "sid": 1410476
+      }
+    ]
+  },
+  "java-hup/result.json": {
+    "bytes": 796,
+    "sha256": "e789b5fea3d574c857bca2baad747736196a36fc917f0b8ea4ecedf7ccfada9f",
+    "json": {
+      "tool": "java",
+      "fault": "hup",
+      "exit": 129,
+      "worker_identities": [
+        {
+          "pid": 1410476,
+          "start": "79248249",
+          "state": "S",
+          "pgid": 1410476,
+          "sid": 1410476
+        },
+        {
+          "pid": 1410477,
+          "start": "79248249",
+          "state": "R",
+          "pgid": 1410476,
+          "sid": 1410476
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410476,
+            "start": "79248249",
+            "state": "S",
+            "pgid": 1410476,
+            "sid": 1410476
+          },
+          {
+            "pid": 1410477,
+            "start": "79248249",
+            "state": "R",
+            "pgid": 1410476,
+            "sid": 1410476
+          }
+        ],
+        "live_before_cleanup": [],
+        "tree_exists": true,
+        "records": []
+      },
+      "tree_retained": false,
+      "scaled_inner_deadline": false
+    }
+  },
+  "java-hup/tree.json": {
+    "bytes": 97,
+    "sha256": "3074a641c24dbd0afed759ef44d7294d80320543800e59efb9ba7d41500d2906",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/java-hup/tree-oarvadt9"
+  },
+  "java-hup/worker.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "java-term/actual-run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "java-term/after-scope.json": {
+    "bytes": 23,
+    "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+    "json": {
+      "tree_exists": false
+    }
+  },
+  "java-term/before-cleanup.json": {
+    "bytes": 343,
+    "sha256": "8943e6a3017a8ee0d0d5762d97eaf96c09048e93db269c18f669c8ec103f7c01",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410472,
+          "start": "79248218",
+          "state": "S",
+          "pgid": 1410472,
+          "sid": 1410472
+        },
+        {
+          "pid": 1410473,
+          "start": "79248219",
+          "state": "R",
+          "pgid": 1410472,
+          "sid": 1410472
+        }
+      ],
+      "live_before_cleanup": [],
+      "tree_exists": true,
+      "records": []
+    }
+  },
+  "java-term/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "java-term/ready.json": {
+    "bytes": 172,
+    "sha256": "0ae3d27b0c7e80f2e6c6dc5625e7d4cd1d831850663fb90af045ed10cce6363a",
+    "json": [
+      {
+        "pid": 1410472,
+        "start": "79248218",
+        "state": "S",
+        "pgid": 1410472,
+        "sid": 1410472
+      },
+      {
+        "pid": 1410473,
+        "start": "79248219",
+        "state": "R",
+        "pgid": 1410472,
+        "sid": 1410472
+      }
+    ]
+  },
+  "java-term/reclaim-identities.json": {
+    "bytes": 227,
+    "sha256": "0c7040e123f08361e5595e545ba144b8e1b06d2bbf2abf513b49af95a506eec2",
+    "json": [
+      {
+        "pid": 1410472,
+        "start": "79248218",
+        "state": "S",
+        "pgid": 1410472,
+        "sid": 1410472
+      },
+      {
+        "pid": 1410473,
+        "start": "79248219",
+        "state": "S",
+        "pgid": 1410472,
+        "sid": 1410472
+      }
+    ]
+  },
+  "java-term/result.json": {
+    "bytes": 797,
+    "sha256": "208aedf1bb7c5ef0c583855b90ef1ce533b55738740e78454b9bc74e4afb440c",
+    "json": {
+      "tool": "java",
+      "fault": "term",
+      "exit": 143,
+      "worker_identities": [
+        {
+          "pid": 1410472,
+          "start": "79248218",
+          "state": "S",
+          "pgid": 1410472,
+          "sid": 1410472
+        },
+        {
+          "pid": 1410473,
+          "start": "79248219",
+          "state": "R",
+          "pgid": 1410472,
+          "sid": 1410472
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410472,
+            "start": "79248218",
+            "state": "S",
+            "pgid": 1410472,
+            "sid": 1410472
+          },
+          {
+            "pid": 1410473,
+            "start": "79248219",
+            "state": "R",
+            "pgid": 1410472,
+            "sid": 1410472
+          }
+        ],
+        "live_before_cleanup": [],
+        "tree_exists": true,
+        "records": []
+      },
+      "tree_retained": false,
+      "scaled_inner_deadline": false
+    }
+  },
+  "java-term/tree.json": {
+    "bytes": 98,
+    "sha256": "e0f55c3e73c8cd7916d8e3af68c59f0ebdca22ba0c8a5564ec2505dde480068a",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/java-term/tree-5do17zm8"
+  },
+  "java-term/worker.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "java-timeout/actual-run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "java-timeout/after-scope.json": {
+    "bytes": 23,
+    "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+    "json": {
+      "tree_exists": false
+    }
+  },
+  "java-timeout/before-cleanup.json": {
+    "bytes": 743,
+    "sha256": "15cf314b6fb4be722111a032cc087177875b99348d6e3f3ae39a5f63f10d94d6",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410479,
+          "start": "79248285",
+          "state": "S",
+          "pgid": 1410479,
+          "sid": 1410479
+        },
+        {
+          "pid": 1410480,
+          "start": "79248285",
+          "state": "R",
+          "pgid": 1410479,
+          "sid": 1410479
+        }
+      ],
+      "live_before_cleanup": [],
+      "tree_exists": true,
+      "records": [
+        {
+          "phase": "java-timeout",
+          "command": [
+            "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/java-timeout/bin/java"
+          ],
+          "exit": 124,
+          "timeout": true,
+          "log": ".work/p2enum-build/r1-main/cleanup/run-i6rvhjat/java-timeout/actual-run.log",
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  },
+  "java-timeout/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "java-timeout/ready.json": {
+    "bytes": 172,
+    "sha256": "f16981ec884df9b5836dbe0280d77873ef5c091328c9e1b87d4e777d3481ff90",
+    "json": [
+      {
+        "pid": 1410479,
+        "start": "79248285",
+        "state": "S",
+        "pgid": 1410479,
+        "sid": 1410479
+      },
+      {
+        "pid": 1410480,
+        "start": "79248285",
+        "state": "R",
+        "pgid": 1410479,
+        "sid": 1410479
+      }
+    ]
+  },
+  "java-timeout/reclaim-identities.json": {
+    "bytes": 227,
+    "sha256": "26ef57659ab3eb8c172da108d0f55f5683f45b0488d6b881677d067be4f9bc51",
+    "json": [
+      {
+        "pid": 1410479,
+        "start": "79248285",
+        "state": "S",
+        "pgid": 1410479,
+        "sid": 1410479
+      },
+      {
+        "pid": 1410480,
+        "start": "79248285",
+        "state": "S",
+        "pgid": 1410479,
+        "sid": 1410479
+      }
+    ]
+  },
+  "java-timeout/result.json": {
+    "bytes": 1220,
+    "sha256": "80872e8fcb1502b8abc1ca5fe91b756ec8f5ca04ff96047f6c10825074a9d65f",
+    "json": {
+      "tool": "java",
+      "fault": "timeout",
+      "exit": 1,
+      "worker_identities": [
+        {
+          "pid": 1410479,
+          "start": "79248285",
+          "state": "S",
+          "pgid": 1410479,
+          "sid": 1410479
+        },
+        {
+          "pid": 1410480,
+          "start": "79248285",
+          "state": "R",
+          "pgid": 1410479,
+          "sid": 1410479
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410479,
+            "start": "79248285",
+            "state": "S",
+            "pgid": 1410479,
+            "sid": 1410479
+          },
+          {
+            "pid": 1410480,
+            "start": "79248285",
+            "state": "R",
+            "pgid": 1410479,
+            "sid": 1410479
+          }
+        ],
+        "live_before_cleanup": [],
+        "tree_exists": true,
+        "records": [
+          {
+            "phase": "java-timeout",
+            "command": [
+              "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/java-timeout/bin/java"
+            ],
+            "exit": 124,
+            "timeout": true,
+            "log": ".work/p2enum-build/r1-main/cleanup/run-i6rvhjat/java-timeout/actual-run.log",
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "tree_retained": false,
+      "scaled_inner_deadline": false
+    }
+  },
+  "java-timeout/tree.json": {
+    "bytes": 101,
+    "sha256": "365bdd62c7c4f24ed8ad9bafa096137f71293d0dfeeac9308d4d785c08eaba35",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/java-timeout/tree-2blp0ahc"
+  },
+  "java-timeout/worker.log": {
+    "bytes": 1260,
+    "sha256": "6eb404331a3394f5825c2fe0b9d15385bf3c2846de0275d2f45a60aca14e9769",
+    "text": "Traceback (most recent call last):\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 314, in <module>\n    main()\n    ~~~~^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 296, in main\n    worker(Path(sys.argv[2]), sys.argv[3], sys.argv[4])\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 87, in worker\n    code, _ = driver.run(command, base / 'actual-run.log', records, tool + '-' + fault,\n              ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                         0.8 if fault in ('timeout', 'unconfirmed') else 8)\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 148, in run\n    require(not timed_out, label + ' timeout is infrastructure failure, not behavioral red')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 21, in require\n    raise RuntimeError(message)\nRuntimeError: java-timeout timeout is infrastructure failure, not behavioral red\n"
+  },
+  "javac-deadline/actual-run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "javac-deadline/after-scope.json": {
+    "bytes": 23,
+    "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+    "json": {
+      "tree_exists": false
+    }
+  },
+  "javac-deadline/before-cleanup.json": {
+    "bytes": 982,
+    "sha256": "2fdb30a89dc7fbcd78d2b75e919974c270f8419c298c6a1186a9fbb3746bea96",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410503,
+          "start": "79248466",
+          "state": "S",
+          "pgid": 1410502,
+          "sid": 1410499
+        },
+        {
+          "pid": 1410504,
+          "start": "79248466",
+          "state": "R",
+          "pgid": 1410502,
+          "sid": 1410499
+        }
+      ],
+      "live_before_cleanup": [],
+      "tree_exists": true,
+      "records": [
+        {
+          "phase": "javac-deadline",
+          "command": [
+            "bash",
+            "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+            "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-deadline/tree-y4fl0upe/classes",
+            "",
+            "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-deadline/tree-y4fl0upe/Probe.java"
+          ],
+          "exit": 124,
+          "timeout": false,
+          "log": ".work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-deadline/actual-run.log",
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  },
+  "javac-deadline/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "javac-deadline/ready.json": {
+    "bytes": 172,
+    "sha256": "72453f812add28d27e80fdd5042102d7090e08b0c420fa1cc4ffc870f7b357fe",
+    "json": [
+      {
+        "pid": 1410503,
+        "start": "79248466",
+        "state": "S",
+        "pgid": 1410502,
+        "sid": 1410499
+      },
+      {
+        "pid": 1410504,
+        "start": "79248466",
+        "state": "R",
+        "pgid": 1410502,
+        "sid": 1410499
+      }
+    ]
+  },
+  "javac-deadline/reclaim-identities.json": {
+    "bytes": 451,
+    "sha256": "30fd826558b2cb439fe0076f1c045513661e26d8e17ce2c301bcafae7d46396e",
+    "json": [
+      {
+        "pid": 1410499,
+        "start": "79248463",
+        "state": "S",
+        "pgid": 1410499,
+        "sid": 1410499
+      },
+      {
+        "pid": 1410502,
+        "start": "79248464",
+        "state": "S",
+        "pgid": 1410502,
+        "sid": 1410499
+      },
+      {
+        "pid": 1410503,
+        "start": "79248466",
+        "state": "S",
+        "pgid": 1410502,
+        "sid": 1410499
+      },
+      {
+        "pid": 1410504,
+        "start": "79248466",
+        "state": "S",
+        "pgid": 1410502,
+        "sid": 1410499
+      }
+    ]
+  },
+  "javac-deadline/result.json": {
+    "bytes": 1470,
+    "sha256": "52209bf4bc2932d9a7a07660a0b12d27242be687e94515559002cf9126e9993c",
+    "json": {
+      "tool": "javac",
+      "fault": "deadline",
+      "exit": 124,
+      "worker_identities": [
+        {
+          "pid": 1410503,
+          "start": "79248466",
+          "state": "S",
+          "pgid": 1410502,
+          "sid": 1410499
+        },
+        {
+          "pid": 1410504,
+          "start": "79248466",
+          "state": "R",
+          "pgid": 1410502,
+          "sid": 1410499
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410503,
+            "start": "79248466",
+            "state": "S",
+            "pgid": 1410502,
+            "sid": 1410499
+          },
+          {
+            "pid": 1410504,
+            "start": "79248466",
+            "state": "R",
+            "pgid": 1410502,
+            "sid": 1410499
+          }
+        ],
+        "live_before_cleanup": [],
+        "tree_exists": true,
+        "records": [
+          {
+            "phase": "javac-deadline",
+            "command": [
+              "bash",
+              "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+              "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-deadline/tree-y4fl0upe/classes",
+              "",
+              "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-deadline/tree-y4fl0upe/Probe.java"
+            ],
+            "exit": 124,
+            "timeout": false,
+            "log": ".work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-deadline/actual-run.log",
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "tree_retained": false,
+      "scaled_inner_deadline": true
+    }
+  },
+  "javac-deadline/timeout-args.json": {
+    "bytes": 655,
+    "sha256": "3eddcc2357aa5aa23f7621f4d179085574ed1377273a911070c953eda6bf565a",
+    "json": [
+      "120",
+      "javac",
+      "--release",
+      "8",
+      "-encoding",
+      "UTF-8",
+      "-classpath",
+      "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-deadline/tree-y4fl0upe/classes:/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-deadline/kotlin/lib/kotlin-stdlib.jar:/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-deadline/kotlin/lib/annotations-13.0.jar",
+      "-d",
+      "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-deadline/tree-y4fl0upe/classes",
+      "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-deadline/tree-y4fl0upe/Probe.java"
+    ]
+  },
+  "javac-deadline/tree.json": {
+    "bytes": 103,
+    "sha256": "9c66de2334296bea034803abca5926a68016150a698b063ea49ffcc1c78c7cf4",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-deadline/tree-y4fl0upe"
+  },
+  "javac-deadline/worker.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "javac-hup/actual-run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "javac-hup/after-scope.json": {
+    "bytes": 23,
+    "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+    "json": {
+      "tree_exists": false
+    }
+  },
+  "javac-hup/before-cleanup.json": {
+    "bytes": 343,
+    "sha256": "a1530709260eb2772e43fcbd8e19dcfcca152f1a064bb88d6387b88cecc64231",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410448,
+          "start": "79248081",
+          "state": "S",
+          "pgid": 1410447,
+          "sid": 1410444
+        },
+        {
+          "pid": 1410449,
+          "start": "79248082",
+          "state": "R",
+          "pgid": 1410447,
+          "sid": 1410444
+        }
+      ],
+      "live_before_cleanup": [],
+      "tree_exists": true,
+      "records": []
+    }
+  },
+  "javac-hup/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "javac-hup/ready.json": {
+    "bytes": 172,
+    "sha256": "a04e1587f54658ea4b8495f0b0a33fabf7a229b2d9ec673b7ddfb2e1dfb6aaed",
+    "json": [
+      {
+        "pid": 1410448,
+        "start": "79248081",
+        "state": "S",
+        "pgid": 1410447,
+        "sid": 1410444
+      },
+      {
+        "pid": 1410449,
+        "start": "79248082",
+        "state": "R",
+        "pgid": 1410447,
+        "sid": 1410444
+      }
+    ]
+  },
+  "javac-hup/reclaim-identities.json": {
+    "bytes": 451,
+    "sha256": "6591a8ac95f3f6f64a729f4072578930b909c16dfccde93fe43ba82ced8cf077",
+    "json": [
+      {
+        "pid": 1410444,
+        "start": "79248081",
+        "state": "S",
+        "pgid": 1410444,
+        "sid": 1410444
+      },
+      {
+        "pid": 1410447,
+        "start": "79248081",
+        "state": "S",
+        "pgid": 1410447,
+        "sid": 1410444
+      },
+      {
+        "pid": 1410448,
+        "start": "79248081",
+        "state": "S",
+        "pgid": 1410447,
+        "sid": 1410444
+      },
+      {
+        "pid": 1410449,
+        "start": "79248082",
+        "state": "S",
+        "pgid": 1410447,
+        "sid": 1410444
+      }
+    ]
+  },
+  "javac-hup/result.json": {
+    "bytes": 797,
+    "sha256": "f7d86b1e2c30370874287d8026dd5a4666bcd73c6fbe80d65a87a8ed07299b90",
+    "json": {
+      "tool": "javac",
+      "fault": "hup",
+      "exit": 129,
+      "worker_identities": [
+        {
+          "pid": 1410448,
+          "start": "79248081",
+          "state": "S",
+          "pgid": 1410447,
+          "sid": 1410444
+        },
+        {
+          "pid": 1410449,
+          "start": "79248082",
+          "state": "R",
+          "pgid": 1410447,
+          "sid": 1410444
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410448,
+            "start": "79248081",
+            "state": "S",
+            "pgid": 1410447,
+            "sid": 1410444
+          },
+          {
+            "pid": 1410449,
+            "start": "79248082",
+            "state": "R",
+            "pgid": 1410447,
+            "sid": 1410444
+          }
+        ],
+        "live_before_cleanup": [],
+        "tree_exists": true,
+        "records": []
+      },
+      "tree_retained": false,
+      "scaled_inner_deadline": false
+    }
+  },
+  "javac-hup/tree.json": {
+    "bytes": 98,
+    "sha256": "b2cb755df8e6d88faf4fedecbeb553b03e8e69a0eaf9121e9ace5511068e832c",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-hup/tree-n6ztdm7n"
+  },
+  "javac-hup/worker.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "javac-term/actual-run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "javac-term/after-scope.json": {
+    "bytes": 23,
+    "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+    "json": {
+      "tree_exists": false
+    }
+  },
+  "javac-term/before-cleanup.json": {
+    "bytes": 343,
+    "sha256": "4a3289b989eeebbbe75d7fb8b862e51495187ef60a92e5b4e51d62ba6694992f",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410440,
+          "start": "79248050",
+          "state": "S",
+          "pgid": 1410439,
+          "sid": 1410436
+        },
+        {
+          "pid": 1410441,
+          "start": "79248050",
+          "state": "R",
+          "pgid": 1410439,
+          "sid": 1410436
+        }
+      ],
+      "live_before_cleanup": [],
+      "tree_exists": true,
+      "records": []
+    }
+  },
+  "javac-term/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "javac-term/ready.json": {
+    "bytes": 172,
+    "sha256": "92f200ff8e56e8d4559aa56d0b1358ccdebb7829d822a8de1c62cd8e1511a58e",
+    "json": [
+      {
+        "pid": 1410440,
+        "start": "79248050",
+        "state": "S",
+        "pgid": 1410439,
+        "sid": 1410436
+      },
+      {
+        "pid": 1410441,
+        "start": "79248050",
+        "state": "R",
+        "pgid": 1410439,
+        "sid": 1410436
+      }
+    ]
+  },
+  "javac-term/reclaim-identities.json": {
+    "bytes": 451,
+    "sha256": "a92bbecf05f8d337a31ccad7ab22835aff0f1c8985901816555d42bad57661eb",
+    "json": [
+      {
+        "pid": 1410436,
+        "start": "79248050",
+        "state": "S",
+        "pgid": 1410436,
+        "sid": 1410436
+      },
+      {
+        "pid": 1410439,
+        "start": "79248050",
+        "state": "S",
+        "pgid": 1410439,
+        "sid": 1410436
+      },
+      {
+        "pid": 1410440,
+        "start": "79248050",
+        "state": "S",
+        "pgid": 1410439,
+        "sid": 1410436
+      },
+      {
+        "pid": 1410441,
+        "start": "79248050",
+        "state": "S",
+        "pgid": 1410439,
+        "sid": 1410436
+      }
+    ]
+  },
+  "javac-term/result.json": {
+    "bytes": 798,
+    "sha256": "0bfbec14ce4e27138990dd49a41baad3e203e7b8045e01f6c3cae985f743a2c8",
+    "json": {
+      "tool": "javac",
+      "fault": "term",
+      "exit": 143,
+      "worker_identities": [
+        {
+          "pid": 1410440,
+          "start": "79248050",
+          "state": "S",
+          "pgid": 1410439,
+          "sid": 1410436
+        },
+        {
+          "pid": 1410441,
+          "start": "79248050",
+          "state": "R",
+          "pgid": 1410439,
+          "sid": 1410436
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410440,
+            "start": "79248050",
+            "state": "S",
+            "pgid": 1410439,
+            "sid": 1410436
+          },
+          {
+            "pid": 1410441,
+            "start": "79248050",
+            "state": "R",
+            "pgid": 1410439,
+            "sid": 1410436
+          }
+        ],
+        "live_before_cleanup": [],
+        "tree_exists": true,
+        "records": []
+      },
+      "tree_retained": false,
+      "scaled_inner_deadline": false
+    }
+  },
+  "javac-term/tree.json": {
+    "bytes": 99,
+    "sha256": "c2ca7fdde98644b7e59137847d8d3e64a3fb1dbf444a78847d5ace0723f846e6",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-term/tree-msvz6uys"
+  },
+  "javac-term/worker.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "javac-timeout/actual-run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "javac-timeout/after-scope.json": {
+    "bytes": 23,
+    "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+    "json": {
+      "tree_exists": false
+    }
+  },
+  "javac-timeout/before-cleanup.json": {
+    "bytes": 977,
+    "sha256": "dc31ce2152fc4af2f17f679a804febb48ba64bf07de8a4bebb399717d6c4f836",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410455,
+          "start": "79248112",
+          "state": "S",
+          "pgid": 1410454,
+          "sid": 1410451
+        },
+        {
+          "pid": 1410456,
+          "start": "79248113",
+          "state": "R",
+          "pgid": 1410454,
+          "sid": 1410451
+        }
+      ],
+      "live_before_cleanup": [],
+      "tree_exists": true,
+      "records": [
+        {
+          "phase": "javac-timeout",
+          "command": [
+            "bash",
+            "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+            "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-timeout/tree-mre53wat/classes",
+            "",
+            "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-timeout/tree-mre53wat/Probe.java"
+          ],
+          "exit": 124,
+          "timeout": true,
+          "log": ".work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-timeout/actual-run.log",
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  },
+  "javac-timeout/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "javac-timeout/ready.json": {
+    "bytes": 172,
+    "sha256": "4bb2ece5d34526eb6106d5c448f02e00555f65f85a060acfef1311a432cbea02",
+    "json": [
+      {
+        "pid": 1410455,
+        "start": "79248112",
+        "state": "S",
+        "pgid": 1410454,
+        "sid": 1410451
+      },
+      {
+        "pid": 1410456,
+        "start": "79248113",
+        "state": "R",
+        "pgid": 1410454,
+        "sid": 1410451
+      }
+    ]
+  },
+  "javac-timeout/reclaim-identities.json": {
+    "bytes": 451,
+    "sha256": "4b6da9601c67bcf493a79c49fd24bf0647b36d252bea80b1090ff0bc266c82af",
+    "json": [
+      {
+        "pid": 1410451,
+        "start": "79248112",
+        "state": "S",
+        "pgid": 1410451,
+        "sid": 1410451
+      },
+      {
+        "pid": 1410454,
+        "start": "79248112",
+        "state": "S",
+        "pgid": 1410454,
+        "sid": 1410451
+      },
+      {
+        "pid": 1410455,
+        "start": "79248112",
+        "state": "S",
+        "pgid": 1410454,
+        "sid": 1410451
+      },
+      {
+        "pid": 1410456,
+        "start": "79248113",
+        "state": "S",
+        "pgid": 1410454,
+        "sid": 1410451
+      }
+    ]
+  },
+  "javac-timeout/result.json": {
+    "bytes": 1463,
+    "sha256": "168a435acaad11bf138410353eaa3bcaa0f56590aa59c464b2a2943d050ed00a",
+    "json": {
+      "tool": "javac",
+      "fault": "timeout",
+      "exit": 1,
+      "worker_identities": [
+        {
+          "pid": 1410455,
+          "start": "79248112",
+          "state": "S",
+          "pgid": 1410454,
+          "sid": 1410451
+        },
+        {
+          "pid": 1410456,
+          "start": "79248113",
+          "state": "R",
+          "pgid": 1410454,
+          "sid": 1410451
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410455,
+            "start": "79248112",
+            "state": "S",
+            "pgid": 1410454,
+            "sid": 1410451
+          },
+          {
+            "pid": 1410456,
+            "start": "79248113",
+            "state": "R",
+            "pgid": 1410454,
+            "sid": 1410451
+          }
+        ],
+        "live_before_cleanup": [],
+        "tree_exists": true,
+        "records": [
+          {
+            "phase": "javac-timeout",
+            "command": [
+              "bash",
+              "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+              "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-timeout/tree-mre53wat/classes",
+              "",
+              "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-timeout/tree-mre53wat/Probe.java"
+            ],
+            "exit": 124,
+            "timeout": true,
+            "log": ".work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-timeout/actual-run.log",
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "tree_retained": false,
+      "scaled_inner_deadline": false
+    }
+  },
+  "javac-timeout/tree.json": {
+    "bytes": 102,
+    "sha256": "e2a57ee9e3cb7d78907c98d257dce9c050f7e5c0e03d0da3c81096ba069b308f",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/javac-timeout/tree-mre53wat"
+  },
+  "javac-timeout/worker.log": {
+    "bytes": 1261,
+    "sha256": "5ec73e1aabc6eeee6f4a9c73dd0773a4fef0729bb678806ea5d026ddb7ab37e8",
+    "text": "Traceback (most recent call last):\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 314, in <module>\n    main()\n    ~~~~^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 296, in main\n    worker(Path(sys.argv[2]), sys.argv[3], sys.argv[4])\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 87, in worker\n    code, _ = driver.run(command, base / 'actual-run.log', records, tool + '-' + fault,\n              ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                         0.8 if fault in ('timeout', 'unconfirmed') else 8)\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 148, in run\n    require(not timed_out, label + ' timeout is infrastructure failure, not behavioral red')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 21, in require\n    raise RuntimeError(message)\nRuntimeError: javac-timeout timeout is infrastructure failure, not behavioral red\n"
+  },
+  "kotlinc-deadline/actual-run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "kotlinc-deadline/after-scope.json": {
+    "bytes": 23,
+    "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+    "json": {
+      "tree_exists": false
+    }
+  },
+  "kotlinc-deadline/before-cleanup.json": {
+    "bytes": 988,
+    "sha256": "4c253ae81f4cad1e92921dd7812eecb1ebaae0ff3396df8e9a4f6573bd4851cc",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410496,
+          "start": "79248398",
+          "state": "S",
+          "pgid": 1410493,
+          "sid": 1410490
+        },
+        {
+          "pid": 1410497,
+          "start": "79248398",
+          "state": "R",
+          "pgid": 1410493,
+          "sid": 1410490
+        }
+      ],
+      "live_before_cleanup": [],
+      "tree_exists": true,
+      "records": [
+        {
+          "phase": "kotlinc-deadline",
+          "command": [
+            "bash",
+            "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+            "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-deadline/tree-7kfcy0tu/classes",
+            "",
+            "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-deadline/tree-7kfcy0tu/Probe.kt"
+          ],
+          "exit": 124,
+          "timeout": false,
+          "log": ".work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-deadline/actual-run.log",
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  },
+  "kotlinc-deadline/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "kotlinc-deadline/ready.json": {
+    "bytes": 172,
+    "sha256": "b892671d5115a9368a54df3be9ad80607bec611074127bcec1b5b734bbdfc1f1",
+    "json": [
+      {
+        "pid": 1410496,
+        "start": "79248398",
+        "state": "S",
+        "pgid": 1410493,
+        "sid": 1410490
+      },
+      {
+        "pid": 1410497,
+        "start": "79248398",
+        "state": "R",
+        "pgid": 1410493,
+        "sid": 1410490
+      }
+    ]
+  },
+  "kotlinc-deadline/reclaim-identities.json": {
+    "bytes": 451,
+    "sha256": "9e7fa2eaa2c0b8fe1f0068dd79bae58db5d839559d86d883605fdb33c5f60ad9",
+    "json": [
+      {
+        "pid": 1410490,
+        "start": "79248395",
+        "state": "S",
+        "pgid": 1410490,
+        "sid": 1410490
+      },
+      {
+        "pid": 1410493,
+        "start": "79248396",
+        "state": "S",
+        "pgid": 1410493,
+        "sid": 1410490
+      },
+      {
+        "pid": 1410496,
+        "start": "79248398",
+        "state": "S",
+        "pgid": 1410493,
+        "sid": 1410490
+      },
+      {
+        "pid": 1410497,
+        "start": "79248398",
+        "state": "S",
+        "pgid": 1410493,
+        "sid": 1410490
+      }
+    ]
+  },
+  "kotlinc-deadline/result.json": {
+    "bytes": 1478,
+    "sha256": "87064a65b21066f1f7d1395d6e849b668202d57a7cd8e735ca38c0c39f4f7a90",
+    "json": {
+      "tool": "kotlinc",
+      "fault": "deadline",
+      "exit": 124,
+      "worker_identities": [
+        {
+          "pid": 1410496,
+          "start": "79248398",
+          "state": "S",
+          "pgid": 1410493,
+          "sid": 1410490
+        },
+        {
+          "pid": 1410497,
+          "start": "79248398",
+          "state": "R",
+          "pgid": 1410493,
+          "sid": 1410490
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410496,
+            "start": "79248398",
+            "state": "S",
+            "pgid": 1410493,
+            "sid": 1410490
+          },
+          {
+            "pid": 1410497,
+            "start": "79248398",
+            "state": "R",
+            "pgid": 1410493,
+            "sid": 1410490
+          }
+        ],
+        "live_before_cleanup": [],
+        "tree_exists": true,
+        "records": [
+          {
+            "phase": "kotlinc-deadline",
+            "command": [
+              "bash",
+              "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+              "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-deadline/tree-7kfcy0tu/classes",
+              "",
+              "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-deadline/tree-7kfcy0tu/Probe.kt"
+            ],
+            "exit": 124,
+            "timeout": false,
+            "log": ".work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-deadline/actual-run.log",
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "tree_retained": false,
+      "scaled_inner_deadline": true
+    }
+  },
+  "kotlinc-deadline/timeout-args.json": {
+    "bytes": 697,
+    "sha256": "5ac7d0ce30f0e651d835cbd5e346225f0e6c6a017c5a7a329c9ad1af817d8452",
+    "json": [
+      "120",
+      "kotlinc",
+      "-jvm-target",
+      "1.8",
+      "-Xjvm-default=all",
+      "-no-stdlib",
+      "-no-reflect",
+      "-classpath",
+      "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-deadline/tree-7kfcy0tu/classes:/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-deadline/kotlin/lib/kotlin-stdlib.jar:/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-deadline/kotlin/lib/annotations-13.0.jar",
+      "-d",
+      "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-deadline/tree-7kfcy0tu/classes",
+      "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-deadline/tree-7kfcy0tu/Probe.kt"
+    ]
+  },
+  "kotlinc-deadline/tree.json": {
+    "bytes": 105,
+    "sha256": "b0efcec3affbd18b51af4820dd8b8af33bb4d5074b15bf84729b21e0601a4efa",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-deadline/tree-7kfcy0tu"
+  },
+  "kotlinc-deadline/worker.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "kotlinc-hup/actual-run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "kotlinc-hup/after-scope.json": {
+    "bytes": 23,
+    "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+    "json": {
+      "tree_exists": false
+    }
+  },
+  "kotlinc-hup/before-cleanup.json": {
+    "bytes": 343,
+    "sha256": "f19fe5b1b8f42bbdd6da60c4fd4cab32bccdb99d3bc82b42a3560df342f47d80",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410417,
+          "start": "79247912",
+          "state": "S",
+          "pgid": 1410416,
+          "sid": 1410413
+        },
+        {
+          "pid": 1410418,
+          "start": "79247912",
+          "state": "R",
+          "pgid": 1410416,
+          "sid": 1410413
+        }
+      ],
+      "live_before_cleanup": [],
+      "tree_exists": true,
+      "records": []
+    }
+  },
+  "kotlinc-hup/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "kotlinc-hup/ready.json": {
+    "bytes": 172,
+    "sha256": "bf4e3469343d557657cc8361654dd0c43e0b8dde59e852201021958efb770c6b",
+    "json": [
+      {
+        "pid": 1410417,
+        "start": "79247912",
+        "state": "S",
+        "pgid": 1410416,
+        "sid": 1410413
+      },
+      {
+        "pid": 1410418,
+        "start": "79247912",
+        "state": "R",
+        "pgid": 1410416,
+        "sid": 1410413
+      }
+    ]
+  },
+  "kotlinc-hup/reclaim-identities.json": {
+    "bytes": 451,
+    "sha256": "917de3a379a017448400424460cf93bf7877604e05a0132d1b301cbac5466775",
+    "json": [
+      {
+        "pid": 1410413,
+        "start": "79247912",
+        "state": "S",
+        "pgid": 1410413,
+        "sid": 1410413
+      },
+      {
+        "pid": 1410416,
+        "start": "79247912",
+        "state": "S",
+        "pgid": 1410416,
+        "sid": 1410413
+      },
+      {
+        "pid": 1410417,
+        "start": "79247912",
+        "state": "S",
+        "pgid": 1410416,
+        "sid": 1410413
+      },
+      {
+        "pid": 1410418,
+        "start": "79247912",
+        "state": "S",
+        "pgid": 1410416,
+        "sid": 1410413
+      }
+    ]
+  },
+  "kotlinc-hup/result.json": {
+    "bytes": 799,
+    "sha256": "fa965695487223f418760a95028f08330c8b431925cdf3d25a337efe1e856284",
+    "json": {
+      "tool": "kotlinc",
+      "fault": "hup",
+      "exit": 129,
+      "worker_identities": [
+        {
+          "pid": 1410417,
+          "start": "79247912",
+          "state": "S",
+          "pgid": 1410416,
+          "sid": 1410413
+        },
+        {
+          "pid": 1410418,
+          "start": "79247912",
+          "state": "R",
+          "pgid": 1410416,
+          "sid": 1410413
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410417,
+            "start": "79247912",
+            "state": "S",
+            "pgid": 1410416,
+            "sid": 1410413
+          },
+          {
+            "pid": 1410418,
+            "start": "79247912",
+            "state": "R",
+            "pgid": 1410416,
+            "sid": 1410413
+          }
+        ],
+        "live_before_cleanup": [],
+        "tree_exists": true,
+        "records": []
+      },
+      "tree_retained": false,
+      "scaled_inner_deadline": false
+    }
+  },
+  "kotlinc-hup/tree.json": {
+    "bytes": 100,
+    "sha256": "4ef379f20d2b9493fab144d397c164744103a9fa0d100d8f06246d6075350980",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-hup/tree-ovztwz36"
+  },
+  "kotlinc-hup/worker.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "kotlinc-main-unconfirmed/after-scope.json": {
+    "bytes": 22,
+    "sha256": "26f1e5ac5e17705367c95775b2d39d8a2037056443804b9444364fe9d9995f41",
+    "json": {
+      "tree_exists": true
+    }
+  },
+  "kotlinc-main-unconfirmed/before-cleanup.json": {
+    "bytes": 597,
+    "sha256": "6f7191fe8d386e456e919b4a21bfa46618a641227b9958c4acd422058cace50a",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410576,
+          "start": "79248632",
+          "state": "S",
+          "pgid": 1410575,
+          "sid": 1410521
+        },
+        {
+          "pid": 1410577,
+          "start": "79248633",
+          "state": "R",
+          "pgid": 1410575,
+          "sid": 1410521
+        }
+      ],
+      "live_before_cleanup": [
+        {
+          "pid": 1410576,
+          "start": "79248632",
+          "state": "S",
+          "pgid": 1410575,
+          "sid": 1410521
+        },
+        {
+          "pid": 1410577,
+          "start": "79248633",
+          "state": "R",
+          "pgid": 1410575,
+          "sid": 1410521
+        }
+      ],
+      "tree_exists": true,
+      "records": []
+    }
+  },
+  "kotlinc-main-unconfirmed/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "kotlinc-main-unconfirmed/main-observation.json": {
+    "bytes": 929,
+    "sha256": "2c4fdd1cc6949c41a7e73e018952308fe718c1932f10024b6566e2ed5991b531",
+    "json": {
+      "target": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-2ils1aiq/tree-jcqfxsuo/android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt",
+      "tree": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-2ils1aiq/tree-jcqfxsuo",
+      "classes": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-2ils1aiq/tree-jcqfxsuo/classes-RuntimeLogSource-red",
+      "mutant_sha256": "7b4d0139f005a68757e5238c6ef6410ed5f0e1c77911581b1a6faa0ec6d784b1",
+      "original_sha256": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3",
+      "calls": [
+        "green0-compile",
+        "green0-run",
+        "RuntimeLogSource-red-compile"
+      ],
+      "stop_unconfirmed_propagated": true,
+      "exception": "owned SID stop not confirmed: controlled main stop observation unavailable",
+      "source_sha256_after": "7b4d0139f005a68757e5238c6ef6410ed5f0e1c77911581b1a6faa0ec6d784b1",
+      "classes_retained": true,
+      "marker_retained": true
+    }
+  },
+  "kotlinc-main-unconfirmed/ready.json": {
+    "bytes": 172,
+    "sha256": "6e7e47153ea41dd3c517285ca905ba3752f2c9a86a2294d98b66de051edf882f",
+    "json": [
+      {
+        "pid": 1410576,
+        "start": "79248632",
+        "state": "S",
+        "pgid": 1410575,
+        "sid": 1410521
+      },
+      {
+        "pid": 1410577,
+        "start": "79248633",
+        "state": "R",
+        "pgid": 1410575,
+        "sid": 1410521
+      }
+    ]
+  },
+  "kotlinc-main-unconfirmed/reclaim-identities.json": {
+    "bytes": 451,
+    "sha256": "80b9401e47ab5302f80296d4eac75b14f35823beaf54c6af15ea41c86de119d0",
+    "json": [
+      {
+        "pid": 1410521,
+        "start": "79248627",
+        "state": "S",
+        "pgid": 1410521,
+        "sid": 1410521
+      },
+      {
+        "pid": 1410575,
+        "start": "79248632",
+        "state": "S",
+        "pgid": 1410575,
+        "sid": 1410521
+      },
+      {
+        "pid": 1410576,
+        "start": "79248632",
+        "state": "S",
+        "pgid": 1410575,
+        "sid": 1410521
+      },
+      {
+        "pid": 1410577,
+        "start": "79248633",
+        "state": "S",
+        "pgid": 1410575,
+        "sid": 1410521
+      }
+    ]
+  },
+  "kotlinc-main-unconfirmed/result.json": {
+    "bytes": 1093,
+    "sha256": "7ae0e3b02653b2589801b4d9433580dd1c0b599d3f0a417015e5cde9f51b5cf6",
+    "json": {
+      "tool": "kotlinc",
+      "fault": "main-unconfirmed",
+      "exit": 1,
+      "worker_identities": [
+        {
+          "pid": 1410576,
+          "start": "79248632",
+          "state": "S",
+          "pgid": 1410575,
+          "sid": 1410521
+        },
+        {
+          "pid": 1410577,
+          "start": "79248633",
+          "state": "R",
+          "pgid": 1410575,
+          "sid": 1410521
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410576,
+            "start": "79248632",
+            "state": "S",
+            "pgid": 1410575,
+            "sid": 1410521
+          },
+          {
+            "pid": 1410577,
+            "start": "79248633",
+            "state": "R",
+            "pgid": 1410575,
+            "sid": 1410521
+          }
+        ],
+        "live_before_cleanup": [
+          {
+            "pid": 1410576,
+            "start": "79248632",
+            "state": "S",
+            "pgid": 1410575,
+            "sid": 1410521
+          },
+          {
+            "pid": 1410577,
+            "start": "79248633",
+            "state": "R",
+            "pgid": 1410575,
+            "sid": 1410521
+          }
+        ],
+        "tree_exists": true,
+        "records": []
+      },
+      "tree_retained": true,
+      "scaled_inner_deadline": false
+    }
+  },
+  "kotlinc-main-unconfirmed/tree.json": {
+    "bytes": 80,
+    "sha256": "72193b4d365cce435f5dd554169a8a5eb2f766b29fda5e0b350f4c80258894ce",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-2ils1aiq/tree-jcqfxsuo"
+  },
+  "kotlinc-main-unconfirmed/worker.log": {
+    "bytes": 2628,
+    "sha256": "3976ff8ca5ffa4a1fd5341ff610b3269df18c931155c863772c1eb8ebcf9654b",
+    "text": "FAIL stop unconfirmed; retained owned tree=/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-2ils1aiq/tree-jcqfxsuo\nTraceback (most recent call last):\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 113, in finish_session\n    members = session_members(owner)\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 108, in unavailable\n    raise OSError('controlled main stop observation unavailable')\nOSError: controlled main stop observation unavailable\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 314, in <module>\n    main()\n    ~~~~^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 296, in main\n    worker(Path(sys.argv[2]), sys.argv[3], sys.argv[4])\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 63, in worker\n    main_fault(driver, base)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 135, in main_fault\n    driver.main()\n    ~~~~~~~~~~~^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 210, in main\n    compile_and_run(name + '-red', name + ' inventory/order mismatch')\n    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 179, in compile_and_run\n    code, text = run(['bash', str(ROOT / 'scripts/compile-jvm-sources.sh'), str(classes), '',\n                 ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                      *map(str, copies)], evidence / (label + '-compile.log'), records,\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                     label + '-compile', 270)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 128, in fault_run\n    return actual_run(command, log, records, label, 0.8)\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 145, in run\n    finish_session(process, owner)\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 125, in finish_session\n    raise StopUnconfirmed('owned SID stop not confirmed: ' + str(error)) from error\nactual_enum_driver.StopUnconfirmed: owned SID stop not confirmed: controlled main stop observation unavailable\n"
+  },
+  "kotlinc-term/actual-run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "kotlinc-term/after-scope.json": {
+    "bytes": 23,
+    "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+    "json": {
+      "tree_exists": false
+    }
+  },
+  "kotlinc-term/before-cleanup.json": {
+    "bytes": 343,
+    "sha256": "64876a01b6b0a0eca42b48975d27be469fa7271b0f419ccb48f4f141571272f8",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410410,
+          "start": "79247881",
+          "state": "S",
+          "pgid": 1410409,
+          "sid": 1410406
+        },
+        {
+          "pid": 1410411,
+          "start": "79247881",
+          "state": "R",
+          "pgid": 1410409,
+          "sid": 1410406
+        }
+      ],
+      "live_before_cleanup": [],
+      "tree_exists": true,
+      "records": []
+    }
+  },
+  "kotlinc-term/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "kotlinc-term/ready.json": {
+    "bytes": 172,
+    "sha256": "74227e9190422f4e1d5e23fbf0aaf2a8b5d65d814182c28bd55c17d0599b60eb",
+    "json": [
+      {
+        "pid": 1410410,
+        "start": "79247881",
+        "state": "S",
+        "pgid": 1410409,
+        "sid": 1410406
+      },
+      {
+        "pid": 1410411,
+        "start": "79247881",
+        "state": "R",
+        "pgid": 1410409,
+        "sid": 1410406
+      }
+    ]
+  },
+  "kotlinc-term/reclaim-identities.json": {
+    "bytes": 451,
+    "sha256": "3708134725d1535f56c32e3e467f8337b896b0a16f24db5e299afe5a32300738",
+    "json": [
+      {
+        "pid": 1410406,
+        "start": "79247881",
+        "state": "S",
+        "pgid": 1410406,
+        "sid": 1410406
+      },
+      {
+        "pid": 1410409,
+        "start": "79247881",
+        "state": "S",
+        "pgid": 1410409,
+        "sid": 1410406
+      },
+      {
+        "pid": 1410410,
+        "start": "79247881",
+        "state": "S",
+        "pgid": 1410409,
+        "sid": 1410406
+      },
+      {
+        "pid": 1410411,
+        "start": "79247881",
+        "state": "S",
+        "pgid": 1410409,
+        "sid": 1410406
+      }
+    ]
+  },
+  "kotlinc-term/result.json": {
+    "bytes": 800,
+    "sha256": "3694226e2c895b22b61a5a7db9a243d317434d848905d1d3fa0c93b0765833b7",
+    "json": {
+      "tool": "kotlinc",
+      "fault": "term",
+      "exit": 143,
+      "worker_identities": [
+        {
+          "pid": 1410410,
+          "start": "79247881",
+          "state": "S",
+          "pgid": 1410409,
+          "sid": 1410406
+        },
+        {
+          "pid": 1410411,
+          "start": "79247881",
+          "state": "R",
+          "pgid": 1410409,
+          "sid": 1410406
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410410,
+            "start": "79247881",
+            "state": "S",
+            "pgid": 1410409,
+            "sid": 1410406
+          },
+          {
+            "pid": 1410411,
+            "start": "79247881",
+            "state": "R",
+            "pgid": 1410409,
+            "sid": 1410406
+          }
+        ],
+        "live_before_cleanup": [],
+        "tree_exists": true,
+        "records": []
+      },
+      "tree_retained": false,
+      "scaled_inner_deadline": false
+    }
+  },
+  "kotlinc-term/tree.json": {
+    "bytes": 101,
+    "sha256": "40da156c0cac25c8ab02bf0e773083069a34ffcb708e2e04e9a2b13a0d923f06",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-term/tree-ygxb0y51"
+  },
+  "kotlinc-term/worker.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "kotlinc-timeout/actual-run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "kotlinc-timeout/after-scope.json": {
+    "bytes": 23,
+    "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+    "json": {
+      "tree_exists": false
+    }
+  },
+  "kotlinc-timeout/before-cleanup.json": {
+    "bytes": 983,
+    "sha256": "087e0949bca5ddb55e5d98060236784fa7af418207f737e51585f12abc9680bf",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410432,
+          "start": "79247943",
+          "state": "S",
+          "pgid": 1410431,
+          "sid": 1410428
+        },
+        {
+          "pid": 1410433,
+          "start": "79247944",
+          "state": "R",
+          "pgid": 1410431,
+          "sid": 1410428
+        }
+      ],
+      "live_before_cleanup": [],
+      "tree_exists": true,
+      "records": [
+        {
+          "phase": "kotlinc-timeout",
+          "command": [
+            "bash",
+            "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+            "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-timeout/tree-w8vaq9a9/classes",
+            "",
+            "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-timeout/tree-w8vaq9a9/Probe.kt"
+          ],
+          "exit": 124,
+          "timeout": true,
+          "log": ".work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-timeout/actual-run.log",
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  },
+  "kotlinc-timeout/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "kotlinc-timeout/ready.json": {
+    "bytes": 172,
+    "sha256": "00881b2e7c29b4aca1aace0376fb934ba3c00ff865bb3707ed053749cf636b8a",
+    "json": [
+      {
+        "pid": 1410432,
+        "start": "79247943",
+        "state": "S",
+        "pgid": 1410431,
+        "sid": 1410428
+      },
+      {
+        "pid": 1410433,
+        "start": "79247944",
+        "state": "R",
+        "pgid": 1410431,
+        "sid": 1410428
+      }
+    ]
+  },
+  "kotlinc-timeout/reclaim-identities.json": {
+    "bytes": 451,
+    "sha256": "a5e4d8230bf9ee4ebe306ec00732c0e2473f9a3b762fe33f8978750bc90e6b03",
+    "json": [
+      {
+        "pid": 1410428,
+        "start": "79247943",
+        "state": "S",
+        "pgid": 1410428,
+        "sid": 1410428
+      },
+      {
+        "pid": 1410431,
+        "start": "79247943",
+        "state": "S",
+        "pgid": 1410431,
+        "sid": 1410428
+      },
+      {
+        "pid": 1410432,
+        "start": "79247943",
+        "state": "S",
+        "pgid": 1410431,
+        "sid": 1410428
+      },
+      {
+        "pid": 1410433,
+        "start": "79247944",
+        "state": "S",
+        "pgid": 1410431,
+        "sid": 1410428
+      }
+    ]
+  },
+  "kotlinc-timeout/result.json": {
+    "bytes": 1471,
+    "sha256": "6e866465b7ee8d27382d5a172ff24bb3011edd503ddcb8d157d8e06631a7fb42",
+    "json": {
+      "tool": "kotlinc",
+      "fault": "timeout",
+      "exit": 1,
+      "worker_identities": [
+        {
+          "pid": 1410432,
+          "start": "79247943",
+          "state": "S",
+          "pgid": 1410431,
+          "sid": 1410428
+        },
+        {
+          "pid": 1410433,
+          "start": "79247944",
+          "state": "R",
+          "pgid": 1410431,
+          "sid": 1410428
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410432,
+            "start": "79247943",
+            "state": "S",
+            "pgid": 1410431,
+            "sid": 1410428
+          },
+          {
+            "pid": 1410433,
+            "start": "79247944",
+            "state": "R",
+            "pgid": 1410431,
+            "sid": 1410428
+          }
+        ],
+        "live_before_cleanup": [],
+        "tree_exists": true,
+        "records": [
+          {
+            "phase": "kotlinc-timeout",
+            "command": [
+              "bash",
+              "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+              "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-timeout/tree-w8vaq9a9/classes",
+              "",
+              "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-timeout/tree-w8vaq9a9/Probe.kt"
+            ],
+            "exit": 124,
+            "timeout": true,
+            "log": ".work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-timeout/actual-run.log",
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "tree_retained": false,
+      "scaled_inner_deadline": false
+    }
+  },
+  "kotlinc-timeout/tree.json": {
+    "bytes": 104,
+    "sha256": "96f892a0d11c15b98fce74810ea73f71177b3a95ef47567a3d524b3757a54d17",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-timeout/tree-w8vaq9a9"
+  },
+  "kotlinc-timeout/worker.log": {
+    "bytes": 1263,
+    "sha256": "e5296f9c6643e9aa7c4c698d7a81f6da816f9987422b22658ada402f6a4d6bb6",
+    "text": "Traceback (most recent call last):\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 314, in <module>\n    main()\n    ~~~~^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 296, in main\n    worker(Path(sys.argv[2]), sys.argv[3], sys.argv[4])\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 87, in worker\n    code, _ = driver.run(command, base / 'actual-run.log', records, tool + '-' + fault,\n              ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                         0.8 if fault in ('timeout', 'unconfirmed') else 8)\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 148, in run\n    require(not timed_out, label + ' timeout is infrastructure failure, not behavioral red')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 21, in require\n    raise RuntimeError(message)\nRuntimeError: kotlinc-timeout timeout is infrastructure failure, not behavioral red\n"
+  },
+  "kotlinc-unconfirmed/actual-run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "text": ""
+  },
+  "kotlinc-unconfirmed/after-scope.json": {
+    "bytes": 22,
+    "sha256": "26f1e5ac5e17705367c95775b2d39d8a2037056443804b9444364fe9d9995f41",
+    "json": {
+      "tree_exists": true
+    }
+  },
+  "kotlinc-unconfirmed/before-cleanup.json": {
+    "bytes": 597,
+    "sha256": "d561bb66f6d725067bb3367ac8f59e1d754b2f34d3cbbad03c716cc003c87887",
+    "json": {
+      "workers": [
+        {
+          "pid": 1410517,
+          "start": "79248532",
+          "state": "S",
+          "pgid": 1410516,
+          "sid": 1410513
+        },
+        {
+          "pid": 1410518,
+          "start": "79248532",
+          "state": "R",
+          "pgid": 1410516,
+          "sid": 1410513
+        }
+      ],
+      "live_before_cleanup": [
+        {
+          "pid": 1410517,
+          "start": "79248532",
+          "state": "S",
+          "pgid": 1410516,
+          "sid": 1410513
+        },
+        {
+          "pid": 1410518,
+          "start": "79248532",
+          "state": "R",
+          "pgid": 1410516,
+          "sid": 1410513
+        }
+      ],
+      "tree_exists": true,
+      "records": []
+    }
+  },
+  "kotlinc-unconfirmed/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "kotlinc-unconfirmed/ready.json": {
+    "bytes": 172,
+    "sha256": "378dc2a7665ac6367fd669329f1ea01d9e68eb028b9c686ea4d2162972c6b84a",
+    "json": [
+      {
+        "pid": 1410517,
+        "start": "79248532",
+        "state": "S",
+        "pgid": 1410516,
+        "sid": 1410513
+      },
+      {
+        "pid": 1410518,
+        "start": "79248532",
+        "state": "R",
+        "pgid": 1410516,
+        "sid": 1410513
+      }
+    ]
+  },
+  "kotlinc-unconfirmed/reclaim-identities.json": {
+    "bytes": 451,
+    "sha256": "14d37be4c5060dea15dad5bcccb341eb0fcd315ead853b3ae5fb6d09c6234a02",
+    "json": [
+      {
+        "pid": 1410513,
+        "start": "79248532",
+        "state": "S",
+        "pgid": 1410513,
+        "sid": 1410513
+      },
+      {
+        "pid": 1410516,
+        "start": "79248532",
+        "state": "S",
+        "pgid": 1410516,
+        "sid": 1410513
+      },
+      {
+        "pid": 1410517,
+        "start": "79248532",
+        "state": "S",
+        "pgid": 1410516,
+        "sid": 1410513
+      },
+      {
+        "pid": 1410518,
+        "start": "79248532",
+        "state": "S",
+        "pgid": 1410516,
+        "sid": 1410513
+      }
+    ]
+  },
+  "kotlinc-unconfirmed/result.json": {
+    "bytes": 1088,
+    "sha256": "ae4df27dc0b68afa4768f0bc2f6a4d05bae412e69484eff26f075b4bff1ddaee",
+    "json": {
+      "tool": "kotlinc",
+      "fault": "unconfirmed",
+      "exit": 1,
+      "worker_identities": [
+        {
+          "pid": 1410517,
+          "start": "79248532",
+          "state": "S",
+          "pgid": 1410516,
+          "sid": 1410513
+        },
+        {
+          "pid": 1410518,
+          "start": "79248532",
+          "state": "R",
+          "pgid": 1410516,
+          "sid": 1410513
+        }
+      ],
+      "observation": {
+        "workers": [
+          {
+            "pid": 1410517,
+            "start": "79248532",
+            "state": "S",
+            "pgid": 1410516,
+            "sid": 1410513
+          },
+          {
+            "pid": 1410518,
+            "start": "79248532",
+            "state": "R",
+            "pgid": 1410516,
+            "sid": 1410513
+          }
+        ],
+        "live_before_cleanup": [
+          {
+            "pid": 1410517,
+            "start": "79248532",
+            "state": "S",
+            "pgid": 1410516,
+            "sid": 1410513
+          },
+          {
+            "pid": 1410518,
+            "start": "79248532",
+            "state": "R",
+            "pgid": 1410516,
+            "sid": 1410513
+          }
+        ],
+        "tree_exists": true,
+        "records": []
+      },
+      "tree_retained": true,
+      "scaled_inner_deadline": false
+    }
+  },
+  "kotlinc-unconfirmed/tree.json": {
+    "bytes": 108,
+    "sha256": "1c146568fa866969c28bbdb92732c6c621e927e7b36aa2a23a03cb76588e2eb6",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-unconfirmed/tree-dqptn7aw"
+  },
+  "kotlinc-unconfirmed/worker.log": {
+    "bytes": 1831,
+    "sha256": "24a1fcbe766c81e5406429ae9cd9e1ac3a399c084b2fe403764e6966649a368b",
+    "text": "FAIL stop unconfirmed; retained owned tree=/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-i6rvhjat/kotlinc-unconfirmed/tree-dqptn7aw\nTraceback (most recent call last):\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 113, in finish_session\n    members = session_members(owner)\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 69, in unavailable\n    raise OSError('controlled stop observation unavailable')\nOSError: controlled stop observation unavailable\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 314, in <module>\n    main()\n    ~~~~^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 296, in main\n    worker(Path(sys.argv[2]), sys.argv[3], sys.argv[4])\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 87, in worker\n    code, _ = driver.run(command, base / 'actual-run.log', records, tool + '-' + fault,\n              ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                         0.8 if fault in ('timeout', 'unconfirmed') else 8)\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 145, in run\n    finish_session(process, owner)\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 125, in finish_session\n    raise StopUnconfirmed('owned SID stop not confirmed: ' + str(error)) from error\nactual_enum_driver.StopUnconfirmed: owned SID stop not confirmed: controlled stop observation unavailable\n"
+  }
+}

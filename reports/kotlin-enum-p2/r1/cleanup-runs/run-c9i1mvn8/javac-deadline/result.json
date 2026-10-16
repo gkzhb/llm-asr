@@ -1,0 +1,55 @@
+{
+  "tool": "javac",
+  "fault": "deadline",
+  "exit": 137,
+  "worker_identities": [
+    {
+      "pid": 1361446,
+      "start": "78656173",
+      "state": "R",
+      "pgid": 1361442
+    },
+    {
+      "pid": 1361447,
+      "start": "78656176",
+      "state": "R",
+      "pgid": 1361442
+    }
+  ],
+  "observation": {
+    "workers": [
+      {
+        "pid": 1361446,
+        "start": "78656173",
+        "state": "R",
+        "pgid": 1361442
+      },
+      {
+        "pid": 1361447,
+        "start": "78656176",
+        "state": "R",
+        "pgid": 1361442
+      }
+    ],
+    "live_before_cleanup": [],
+    "tree_exists": true,
+    "records": [
+      {
+        "phase": "javac-deadline",
+        "command": [
+          "bash",
+          "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+          "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/cleanup/run-c9i1mvn8/javac-deadline/owned-tree-2vtngo9i/classes",
+          "",
+          "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/cleanup/run-c9i1mvn8/javac-deadline/owned-tree-2vtngo9i/Probe.java"
+        ],
+        "exit": 137,
+        "timeout": false,
+        "log": ".work/p2enum-build/r1-fix/cleanup/run-c9i1mvn8/javac-deadline/actual-run.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "no_live_worker_after_exit": true,
+  "scaled_inner_deadline": true
+}

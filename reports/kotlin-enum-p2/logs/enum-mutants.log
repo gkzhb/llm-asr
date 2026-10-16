@@ -1,0 +1,3 @@
+PASS enum mutant RuntimeLogSource compile=0 target-red=1 exact-source-restored-green=0
+PASS enum mutant RuntimeLogEventKind compile=0 target-red=1 exact-source-restored-green=0
+PASS runtime log enum real mixed compilation evidence=.work/p2enum-build/mutants/run-62drpr49

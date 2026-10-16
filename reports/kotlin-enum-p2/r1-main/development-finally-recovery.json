@@ -1,0 +1,7 @@
+{
+  "base": ".work/p2enum-build/r1-main/cleanup/run-64l09zoo/kotlinc-unconfirmed",
+  "matching_live_workers": [],
+  "retained_tree_existed_before_safe_reclaim": true,
+  "tree_exists_after_reclaim": false,
+  "note": "ESRCH happened during kotlinc-unconfirmed finally, before new main case ran; main observation in old-red run must not be mistaken for green."
+}

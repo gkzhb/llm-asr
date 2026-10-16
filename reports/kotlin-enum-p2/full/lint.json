@@ -1,0 +1,859 @@
+{
+  "production": [
+    {
+      "module": "android/app",
+      "counts": {
+        "Warning": 17
+      },
+      "warning_ids": {
+        "UnusedAttribute": 3,
+        "GradleDependency": 1,
+        "ChromeOsAbiSupport": 1,
+        "DataExtractionRules": 1,
+        "UsableSpace": 1,
+        "MissingApplicationIcon": 1,
+        "SetTextI18n": 9
+      },
+      "reports": [
+        {
+          "source": "android/app/build/reports/lint-results-debug.xml",
+          "copy": ".work/p2enum-full/evidence/android/app/build/reports/lint-results-debug.xml",
+          "sha256": "6fc8964b6e020d845d6508eae2a0fd0a1403f0b655e98dc429d2ac6b9adeb62f",
+          "bytes": 25069
+        },
+        {
+          "source": "android/app/build/reports/lint-results-debug.html",
+          "copy": ".work/p2enum-full/evidence/android/app/build/reports/lint-results-debug.html",
+          "sha256": "fe1492041498e28bbdd417d4a7770d538ba3d2f33f0111dbc8be31c1e6a5e51c",
+          "bytes": 92590
+        },
+        {
+          "source": "android/app/build/reports/lint-results-debug.txt",
+          "copy": ".work/p2enum-full/evidence/android/app/build/reports/lint-results-debug.txt",
+          "sha256": "31cffb076c79154d0aa9d5afbe0afd8768a7d8b37de08d92e2abe4f43651708e",
+          "bytes": 11794
+        }
+      ],
+      "issues": [
+        {
+          "id": "UnusedAttribute",
+          "severity": "Warning",
+          "message": "Attribute `enableOnBackInvokedCallback` is only used in API level 33 and higher (current min is 29)",
+          "category": "Correctness",
+          "priority": "6",
+          "summary": "Attribute unused on older versions",
+          "explanation": "This check finds attributes set in XML files that were introduced in a version newer than the oldest version targeted by your application (with the `minSdkVersion` attribute).\n\nThis is not an error; the application will simply ignore the attribute. However, if the attribute is important to the appearance or functionality of your application, you should consider finding an alternative way to achieve the same result with only available attributes, and then you can optionally create a copy of the layout in a layout-vNN folder which will be used on API NN or higher where you can take advantage of the newer attribute.\n\nNote: This check does not only apply to attributes. For example, some tags can be unused too, such as the new `<tag>` element in layouts introduced in API 21.",
+          "errorLine1": "        <activity android:name=\".MainActivity\" android:launchMode=\"singleTask\" android:exported=\"true\" android:configChanges=\"orientation|screenSize|keyboardHidden\" android:windowSoftInputMode=\"adjustResize\" android:enableOnBackInvokedCallback=\"true\">",
+          "errorLine2": "                                                                                                                                                                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/build/controlled-inputs/AndroidManifest.xml",
+              "line": "6",
+              "column": "209"
+            }
+          ]
+        },
+        {
+          "id": "UnusedAttribute",
+          "severity": "Warning",
+          "message": "Attribute `enableOnBackInvokedCallback` is only used in API level 33 and higher (current min is 29)",
+          "category": "Correctness",
+          "priority": "6",
+          "summary": "Attribute unused on older versions",
+          "explanation": "This check finds attributes set in XML files that were introduced in a version newer than the oldest version targeted by your application (with the `minSdkVersion` attribute).\n\nThis is not an error; the application will simply ignore the attribute. However, if the attribute is important to the appearance or functionality of your application, you should consider finding an alternative way to achieve the same result with only available attributes, and then you can optionally create a copy of the layout in a layout-vNN folder which will be used on API NN or higher where you can take advantage of the newer attribute.\n\nNote: This check does not only apply to attributes. For example, some tags can be unused too, such as the new `<tag>` element in layouts introduced in API 21.",
+          "errorLine1": "        <activity android:name=\".ModelManagementActivity\" android:exported=\"false\" android:windowSoftInputMode=\"adjustResize\" android:enableOnBackInvokedCallback=\"true\" />",
+          "errorLine2": "                                                                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/build/controlled-inputs/AndroidManifest.xml",
+              "line": "12",
+              "column": "127"
+            }
+          ]
+        },
+        {
+          "id": "UnusedAttribute",
+          "severity": "Warning",
+          "message": "Attribute `enableOnBackInvokedCallback` is only used in API level 33 and higher (current min is 29)",
+          "category": "Correctness",
+          "priority": "6",
+          "summary": "Attribute unused on older versions",
+          "explanation": "This check finds attributes set in XML files that were introduced in a version newer than the oldest version targeted by your application (with the `minSdkVersion` attribute).\n\nThis is not an error; the application will simply ignore the attribute. However, if the attribute is important to the appearance or functionality of your application, you should consider finding an alternative way to achieve the same result with only available attributes, and then you can optionally create a copy of the layout in a layout-vNN folder which will be used on API NN or higher where you can take advantage of the newer attribute.\n\nNote: This check does not only apply to attributes. For example, some tags can be unused too, such as the new `<tag>` element in layouts introduced in API 21.",
+          "errorLine1": "        <activity android:name=\".LogsActivity\" android:exported=\"false\" android:windowSoftInputMode=\"adjustResize\" android:enableOnBackInvokedCallback=\"true\" />",
+          "errorLine2": "                                                                                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/build/controlled-inputs/AndroidManifest.xml",
+              "line": "13",
+              "column": "116"
+            }
+          ]
+        },
+        {
+          "id": "GradleDependency",
+          "severity": "Warning",
+          "message": "A newer version of org.jetbrains:annotations than 13.0 is available: 23.0.0",
+          "category": "Correctness",
+          "priority": "4",
+          "summary": "Obsolete Gradle Dependency",
+          "explanation": "This detector looks for usages of libraries where the version you are using is not the current stable release. Using older versions is fine, and there are cases where you deliberately want to stick with an older version. However, you may simply not be aware that a more recent version is available, and that is what this lint check helps find.",
+          "errorLine1": "    implementation(\"org.jetbrains:annotations:13.0\")",
+          "errorLine2": "                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/build.gradle.kts",
+              "line": "143",
+              "column": "20"
+            }
+          ]
+        },
+        {
+          "id": "ChromeOsAbiSupport",
+          "severity": "Warning",
+          "message": "Missing x86_64 ABI support for ChromeOS",
+          "category": "Correctness:Chrome OS",
+          "priority": "4",
+          "summary": "Missing ABI Support for ChromeOS",
+          "explanation": "To properly support ChromeOS, your Android application should have an x86 and/or x86_64 binary as part of the build configuration. To fix the issue, ensure your files are properly optimized for ARM; the binary translator will then ensure compatibility with x86. Alternatively, add an `abiSplit` for x86 within your `build.gradle` file and create the required x86 dependencies.",
+          "url": "https://developer.android.com/ndk/guides/abis",
+          "urls": "https://developer.android.com/ndk/guides/abis",
+          "errorLine1": "        ndk { abiFilters += \"arm64-v8a\" }",
+          "errorLine2": "                            ~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/build.gradle.kts",
+              "line": "60",
+              "column": "29"
+            }
+          ]
+        },
+        {
+          "id": "DataExtractionRules",
+          "severity": "Warning",
+          "message": "The attribute `android:allowBackup` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher.",
+          "category": "Security",
+          "priority": "3",
+          "summary": "Missing data extraction rules",
+          "explanation": "Before Android 12, the attributes `android:allowBackup` and `android:fullBackupContent` were used to configure all forms of backup, including cloud backups, device-to-device transfers and adb backup.\n\nIn Android 12 and higher, these attributes have been deprecated and will only apply to cloud backups. You should instead use the attribute `android:dataExtractionRules`, specifying an `@xml` resource that configures which files to back up, for cloud backups and for device-to-device transfers, separately. If your `minSdkVersion` supports older versions, you'll still want to specify an `android:fullBackupContent` resource if the default behavior is not right for your app.",
+          "url": "https://developer.android.com/about/versions/12/backup-restore#xml-changes",
+          "urls": "https://developer.android.com/about/versions/12/backup-restore#xml-changes,https://goo.gle/DataExtractionRules",
+          "errorLine1": "    <application android:label=\"Qwen ASR Minimal\" android:theme=\"@android:style/Theme.Material.Light.NoActionBar\" android:allowBackup=\"false\" android:supportsRtl=\"true\">",
+          "errorLine2": "                                                                                                                                       ~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/build/controlled-inputs/AndroidManifest.xml",
+              "line": "5",
+              "column": "136"
+            }
+          ]
+        },
+        {
+          "id": "UsableSpace",
+          "severity": "Warning",
+          "message": "Consider also using `StorageManager#getAllocatableBytes` and `allocateBytes` which will consider clearable cached data",
+          "category": "Performance",
+          "priority": "3",
+          "summary": "Using getUsableSpace()",
+          "explanation": "When you need to allocate disk space for large files, consider using the new `allocateBytes(FileDescriptor, long)` API, which will automatically clear cached files belonging to other apps (as needed) to meet your request.\n\nWhen deciding if the device has enough disk space to hold your new data, call `getAllocatableBytes(UUID)` instead of using `getUsableSpace()`, since the former will consider any cached data that the system is willing to clear on your behalf.\n\nNote that these methods require API level 26. If your app is running on older devices, you will probably need to use both APIs, conditionally switching on `Build.VERSION.SDK_INT`. Lint only looks in the same compilation unit to see if you are already using both APIs, so if it warns even though you are already using the new API, consider moving the calls to the same file or suppressing the warning.",
+          "errorLine1": "            ModelRepository.SpaceProvider space = () -> opCtx.filesDir().getUsableSpace();",
+          "errorLine2": "                                                                         ~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/AppGraph.java",
+              "line": "69",
+              "column": "74"
+            }
+          ]
+        },
+        {
+          "id": "MissingApplicationIcon",
+          "severity": "Warning",
+          "message": "Should explicitly set `android:icon`, there is no default",
+          "category": "Usability:Icons",
+          "priority": "5",
+          "summary": "Missing application icon",
+          "explanation": "You should set an icon for the application as whole because there is no default. This attribute must be set as a reference to a drawable resource containing the image (for example `@drawable/icon`).",
+          "url": "https://developer.android.com/studio/publish/preparing#publishing-configure",
+          "urls": "https://developer.android.com/studio/publish/preparing#publishing-configure",
+          "errorLine1": "    <application android:label=\"Qwen ASR Minimal\" android:theme=\"@android:style/Theme.Material.Light.NoActionBar\" android:allowBackup=\"false\" android:supportsRtl=\"true\">",
+          "errorLine2": "     ~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/build/controlled-inputs/AndroidManifest.xml",
+              "line": "5",
+              "column": "6"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        summary.setText(\"\u6700\u8fd1 \"+snapshot.size()+\" / 1000 \u6761\uff1b\u672c\u8fdb\u7a0b\u6dd8\u6c70 \"+graph.runtimeLogStore().droppedCount()",
+          "errorLine2": "                        ^",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/LogsActivity.java",
+              "line": "106",
+              "column": "25"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "String literal in `setText` can not be translated. Use Android resources instead.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        summary.setText(\"\u6700\u8fd1 \"+snapshot.size()+\" / 1000 \u6761\uff1b\u672c\u8fdb\u7a0b\u6dd8\u6c70 \"+graph.runtimeLogStore().droppedCount()",
+          "errorLine2": "                                              ~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/LogsActivity.java",
+              "line": "106",
+              "column": "47"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "                failure.setText(\"\u521d\u59cb\u5316\u5931\u8d25\uff1a\" + ioe.getMessage() + \"\\n\u8bf7\u91cd\u65b0\u5b89\u88c5\u5b8c\u6574APK\u540e\u91cd\u8bd5\u3002\");",
+          "errorLine2": "                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/MainActivity.java",
+              "line": "40",
+              "column": "33"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "String literal in `setText` can not be translated. Use Android resources instead.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        TextView title=new TextView(this); title.setText(\"Qwen3-ASR \u00b7 \u6700\u5c0f\u79bb\u7ebf\u539f\u578b\"); title.setTextSize(22); root.addView(title);",
+          "errorLine2": "                                                         ~~~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/MainActivity.java",
+              "line": "52",
+              "column": "58"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "String literal in `setText` can not be translated. Use Android resources instead.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        Button exportBtn = new Button(this); exportBtn.setText(\"\u5bfc\u51fa TXT\"); exportBtn.setAllCaps(false);",
+          "errorLine2": "                                                               ~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/MainActivity.java",
+              "line": "100",
+              "column": "64"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "String literal in `setText` can not be translated. Use Android resources instead.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        exportNote.setText(\"TXT\u4fdd\u5b58\u5feb\u7167\uff1a\u6e05\u9664\u7ed3\u679c\u53ef\u64a4\u9500\u5c1a\u672a\u5f00\u59cb\u7684\u5199\u5165\uff1b\u5df2\u7ecf\u5f00\u59cb\u7684\u5916\u90e8\u5199\u5165\u4e0d\u80fd\u64a4\u56de\u3002\u4e91\u5b58\u50a8\u63d0\u4f9b\u65b9\u53ef\u80fd\u8054\u7f51\u540c\u6b65\u3002\"); root.addView(exportNote);",
+          "errorLine2": "                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/MainActivity.java",
+              "line": "114",
+              "column": "28"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        readiness.setText(\"\u6a21\u578b\uff1a\"+ModelUiText.readiness(r.state)+\"\\nepoch \"+r.epoch);",
+          "errorLine2": "                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/ModelManagementActivity.java",
+              "line": "175",
+              "column": "27"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        storage.setText(\"\u9884\u671f\u6a21\u578b\uff1a\"+ModelUiText.bytes(expected)+\"\\n\u5185\u90e8\u6b63\u5f0f\u6587\u4ef6\uff1a\"+ModelUiText.bytes(s.installedBytes)",
+          "errorLine2": "                        ^",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/ModelManagementActivity.java",
+              "line": "177",
+              "column": "25"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        task.setText(ModelUiText.task(s)+(s.inspectBusy ? \"\\n\u6b63\u5728\u5237\u65b0\u5185\u90e8\u6982\u51b5\uff08\u6700\u8fd1\u64cd\u4f5c\u4fdd\u7559\uff09\" : \"\")",
+          "errorLine2": "                     ^",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/ModelManagementActivity.java",
+              "line": "182",
+              "column": "22"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "module": "android/asr-runtime",
+      "counts": {
+        "Warning": 10
+      },
+      "warning_ids": {
+        "UsableSpace": 1,
+        "SetTextI18n": 9
+      },
+      "reports": [
+        {
+          "source": "android/asr-runtime/build/reports/lint-results-debug.xml",
+          "copy": ".work/p2enum-full/evidence/android/asr-runtime/build/reports/lint-results-debug.xml",
+          "sha256": "54f11ee95e5f86aa3dabba916fc4f5feb416c5ca86677a394b1485ecf9bc1c3d",
+          "bytes": 14689
+        },
+        {
+          "source": "android/asr-runtime/build/reports/lint-results-debug.html",
+          "copy": ".work/p2enum-full/evidence/android/asr-runtime/build/reports/lint-results-debug.html",
+          "sha256": "4335cfb11c03a274b3e6f49c240e8c8b2258ea1c11b92d6d10baa638eff7c5a2",
+          "bytes": 61932
+        },
+        {
+          "source": "android/asr-runtime/build/reports/lint-results-debug.txt",
+          "copy": ".work/p2enum-full/evidence/android/asr-runtime/build/reports/lint-results-debug.txt",
+          "sha256": "df2d5d3e05759af869d5d51b9e432ba8aa8ecd260ec3724aa3ace070ccaf99f0",
+          "bytes": 5455
+        }
+      ],
+      "issues": [
+        {
+          "id": "UsableSpace",
+          "severity": "Warning",
+          "message": "Consider also using `StorageManager#getAllocatableBytes` and `allocateBytes` which will consider clearable cached data",
+          "category": "Performance",
+          "priority": "3",
+          "summary": "Using getUsableSpace()",
+          "explanation": "When you need to allocate disk space for large files, consider using the new `allocateBytes(FileDescriptor, long)` API, which will automatically clear cached files belonging to other apps (as needed) to meet your request.\n\nWhen deciding if the device has enough disk space to hold your new data, call `getAllocatableBytes(UUID)` instead of using `getUsableSpace()`, since the former will consider any cached data that the system is willing to clear on your behalf.\n\nNote that these methods require API level 26. If your app is running on older devices, you will probably need to use both APIs, conditionally switching on `Build.VERSION.SDK_INT`. Lint only looks in the same compilation unit to see if you are already using both APIs, so if it warns even though you are already using the new API, consider moving the calls to the same file or suppressing the warning.",
+          "errorLine1": "            ModelRepository.SpaceProvider space = () -> opCtx.filesDir().getUsableSpace();",
+          "errorLine2": "                                                                         ~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/AppGraph.java",
+              "line": "69",
+              "column": "74"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        summary.setText(\"\u6700\u8fd1 \"+snapshot.size()+\" / 1000 \u6761\uff1b\u672c\u8fdb\u7a0b\u6dd8\u6c70 \"+graph.runtimeLogStore().droppedCount()",
+          "errorLine2": "                        ^",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/LogsActivity.java",
+              "line": "106",
+              "column": "25"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "String literal in `setText` can not be translated. Use Android resources instead.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        summary.setText(\"\u6700\u8fd1 \"+snapshot.size()+\" / 1000 \u6761\uff1b\u672c\u8fdb\u7a0b\u6dd8\u6c70 \"+graph.runtimeLogStore().droppedCount()",
+          "errorLine2": "                                              ~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/LogsActivity.java",
+              "line": "106",
+              "column": "47"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "                failure.setText(\"\u521d\u59cb\u5316\u5931\u8d25\uff1a\" + ioe.getMessage() + \"\\n\u8bf7\u91cd\u65b0\u5b89\u88c5\u5b8c\u6574APK\u540e\u91cd\u8bd5\u3002\");",
+          "errorLine2": "                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/MainActivity.java",
+              "line": "40",
+              "column": "33"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "String literal in `setText` can not be translated. Use Android resources instead.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        TextView title=new TextView(this); title.setText(\"Qwen3-ASR \u00b7 \u6700\u5c0f\u79bb\u7ebf\u539f\u578b\"); title.setTextSize(22); root.addView(title);",
+          "errorLine2": "                                                         ~~~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/MainActivity.java",
+              "line": "52",
+              "column": "58"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "String literal in `setText` can not be translated. Use Android resources instead.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        Button exportBtn = new Button(this); exportBtn.setText(\"\u5bfc\u51fa TXT\"); exportBtn.setAllCaps(false);",
+          "errorLine2": "                                                               ~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/MainActivity.java",
+              "line": "100",
+              "column": "64"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "String literal in `setText` can not be translated. Use Android resources instead.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        exportNote.setText(\"TXT\u4fdd\u5b58\u5feb\u7167\uff1a\u6e05\u9664\u7ed3\u679c\u53ef\u64a4\u9500\u5c1a\u672a\u5f00\u59cb\u7684\u5199\u5165\uff1b\u5df2\u7ecf\u5f00\u59cb\u7684\u5916\u90e8\u5199\u5165\u4e0d\u80fd\u64a4\u56de\u3002\u4e91\u5b58\u50a8\u63d0\u4f9b\u65b9\u53ef\u80fd\u8054\u7f51\u540c\u6b65\u3002\"); root.addView(exportNote);",
+          "errorLine2": "                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/MainActivity.java",
+              "line": "114",
+              "column": "28"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        readiness.setText(\"\u6a21\u578b\uff1a\"+ModelUiText.readiness(r.state)+\"\\nepoch \"+r.epoch);",
+          "errorLine2": "                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/ModelManagementActivity.java",
+              "line": "175",
+              "column": "27"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        storage.setText(\"\u9884\u671f\u6a21\u578b\uff1a\"+ModelUiText.bytes(expected)+\"\\n\u5185\u90e8\u6b63\u5f0f\u6587\u4ef6\uff1a\"+ModelUiText.bytes(s.installedBytes)",
+          "errorLine2": "                        ^",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/ModelManagementActivity.java",
+              "line": "177",
+              "column": "25"
+            }
+          ]
+        },
+        {
+          "id": "SetTextI18n",
+          "severity": "Warning",
+          "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders.",
+          "category": "Internationalization",
+          "priority": "6",
+          "summary": "TextView Internationalization",
+          "explanation": "When calling `TextView#setText`\n* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.\n* Do not pass a string literal (e.g. \"Hello\") to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.\n* Do not build messages by concatenating text chunks. Such messages can not be properly translated.",
+          "url": "https://developer.android.com/guide/topics/resources/localization.html",
+          "urls": "https://developer.android.com/guide/topics/resources/localization.html",
+          "errorLine1": "        task.setText(ModelUiText.task(s)+(s.inspectBusy ? \"\\n\u6b63\u5728\u5237\u65b0\u5185\u90e8\u6982\u51b5\uff08\u6700\u8fd1\u64cd\u4f5c\u4fdd\u7559\uff09\" : \"\")",
+          "errorLine2": "                     ^",
+          "locations": [
+            {
+              "file": "/home/zhb/gitrep/llm-asr/android/app/src/org/llmasr/minimal/ModelManagementActivity.java",
+              "line": "182",
+              "column": "22"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "identity": [
+    [
+      ":app:lintReportDebug",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":app:lintAnalyzeDebug",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":app:lintAnalyzeDebugAndroidTest",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":app:lintAnalyzeDebugUnitTest",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":app:updateLintBaselineDebug",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":app:lintFixDebug",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":asr-runtime:lintAnalyzeDebugAndroidTest",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":asr-runtime:lintAnalyzeDebug",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":asr-runtime:lintVitalAnalyzeDebug",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":asr-runtime:lintAnalyzeDebugUnitTest",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":asr-runtime:lintReportDebug",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":asr-runtime:updateLintBaselineDebug",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":asr-runtime:lintFixDebug",
+      "gate",
+      "66",
+      "171"
+    ],
+    [
+      ":asr-runtime:lintAnalyzeDebug",
+      "consumer",
+      "66",
+      "171"
+    ],
+    [
+      ":app:lintAnalyzeDebug",
+      "consumer",
+      "66",
+      "171"
+    ],
+    [
+      ":app:lintAnalyzeDebugAndroidTest",
+      "consumer",
+      "66",
+      "171"
+    ],
+    [
+      ":app:lintAnalyzeDebugUnitTest",
+      "consumer",
+      "66",
+      "171"
+    ],
+    [
+      ":asr-runtime:lintAnalyzeDebugAndroidTest",
+      "consumer",
+      "66",
+      "171"
+    ],
+    [
+      ":asr-runtime:lintAnalyzeDebugUnitTest",
+      "consumer",
+      "66",
+      "171"
+    ],
+    [
+      ":app:lintReportDebug",
+      "consumer",
+      "66",
+      "171"
+    ],
+    [
+      ":asr-runtime:lintReportDebug",
+      "consumer",
+      "66",
+      "171"
+    ]
+  ],
+  "actual_consumers": [
+    ":asr-runtime:lintAnalyzeDebug",
+    ":app:lintAnalyzeDebug",
+    ":app:lintAnalyzeDebugAndroidTest",
+    ":app:lintAnalyzeDebugUnitTest",
+    ":asr-runtime:lintAnalyzeDebugAndroidTest",
+    ":asr-runtime:lintAnalyzeDebugUnitTest",
+    ":app:lintReportDebug",
+    ":asr-runtime:lintReportDebug"
+  ],
+  "host_lint_tasks": [],
+  "host_lint_executed": false,
+  "runtime_warning_nonduplicates": [],
+  "host_lint_note": "Only tasks in actual main graph count; gate consumer names do not prove Lint execution",
+  "identity_reports": [
+    {
+      "source": "android/app/build/lint-identity/lintAnalyzeDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/lint-identity/lintAnalyzeDebug.json",
+      "sha256": "b1a9bbcc534159fa2f10d27f825a1248d3e7d985041562a2ceaf02dd03566533",
+      "bytes": 159492
+    },
+    {
+      "source": "android/app/build/lint-identity/lintAnalyzeDebugUnitTest.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/lint-identity/lintAnalyzeDebugUnitTest.json",
+      "sha256": "1a1c06e3edd74448d235cdfd313a321c973e158f44ad5e51bb3c78149d1129e6",
+      "bytes": 159500
+    },
+    {
+      "source": "android/app/build/lint-identity/lintAnalyzeDebugAndroidTest.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/lint-identity/lintAnalyzeDebugAndroidTest.json",
+      "sha256": "811b3ef8774a7b4f2b707ab56f8fe37adceb8ce99d3e240609992fb072517a31",
+      "bytes": 159503
+    },
+    {
+      "source": "android/app/build/lint-identity/lintFixDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/lint-identity/lintFixDebug.json",
+      "sha256": "f9b1901b55ec646b50283f7d47e7681c6ab049e7b7853584443ad5df007a8dce",
+      "bytes": 159484
+    },
+    {
+      "source": "android/app/build/lint-identity/lintReportDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/lint-identity/lintReportDebug.json",
+      "sha256": "e6c54c39bdb4a70ec08526d81114db6488c5f6d4b567f58e37ef6da9eeaff6bc",
+      "bytes": 159491
+    },
+    {
+      "source": "android/app/build/lint-identity/updateLintBaselineDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/lint-identity/updateLintBaselineDebug.json",
+      "sha256": "3998669e1aa6554cbdc02472000cb83e90d7b028372cff62832b5d0e2824c6cb",
+      "bytes": 159495
+    },
+    {
+      "source": "android/asr-runtime/build/lint-identity/lintAnalyzeDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/lintAnalyzeDebug.json",
+      "sha256": "3b50b95678a4614d2cb2689f5d269a695f34537da8baa3c5e12f18609c6f4ce3",
+      "bytes": 159500
+    },
+    {
+      "source": "android/asr-runtime/build/lint-identity/lintVitalAnalyzeDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/lintVitalAnalyzeDebug.json",
+      "sha256": "43acc0b6ded6e93e8ac4f9e83d68411f4d81445f804ead632e487ba68629abe0",
+      "bytes": 159501
+    },
+    {
+      "source": "android/asr-runtime/build/lint-identity/lintAnalyzeDebugUnitTest.json",
+      "copy": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/lintAnalyzeDebugUnitTest.json",
+      "sha256": "18aca8c06471766b869feefd7094cbef51f20b49fea547197fcdeef3469985f3",
+      "bytes": 159508
+    },
+    {
+      "source": "android/asr-runtime/build/lint-identity/lintAnalyzeDebugAndroidTest.json",
+      "copy": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/lintAnalyzeDebugAndroidTest.json",
+      "sha256": "9a4fb956493d973bf02bdea7f8c944d6eeec36fc4cc6791496e73f01fda53dbf",
+      "bytes": 159511
+    },
+    {
+      "source": "android/asr-runtime/build/lint-identity/lintFixDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/lintFixDebug.json",
+      "sha256": "fbf434a94cdb506cde1814434ab986ec4ce3fc0f2afb6f2265361ceac7b62526",
+      "bytes": 159492
+    },
+    {
+      "source": "android/asr-runtime/build/lint-identity/lintReportDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/lintReportDebug.json",
+      "sha256": "ca8d489f9c2775cc6ab0f9b896a407ee26a54008511ce9ce3b748e17aed8b4a3",
+      "bytes": 159499
+    },
+    {
+      "source": "android/asr-runtime/build/lint-identity/updateLintBaselineDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/asr-runtime/build/lint-identity/updateLintBaselineDebug.json",
+      "sha256": "ac0139133453521c73f49756f380ae483fa7becce6531e8036c19795a919270f",
+      "bytes": 159503
+    },
+    {
+      "source": "android/test-host/build/lint-identity/lintAnalyzeDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/test-host/build/lint-identity/lintAnalyzeDebug.json",
+      "sha256": "0b648643e884a9061c796733468873b81b60a34dcf066cb190cf8e456ab52b99",
+      "bytes": 159494
+    },
+    {
+      "source": "android/test-host/build/lint-identity/lintAnalyzeDebugUnitTest.json",
+      "copy": ".work/p2enum-full/evidence/android/test-host/build/lint-identity/lintAnalyzeDebugUnitTest.json",
+      "sha256": "3686af9ac0aec449a31f9fe6b231630bd5fa7c17ef61fb38ca9ff00b053a0424",
+      "bytes": 159502
+    },
+    {
+      "source": "android/test-host/build/lint-identity/lintAnalyzeDebugAndroidTest.json",
+      "copy": ".work/p2enum-full/evidence/android/test-host/build/lint-identity/lintAnalyzeDebugAndroidTest.json",
+      "sha256": "44e959509e5b864564faed271d293cd898c427e6073e9d1bef43fdf3c6301db8",
+      "bytes": 159505
+    },
+    {
+      "source": "android/test-host/build/lint-identity/lintFixDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/test-host/build/lint-identity/lintFixDebug.json",
+      "sha256": "334161cbdbbb22b9cd24af0c6cd060c7ee70446c8f441379f8c76abad29b5bc4",
+      "bytes": 159490
+    },
+    {
+      "source": "android/test-host/build/lint-identity/lintReportDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/test-host/build/lint-identity/lintReportDebug.json",
+      "sha256": "d83499514c7c5ae86d8a286fafcf3c0673543abfb3a6d0f2b4522164b3ad8cd5",
+      "bytes": 159493
+    },
+    {
+      "source": "android/test-host/build/lint-identity/updateLintBaselineDebug.json",
+      "copy": ".work/p2enum-full/evidence/android/test-host/build/lint-identity/updateLintBaselineDebug.json",
+      "sha256": "a612b30373b9731f5790953bd0ded4019123e27fdea65693227c8d2f7dbd238f",
+      "bytes": 159501
+    }
+  ]
+}

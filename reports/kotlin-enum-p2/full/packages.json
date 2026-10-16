@@ -1,0 +1,300 @@
+{
+  "packages": {
+    "product": {
+      "apk": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "bytes": 5217189,
+      "sha256": "92c3603ba89cb1045c04a663c35cd3d13a4aea53c8674be3a02251dc77de4256",
+      "metadata_sha256": "6a436665e72cca179545d50650d607f49ceaf965b7f3e76f74bdf68ff3586c8a",
+      "classes": 1327,
+      "methods": [],
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "evidence": [
+        {
+          "source": "android/app/build/outputs/apk/debug/app-debug.apk",
+          "copy": ".work/p2enum-full/evidence/android/app/build/outputs/apk/debug/app-debug.apk",
+          "sha256": "92c3603ba89cb1045c04a663c35cd3d13a4aea53c8674be3a02251dc77de4256",
+          "bytes": 5217189
+        },
+        {
+          "source": "android/app/build/outputs/apk/debug/output-metadata.json",
+          "copy": ".work/p2enum-full/evidence/android/app/build/outputs/apk/debug/output-metadata.json",
+          "sha256": "6a436665e72cca179545d50650d607f49ceaf965b7f3e76f74bdf68ff3586c8a",
+          "bytes": 406
+        }
+      ]
+    },
+    "host": {
+      "apk": "android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+      "bytes": 2585364,
+      "sha256": "316cbbcf9fde9043872eefbf368347b2a6eac6d3327b6daadf18217a514ecd11",
+      "metadata_sha256": "343379a880059c602d4011bfe4cdeaf01ab32648d9c6cd87e07cdf321b722a1a",
+      "classes": 1235,
+      "methods": [],
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "evidence": [
+        {
+          "source": "android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+          "copy": ".work/p2enum-full/evidence/android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+          "sha256": "316cbbcf9fde9043872eefbf368347b2a6eac6d3327b6daadf18217a514ecd11",
+          "bytes": 2585364
+        },
+        {
+          "source": "android/test-host/build/outputs/apk/debug/output-metadata.json",
+          "copy": ".work/p2enum-full/evidence/android/test-host/build/outputs/apk/debug/output-metadata.json",
+          "sha256": "343379a880059c602d4011bfe4cdeaf01ab32648d9c6cd87e07cdf321b722a1a",
+          "bytes": 424
+        }
+      ]
+    },
+    "test": {
+      "apk": "android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+      "bytes": 52318,
+      "sha256": "950619bd90608e77c73cf7152a5d7c027f4f28fdfaeed8a4770a8655c0e6ba41",
+      "metadata_sha256": "d61475692d336c0ec6039fbf628d2643da9eb90a45d22f5e3e22c225dac60ab8",
+      "classes": 43,
+      "methods": [
+        "testBadBytesAreSafe",
+        "testCleanupRetainsOwner",
+        "testEnginePayloadAndOrder",
+        "testInputConnectionAndManualInvalidation",
+        "testLateResultIsInvalidated",
+        "testProviderCancellationWaitsForQuery",
+        "testProviderCloseErrorIsPrivate",
+        "testProviderEnumerationClosesCursor",
+        "testProviderQueryErrorIsPrivate",
+        "testReadinessRejectsBeforeLoad",
+        "testReusedBackendQueuedCancellation",
+        "testSafImportCancellationWaitsForOpen",
+        "testSafImportOpenFailureThenRetryPreservesHistory",
+        "testSingleConfirmationAndPassword"
+      ],
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "evidence": [
+        {
+          "source": "android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+          "copy": ".work/p2enum-full/evidence/android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+          "sha256": "950619bd90608e77c73cf7152a5d7c027f4f28fdfaeed8a4770a8655c0e6ba41",
+          "bytes": 52318
+        },
+        {
+          "source": "android/test-host/build/outputs/apk/androidTest/debug/output-metadata.json",
+          "copy": ".work/p2enum-full/evidence/android/test-host/build/outputs/apk/androidTest/debug/output-metadata.json",
+          "sha256": "d61475692d336c0ec6039fbf628d2643da9eb90a45d22f5e3e22c225dac60ab8",
+          "bytes": 440
+        }
+      ]
+    }
+  },
+  "three_report": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f",
+  "product_report": "android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88",
+  "product_result": {
+    "schema": 1,
+    "artifact": "android/app/build/outputs/apk/debug/app-debug.apk",
+    "bytes": 5217189,
+    "sha256": "92c3603ba89cb1045c04a663c35cd3d13a4aea53c8674be3a02251dc77de4256",
+    "package": "org.llmasr.minimal",
+    "version": "0.6-debug",
+    "version_code": 6,
+    "signing_certificate_sha256": "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c",
+    "native_sha256": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416",
+    "product_baseline": "82a5563",
+    "inputs_checked": 212,
+    "device_verified": false,
+    "external_inputs": {
+      "android/app/build/native-debug/artifact/libqwen_asr_jni.so": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416",
+      "bench/audio/zh-original.wav": "46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50",
+      "models/mnn-16/config.json": "fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d",
+      "models/mnn-16/llm_config.json": "8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85"
+    },
+    "toolchain": {
+      "gradle": "8.7",
+      "agp": "8.6.1",
+      "kotlin": "2.0.21",
+      "java": "openjdk version \"17.0.20.1\" 2026-08-18\nOpenJDK Runtime Environment (build 17.0.20.1+1-nixos)\nOpenJDK 64-Bit Server VM (build 17.0.20.1+1-nixos, mixed mode, sharing)",
+      "aapt2_sha256": "70cd2d97c18ea25fc3ad1e6bc2c7e2e86c7c9076cf2549b3609f304b182cc246",
+      "apksigner_jar_sha256": "00ef9948f843fe395d2440ae3ef41405b8040a6d5d46493bd1902ac0ee6deae7"
+    },
+    "limitations": [
+      "Native rebuilt via explicit CMake targets; 4KiB/16KiB runtime not run",
+      "Host/JNI checks are separate verifyDebug prerequisites",
+      "No device/microphone/SAF/IME runtime acceptance"
+    ]
+  },
+  "three_evidence": [
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-permissions.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-permissions.txt",
+      "sha256": "02201047c25c1e19b6c97f250280e3525ff1d97ef887499fb20bb6915d90f04d",
+      "bytes": 42
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-signature.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-signature.txt",
+      "sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9",
+      "bytes": 955
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-badging.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-badging.txt",
+      "sha256": "26e92f78dc50c6e1617889887112d8b6cb38989feb3a471faf94a631c76b5f65",
+      "bytes": 665
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-manifest.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-manifest.txt",
+      "sha256": "e0fe21064ad94cbe1e92a2343f0cf693990b60865293aeb562e32d59365cb6f2",
+      "bytes": 2082
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-zipalign.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-zipalign.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-manifest.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-manifest.txt",
+      "sha256": "031b6cbade4e66174c1adc0f1e417281692b898d96ba862973184206ce16e7eb",
+      "bytes": 4867
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-manifest.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-manifest.txt",
+      "sha256": "b53569ad7515a2124f14ccc92c413fdb1d143c16913b8e0b8126cccd5c29d59b",
+      "bytes": 1988
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-badging.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-badging.txt",
+      "sha256": "83982ff372f8511bcd93b6ef1689dfdca51dbac4772c250d9f35cbef9349519b",
+      "bytes": 891
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-zipalign.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-zipalign.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/receipt.json",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/receipt.json",
+      "sha256": "e256e435c0eae12adc7f712658a2e8d626b2cfb51e2ac7b824e6843b9735c0ef",
+      "bytes": 218766
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-signature.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-signature.txt",
+      "sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9",
+      "bytes": 955
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-signature.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-signature.txt",
+      "sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9",
+      "bytes": 955
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-permissions.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/product-permissions.txt",
+      "sha256": "d8401caa7b230ffe49ccf26c52353d6a658a558ee78f86ef434762edb4912b4f",
+      "bytes": 84
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-permissions.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-permissions.txt",
+      "sha256": "1f0603a9543901e4bdd4f73ad7237e41a485d8a38816b762c5c3f8a66e4fea10",
+      "bytes": 37
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-badging.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/test-badging.txt",
+      "sha256": "b667f8b27da83ede5ec432a784a7a53c968d343e76d3b693e928395059eed436",
+      "bytes": 626
+    },
+    {
+      "source": "build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-zipalign.txt",
+      "copy": ".work/p2enum-full/evidence/build/verification/android-test/run-0e2133b3376549d8a87a1a8dad2c215f/host-zipalign.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ],
+  "product_evidence": [
+    {
+      "source": "android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/permissions.txt",
+      "copy": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/permissions.txt",
+      "sha256": "d8401caa7b230ffe49ccf26c52353d6a658a558ee78f86ef434762edb4912b4f",
+      "bytes": 84
+    },
+    {
+      "source": "android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/badging.txt",
+      "copy": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/badging.txt",
+      "sha256": "83982ff372f8511bcd93b6ef1689dfdca51dbac4772c250d9f35cbef9349519b",
+      "bytes": 891
+    },
+    {
+      "source": "android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/native-verification.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/native-verification.json",
+      "sha256": "63e24c0a8253dcea4bd131a4e557606e7a0e930edf58e4919e4745c8a4ea9dd5",
+      "bytes": 12687
+    },
+    {
+      "source": "android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/signature.txt",
+      "copy": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/signature.txt",
+      "sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9",
+      "bytes": 955
+    },
+    {
+      "source": "android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/result.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/result.json",
+      "sha256": "7cc51ed5fa0e297d2186270439cfec5d049692c735d2dce3fe7ff131e13febb7",
+      "bytes": 1681
+    },
+    {
+      "source": "android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/ime-method-tree.txt",
+      "copy": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/ime-method-tree.txt",
+      "sha256": "48ff1e4fbeea55c5ec3cbfb5f2373f01a8deb53b7b0b098e27cec499ee350583",
+      "bytes": 488
+    },
+    {
+      "source": "android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/build-input-sha256.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/build-input-sha256.json",
+      "sha256": "40f350d57d86f13661d3027929dab0cfdb849b4f25e0bbe2fd59d8362e924898",
+      "bytes": 24652
+    },
+    {
+      "source": "android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/apk-report-binding.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/apk-report-binding.json",
+      "sha256": "df8e0740466dc86d31fd0913c2a41cb1bec390e18834c6e06a9d499085898698",
+      "bytes": 643
+    },
+    {
+      "source": "android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/manifest-tree.txt",
+      "copy": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/manifest-tree.txt",
+      "sha256": "031b6cbade4e66174c1adc0f1e417281692b898d96ba862973184206ce16e7eb",
+      "bytes": 4867
+    },
+    {
+      "source": "android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/native-link-provenance.json",
+      "copy": ".work/p2enum-full/evidence/android/app/build/verification/debug/run-a25045bf4de44130a92ce742fa66ec88/native-link-provenance.json",
+      "sha256": "56e60d23294d1998299eb738ee4c0a204023e30625c61aa0fa0573147d670263",
+      "bytes": 95950
+    }
+  ],
+  "tool_inputs": {
+    "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2": "70cd2d97c18ea25fc3ad1e6bc2c7e2e86c7c9076cf2549b3609f304b182cc246",
+    "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/zipalign": "cab08208e28ebf26e37c91a1f9ef4a871c175c8dabd55c78b0074f4d3a47a03a",
+    "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/lib/apksigner.jar": "00ef9948f843fe395d2440ae3ef41405b8040a6d5d46493bd1902ac0ee6deae7",
+    "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/platforms/android-35/optional/android.test.base.jar": "c9583729e5cd1695ba93f9aa8e83adeb621fa028e765520b53c6e23f92f25b96",
+    "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/platforms/android-35/optional/android.test.runner.jar": "b0ed5e396b0d35cb02a6626f3c2a6c0e9d5f69ad1d189e19d426ffb65bfc580d"
+  },
+  "instrumentation": "14 compiled-only public concrete ()V methods; Android runner discovery/execution not run"
+}

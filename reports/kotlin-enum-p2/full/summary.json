@@ -1,0 +1,143 @@
+{
+  "exit": 0,
+  "duration_seconds": 534.4149452759884,
+  "actionable": 174,
+  "executed_actions": 174,
+  "task_line_count": 222,
+  "junit": {
+    "core": 34,
+    "runtime": 1,
+    "host": 7,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "production_lint": [
+    {
+      "module": "android/app",
+      "counts": {
+        "Warning": 17
+      },
+      "warning_ids": {
+        "UnusedAttribute": 3,
+        "GradleDependency": 1,
+        "ChromeOsAbiSupport": 1,
+        "DataExtractionRules": 1,
+        "UsableSpace": 1,
+        "MissingApplicationIcon": 1,
+        "SetTextI18n": 9
+      }
+    },
+    {
+      "module": "android/asr-runtime",
+      "counts": {
+        "Warning": 10
+      },
+      "warning_ids": {
+        "UsableSpace": 1,
+        "SetTextI18n": 9
+      }
+    }
+  ],
+  "host_lint_executed": false,
+  "fixture_behavior": ".work/p1b-build/2b/behavior-yj6aaz3a",
+  "fixture_lint": ".work/gradle-lint-negative/run-vt1z0yi9",
+  "checksum": ".work/gradle-m1/dependency-negative-ucX7Lt",
+  "build_inputs": 212,
+  "native_inputs": 80,
+  "packages": {
+    "product": {
+      "apk": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "bytes": 5217189,
+      "sha256": "92c3603ba89cb1045c04a663c35cd3d13a4aea53c8674be3a02251dc77de4256",
+      "metadata_sha256": "6a436665e72cca179545d50650d607f49ceaf965b7f3e76f74bdf68ff3586c8a",
+      "classes": 1327,
+      "methods": [],
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "evidence": [
+        {
+          "source": "android/app/build/outputs/apk/debug/app-debug.apk",
+          "copy": ".work/p2enum-full/evidence/android/app/build/outputs/apk/debug/app-debug.apk",
+          "sha256": "92c3603ba89cb1045c04a663c35cd3d13a4aea53c8674be3a02251dc77de4256",
+          "bytes": 5217189
+        },
+        {
+          "source": "android/app/build/outputs/apk/debug/output-metadata.json",
+          "copy": ".work/p2enum-full/evidence/android/app/build/outputs/apk/debug/output-metadata.json",
+          "sha256": "6a436665e72cca179545d50650d607f49ceaf965b7f3e76f74bdf68ff3586c8a",
+          "bytes": 406
+        }
+      ]
+    },
+    "host": {
+      "apk": "android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+      "bytes": 2585364,
+      "sha256": "316cbbcf9fde9043872eefbf368347b2a6eac6d3327b6daadf18217a514ecd11",
+      "metadata_sha256": "343379a880059c602d4011bfe4cdeaf01ab32648d9c6cd87e07cdf321b722a1a",
+      "classes": 1235,
+      "methods": [],
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "evidence": [
+        {
+          "source": "android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+          "copy": ".work/p2enum-full/evidence/android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+          "sha256": "316cbbcf9fde9043872eefbf368347b2a6eac6d3327b6daadf18217a514ecd11",
+          "bytes": 2585364
+        },
+        {
+          "source": "android/test-host/build/outputs/apk/debug/output-metadata.json",
+          "copy": ".work/p2enum-full/evidence/android/test-host/build/outputs/apk/debug/output-metadata.json",
+          "sha256": "343379a880059c602d4011bfe4cdeaf01ab32648d9c6cd87e07cdf321b722a1a",
+          "bytes": 424
+        }
+      ]
+    },
+    "test": {
+      "apk": "android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+      "bytes": 52318,
+      "sha256": "950619bd90608e77c73cf7152a5d7c027f4f28fdfaeed8a4770a8655c0e6ba41",
+      "metadata_sha256": "d61475692d336c0ec6039fbf628d2643da9eb90a45d22f5e3e22c225dac60ab8",
+      "classes": 43,
+      "methods": [
+        "testBadBytesAreSafe",
+        "testCleanupRetainsOwner",
+        "testEnginePayloadAndOrder",
+        "testInputConnectionAndManualInvalidation",
+        "testLateResultIsInvalidated",
+        "testProviderCancellationWaitsForQuery",
+        "testProviderCloseErrorIsPrivate",
+        "testProviderEnumerationClosesCursor",
+        "testProviderQueryErrorIsPrivate",
+        "testReadinessRejectsBeforeLoad",
+        "testReusedBackendQueuedCancellation",
+        "testSafImportCancellationWaitsForOpen",
+        "testSafImportOpenFailureThenRetryPreservesHistory",
+        "testSingleConfirmationAndPassword"
+      ],
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "evidence": [
+        {
+          "source": "android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+          "copy": ".work/p2enum-full/evidence/android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+          "sha256": "950619bd90608e77c73cf7152a5d7c027f4f28fdfaeed8a4770a8655c0e6ba41",
+          "bytes": 52318
+        },
+        {
+          "source": "android/test-host/build/outputs/apk/androidTest/debug/output-metadata.json",
+          "copy": ".work/p2enum-full/evidence/android/test-host/build/outputs/apk/androidTest/debug/output-metadata.json",
+          "sha256": "d61475692d336c0ec6039fbf628d2643da9eb90a45d22f5e3e22c225dac60ab8",
+          "bytes": 440
+        }
+      ]
+    }
+  }
+}

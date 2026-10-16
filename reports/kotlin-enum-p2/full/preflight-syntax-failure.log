@@ -1,0 +1,4 @@
+  File "/home/zhb/gitrep/llm-asr/.work/p2enum-full/preflight.py", line 146
+    preserved_cache='Nix/Gradle/native objects unchanged; no clean or output strategy override')))
+                                                                                                 ^
+SyntaxError: unmatched ')'

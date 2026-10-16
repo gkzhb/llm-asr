@@ -1,0 +1,15 @@
+gradle/wrapper/gradle-wrapper.jar: OK
+VERIFY_LAYER format task=verifyFormat
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+
+> Configure project :app
+WARNING: The option setting 'android.aapt2FromMavenOverride=/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2' is experimental.
+
+> Task :verifyFormat
+PASS maintained text: 41 explicit/live module files (read-only)
+
+BUILD SUCCESSFUL in 6s
+1 actionable task: 1 executed
+PIPELINE_STATUS Gradle=0 tee=0 scan=1
+GRADLE_VERIFY_LOG /home/zhb/gitrep/llm-asr/.work/verify-local/format-2zMWX9/build.log exit=0

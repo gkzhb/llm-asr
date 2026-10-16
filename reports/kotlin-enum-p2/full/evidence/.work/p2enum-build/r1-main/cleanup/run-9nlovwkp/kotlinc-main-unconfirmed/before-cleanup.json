@@ -1,0 +1,36 @@
+{
+  "workers": [
+    {
+      "pid": 1454009,
+      "start": "79734996",
+      "state": "S",
+      "pgid": 1454008,
+      "sid": 1453953
+    },
+    {
+      "pid": 1454010,
+      "start": "79734997",
+      "state": "R",
+      "pgid": 1454008,
+      "sid": 1453953
+    }
+  ],
+  "live_before_cleanup": [
+    {
+      "pid": 1454009,
+      "start": "79734996",
+      "state": "S",
+      "pgid": 1454008,
+      "sid": 1453953
+    },
+    {
+      "pid": 1454010,
+      "start": "79734997",
+      "state": "R",
+      "pgid": 1454008,
+      "sid": 1453953
+    }
+  ],
+  "tree_exists": true,
+  "records": []
+}

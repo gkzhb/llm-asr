@@ -4,6 +4,7 @@ root=$(cd "$(dirname "$0")/.." && pwd)
 cd "$root"
 mkdir -p "$root/.work/build" "$root/.work/model-review-fixes"
 timeout 30 python3 tests/prepare_model_configs_test.py
+timeout 30 python3 tests/android_test_fixture_inputs_test.py
 classes=$(mktemp -d "$root/.work/build/minimal-apk-tests-XXXXXX")
 trap 'rm -rf "$classes"' EXIT
 # Pure Java production components only; no Android stub runtime. The
@@ -79,6 +80,10 @@ bash scripts/compile-jvm-sources.sh "$classes" "" "${sources[@]}" \
   tests/ModelProviderBoundaryTest.java
 run() { timeout 45 java -cp "$classes:$KOTLIN_HOME/lib/kotlin-stdlib.jar" "$@"; }
 run KotlinMigrationTest
+# Lifecycle faults call the real driver/wrapper; fake workers are not ABI evidence.
+timeout 180 python3 tests/runtime_log_enum_cleanup_test.py
+# Fresh isolated production enum copies: compile0 -> exact Java assertion1 -> restored0.
+timeout 1440 python3 tests/runtime_log_enum_mutant_test.py
 run MinimalApkTest bench/audio/zh-original.wav
 run RecordingRaceTest
 run ResultFilesTest

@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 186, in <module>
+    main()
+    ~~~~^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 181, in main
+    case(evidence, tool, fault)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 138, in case
+    require(not observation['live_before_cleanup'], 'R1 live owned worker before tree cleanup: ' + repr(observation['live_before_cleanup']))
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 26, in require
+    raise RuntimeError(message)
+RuntimeError: R1 live owned worker before tree cleanup: [{'pid': 1360693, 'start': '78644912', 'state': 'R', 'pgid': 1360692}, {'pid': 1360695, 'start': '78644915', 'state': 'R', 'pgid': 1360692}]

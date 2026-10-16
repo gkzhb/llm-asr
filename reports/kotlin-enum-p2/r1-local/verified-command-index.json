@@ -1,0 +1,139 @@
+[
+  {
+    "label": "retention-red",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/runtime_log_enum_cleanup_test.py",
+      "--case",
+      "unconfirmed-kotlinc"
+    ],
+    "started_utc": "2026-10-16T08:27:31.052452+00:00",
+    "finished_utc": "2026-10-16T08:27:34.061746+00:00",
+    "exit": 1,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-local/retention-red.log",
+    "log_sha256": "c453a76cb26d2d3cb4cac302dfc42136e9a2660a0850fd2357db7bd8bc9d86d3"
+  },
+  {
+    "label": "cleanup-green",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/runtime_log_enum_cleanup_test.py"
+    ],
+    "started_utc": "2026-10-16T08:35:30.174873+00:00",
+    "finished_utc": "2026-10-16T08:35:45.631664+00:00",
+    "exit": 1,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-local/cleanup-green.log",
+    "log_sha256": "2206e1bec4b42fdb59cc11fb83a5b4f2f53ba5f52c4c9566817380771ce7d0b2",
+    "classification": "failed development fixture: deferred Bash trap led to outer timeout; not behavioral red or final current acceptance"
+  },
+  {
+    "label": "cleanup-final",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/runtime_log_enum_cleanup_test.py"
+    ],
+    "started_utc": "2026-10-16T08:41:54.761020+00:00",
+    "finished_utc": "2026-10-16T08:42:04.217000+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-local/cleanup-final.log",
+    "log_sha256": "db27e8a7f52c643bfc4632779ce1ac14ddfee34c554fdda3bd5a985cadbf1c20"
+  },
+  {
+    "label": "cleanup-optimized",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "-O",
+      "tests/runtime_log_enum_cleanup_test.py"
+    ],
+    "started_utc": "2026-10-16T08:44:13.149381+00:00",
+    "finished_utc": "2026-10-16T08:44:22.630600+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-local/cleanup-optimized.log",
+    "log_sha256": "a9b3c41e9c10d9f5fa04e98fe7b6f2473662e35b20b3ccedde688a03da9fc71c"
+  },
+  {
+    "label": "enum-mutants",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/runtime_log_enum_mutant_test.py"
+    ],
+    "started_utc": "2026-10-16T08:45:35.199177+00:00",
+    "finished_utc": "2026-10-16T08:46:07.088118+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-local/enum-mutants.log",
+    "log_sha256": "9a57b2f1ccf68fc5098c26808e41b1ce2e9cc6d893cc121c50658014f464b364"
+  },
+  {
+    "label": "complete-host",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "bash",
+      "scripts/test-minimal-apk.sh"
+    ],
+    "started_utc": "2026-10-16T08:46:31.736528+00:00",
+    "finished_utc": "2026-10-16T08:47:38.047256+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-local/complete-host.log",
+    "log_sha256": "cb3987f3e4011a7236caa788d1a7c349af5d93b38ea07b9bfa73bd9388b4ed0a"
+  },
+  {
+    "label": "fast",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "bash",
+      "scripts/verify-local.sh",
+      "fast",
+      "--offline",
+      "--rerun-tasks"
+    ],
+    "started_utc": "2026-10-16T08:50:16.637640+00:00",
+    "finished_utc": "2026-10-16T08:50:41.683458+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-local/fast.log",
+    "log_sha256": "ba5c5486f7ca76cf23dc49f800301f5851ef1f3866765d0a5b778d1e9e70c66b"
+  },
+  {
+    "label": "format",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "bash",
+      "scripts/verify-local.sh",
+      "format",
+      "--offline"
+    ],
+    "started_utc": "2026-10-16T08:50:41.718942+00:00",
+    "finished_utc": "2026-10-16T08:50:50.466799+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-local/format.log",
+    "log_sha256": "b90f4851696162ec40a03f3b50b7b6397c5ac970dc41ce7ab35938594e784ba4"
+  }
+]

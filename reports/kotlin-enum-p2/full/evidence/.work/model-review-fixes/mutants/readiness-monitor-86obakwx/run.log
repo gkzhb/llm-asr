@@ -1,0 +1,7 @@
+Exception in thread "main" java.lang.AssertionError: readiness listener lock regression
+	at ModelReadinessTest.main(ModelReadinessTest.java:175)
+Caused by: java.lang.AssertionError: readiness listener held monitor
+	at ModelReadinessTest.lambda$main$3(ModelReadinessTest.java:162)
+	at org.llmasr.minimal.model.ModelReadiness.notifyChange(ModelReadiness.java:162)
+	at org.llmasr.minimal.model.ModelReadiness.invalidate(ModelReadiness.java:129)
+	at ModelReadinessTest.main(ModelReadinessTest.java:166)

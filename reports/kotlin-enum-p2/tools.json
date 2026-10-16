@@ -1,0 +1,49 @@
+{
+  "tools": {
+    "java": {
+      "entry": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/bin/java",
+      "real": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/lib/openjdk/bin/java",
+      "sha256": "b1ee79d941a1e822a48ed151dc4c603ec33eb96a225268fcbc15a838afa0e8aa"
+    },
+    "javac": {
+      "entry": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/bin/javac",
+      "real": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/lib/openjdk/bin/javac",
+      "sha256": "7fcf568cd388ec6430220f70083c08b4591a8a046f2906ca10356503aaa5ed14"
+    },
+    "kotlinc": {
+      "entry": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/bin/kotlinc",
+      "real": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/bin/kotlinc",
+      "sha256": "aa3b6fe59694c1464416d8ab87a9d3ab1f79ea817c33c57d99ebef415b5940e5"
+    },
+    "python3": {
+      "entry": "/nix/store/2i9phsc5kahwi37p1cibm48xg6ysv6ih-python3-3.14.7-env/bin/python3",
+      "real": "/nix/store/2i9phsc5kahwi37p1cibm48xg6ysv6ih-python3-3.14.7-env/bin/python3.14",
+      "sha256": "f5cce9ecc914b0c2eee78056c1c816aa02ae4c73c0aaf958eb5e0bb9281f34ea"
+    },
+    "bash": {
+      "entry": "/nix/store/svx59425zxp552p2b8gm11qj5r09b56i-bash-5.3p15/bin/bash",
+      "real": "/nix/store/svx59425zxp552p2b8gm11qj5r09b56i-bash-5.3p15/bin/bash",
+      "sha256": "0f2e8b62037cc1187fe7136e114892b7a180821e7f52bba2930e002293e566d2"
+    },
+    "kotlin-stdlib.jar": {
+      "path": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/lib/kotlin-stdlib.jar",
+      "sha256": "f31cc53f105a7e48c093683bbd5437561d1233920513774b470805641bedbc09"
+    },
+    "kotlin-compiler.jar": {
+      "path": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/lib/kotlin-compiler.jar",
+      "sha256": "0e272ff5af49e060b85c4ba7cbdb3518f15f7b2426f591cdf8fd2d704a28c077"
+    },
+    "annotations-13.0.jar": {
+      "path": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/lib/annotations-13.0.jar",
+      "sha256": "ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478"
+    }
+  },
+  "versions": {
+    "java": "openjdk version \"17.0.20.1\" 2026-08-18\nOpenJDK Runtime Environment (build 17.0.20.1+1-nixos)\nOpenJDK 64-Bit Server VM (build 17.0.20.1+1-nixos, mixed mode, sharing)\n",
+    "javac": "javac 17.0.20.1\n",
+    "kotlinc": "info: kotlinc-jvm 2.0.21 (JRE 17.0.20.1+1-nixos)\n",
+    "python": "Python 3.14.7\n"
+  },
+  "ANDROID_HOME": "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk",
+  "KOTLIN_HOME": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21"
+}

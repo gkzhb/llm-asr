@@ -1,0 +1,19 @@
+{
+  "full_task_id": "b0189748e",
+  "name": "Enum sole full verification",
+  "launcher_pid": 1444461,
+  "state": "completed0 recovered from exact registry+disk/PID start evidence",
+  "pending": [],
+  "automatic_terminal_expected": true,
+  "notification_policy": "default automatic; no polling; consume actual terminal then postprocess same leaf",
+  "full_command": "bash scripts/nix-env.sh apk --cache-only bash scripts/verify-local.sh full --offline --rerun-tasks",
+  "preflight_terminal": "bd9a59eb3 completed0; earlier auxiliary syntax failure b12f2ff53 failed1 retained",
+  "full_relaunch_allowed": false,
+  "full_started": true,
+  "exit_code": 0,
+  "finished_utc": "2026-10-16T10:45:40.549410+00:00",
+  "execution_sha256": "5a314e1ec3a8b63e1625892c449fb7d936aea1bf924f870f5188a53933f020b2",
+  "log_sha256": "8ae5048bfe5ad66eaa36e5b1c20181752b99acff62f714f69e70ac076233a0c5",
+  "automatic_terminal_observed": false,
+  "notification_gap": "Original background registration absent after session lifecycle; once exact lookup on explicit user update, complete disk exit0/log and original identities gone. No fabricated notification/no rerun."
+}

@@ -1,0 +1,139 @@
+{
+  "pass": true,
+  "delta": {
+    "build": {
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.java": {
+        "before": "22c3fa4571328f8c4452563b76b8ad43fa4f456d61c4707d07d8e10014a2c13e",
+        "current": null
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.kt": {
+        "before": null,
+        "current": "10712467665202aa6fd6b9deae4223f945051bd69b63d649c317bad00a477390"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.java": {
+        "before": "01d99199ad0c279b9065738b2c3e75a18e1faf7800901c465a5c5a5f4ddba098",
+        "current": null
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt": {
+        "before": null,
+        "current": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3"
+      },
+      "gradle/baseline-inputs.json": {
+        "before": "6cb40af1eed75efa7f3728e4fb85df243317bd0036975cd4ca7f2961e7700437",
+        "current": "c93e1a772d5a606fc05c27fc3c8a30f0931475debaee6ab6c1caa0b2b19de4f4"
+      },
+      "scripts/test-minimal-apk.sh": {
+        "before": "527bbf8667ed8ce96b13c1d0fe53e8ac136cdb15b4214a9d9d236fe68226b94a",
+        "current": "67a6ba386e1d1a067c1d149d3820e2179a433bb80c0d181135be1580f0ef8448"
+      },
+      "tests/KotlinMigrationTest.java": {
+        "before": "0641fc6579117f0a053ee6616aea50176c9b5f3b13571741f42ea9f6ff127324",
+        "current": "d1c8fd3093f1a64d256be8456c82dc326502ecd0c16265a4568945586046b8e7"
+      },
+      "tests/runtime_log_enum_mutant_test.py": {
+        "before": null,
+        "current": "f50f30ab61890f1dd9471c52d4d7d7e42217b010629ba28463d59a718ce1a8d9"
+      }
+    },
+    "module": {},
+    "native": {
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.java": {
+        "before": "22c3fa4571328f8c4452563b76b8ad43fa4f456d61c4707d07d8e10014a2c13e",
+        "current": null
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.kt": {
+        "before": null,
+        "current": "10712467665202aa6fd6b9deae4223f945051bd69b63d649c317bad00a477390"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.java": {
+        "before": "01d99199ad0c279b9065738b2c3e75a18e1faf7800901c465a5c5a5f4ddba098",
+        "current": null
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt": {
+        "before": null,
+        "current": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3"
+      }
+    },
+    "source_owners": {
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.java": {
+        "before": "22c3fa4571328f8c4452563b76b8ad43fa4f456d61c4707d07d8e10014a2c13e",
+        "current": null
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.kt": {
+        "before": null,
+        "current": "10712467665202aa6fd6b9deae4223f945051bd69b63d649c317bad00a477390"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.java": {
+        "before": "01d99199ad0c279b9065738b2c3e75a18e1faf7800901c465a5c5a5f4ddba098",
+        "current": null
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt": {
+        "before": null,
+        "current": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3"
+      }
+    },
+    "tracked": {
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.java": {
+        "before": "22c3fa4571328f8c4452563b76b8ad43fa4f456d61c4707d07d8e10014a2c13e",
+        "current": null
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.java": {
+        "before": "01d99199ad0c279b9065738b2c3e75a18e1faf7800901c465a5c5a5f4ddba098",
+        "current": null
+      },
+      "docs/kotlin-migration.md": {
+        "before": "804576c50b0ffd89e85109e4d8a9d70585df15634cf624472abd1bce2d3501db",
+        "current": "21bf50e2ee38159e3824d781d10c9658c1ccd93cdfcd244a5af64accabc200f5"
+      },
+      "gradle/baseline-inputs.json": {
+        "before": "6cb40af1eed75efa7f3728e4fb85df243317bd0036975cd4ca7f2961e7700437",
+        "current": "c93e1a772d5a606fc05c27fc3c8a30f0931475debaee6ab6c1caa0b2b19de4f4"
+      },
+      "scripts/test-minimal-apk.sh": {
+        "before": "527bbf8667ed8ce96b13c1d0fe53e8ac136cdb15b4214a9d9d236fe68226b94a",
+        "current": "67a6ba386e1d1a067c1d149d3820e2179a433bb80c0d181135be1580f0ef8448"
+      },
+      "tests/KotlinMigrationTest.java": {
+        "before": "0641fc6579117f0a053ee6616aea50176c9b5f3b13571741f42ea9f6ff127324",
+        "current": "d1c8fd3093f1a64d256be8456c82dc326502ecd0c16265a4568945586046b8e7"
+      }
+    }
+  },
+  "excluded": {
+    ".beads.gate.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".planning/llm-asr-ap5-toolchain-analysis/findings.md": "f73ef33ef8e3a2676b33f3eeab41f7e80e1ffa4409c988e3f900f06cc27ef19d",
+    ".planning/llm-asr-ap5-toolchain-analysis/progress.md": "7cce495ae8485cf222121a0e7814e39fafbe14921b454a2c90e03b0b0ba1d519",
+    ".planning/llm-asr-ap5-toolchain-analysis/task_plan.md": "41ce329757ece5cbb6a5408327ad6930169879f1029c6c56745ab5ecddd44ca5",
+    ".planning/llm-asr-mqn/findings.md": "ea802472c6dbe5fbf4b0266f4ef273dba9fb6e4f532456f9fec46d6e25cdcc74",
+    ".planning/llm-asr-mqn/progress.md": "d49f2fad56bad795eafbf35d6e04e02d683e4b753b41563ff1c24b6795ffdf6f",
+    ".planning/llm-asr-mqn/task_plan.md": "09404956c51ff46ac459e78e99026daf6ac123316f18a68dc492db61e3910b5c",
+    ".planning/llm-asr-mqn/verification.json": "750f30e5ad24117b3410587061577dc78ceda2cd90f7a3b4d26de5c8db204e5b",
+    ".planning/llm-asr-msj-modern-android-analysis/findings.md": "fd59a45c411ecf31c86cdace548dbdb2c7901620089a2d140c4cf7e59aa481de",
+    ".planning/llm-asr-msj-modern-android-analysis/progress.md": "6849ede2660221277fc8abc667473d3c95f35289c9f152953f041929abd8e5c2",
+    ".planning/llm-asr-msj-modern-android-analysis/task_plan.md": "cb3aa69d36b9416da53a0f5ee5d2e4a553e3bd75625eed94ab93893a1470044c",
+    ".planning/llm-asr-psn-plan/findings.md": "780c7a1ccb29a4cfe9d1cd68b94bf03492b46014f3cf1c011b2ba918819bec35",
+    ".planning/llm-asr-psn-plan/progress.md": "eeecb40e5ee57ce52df430ece0905f5b148bddb4067b49a5150c96457f9ccd68",
+    ".planning/llm-asr-psn-plan/task_plan.md": "117ac38f2a921e1ba3b14e71e17ba475154d797e08eff9ebd72d012cdd95d6cc",
+    ".planning/llm-asr-psn-supervision/findings.md": "7db4c4b8b824ca5d0aa8e72e94db0c26ffc63071f5f75e37aa946fe49b7d35f7",
+    ".planning/llm-asr-psn-supervision/progress.md": "fc9d490cabfc3e1fff2eb300cea5c79f5d738703a8bfb618ffa206d8142b68b6",
+    ".planning/llm-asr-psn-supervision/task_plan.md": "c971fca1a551e95f6ca60d41f51167b38ff187528eddf8642bbc07b029a119e7",
+    ".planning/llm-asr-v07/engine-plan-handoff.md": "6d552b3675e72d2498e55f5bc4439f2ec4a75e908aa8690dc4ad71ee824c8ca1",
+    ".planning/llm-asr-v07/findings.md": "a95897d16a1470fd1a01464d132b72869c548391a6593538a6472745f2d0018c",
+    ".planning/llm-asr-v07/model-management-handoff.md": "a617d0508a2a226df89e98807b1a0cc46944a4e7616e6079775feb33a045210a",
+    ".planning/llm-asr-v07/progress.md": "0ebf0818ae604bd2e966374226e5a11919bf88c33ee091b6c3c1ec50373fbaac",
+    ".planning/llm-asr-v07/sherpa-research-handoff.md": "a3a6c44e230a572d8d32f8c6264972bba0a2e31a4647ba63b545ccbd1b9ea043",
+    ".planning/llm-asr-v07/task_plan.md": "1338ab22966fd5ecdd1e546b4c1022c7aad03d73a06490530deb377c8eff5d80",
+    ".planning/llm-asr-v07/verification-residency.json": "9d8fa8e73a38741047f2d381bf64674dccb24465e521b2fbd2057de15eb127a5",
+    ".planning/llm-asr-v07/verification.json": "7ebe2ac1c98c37fb5c63df96b47d46fb9d23932f227295c7d4c54b77c91ab787",
+    "docs/multi-engine-adaptation-plan.md": "234cc85f237195464e410729fb4347e26b381603865dbabe5d12dff6336f47d9"
+  },
+  "old_artifacts_unchanged": 32,
+  "native_objects_unchanged": 578,
+  "parent_supplemental_delta": [
+    ".planning/llm-asr-ap5-enum-supervision/findings.md",
+    ".planning/llm-asr-ap5-enum-supervision/progress.md",
+    ".planning/llm-asr-ap5-enum-supervision/task_plan.md"
+  ],
+  "index_empty": true,
+  "unknown_untracked": []
+}

@@ -1,0 +1,40 @@
+{
+  "tool": "kotlinc",
+  "fault": "hup",
+  "exit": 129,
+  "worker_identities": [
+    {
+      "pid": 1361901,
+      "start": "78663032",
+      "state": "R",
+      "pgid": 1361897
+    },
+    {
+      "pid": 1361902,
+      "start": "78663035",
+      "state": "R",
+      "pgid": 1361897
+    }
+  ],
+  "observation": {
+    "workers": [
+      {
+        "pid": 1361901,
+        "start": "78663032",
+        "state": "R",
+        "pgid": 1361897
+      },
+      {
+        "pid": 1361902,
+        "start": "78663035",
+        "state": "R",
+        "pgid": 1361897
+      }
+    ],
+    "live_before_cleanup": [],
+    "tree_exists": true,
+    "records": []
+  },
+  "no_live_worker_after_exit": true,
+  "scaled_inner_deadline": false
+}

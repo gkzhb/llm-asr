@@ -1,0 +1,1238 @@
+{
+  "samples": 107,
+  "max_related_jvms": 5,
+  "max_jvm_rss_sum_kib": 3087916,
+  "max_tree_rss_sum_kib": 3131340,
+  "host_min_available_kib": 9695048,
+  "process_peaks": {
+    "1444474:79723010": {
+      "ppid": 1444473,
+      "start_ticks": 79723010,
+      "rss_kib": 10028,
+      "comm": "nix",
+      "pid": 1444474,
+      "peak_rss_kib": 10028
+    },
+    "1444517:79723213": {
+      "ppid": 1444474,
+      "start_ticks": 79723213,
+      "rss_kib": 119984,
+      "comm": "java",
+      "pid": 1444517,
+      "peak_rss_kib": 134148
+    },
+    "1444518:79723213": {
+      "ppid": 1444474,
+      "start_ticks": 79723213,
+      "rss_kib": 3048,
+      "comm": "tee",
+      "pid": 1444518,
+      "peak_rss_kib": 3048
+    },
+    "1444559:79723254": {
+      "ppid": 1444517,
+      "start_ticks": 79723254,
+      "rss_kib": 314876,
+      "comm": "java",
+      "pid": 1444559,
+      "peak_rss_kib": 1919256
+    },
+    "1444709:79724290": {
+      "ppid": 1444688,
+      "start_ticks": 79724290,
+      "rss_kib": 4148,
+      "comm": "bash",
+      "pid": 1444709,
+      "peak_rss_kib": 4148
+    },
+    "1444809:79724303": {
+      "ppid": 1444784,
+      "start_ticks": 79724303,
+      "rss_kib": 486188,
+      "comm": "java",
+      "pid": 1444809,
+      "peak_rss_kib": 486188
+    },
+    "1444718:79724291": {
+      "ppid": 1444709,
+      "start_ticks": 79724291,
+      "rss_kib": 3764,
+      "comm": "bash",
+      "pid": 1444718,
+      "peak_rss_kib": 3764
+    },
+    "1444783:79724298": {
+      "ppid": 1444718,
+      "start_ticks": 79724298,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1444783,
+      "peak_rss_kib": 2920
+    },
+    "1444688:79724043": {
+      "ppid": 1444559,
+      "start_ticks": 79724043,
+      "rss_kib": 3636,
+      "comm": "bash",
+      "pid": 1444688,
+      "peak_rss_kib": 3636
+    },
+    "1444784:79724298": {
+      "ppid": 1444783,
+      "start_ticks": 79724298,
+      "rss_kib": 3764,
+      "comm": ".kotlinc-wrappe",
+      "pid": 1444784,
+      "peak_rss_kib": 3764
+    },
+    "1444945:79725008": {
+      "ppid": 1444709,
+      "start_ticks": 79725008,
+      "rss_kib": 15348,
+      "comm": "python3.14",
+      "pid": 1444945,
+      "peak_rss_kib": 15348
+    },
+    "1444946:79725010": {
+      "ppid": 1444945,
+      "start_ticks": 79725010,
+      "rss_kib": 58296,
+      "comm": "javap",
+      "pid": 1444946,
+      "peak_rss_kib": 58296
+    },
+    "1445744:79725509": {
+      "ppid": 1444945,
+      "start_ticks": 79725509,
+      "rss_kib": 63340,
+      "comm": "javap",
+      "pid": 1445744,
+      "peak_rss_kib": 63340
+    },
+    "1446561:79726014": {
+      "ppid": 1444945,
+      "start_ticks": 79726014,
+      "rss_kib": 57788,
+      "comm": "javap",
+      "pid": 1446561,
+      "peak_rss_kib": 57788
+    },
+    "1447388:79726519": {
+      "ppid": 1444945,
+      "start_ticks": 79726519,
+      "rss_kib": 50780,
+      "comm": "javap",
+      "pid": 1447388,
+      "peak_rss_kib": 50780
+    },
+    "1448180:79727019": {
+      "ppid": 1444945,
+      "start_ticks": 79727019,
+      "rss_kib": 54856,
+      "comm": "javap",
+      "pid": 1448180,
+      "peak_rss_kib": 54856
+    },
+    "1448866:79727462": {
+      "ppid": 1444688,
+      "start_ticks": 79727462,
+      "rss_kib": 16504,
+      "comm": "cmake",
+      "pid": 1448866,
+      "peak_rss_kib": 16504
+    },
+    "1448867:79727463": {
+      "ppid": 1448866,
+      "start_ticks": 79727463,
+      "rss_kib": 17444,
+      "comm": "ninja",
+      "pid": 1448867,
+      "peak_rss_kib": 17444
+    },
+    "1448868:79727465": {
+      "ppid": 1448867,
+      "start_ticks": 79727465,
+      "rss_kib": 25216,
+      "comm": "python3.14",
+      "pid": 1448868,
+      "peak_rss_kib": 25216
+    },
+    "1448869:79727479": {
+      "ppid": 1448868,
+      "start_ticks": 79727479,
+      "rss_kib": 3636,
+      "comm": "aarch64-linux-a",
+      "pid": 1448869,
+      "peak_rss_kib": 3636
+    },
+    "1448871:79727479": {
+      "ppid": 1448869,
+      "start_ticks": 79727479,
+      "rss_kib": 100772,
+      "comm": "clang++",
+      "pid": 1448871,
+      "peak_rss_kib": 100772
+    },
+    "1448907:79727810": {
+      "ppid": 1448891,
+      "start_ticks": 79727810,
+      "rss_kib": 15348,
+      "comm": "python3.14",
+      "pid": 1448907,
+      "peak_rss_kib": 15348
+    },
+    "1449229:79728019": {
+      "ppid": 1448907,
+      "start_ticks": 79728019,
+      "rss_kib": 60860,
+      "comm": "javap",
+      "pid": 1449229,
+      "peak_rss_kib": 60860
+    },
+    "1448891:79727625": {
+      "ppid": 1444688,
+      "start_ticks": 79727625,
+      "rss_kib": 32496,
+      "comm": "python3.14",
+      "pid": 1448891,
+      "peak_rss_kib": 32496
+    },
+    "1450030:79728515": {
+      "ppid": 1448907,
+      "start_ticks": 79728515,
+      "rss_kib": 0,
+      "comm": "javap",
+      "pid": 1450030,
+      "peak_rss_kib": 0
+    },
+    "1450846:79729021": {
+      "ppid": 1448907,
+      "start_ticks": 79729021,
+      "rss_kib": 62140,
+      "comm": "javap",
+      "pid": 1450846,
+      "peak_rss_kib": 62140
+    },
+    "1451644:79729519": {
+      "ppid": 1448907,
+      "start_ticks": 79729519,
+      "rss_kib": 70884,
+      "comm": "javap",
+      "pid": 1451644,
+      "peak_rss_kib": 70884
+    },
+    "1452460:79730030": {
+      "ppid": 1448907,
+      "start_ticks": 79730030,
+      "rss_kib": 52780,
+      "comm": "javap",
+      "pid": 1452460,
+      "peak_rss_kib": 52780
+    },
+    "1452872:79730903": {
+      "ppid": 1444559,
+      "start_ticks": 79730903,
+      "rss_kib": 13852,
+      "comm": "aapt2",
+      "pid": 1452872,
+      "peak_rss_kib": 31516
+    },
+    "1453089:79731630": {
+      "ppid": 1453078,
+      "start_ticks": 79731630,
+      "rss_kib": 118660,
+      "comm": "java",
+      "pid": 1453089,
+      "peak_rss_kib": 118660
+    },
+    "1453130:79731671": {
+      "ppid": 1453089,
+      "start_ticks": 79731671,
+      "rss_kib": 368636,
+      "comm": "java",
+      "pid": 1453130,
+      "peak_rss_kib": 368636
+    },
+    "1453078:79731627": {
+      "ppid": 1444559,
+      "start_ticks": 79731627,
+      "rss_kib": 3636,
+      "comm": "bash",
+      "pid": 1453078,
+      "peak_rss_kib": 3636
+    },
+    "1453286:79732404": {
+      "ppid": 1453247,
+      "start_ticks": 79732404,
+      "rss_kib": 212824,
+      "comm": "java",
+      "pid": 1453286,
+      "peak_rss_kib": 212824
+    },
+    "1453247:79732362": {
+      "ppid": 1453078,
+      "start_ticks": 79732362,
+      "rss_kib": 119064,
+      "comm": "java",
+      "pid": 1453247,
+      "peak_rss_kib": 119064
+    },
+    "1453379:79732723": {
+      "ppid": 1453078,
+      "start_ticks": 79732723,
+      "rss_kib": 122576,
+      "comm": "java",
+      "pid": 1453379,
+      "peak_rss_kib": 122576
+    },
+    "1453414:79732765": {
+      "ppid": 1453379,
+      "start_ticks": 79732765,
+      "rss_kib": 322484,
+      "comm": "java",
+      "pid": 1453414,
+      "peak_rss_kib": 322484
+    },
+    "1453530:79733407": {
+      "ppid": 1453526,
+      "start_ticks": 79733407,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1453530,
+      "peak_rss_kib": 2920
+    },
+    "1453526:79733405": {
+      "ppid": 1444559,
+      "start_ticks": 79733405,
+      "rss_kib": 3636,
+      "comm": "bash",
+      "pid": 1453526,
+      "peak_rss_kib": 3636
+    },
+    "1453531:79733407": {
+      "ppid": 1453530,
+      "start_ticks": 79733407,
+      "rss_kib": 29576,
+      "comm": "python3.14",
+      "pid": 1453531,
+      "peak_rss_kib": 29576
+    },
+    "1453586:79733572": {
+      "ppid": 1453526,
+      "start_ticks": 79733572,
+      "rss_kib": 3764,
+      "comm": "bash",
+      "pid": 1453586,
+      "peak_rss_kib": 3764
+    },
+    "1453756:79734034": {
+      "ppid": 1453586,
+      "start_ticks": 79734034,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1453756,
+      "peak_rss_kib": 2920
+    },
+    "1453757:79734034": {
+      "ppid": 1453756,
+      "start_ticks": 79734034,
+      "rss_kib": 83832,
+      "comm": "javac",
+      "pid": 1453757,
+      "peak_rss_kib": 83832
+    },
+    "1453815:79734230": {
+      "ppid": 1453814,
+      "start_ticks": 79734230,
+      "rss_kib": 24964,
+      "comm": "python3.14",
+      "pid": 1453815,
+      "peak_rss_kib": 24964
+    },
+    "1453869:79734472": {
+      "ppid": 1453815,
+      "start_ticks": 79734472,
+      "rss_kib": 23048,
+      "comm": "python3.14",
+      "pid": 1453869,
+      "peak_rss_kib": 23048
+    },
+    "1453870:79734476": {
+      "ppid": 1453869,
+      "start_ticks": 79734476,
+      "rss_kib": 3636,
+      "comm": "bash",
+      "pid": 1453870,
+      "peak_rss_kib": 3636
+    },
+    "1453873:79734476": {
+      "ppid": 1453870,
+      "start_ticks": 79734476,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1453873,
+      "peak_rss_kib": 2920
+    },
+    "1453874:79734476": {
+      "ppid": 1453873,
+      "start_ticks": 79734476,
+      "rss_kib": 3636,
+      "comm": "javac",
+      "pid": 1453874,
+      "peak_rss_kib": 3636
+    },
+    "1453875:79734476": {
+      "ppid": 1453874,
+      "start_ticks": 79734476,
+      "rss_kib": 14312,
+      "comm": "python3.14",
+      "pid": 1453875,
+      "peak_rss_kib": 14312
+    },
+    "1453814:79734229": {
+      "ppid": 1453526,
+      "start_ticks": 79734229,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1453814,
+      "peak_rss_kib": 2920
+    },
+    "1453952:79734984": {
+      "ppid": 1453815,
+      "start_ticks": 79734984,
+      "rss_kib": 24836,
+      "comm": "python3.14",
+      "pid": 1453952,
+      "peak_rss_kib": 24836
+    },
+    "1453953:79734991": {
+      "ppid": 1453952,
+      "start_ticks": 79734991,
+      "rss_kib": 3764,
+      "comm": "bash",
+      "pid": 1453953,
+      "peak_rss_kib": 3764
+    },
+    "1454010:79734997": {
+      "ppid": 1454009,
+      "start_ticks": 79734997,
+      "rss_kib": 14312,
+      "comm": "python3.14",
+      "pid": 1454010,
+      "peak_rss_kib": 14312
+    },
+    "1454008:79734996": {
+      "ppid": 1453953,
+      "start_ticks": 79734996,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1454008,
+      "peak_rss_kib": 2920
+    },
+    "1454009:79734996": {
+      "ppid": 1454008,
+      "start_ticks": 79734996,
+      "rss_kib": 3636,
+      "comm": "kotlinc",
+      "pid": 1454009,
+      "peak_rss_kib": 3636
+    },
+    "1454019:79735075": {
+      "ppid": 1453526,
+      "start_ticks": 79735075,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1454019,
+      "peak_rss_kib": 2920
+    },
+    "1454020:79735075": {
+      "ppid": 1454019,
+      "start_ticks": 79735075,
+      "rss_kib": 24328,
+      "comm": "python3.14",
+      "pid": 1454020,
+      "peak_rss_kib": 24328
+    },
+    "1454021:79735081": {
+      "ppid": 1454020,
+      "start_ticks": 79735081,
+      "rss_kib": 3764,
+      "comm": "bash",
+      "pid": 1454021,
+      "peak_rss_kib": 3764
+    },
+    "1454155:79735535": {
+      "ppid": 1454021,
+      "start_ticks": 79735535,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1454155,
+      "peak_rss_kib": 2920
+    },
+    "1454156:79735535": {
+      "ppid": 1454155,
+      "start_ticks": 79735535,
+      "rss_kib": 94940,
+      "comm": "javac",
+      "pid": 1454156,
+      "peak_rss_kib": 94940
+    },
+    "1454210:79735671": {
+      "ppid": 1454020,
+      "start_ticks": 79735671,
+      "rss_kib": 3764,
+      "comm": "bash",
+      "pid": 1454210,
+      "peak_rss_kib": 3764
+    },
+    "1454290:79735681": {
+      "ppid": 1454265,
+      "start_ticks": 79735681,
+      "rss_kib": 580128,
+      "comm": "java",
+      "pid": 1454290,
+      "peak_rss_kib": 580128
+    },
+    "1454264:79735676": {
+      "ppid": 1454210,
+      "start_ticks": 79735676,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1454264,
+      "peak_rss_kib": 2920
+    },
+    "1454265:79735676": {
+      "ppid": 1454264,
+      "start_ticks": 79735676,
+      "rss_kib": 3764,
+      "comm": ".kotlinc-wrappe",
+      "pid": 1454265,
+      "peak_rss_kib": 3764
+    },
+    "1454727:79736311": {
+      "ppid": 1454020,
+      "start_ticks": 79736311,
+      "rss_kib": 3764,
+      "comm": "bash",
+      "pid": 1454727,
+      "peak_rss_kib": 3764
+    },
+    "1454807:79736321": {
+      "ppid": 1454782,
+      "start_ticks": 79736321,
+      "rss_kib": 525564,
+      "comm": "java",
+      "pid": 1454807,
+      "peak_rss_kib": 525564
+    },
+    "1454781:79736316": {
+      "ppid": 1454727,
+      "start_ticks": 79736316,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1454781,
+      "peak_rss_kib": 2920
+    },
+    "1454782:79736316": {
+      "ppid": 1454781,
+      "start_ticks": 79736316,
+      "rss_kib": 3764,
+      "comm": ".kotlinc-wrappe",
+      "pid": 1454782,
+      "peak_rss_kib": 3764
+    },
+    "1454979:79736921": {
+      "ppid": 1454925,
+      "start_ticks": 79736921,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1454979,
+      "peak_rss_kib": 2920
+    },
+    "1454980:79736921": {
+      "ppid": 1454979,
+      "start_ticks": 79736921,
+      "rss_kib": 3764,
+      "comm": ".kotlinc-wrappe",
+      "pid": 1454980,
+      "peak_rss_kib": 3764
+    },
+    "1454925:79736916": {
+      "ppid": 1454020,
+      "start_ticks": 79736916,
+      "rss_kib": 3764,
+      "comm": "bash",
+      "pid": 1454925,
+      "peak_rss_kib": 3764
+    },
+    "1455005:79736926": {
+      "ppid": 1454980,
+      "start_ticks": 79736926,
+      "rss_kib": 361668,
+      "comm": "java",
+      "pid": 1455005,
+      "peak_rss_kib": 361668
+    },
+    "1455136:79737505": {
+      "ppid": 1454020,
+      "start_ticks": 79737505,
+      "rss_kib": 3764,
+      "comm": "bash",
+      "pid": 1455136,
+      "peak_rss_kib": 3764
+    },
+    "1455216:79737516": {
+      "ppid": 1455191,
+      "start_ticks": 79737516,
+      "rss_kib": 211480,
+      "comm": "java",
+      "pid": 1455216,
+      "peak_rss_kib": 211480
+    },
+    "1455190:79737511": {
+      "ppid": 1455136,
+      "start_ticks": 79737511,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1455190,
+      "peak_rss_kib": 2920
+    },
+    "1455191:79737511": {
+      "ppid": 1455190,
+      "start_ticks": 79737511,
+      "rss_kib": 3764,
+      "comm": ".kotlinc-wrappe",
+      "pid": 1455191,
+      "peak_rss_kib": 3764
+    },
+    "1455304:79737963": {
+      "ppid": 1455136,
+      "start_ticks": 79737963,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1455304,
+      "peak_rss_kib": 2920
+    },
+    "1455305:79737963": {
+      "ppid": 1455304,
+      "start_ticks": 79737963,
+      "rss_kib": 174672,
+      "comm": "javac",
+      "pid": 1455305,
+      "peak_rss_kib": 174672
+    },
+    "1456033:79738513": {
+      "ppid": 1453526,
+      "start_ticks": 79738513,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1456033,
+      "peak_rss_kib": 2920
+    },
+    "1456034:79738514": {
+      "ppid": 1456033,
+      "start_ticks": 79738514,
+      "rss_kib": 19820,
+      "comm": "python3.14",
+      "pid": 1456034,
+      "peak_rss_kib": 19820
+    },
+    "1456035:79738519": {
+      "ppid": 1456034,
+      "start_ticks": 79738519,
+      "rss_kib": 3636,
+      "comm": "bash",
+      "pid": 1456035,
+      "peak_rss_kib": 3636
+    },
+    "1456072:79738525": {
+      "ppid": 1456047,
+      "start_ticks": 79738525,
+      "rss_kib": 182396,
+      "comm": "java",
+      "pid": 1456072,
+      "peak_rss_kib": 182396
+    },
+    "1456046:79738520": {
+      "ppid": 1456035,
+      "start_ticks": 79738520,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1456046,
+      "peak_rss_kib": 2920
+    },
+    "1456047:79738520": {
+      "ppid": 1456046,
+      "start_ticks": 79738520,
+      "rss_kib": 3636,
+      "comm": ".kotlinc-wrappe",
+      "pid": 1456047,
+      "peak_rss_kib": 3636
+    },
+    "1456389:79738970": {
+      "ppid": 1453526,
+      "start_ticks": 79738970,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1456389,
+      "peak_rss_kib": 2920
+    },
+    "1456390:79738970": {
+      "ppid": 1456389,
+      "start_ticks": 79738970,
+      "rss_kib": 19904,
+      "comm": "python3.14",
+      "pid": 1456390,
+      "peak_rss_kib": 19904
+    },
+    "1456437:79739032": {
+      "ppid": 1456390,
+      "start_ticks": 79739032,
+      "rss_kib": 116312,
+      "comm": "javac",
+      "pid": 1456437,
+      "peak_rss_kib": 116312
+    },
+    "1456980:79739567": {
+      "ppid": 1453526,
+      "start_ticks": 79739567,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1456980,
+      "peak_rss_kib": 2920
+    },
+    "1456981:79739567": {
+      "ppid": 1456980,
+      "start_ticks": 79739567,
+      "rss_kib": 16852,
+      "comm": "python3.14",
+      "pid": 1456981,
+      "peak_rss_kib": 16852
+    },
+    "1457162:79739990": {
+      "ppid": 1444559,
+      "start_ticks": 79739990,
+      "rss_kib": 4148,
+      "comm": "bash",
+      "pid": 1457162,
+      "peak_rss_kib": 4148
+    },
+    "1457263:79740004": {
+      "ppid": 1457238,
+      "start_ticks": 79740004,
+      "rss_kib": 273808,
+      "comm": "java",
+      "pid": 1457263,
+      "peak_rss_kib": 273808
+    },
+    "1457171:79739992": {
+      "ppid": 1457162,
+      "start_ticks": 79739992,
+      "rss_kib": 3764,
+      "comm": "bash",
+      "pid": 1457171,
+      "peak_rss_kib": 3764
+    },
+    "1457237:79739999": {
+      "ppid": 1457171,
+      "start_ticks": 79739999,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1457237,
+      "peak_rss_kib": 2920
+    },
+    "1457238:79739999": {
+      "ppid": 1457237,
+      "start_ticks": 79739999,
+      "rss_kib": 3636,
+      "comm": ".kotlinc-wrappe",
+      "pid": 1457238,
+      "peak_rss_kib": 3636
+    },
+    "1457331:79740449": {
+      "ppid": 1457171,
+      "start_ticks": 79740449,
+      "rss_kib": 2920,
+      "comm": "timeout",
+      "pid": 1457331,
+      "peak_rss_kib": 2920
+    },
+    "1457332:79740449": {
+      "ppid": 1457331,
+      "start_ticks": 79740449,
+      "rss_kib": 237876,
+      "comm": "javac",
+      "pid": 1457332,
+      "peak_rss_kib": 237876
+    },
+    "1457402:79740711": {
+      "ppid": 1457162,
+      "start_ticks": 79740711,
+      "rss_kib": 15348,
+      "comm": "python3.14",
+      "pid": 1457402,
+      "peak_rss_kib": 15348
+    },
+    "1457951:79741063": {
+      "ppid": 1457402,
+      "start_ticks": 79741063,
+      "rss_kib": 69312,
+      "comm": "javap",
+      "pid": 1457951,
+      "peak_rss_kib": 69312
+    },
+    "1458790:79741574": {
+      "ppid": 1457402,
+      "start_ticks": 79741574,
+      "rss_kib": 45612,
+      "comm": "javap",
+      "pid": 1458790,
+      "peak_rss_kib": 45612
+    },
+    "1459593:79742074": {
+      "ppid": 1457402,
+      "start_ticks": 79742074,
+      "rss_kib": 53172,
+      "comm": "javap",
+      "pid": 1459593,
+      "peak_rss_kib": 53172
+    },
+    "1460384:79742573": {
+      "ppid": 1457402,
+      "start_ticks": 79742573,
+      "rss_kib": 57724,
+      "comm": "javap",
+      "pid": 1460384,
+      "peak_rss_kib": 57724
+    },
+    "1461178:79743073": {
+      "ppid": 1457402,
+      "start_ticks": 79743073,
+      "rss_kib": 61628,
+      "comm": "javap",
+      "pid": 1461178,
+      "peak_rss_kib": 61628
+    },
+    "1461847:79747591": {
+      "ppid": 1444559,
+      "start_ticks": 79747591,
+      "rss_kib": 24976,
+      "comm": "python3.14",
+      "pid": 1461847,
+      "peak_rss_kib": 35252
+    },
+    "1462337:79748085": {
+      "ppid": 1461864,
+      "start_ticks": 79748085,
+      "rss_kib": 0,
+      "comm": "javap",
+      "pid": 1462337,
+      "peak_rss_kib": 0
+    },
+    "1461864:79747782": {
+      "ppid": 1461847,
+      "start_ticks": 79747782,
+      "rss_kib": 15348,
+      "comm": "python3.14",
+      "pid": 1461864,
+      "peak_rss_kib": 15348
+    },
+    "1463156:79748586": {
+      "ppid": 1461864,
+      "start_ticks": 79748586,
+      "rss_kib": 71360,
+      "comm": "javap",
+      "pid": 1463156,
+      "peak_rss_kib": 71360
+    },
+    "1463978:79749091": {
+      "ppid": 1461864,
+      "start_ticks": 79749091,
+      "rss_kib": 67740,
+      "comm": "javap",
+      "pid": 1463978,
+      "peak_rss_kib": 67740
+    },
+    "1464795:79749601": {
+      "ppid": 1461864,
+      "start_ticks": 79749601,
+      "rss_kib": 51812,
+      "comm": "javap",
+      "pid": 1464795,
+      "peak_rss_kib": 51812
+    },
+    "1465593:79750094": {
+      "ppid": 1461864,
+      "start_ticks": 79750094,
+      "rss_kib": 70404,
+      "comm": "javap",
+      "pid": 1465593,
+      "peak_rss_kib": 70404
+    },
+    "1466374:79750603": {
+      "ppid": 1465802,
+      "start_ticks": 79750603,
+      "rss_kib": 55240,
+      "comm": "javap",
+      "pid": 1466374,
+      "peak_rss_kib": 55240
+    },
+    "1465802:79750240": {
+      "ppid": 1461847,
+      "start_ticks": 79750240,
+      "rss_kib": 15348,
+      "comm": "python3.14",
+      "pid": 1465802,
+      "peak_rss_kib": 15348
+    },
+    "1467202:79751108": {
+      "ppid": 1465802,
+      "start_ticks": 79751108,
+      "rss_kib": 50240,
+      "comm": "javap",
+      "pid": 1467202,
+      "peak_rss_kib": 50240
+    },
+    "1467994:79751597": {
+      "ppid": 1465802,
+      "start_ticks": 79751597,
+      "rss_kib": 0,
+      "comm": "javap",
+      "pid": 1467994,
+      "peak_rss_kib": 0
+    },
+    "1468815:79752110": {
+      "ppid": 1465802,
+      "start_ticks": 79752110,
+      "rss_kib": 54984,
+      "comm": "javap",
+      "pid": 1468815,
+      "peak_rss_kib": 54984
+    },
+    "1469610:79752605": {
+      "ppid": 1465802,
+      "start_ticks": 79752605,
+      "rss_kib": 67648,
+      "comm": "javap",
+      "pid": 1469610,
+      "peak_rss_kib": 67648
+    },
+    "1469738:79752809": {
+      "ppid": 1444559,
+      "start_ticks": 79752809,
+      "rss_kib": 22860,
+      "comm": "python3.14",
+      "pid": 1469738,
+      "peak_rss_kib": 23500
+    },
+    "1469739:79752816": {
+      "ppid": 1469738,
+      "start_ticks": 79752816,
+      "rss_kib": 118008,
+      "comm": "java",
+      "pid": 1469739,
+      "peak_rss_kib": 118008
+    },
+    "1469780:79752858": {
+      "ppid": 1469739,
+      "start_ticks": 79752858,
+      "rss_kib": 314356,
+      "comm": "java",
+      "pid": 1469780,
+      "peak_rss_kib": 314356
+    },
+    "1469890:79753449": {
+      "ppid": 1469738,
+      "start_ticks": 79753449,
+      "rss_kib": 118812,
+      "comm": "java",
+      "pid": 1469890,
+      "peak_rss_kib": 118812
+    },
+    "1469931:79753490": {
+      "ppid": 1469890,
+      "start_ticks": 79753490,
+      "rss_kib": 210536,
+      "comm": "java",
+      "pid": 1469931,
+      "peak_rss_kib": 486664
+    },
+    "1470066:79754347": {
+      "ppid": 1469738,
+      "start_ticks": 79754347,
+      "rss_kib": 124044,
+      "comm": "java",
+      "pid": 1470066,
+      "peak_rss_kib": 124044
+    },
+    "1470102:79754388": {
+      "ppid": 1470066,
+      "start_ticks": 79754388,
+      "rss_kib": 321416,
+      "comm": "java",
+      "pid": 1470102,
+      "peak_rss_kib": 488812
+    },
+    "1470243:79755130": {
+      "ppid": 1469738,
+      "start_ticks": 79755130,
+      "rss_kib": 115140,
+      "comm": "java",
+      "pid": 1470243,
+      "peak_rss_kib": 115140
+    },
+    "1470280:79755171": {
+      "ppid": 1470243,
+      "start_ticks": 79755171,
+      "rss_kib": 422908,
+      "comm": "java",
+      "pid": 1470280,
+      "peak_rss_kib": 458512
+    },
+    "1470490:79756617": {
+      "ppid": 1470454,
+      "start_ticks": 79756617,
+      "rss_kib": 88912,
+      "comm": "java",
+      "pid": 1470490,
+      "peak_rss_kib": 452288
+    },
+    "1470454:79756575": {
+      "ppid": 1469738,
+      "start_ticks": 79756575,
+      "rss_kib": 120392,
+      "comm": "java",
+      "pid": 1470454,
+      "peak_rss_kib": 120392
+    },
+    "1470659:79758034": {
+      "ppid": 1469738,
+      "start_ticks": 79758034,
+      "rss_kib": 116072,
+      "comm": "java",
+      "pid": 1470659,
+      "peak_rss_kib": 116072
+    },
+    "1470702:79758076": {
+      "ppid": 1470659,
+      "start_ticks": 79758076,
+      "rss_kib": 160684,
+      "comm": "java",
+      "pid": 1470702,
+      "peak_rss_kib": 506968
+    },
+    "1470874:79759473": {
+      "ppid": 1469738,
+      "start_ticks": 79759473,
+      "rss_kib": 118348,
+      "comm": "java",
+      "pid": 1470874,
+      "peak_rss_kib": 118348
+    },
+    "1470910:79759515": {
+      "ppid": 1470874,
+      "start_ticks": 79759515,
+      "rss_kib": 211496,
+      "comm": "java",
+      "pid": 1470910,
+      "peak_rss_kib": 495420
+    },
+    "1471081:79760917": {
+      "ppid": 1469738,
+      "start_ticks": 79760917,
+      "rss_kib": 115664,
+      "comm": "java",
+      "pid": 1471081,
+      "peak_rss_kib": 117860
+    },
+    "1471116:79760961": {
+      "ppid": 1471081,
+      "start_ticks": 79760961,
+      "rss_kib": 282068,
+      "comm": "java",
+      "pid": 1471116,
+      "peak_rss_kib": 858984
+    },
+    "1471343:79763258": {
+      "ppid": 1469738,
+      "start_ticks": 79763258,
+      "rss_kib": 115576,
+      "comm": "java",
+      "pid": 1471343,
+      "peak_rss_kib": 117888
+    },
+    "1471385:79763299": {
+      "ppid": 1471343,
+      "start_ticks": 79763299,
+      "rss_kib": 366392,
+      "comm": "java",
+      "pid": 1471385,
+      "peak_rss_kib": 706676
+    },
+    "1471604:79765514": {
+      "ppid": 1469738,
+      "start_ticks": 79765514,
+      "rss_kib": 125644,
+      "comm": "java",
+      "pid": 1471604,
+      "peak_rss_kib": 125704
+    },
+    "1471639:79765559": {
+      "ppid": 1471604,
+      "start_ticks": 79765559,
+      "rss_kib": 256964,
+      "comm": "java",
+      "pid": 1471639,
+      "peak_rss_kib": 783880
+    },
+    "1471862:79767771": {
+      "ppid": 1444559,
+      "start_ticks": 79767771,
+      "rss_kib": 22812,
+      "comm": "python3.14",
+      "pid": 1471862,
+      "peak_rss_kib": 22812
+    },
+    "1471864:79767779": {
+      "ppid": 1471862,
+      "start_ticks": 79767779,
+      "rss_kib": 122280,
+      "comm": "java",
+      "pid": 1471864,
+      "peak_rss_kib": 122280
+    },
+    "1471900:79767825": {
+      "ppid": 1471864,
+      "start_ticks": 79767825,
+      "rss_kib": 323192,
+      "comm": "java",
+      "pid": 1471900,
+      "peak_rss_kib": 784144
+    },
+    "1472162:79769367": {
+      "ppid": 1472121,
+      "start_ticks": 79769367,
+      "rss_kib": 328732,
+      "comm": "java",
+      "pid": 1472162,
+      "peak_rss_kib": 970188
+    },
+    "1472121:79769325": {
+      "ppid": 1471862,
+      "start_ticks": 79769325,
+      "rss_kib": 114768,
+      "comm": "java",
+      "pid": 1472121,
+      "peak_rss_kib": 116708
+    },
+    "1472320:79770659": {
+      "ppid": 1472162,
+      "start_ticks": 79770659,
+      "rss_kib": 13928,
+      "comm": "aapt2",
+      "pid": 1472320,
+      "peak_rss_kib": 13928
+    },
+    "1472418:79770842": {
+      "ppid": 1472381,
+      "start_ticks": 79770842,
+      "rss_kib": 381136,
+      "comm": "java",
+      "pid": 1472418,
+      "peak_rss_kib": 800200
+    },
+    "1472381:79770800": {
+      "ppid": 1471862,
+      "start_ticks": 79770800,
+      "rss_kib": 118068,
+      "comm": "java",
+      "pid": 1472381,
+      "peak_rss_kib": 120132
+    },
+    "1472584:79772172": {
+      "ppid": 1472418,
+      "start_ticks": 79772172,
+      "rss_kib": 74088,
+      "comm": "java",
+      "pid": 1472584,
+      "peak_rss_kib": 74088
+    },
+    "1472575:79772131": {
+      "ppid": 1472418,
+      "start_ticks": 79772131,
+      "rss_kib": 13928,
+      "comm": "aapt2",
+      "pid": 1472575,
+      "peak_rss_kib": 13928
+    },
+    "1472673:79772302": {
+      "ppid": 1472631,
+      "start_ticks": 79772302,
+      "rss_kib": 415984,
+      "comm": "java",
+      "pid": 1472673,
+      "peak_rss_kib": 845916
+    },
+    "1472631:79772260": {
+      "ppid": 1471862,
+      "start_ticks": 79772260,
+      "rss_kib": 119396,
+      "comm": "java",
+      "pid": 1472631,
+      "peak_rss_kib": 119640
+    },
+    "1472922:79773767": {
+      "ppid": 1472887,
+      "start_ticks": 79773767,
+      "rss_kib": 413780,
+      "comm": "java",
+      "pid": 1472922,
+      "peak_rss_kib": 708212
+    },
+    "1472887:79773726": {
+      "ppid": 1471862,
+      "start_ticks": 79773726,
+      "rss_kib": 113828,
+      "comm": "java",
+      "pid": 1472887,
+      "peak_rss_kib": 113828
+    },
+    "1473143:79775191": {
+      "ppid": 1473142,
+      "start_ticks": 79775191,
+      "rss_kib": 63372,
+      "comm": "java",
+      "pid": 1473143,
+      "peak_rss_kib": 63372
+    },
+    "1473141:79775182": {
+      "ppid": 1444559,
+      "start_ticks": 79775182,
+      "rss_kib": 3636,
+      "comm": "bash",
+      "pid": 1473141,
+      "peak_rss_kib": 3636
+    },
+    "1473142:79775184": {
+      "ppid": 1473141,
+      "start_ticks": 79775184,
+      "rss_kib": 25416,
+      "comm": "python3.14",
+      "pid": 1473142,
+      "peak_rss_kib": 25416
+    },
+    "1474253:79776179": {
+      "ppid": 1444559,
+      "start_ticks": 79776179,
+      "rss_kib": 82716,
+      "comm": "java",
+      "pid": 1474253,
+      "peak_rss_kib": 82716
+    }
+  },
+  "limits": [
+    "5-second bounded descendant samples only; short lived or unseen detached processes may be missed",
+    "RSS sums double count shared pages; not PSS or whole host peak; no commandline/private contents sampled",
+    "Existing worker1/Gradle1536m/JUnit512m/Kotlin in-process/native parallel2 and child Lint768m unchanged"
+  ]
+}

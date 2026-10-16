@@ -1,0 +1,36 @@
+{
+  "workers": [
+    {
+      "pid": 1453950,
+      "start": "79734896",
+      "state": "S",
+      "pgid": 1453949,
+      "sid": 1453946
+    },
+    {
+      "pid": 1453951,
+      "start": "79734897",
+      "state": "R",
+      "pgid": 1453949,
+      "sid": 1453946
+    }
+  ],
+  "live_before_cleanup": [
+    {
+      "pid": 1453950,
+      "start": "79734896",
+      "state": "S",
+      "pgid": 1453949,
+      "sid": 1453946
+    },
+    {
+      "pid": 1453951,
+      "start": "79734897",
+      "state": "R",
+      "pgid": 1453949,
+      "sid": 1453946
+    }
+  ],
+  "tree_exists": true,
+  "records": []
+}

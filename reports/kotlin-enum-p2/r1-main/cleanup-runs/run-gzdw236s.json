@@ -1,0 +1,151 @@
+{
+  "inputs.json": {
+    "bytes": 330,
+    "sha256": "25292505ffa6a5139d736177822828807757c301ad8363c33b839584601c7e43",
+    "json": {
+      "tests/runtime_log_enum_mutant_test.py": "fa09a1178c2f3df20a1d3a7500b9520f25d7f860c9037ed71bf03b9c52f09e7b",
+      "scripts/compile-jvm-sources.sh": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf",
+      "tests/runtime_log_enum_cleanup_test.py": "b1e14602090495f079c2971e08322334697750fedb3003108ecf7ac5ac42efac"
+    }
+  },
+  "kotlinc-main-unconfirmed/after-scope.json": {
+    "bytes": 22,
+    "sha256": "26f1e5ac5e17705367c95775b2d39d8a2037056443804b9444364fe9d9995f41",
+    "json": {
+      "tree_exists": true
+    }
+  },
+  "kotlinc-main-unconfirmed/before-cleanup.json": {
+    "bytes": 597,
+    "sha256": "13eccf177f003d3a36e682bcb69c724e839ce93481f9e800e2c9efa8bc8a46f3",
+    "json": {
+      "workers": [
+        {
+          "pid": 1406288,
+          "start": "79203945",
+          "state": "S",
+          "pgid": 1406287,
+          "sid": 1406233
+        },
+        {
+          "pid": 1406289,
+          "start": "79203945",
+          "state": "R",
+          "pgid": 1406287,
+          "sid": 1406233
+        }
+      ],
+      "live_before_cleanup": [
+        {
+          "pid": 1406288,
+          "start": "79203945",
+          "state": "S",
+          "pgid": 1406287,
+          "sid": 1406233
+        },
+        {
+          "pid": 1406289,
+          "start": "79203945",
+          "state": "R",
+          "pgid": 1406287,
+          "sid": 1406233
+        }
+      ],
+      "tree_exists": true,
+      "records": []
+    }
+  },
+  "kotlinc-main-unconfirmed/finally.json": {
+    "bytes": 52,
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "kotlinc-main-unconfirmed/main-observation.json": {
+    "bytes": 929,
+    "sha256": "d1b16a3bb3e0dc294f787026f18f9408245272587a1fb9e0a096a1ee6847f206",
+    "json": {
+      "target": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-vlqqs901/tree-fzf5701c/android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt",
+      "tree": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-vlqqs901/tree-fzf5701c",
+      "classes": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-vlqqs901/tree-fzf5701c/classes-RuntimeLogSource-red",
+      "mutant_sha256": "7b4d0139f005a68757e5238c6ef6410ed5f0e1c77911581b1a6faa0ec6d784b1",
+      "original_sha256": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3",
+      "calls": [
+        "green0-compile",
+        "green0-run",
+        "RuntimeLogSource-red-compile"
+      ],
+      "stop_unconfirmed_propagated": true,
+      "exception": "owned SID stop not confirmed: controlled main stop observation unavailable",
+      "source_sha256_after": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3",
+      "classes_retained": true,
+      "marker_retained": true
+    }
+  },
+  "kotlinc-main-unconfirmed/ready.json": {
+    "bytes": 172,
+    "sha256": "9ef74753b2a613a800c40485138fc3a37d72bee33991de0be86c3587d7620009",
+    "json": [
+      {
+        "pid": 1406288,
+        "start": "79203945",
+        "state": "S",
+        "pgid": 1406287,
+        "sid": 1406233
+      },
+      {
+        "pid": 1406289,
+        "start": "79203945",
+        "state": "R",
+        "pgid": 1406287,
+        "sid": 1406233
+      }
+    ]
+  },
+  "kotlinc-main-unconfirmed/reclaim-identities.json": {
+    "bytes": 451,
+    "sha256": "43c8e8c5cac1f587aa2b644cb9815f4b9ee6ff7ffea7f51820045c7c2b7eca39",
+    "json": [
+      {
+        "pid": 1406233,
+        "start": "79203939",
+        "state": "S",
+        "pgid": 1406233,
+        "sid": 1406233
+      },
+      {
+        "pid": 1406287,
+        "start": "79203945",
+        "state": "S",
+        "pgid": 1406287,
+        "sid": 1406233
+      },
+      {
+        "pid": 1406288,
+        "start": "79203945",
+        "state": "S",
+        "pgid": 1406287,
+        "sid": 1406233
+      },
+      {
+        "pid": 1406289,
+        "start": "79203945",
+        "state": "S",
+        "pgid": 1406287,
+        "sid": 1406233
+      }
+    ]
+  },
+  "kotlinc-main-unconfirmed/tree.json": {
+    "bytes": 80,
+    "sha256": "7d453005a913f34e175268fdbc88b2bbba13bcd4ead21eda733af456c869a849",
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-vlqqs901/tree-fzf5701c"
+  },
+  "kotlinc-main-unconfirmed/worker.log": {
+    "bytes": 2628,
+    "sha256": "1f45870c2d7171df5728b39eaaffddd588357ec93fed9e09ccce9187e8e4fbd7",
+    "text": "FAIL stop unconfirmed; retained owned tree=/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-vlqqs901/tree-fzf5701c\nTraceback (most recent call last):\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 113, in finish_session\n    members = session_members(owner)\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 108, in unavailable\n    raise OSError('controlled main stop observation unavailable')\nOSError: controlled main stop observation unavailable\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 314, in <module>\n    main()\n    ~~~~^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 296, in main\n    worker(Path(sys.argv[2]), sys.argv[3], sys.argv[4])\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 63, in worker\n    main_fault(driver, base)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 135, in main_fault\n    driver.main()\n    ~~~~~~~~~~~^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 209, in main\n    compile_and_run(name + '-red', name + ' inventory/order mismatch')\n    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 179, in compile_and_run\n    code, text = run(['bash', str(ROOT / 'scripts/compile-jvm-sources.sh'), str(classes), '',\n                 ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                      *map(str, copies)], evidence / (label + '-compile.log'), records,\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                     label + '-compile', 270)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 128, in fault_run\n    return actual_run(command, log, records, label, 0.8)\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 145, in run\n    finish_session(process, owner)\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 125, in finish_session\n    raise StopUnconfirmed('owned SID stop not confirmed: ' + str(error)) from error\nactual_enum_driver.StopUnconfirmed: owned SID stop not confirmed: controlled main stop observation unavailable\n"
+  }
+}

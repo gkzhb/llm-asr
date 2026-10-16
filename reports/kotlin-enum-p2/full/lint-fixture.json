@@ -1,0 +1,409 @@
+{
+  "path": ".work/gradle-lint-negative/run-vt1z0yi9",
+  "result": {
+    "run": "run-vt1z0yi9",
+    "records": [
+      {
+        "phase": "green0",
+        "exit": 0,
+        "source_sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+        "xml_sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+        "log_sha256": "bb1600811d6111502c6f303ff6b6e50ad088c44b290f1c9e08db8f48abe86b36"
+      },
+      {
+        "phase": "red",
+        "exit": 1,
+        "source_sha256": "7f0cfde58056dadfe1643c9b6e4331103c71044822d1a70032e591da06f96509",
+        "xml_sha256": "b99c488ead11746caf24f8b9b149002181139256ee410545af4f836810117af6",
+        "log_sha256": "4a0e69cd0c2aa52880deda0babad59d4485fe3fbf9692319b3c3c3533e48ee47"
+      },
+      {
+        "phase": "green1",
+        "exit": 0,
+        "source_sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+        "xml_sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+        "log_sha256": "aef92617a5647223c158867a55961cb1a96efbfd7dfb831858dfd2f48b07d097"
+      }
+    ],
+    "negative_records": [
+      {
+        "phase": "identity-artifact-negative",
+        "exit": 1,
+        "log_sha256": "8064235960b899fc8752ef954c238ea089e0db9f786ebfb178545e032f389f38"
+      },
+      {
+        "phase": "identity-edge-negative",
+        "exit": 1,
+        "log_sha256": "3c2cda8115a471081c2e99ca8a5daac7e75aef96983d8b4e4cae8d7cbbccdbde"
+      },
+      {
+        "phase": "classpath-missing-negative",
+        "exit": 1,
+        "log_sha256": "d00bbb9c856885590cfcbddb33653455b6a28ac24d9bbf8332a106f8da3d01a5"
+      },
+      {
+        "phase": "classpath-extra-negative",
+        "exit": 1,
+        "log_sha256": "6b94a38375c620c87e4b71d8a0763b825ad090a94a00465407536b713cf78623"
+      },
+      {
+        "phase": "classpath-replacement-negative",
+        "exit": 1,
+        "log_sha256": "010d8a03a24f27748dd1a018274eac488a7213e72091d61a06ba8ed48328c9f3"
+      },
+      {
+        "phase": "classpath-restore",
+        "exit": 0,
+        "log_sha256": "b92c4453e0d1b8f3a9b6160e38d58c42052eb3678db0dcc4e9b6d6dffd085ab1"
+      }
+    ],
+    "filecollection_negative_semantics": "Ordinary Gradle task invokes same production validator closure with real passed Configuration; marker restore is not a typed/default AGP Lint worker",
+    "device_verified": false,
+    "main_lint_executed": false
+  },
+  "driver_launch_sha256": "d07d69757b599dc50ebbe73d4ebe8f1fe8c69a6afef852b6db2c4b478d3e690f",
+  "evidence": [
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.log",
+      "sha256": "6b94a38375c620c87e4b71d8a0763b825ad090a94a00465407536b713cf78623",
+      "bytes": 1777
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/green1.execution.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.execution.json",
+      "sha256": "ef654ea02faeb1911d9c35166fd51774607dc911a2ba48ec014eb7c3e27073dc",
+      "bytes": 379
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/red.command.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.command.json",
+      "sha256": "9b9adb330c0cb55aab4bcaeeffd8073ef94b60ca38036f2d23b60eec07c6eb9d",
+      "bytes": 266
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.command.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.command.json",
+      "sha256": "9b9adb330c0cb55aab4bcaeeffd8073ef94b60ca38036f2d23b60eec07c6eb9d",
+      "bytes": 266
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/green0.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.log",
+      "sha256": "bb1600811d6111502c6f303ff6b6e50ad088c44b290f1c9e08db8f48abe86b36",
+      "bytes": 3178
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/buildscript-gradle.lockfile",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/buildscript-gradle.lockfile",
+      "sha256": "56da4d9f5426658c68d8b6e2de9464fe1019cf5d50f1873cb909ad93fde4df87",
+      "bytes": 6556
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.execution.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.execution.json",
+      "sha256": "128bb971deb29f7a84f180f54d4d4eb42d48a275df03af857b7b713b97a1ed60",
+      "bytes": 419
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/red.execution.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.execution.json",
+      "sha256": "f545fa995dc0813a00b3e02a5562f8139d9d2047c20fdbb5875b7a30dcac1ce7",
+      "bytes": 379
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.log",
+      "sha256": "d00bbb9c856885590cfcbddb33653455b6a28ac24d9bbf8332a106f8da3d01a5",
+      "bytes": 1779
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/graph.execution.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/graph.execution.json",
+      "sha256": "6f06b9d2b6ebb62b40598cf8336a589d4a1ca973d3affbff971293bb25bc92a7",
+      "bytes": 392
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/red.xml",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.xml",
+      "sha256": "b99c488ead11746caf24f8b9b149002181139256ee410545af4f836810117af6",
+      "bytes": 2048
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/green0.source.java",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.source.java",
+      "sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+      "bytes": 249
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.execution.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.execution.json",
+      "sha256": "7be644742d01cdb7e22281960dbf0d5f66e35c4fe836a4df5d46517bf08ef7f3",
+      "bytes": 384
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/green0.xml",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.xml",
+      "sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+      "bytes": 86
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.log",
+      "sha256": "010d8a03a24f27748dd1a018274eac488a7213e72091d61a06ba8ed48328c9f3",
+      "bytes": 1783
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/result.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/result.json",
+      "sha256": "158ed00da644e2f9c23b769a8dceda4d4f57b4ddb7677d4ed96b3f490fc3771c",
+      "bytes": 2246
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/red.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.log",
+      "sha256": "4a0e69cd0c2aa52880deda0babad59d4485fe3fbf9692319b3c3c3533e48ee47",
+      "bytes": 7945
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/green1.xml",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.xml",
+      "sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+      "bytes": 86
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.execution.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.execution.json",
+      "sha256": "0ca82a1592e1c1c63138b682090d91f4e2de484459b9be3db3ee73b3debef2cc",
+      "bytes": 425
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/green1.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.log",
+      "sha256": "aef92617a5647223c158867a55961cb1a96efbfd7dfb831858dfd2f48b07d097",
+      "bytes": 3178
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/green1.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.execution.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.execution.json",
+      "sha256": "5c0adee488f0d0e0c6895d11010867c8eb28513ebde3d41fec40ca9d9b824fca",
+      "bytes": 379
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/graph.command.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/graph.command.json",
+      "sha256": "621a30a1b2a497489150029f1f03310d372d5b7f204d2273fde9a33beb5acc7b",
+      "bytes": 279
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/settings.gradle",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/settings.gradle",
+      "sha256": "7159cb8c44421044df49aaff4510df600ffd0834be6042f86225271589d7148e",
+      "bytes": 402
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/red.source.java",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.source.java",
+      "sha256": "7f0cfde58056dadfe1643c9b6e4331103c71044822d1a70032e591da06f96509",
+      "bytes": 185
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/graph.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/graph.log",
+      "sha256": "5f4a18c609a91dcd4d66bfc3d6bef50f5595bde71c5aa639abf26f6a0410bd71",
+      "bytes": 2069
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.execution.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.execution.json",
+      "sha256": "72442af6a805c40a356fca23737ab4fbf17b83358789069a1e514593cdc6a879",
+      "bytes": 379
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/graph.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/graph.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-edge-negative.log",
+      "sha256": "3c2cda8115a471081c2e99ca8a5daac7e75aef96983d8b4e4cae8d7cbbccdbde",
+      "bytes": 2486
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/green0.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/gradlew",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradlew",
+      "sha256": "fc977a94723af68aaffa4e5d60496fb4aeed1884b6b19e5e2f2fd7612673313d",
+      "bytes": 8692
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/build.gradle",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/build.gradle",
+      "sha256": "229439ac21ddb5e016fdbe0d86c9a277f28e3658d4423a2cb6ec6482f847824a",
+      "bytes": 2027
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.log",
+      "sha256": "b92c4453e0d1b8f3a9b6160e38d58c42052eb3678db0dcc4e9b6d6dffd085ab1",
+      "bytes": 1359
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/gradle.properties",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradle.properties",
+      "sha256": "af8d3250ca93159b7ffb890371b86625a9ebee028c7cf6a1f0dfc6b22e2e347e",
+      "bytes": 464
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/green0.execution.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.execution.json",
+      "sha256": "39134571196e986545bb19506a1bec27ea9b99c08c5f98527d754d77bb1dd590",
+      "bytes": 379
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.command.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.command.json",
+      "sha256": "835e7d99cdc3d198ad6d4ae34e5f7a5039914045cff9eef263281c4cf18ee645",
+      "bytes": 308
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/green0.command.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green0.command.json",
+      "sha256": "9b9adb330c0cb55aab4bcaeeffd8073ef94b60ca38036f2d23b60eec07c6eb9d",
+      "bytes": 266
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.execution.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.execution.json",
+      "sha256": "2d683dbc37973ad14fd490e264dc0758ba267e967a2a3fc13fa400c12311dea5",
+      "bytes": 421
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/phases.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/phases.json",
+      "sha256": "4611cabcc69dc427305d539bf945b79c541a2a9212bb56dbc6653b35262768b9",
+      "bytes": 921
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.command.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-restore.command.json",
+      "sha256": "36806e170cdb16826938c9e97141b59c01b19c76a6b2b7f2ab9648528db1a80f",
+      "bytes": 271
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/green1.command.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.command.json",
+      "sha256": "9b9adb330c0cb55aab4bcaeeffd8073ef94b60ca38036f2d23b60eec07c6eb9d",
+      "bytes": 266
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.log",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.log",
+      "sha256": "8064235960b899fc8752ef954c238ea089e0db9f786ebfb178545e032f389f38",
+      "bytes": 2490
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/green1.source.java",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/green1.source.java",
+      "sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+      "bytes": 249
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.command.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-replacement-negative.command.json",
+      "sha256": "0f0ab770c77218e86cf87bdac0e9329b91f86d9ef629b04c8af3a5788c045d21",
+      "bytes": 312
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.command.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/identity-artifact-negative.command.json",
+      "sha256": "9b9adb330c0cb55aab4bcaeeffd8073ef94b60ca38036f2d23b60eec07c6eb9d",
+      "bytes": 266
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-missing-negative.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/red.exit",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/red.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.command.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/classpath-extra-negative.command.json",
+      "sha256": "cae183de2d6a64b9d32a28a54b09f4bbc2eea81d078cf37eab2068697d2b6eef",
+      "bytes": 306
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/gradle/verification-metadata.xml",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradle/verification-metadata.xml",
+      "sha256": "c2ad4bfd7e430df923faa14e4cb3a309b4c1e73bc3adad937d7a15ff55fc219a",
+      "bytes": 114376
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/gradle/verify-lint-tools.gradle",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradle/verify-lint-tools.gradle",
+      "sha256": "a4001f33fd3692166c9510cf402fe357678e3157e977828a76b170c3fda1faef",
+      "bytes": 7564
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/gradle/lint-tool-identity.json",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/gradle/lint-tool-identity.json",
+      "sha256": "54043cd3b63f494ab0182d6122b152680c5e54041b3f4998e428e41a970c3fbf",
+      "bytes": 97700
+    },
+    {
+      "source": ".work/gradle-lint-negative/run-vt1z0yi9/src/main/java/org/llmasr/lintfixture/LintProbe.java",
+      "copy": ".work/p2enum-full/evidence/.work/gradle-lint-negative/run-vt1z0yi9/src/main/java/org/llmasr/lintfixture/LintProbe.java",
+      "sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+      "bytes": 249
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "workers": [
+    {
+      "pid": 1364409,
+      "start": "78685479",
+      "state": "R",
+      "pgid": 1364409
+    },
+    {
+      "pid": 1364410,
+      "start": "78685482",
+      "state": "R",
+      "pgid": 1364409
+    }
+  ],
+  "live_before_cleanup": [],
+  "tree_exists": true,
+  "records": []
+}

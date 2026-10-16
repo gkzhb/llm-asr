@@ -1,0 +1,17 @@
+{
+  "label": "old-java-green",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "python3",
+    "tests/runtime_log_enum_mutant_test.py",
+    "--green-only"
+  ],
+  "started_utc": "2026-10-16T06:54:09.693766+00:00",
+  "finished_utc": "2026-10-16T06:54:17.654406+00:00",
+  "exit": 0,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/old-java-green.log",
+  "log_sha256": "e21b381d4f6cd2ebd7d7fbd64a928ccf0f0eeb1020ed9c5bfa44334d1c33c823"
+}

@@ -1,0 +1,44 @@
+{
+  "tool": "java",
+  "fault": "hup",
+  "exit": 129,
+  "worker_identities": [
+    {
+      "pid": 1453911,
+      "start": "79734618",
+      "state": "S",
+      "pgid": 1453911,
+      "sid": 1453911
+    },
+    {
+      "pid": 1453912,
+      "start": "79734619",
+      "state": "R",
+      "pgid": 1453911,
+      "sid": 1453911
+    }
+  ],
+  "observation": {
+    "workers": [
+      {
+        "pid": 1453911,
+        "start": "79734618",
+        "state": "S",
+        "pgid": 1453911,
+        "sid": 1453911
+      },
+      {
+        "pid": 1453912,
+        "start": "79734619",
+        "state": "R",
+        "pgid": 1453911,
+        "sid": 1453911
+      }
+    ],
+    "live_before_cleanup": [],
+    "tree_exists": true,
+    "records": []
+  },
+  "tree_retained": false,
+  "scaled_inner_deadline": false
+}

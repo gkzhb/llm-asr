@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/zhb/gitrep/llm-asr/tests/android_test_fixture_inputs_test.py", line 121, in <module>
+    main()
+    ~~~~^^
+  File "/home/zhb/gitrep/llm-asr/tests/android_test_fixture_inputs_test.py", line 61, in main
+    require(old not in inventory, 'F1 deleted tracked Java remains in fixture inventory')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/android_test_fixture_inputs_test.py", line 27, in require
+    raise RuntimeError(message)
+RuntimeError: F1 deleted tracked Java remains in fixture inventory

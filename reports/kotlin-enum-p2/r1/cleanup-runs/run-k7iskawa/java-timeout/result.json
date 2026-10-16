@@ -1,0 +1,51 @@
+{
+  "tool": "java",
+  "fault": "timeout",
+  "exit": 1,
+  "worker_identities": [
+    {
+      "pid": 1364415,
+      "start": "78685500",
+      "state": "R",
+      "pgid": 1364415
+    },
+    {
+      "pid": 1364416,
+      "start": "78685503",
+      "state": "R",
+      "pgid": 1364415
+    }
+  ],
+  "observation": {
+    "workers": [
+      {
+        "pid": 1364415,
+        "start": "78685500",
+        "state": "R",
+        "pgid": 1364415
+      },
+      {
+        "pid": 1364416,
+        "start": "78685503",
+        "state": "R",
+        "pgid": 1364415
+      }
+    ],
+    "live_before_cleanup": [],
+    "tree_exists": true,
+    "records": [
+      {
+        "phase": "java-timeout",
+        "command": [
+          "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/cleanup/run-k7iskawa/java-timeout/bin/java"
+        ],
+        "exit": 124,
+        "timeout": true,
+        "log": ".work/p2enum-build/r1-fix/cleanup/run-k7iskawa/java-timeout/actual-run.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "no_live_worker_after_exit": true,
+  "scaled_inner_deadline": false
+}

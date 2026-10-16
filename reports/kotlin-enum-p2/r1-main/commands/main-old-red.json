@@ -1,0 +1,18 @@
+{
+  "label": "main-old-red",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "python3",
+    "tests/runtime_log_enum_cleanup_test.py",
+    "--case",
+    "main-unconfirmed-kotlinc"
+  ],
+  "started_utc": "2026-10-16T09:10:13.292247+00:00",
+  "finished_utc": "2026-10-16T09:10:16.272950+00:00",
+  "exit": 1,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/main-old-red.log",
+  "log_sha256": "7d0a4a9abbc9c7b312c4fc79655ff95c41144777ad2e6350155178e20c5d0f83"
+}

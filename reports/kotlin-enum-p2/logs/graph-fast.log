@@ -1,0 +1,48 @@
+gradle/wrapper/gradle-wrapper.jar: OK
+VERIFY_LAYER graph-fast task=verifyFast
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+
+> Configure project :app
+WARNING: The option setting 'android.aapt2FromMavenOverride=/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2' is experimental.
+:verifyArchitecture SKIPPED
+:verifyFormat SKIPPED
+:verifyLocalGuards SKIPPED
+:core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+:core:compileKotlin SKIPPED
+:core:compileJava SKIPPED
+:core:processResources SKIPPED
+:core:classes SKIPPED
+:core:jar SKIPPED
+:asr-runtime:preBuild SKIPPED
+:asr-runtime:preDebugBuild SKIPPED
+:asr-runtime:generateDebugResValues SKIPPED
+:asr-runtime:generateDebugResources SKIPPED
+:asr-runtime:packageDebugResources SKIPPED
+:asr-runtime:parseDebugLocalResources SKIPPED
+:asr-runtime:generateDebugRFile SKIPPED
+:asr-runtime:javaPreCompileDebug SKIPPED
+:asr-runtime:compileDebugJavaWithJavac SKIPPED
+:asr-runtime:bundleLibRuntimeToJarDebug SKIPPED
+:asr-runtime:bundleLibCompileToJarDebug SKIPPED
+:asr-runtime:preDebugUnitTestBuild SKIPPED
+:asr-runtime:generateDebugUnitTestStubRFile SKIPPED
+:asr-runtime:javaPreCompileDebugUnitTest SKIPPED
+:asr-runtime:compileDebugUnitTestJavaWithJavac SKIPPED
+:asr-runtime:processDebugJavaRes SKIPPED
+:asr-runtime:processDebugUnitTestJavaRes SKIPPED
+:asr-runtime:verifyModuleBoundary SKIPPED
+:asr-runtime:testDebugUnitTest SKIPPED
+:core:compileTestKotlin SKIPPED
+:core:compileTestJava SKIPPED
+:core:processTestResources SKIPPED
+:core:testClasses SKIPPED
+:core:verifyModuleBoundary SKIPPED
+:core:test SKIPPED
+:verifyFast SKIPPED
+
+BUILD SUCCESSFUL in 6s
+PASS fast graph: 35 complete dry-run tasks; no heavy families
+PIPELINE_STATUS Gradle=0 tee=0 scan=1
+GRADLE_VERIFY_LOG /home/zhb/gitrep/llm-asr/.work/verify-local/graph-fast-x8dBxT/build.log exit=0
+TASK GRAPH ONLY: no verification tasks executed

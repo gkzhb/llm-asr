@@ -1,0 +1,55 @@
+{
+  "tool": "javac",
+  "fault": "timeout",
+  "exit": 1,
+  "worker_identities": [
+    {
+      "pid": 1364400,
+      "start": "78685435",
+      "state": "R",
+      "pgid": 1364396
+    },
+    {
+      "pid": 1364407,
+      "start": "78685438",
+      "state": "R",
+      "pgid": 1364396
+    }
+  ],
+  "observation": {
+    "workers": [
+      {
+        "pid": 1364400,
+        "start": "78685435",
+        "state": "R",
+        "pgid": 1364396
+      },
+      {
+        "pid": 1364407,
+        "start": "78685438",
+        "state": "R",
+        "pgid": 1364396
+      }
+    ],
+    "live_before_cleanup": [],
+    "tree_exists": true,
+    "records": [
+      {
+        "phase": "javac-timeout",
+        "command": [
+          "bash",
+          "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+          "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/cleanup/run-k7iskawa/javac-timeout/owned-tree-4vgo1hji/classes",
+          "",
+          "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/cleanup/run-k7iskawa/javac-timeout/owned-tree-4vgo1hji/Probe.java"
+        ],
+        "exit": 124,
+        "timeout": true,
+        "log": ".work/p2enum-build/r1-fix/cleanup/run-k7iskawa/javac-timeout/actual-run.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "no_live_worker_after_exit": true,
+  "scaled_inner_deadline": false
+}

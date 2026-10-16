@@ -1,0 +1,18 @@
+{
+  "label": "cleanup-old-red",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "python3",
+    "tests/runtime_log_enum_cleanup_test.py",
+    "--case",
+    "term-kotlinc"
+  ],
+  "started_utc": "2026-10-16T07:37:03.042306+00:00",
+  "finished_utc": "2026-10-16T07:37:05.234945+00:00",
+  "exit": 1,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/cleanup-old-red.log",
+  "log_sha256": "3df1faf96fa1e76ce3d04c8fb56d80f51380e5ac0a6c2b09cce20c3ca8012395"
+}

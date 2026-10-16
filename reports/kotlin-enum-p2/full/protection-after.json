@@ -1,0 +1,407 @@
+{
+  "pass_": true,
+  "protected_current_files": 619,
+  "all_protected_current_SHA_exact": true,
+  "excluded26_lstat_only": true,
+  "old_isolated_evidence_unchanged": 783,
+  "historical_samples": 16,
+  "inherited_historical_files": 2561,
+  "inherited_boundary": "not full rehashed; original2561map + prior accepted review chain + selected16anchors; current candidate and all current inputs/APK/receipts are fully checked",
+  "baseline_backups": 1237,
+  "baseline_original_bytes_all_preserved": true,
+  "original_location_unchanged": 1212,
+  "expected_generated_delta": {
+    "android/app/build/controlled-inputs/provenance.json": {
+      "before": {
+        "sha256": "6cb40af1eed75efa7f3728e4fb85df243317bd0036975cd4ca7f2961e7700437",
+        "bytes": 10674,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "c93e1a772d5a606fc05c27fc3c8a30f0931475debaee6ab6c1caa0b2b19de4f4",
+        "bytes": 10667,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/app/build/controlled-inputs/provenance.json",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/app/build/native-debug/artifact/verification.json": {
+      "before": {
+        "sha256": "8b902ee16926bae147abc5297073766de787eb7dedf7f2d72ca1ee3b2090d4e1",
+        "bytes": 12691,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "63e24c0a8253dcea4bd131a4e557606e7a0e930edf58e4919e4745c8a4ea9dd5",
+        "bytes": 12687,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/app/build/native-debug/artifact/verification.json",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/app/build/native-debug/jni-check/classes/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.class": {
+      "before": {
+        "sha256": "6ba56f9ce1dbab43e2977fc4c443c592d36dcff2ba5628fc3acde8933a162c72",
+        "bytes": 2946,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "a681686ffeda8116c33db8624b00da270b8441a4e68b4b95b1e02b913fa9c729",
+        "bytes": 3963,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/app/build/native-debug/jni-check/classes/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.class",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/app/build/native-debug/jni-check/classes/org/llmasr/minimal/diagnostics/RuntimeLogSource.class": {
+      "before": {
+        "sha256": "10f0c01d1c2c25f473196c6b255ba483c27a8337b65186fd880bca6d0eb3631f",
+        "bytes": 1122,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "6ec8f96a71d5e223a6bbc678b4dbc5aafbd109d6d031914c93dacb64bdac2cdc",
+        "bytes": 1954,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/app/build/native-debug/jni-check/classes/org/llmasr/minimal/diagnostics/RuntimeLogSource.class",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/app/build/outputs/apk/debug/app-debug.apk": {
+      "before": {
+        "sha256": "3fe42d623e8f9b60e7d34fd63f432de2aa780520395fc8aeeb5bbbc1ca32df10",
+        "bytes": 5216237,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "92c3603ba89cb1045c04a663c35cd3d13a4aea53c8674be3a02251dc77de4256",
+        "bytes": 5217189,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/app/build/outputs/apk/debug/app-debug.apk",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/app/build/reports/lint-results-debug.html": {
+      "before": {
+        "sha256": "053b9cb558af52b6702eff4b3b1fcf69f8d7df0c44e76ecaaaad66e0a4e1c7a7",
+        "bytes": 92590,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "fe1492041498e28bbdd417d4a7770d538ba3d2f33f0111dbc8be31c1e6a5e51c",
+        "bytes": 92590,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/app/build/reports/lint-results-debug.html",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/asr-runtime/build/reports/lint-results-debug.html": {
+      "before": {
+        "sha256": "0bdffc734890adc6590f93dcdeae5ba6d466d8ff200f174d68c5c4d57a7f4573",
+        "bytes": 61932,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "4335cfb11c03a274b3e6f49c240e8c8b2258ea1c11b92d6d10baa638eff7c5a2",
+        "bytes": 61932,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/asr-runtime/build/reports/lint-results-debug.html",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/asr-runtime/build/reports/tests/testDebugUnitTest/classes/RuntimeRegressionJUnitTest.html": {
+      "before": {
+        "sha256": "9f31090c597010b4e886242d99dafa223aee8d9ccb71b1b221287cba8856e863",
+        "bytes": 2919,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "98d47b5aff4095fbfc30037b7c16ff564567f2c91fdaaf2f7497272d7e9014de",
+        "bytes": 2919,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/asr-runtime/build/reports/tests/testDebugUnitTest/classes/RuntimeRegressionJUnitTest.html",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/asr-runtime/build/reports/tests/testDebugUnitTest/index.html": {
+      "before": {
+        "sha256": "d5732b3694aacca7f7c9ffc78bdca6d25b27a9389069f6de4cf1bbd080d2ca0e",
+        "bytes": 2362,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "0e0c4d22266e91f3e77f1edcbc8605b434dbd52835ac134559b5d503b4c1ee05",
+        "bytes": 2362,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/asr-runtime/build/reports/tests/testDebugUnitTest/index.html",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/asr-runtime/build/reports/tests/testDebugUnitTest/packages/default-package.html": {
+      "before": {
+        "sha256": "4ff353407fc21b9cd92a9ccb151b1505f9d470aca0bf4945c06cef3ca8ccecda",
+        "bytes": 2009,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "e6bb5f49f2c675cbae5fda5eb14b8a09ae832bb58c9910f62fbcf57d3f4d537e",
+        "bytes": 2009,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/asr-runtime/build/reports/tests/testDebugUnitTest/packages/default-package.html",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml": {
+      "before": {
+        "sha256": "502fee06d0bf755e8a04db292e47fe60797051330c928c6955181676c3494d14",
+        "bytes": 1190,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "6ac519d19cfd73e39c6ef7ba5c0cb038a0c878e4ab78b8be12153a97fc85ee03",
+        "bytes": 1190,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/asr-runtime/build/test-results/testDebugUnitTest/binary/results.bin": {
+      "before": {
+        "sha256": "9a77092f6ac2d361d90aaaa4b1b3d990bec5310267866a4b2199996da4e2796e",
+        "bytes": 148,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "e840d351e80bb4f602380f3bfd9e14523c066a1384a4f5e5b6e553f12881e858",
+        "bytes": 148,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/asr-runtime/build/test-results/testDebugUnitTest/binary/results.bin",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/test-host/build/outputs/apk/debug/test-host-debug.apk": {
+      "before": {
+        "sha256": "856536f13c8fb7a975663bb27f35f8ce6ca586f2ffee36907d3aca757f58ee7d",
+        "bytes": 2584412,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "316cbbcf9fde9043872eefbf368347b2a6eac6d3327b6daadf18217a514ecd11",
+        "bytes": 2585364,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/test-host/build/reports/tests/testDebugUnitTest/classes/org.llmasr.minimal.testhost.FixtureContractTest.html": {
+      "before": {
+        "sha256": "270a8d4ce88bded0bc7d12b37d564524ca21a5b2864077e7cbb5f396562e9eb5",
+        "bytes": 2787,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "ad206fda22372fd0838f63f68b580ffb9bb1845d0f34388f29b1c2254aa0259a",
+        "bytes": 2783,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/test-host/build/reports/tests/testDebugUnitTest/classes/org.llmasr.minimal.testhost.FixtureContractTest.html",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/test-host/build/reports/tests/testDebugUnitTest/index.html": {
+      "before": {
+        "sha256": "51a718e226bd90e63bf1389cdb77fb75f6f8604aacff0bb48bdf51deb5708b53",
+        "bytes": 2428,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "3eb07f9002063b750f2591dcbe10ddb1e37d89a1ba96159d523da2f4699eba87",
+        "bytes": 2428,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/test-host/build/reports/tests/testDebugUnitTest/index.html",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/test-host/build/reports/tests/testDebugUnitTest/packages/org.llmasr.minimal.testhost.html": {
+      "before": {
+        "sha256": "a156bfc4604a21ea04152650a20ea9a190d00f7c6bd542c484bc0e7f22912959",
+        "bytes": 2075,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "fd14139094c1023c8e9798448aa5bcedc18307dd6f47a70bb3a10f7da57f17f8",
+        "bytes": 2075,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/test-host/build/reports/tests/testDebugUnitTest/packages/org.llmasr.minimal.testhost.html",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/test-host/build/test-results/testDebugUnitTest/TEST-org.llmasr.minimal.testhost.FixtureContractTest.xml": {
+      "before": {
+        "sha256": "9af3feb67bf7c2952b1c86ba352947eb5807b8564ad5c3ba2f3c319395b187b2",
+        "bytes": 1153,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "0798d57c1755b48d24fdba6fae819193220779bee1c91819ba9bb02c8c0dacad",
+        "bytes": 1152,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/test-host/build/test-results/testDebugUnitTest/TEST-org.llmasr.minimal.testhost.FixtureContractTest.xml",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "android/test-host/build/test-results/testDebugUnitTest/binary/results.bin": {
+      "before": {
+        "sha256": "2e6ca59fecf6ee8a82bed5977bfba94050053106815ea8ec1a51dc21af3f411c",
+        "bytes": 534,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "8fefdeb513eef3c138e38669793ac03ea616e874ad87b411f1fa48ca4d44d26f",
+        "bytes": 534,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/android/test-host/build/test-results/testDebugUnitTest/binary/results.bin",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "build/jni-check/classes/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.class": {
+      "before": {
+        "sha256": "6ba56f9ce1dbab43e2977fc4c443c592d36dcff2ba5628fc3acde8933a162c72",
+        "bytes": 2946,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "a681686ffeda8116c33db8624b00da270b8441a4e68b4b95b1e02b913fa9c729",
+        "bytes": 3963,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/build/jni-check/classes/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.class",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "build/jni-check/classes/org/llmasr/minimal/diagnostics/RuntimeLogSource.class": {
+      "before": {
+        "sha256": "10f0c01d1c2c25f473196c6b255ba483c27a8337b65186fd880bca6d0eb3631f",
+        "bytes": 1122,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "6ec8f96a71d5e223a6bbc678b4dbc5aafbd109d6d031914c93dacb64bdac2cdc",
+        "bytes": 1954,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/build/jni-check/classes/org/llmasr/minimal/diagnostics/RuntimeLogSource.class",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "core/build/reports/tests/test/classes/CoreRegressionJUnitTest.html": {
+      "before": {
+        "sha256": "38d760313b5478d4c10e0884bda7cb8e808635f1e9e290f50e610c457e097550",
+        "bytes": 9232,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "eed41144d0ef2d2f6629a686ca2ae68790ca2751b1d7b3eb771f28ae54036f40",
+        "bytes": 9232,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/core/build/reports/tests/test/classes/CoreRegressionJUnitTest.html",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "core/build/reports/tests/test/index.html": {
+      "before": {
+        "sha256": "9bb0085852f8d4b514a3e9bb3e2c748efea4320c772913a729e6f6df04c50c35",
+        "bytes": 2359,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "d062a38e15c06ea219202ebab3a7fabd33958d227386289275339a3c0e456fcc",
+        "bytes": 2359,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/core/build/reports/tests/test/index.html",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "core/build/reports/tests/test/packages/default-package.html": {
+      "before": {
+        "sha256": "302a985c964a3b0a29594bc23861eafc38fdeb9a50b7571356aeed44b5daf0c0",
+        "bytes": 2005,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "c57673ebb6d673d07e9014cebe53043b517c4812a71b82301c31dafbee2dba0c",
+        "bytes": 2005,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/core/build/reports/tests/test/packages/default-package.html",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml": {
+      "before": {
+        "sha256": "791394c76d62d21921e9e0fbc408a144ca9d25dacf7c3570873003ae0991f19c",
+        "bytes": 6514,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "eb51fa41d343bd77fe665d11de0ba7636b10b93a04679cc29f400b11b0fd7371",
+        "bytes": 6514,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    },
+    "core/build/test-results/test/binary/results.bin": {
+      "before": {
+        "sha256": "4d0e61e377d86e6bc3f4efbecbaced4944fe20939dbafffcd5e9309a48d24052",
+        "bytes": 1730,
+        "mode": "100644"
+      },
+      "after": {
+        "sha256": "a2df4cb7ef417ec21c2ea75849ee07689f9c3261c7669650b4bd95b12f2a9dd2",
+        "bytes": 1730,
+        "mode": "100644"
+      },
+      "backup": ".work/p2enum-full/baseline/core/build/test-results/test/binary/results.bin",
+      "classification": "expected standard full generated output delta; original preserved in ignored baseline"
+    }
+  },
+  "old32": {
+    "android/app/build/outputs/apk/debug/app-debug.apk": "expected generated delta; original SHA verified in baseline backup",
+    "android/app/build/outputs/apk/debug/output-metadata.json": "unchanged in original location",
+    "android/app/build/verification/debug/run-58447c85ca574d19b9d5c20d664a2908/apk-report-binding.json": "unchanged in original location",
+    "android/app/build/verification/debug/run-58447c85ca574d19b9d5c20d664a2908/badging.txt": "unchanged in original location",
+    "android/app/build/verification/debug/run-58447c85ca574d19b9d5c20d664a2908/build-input-sha256.json": "unchanged in original location",
+    "android/app/build/verification/debug/run-58447c85ca574d19b9d5c20d664a2908/ime-method-tree.txt": "unchanged in original location",
+    "android/app/build/verification/debug/run-58447c85ca574d19b9d5c20d664a2908/manifest-tree.txt": "unchanged in original location",
+    "android/app/build/verification/debug/run-58447c85ca574d19b9d5c20d664a2908/native-link-provenance.json": "unchanged in original location",
+    "android/app/build/verification/debug/run-58447c85ca574d19b9d5c20d664a2908/native-verification.json": "unchanged in original location",
+    "android/app/build/verification/debug/run-58447c85ca574d19b9d5c20d664a2908/permissions.txt": "unchanged in original location",
+    "android/app/build/verification/debug/run-58447c85ca574d19b9d5c20d664a2908/result.json": "unchanged in original location",
+    "android/app/build/verification/debug/run-58447c85ca574d19b9d5c20d664a2908/signature.txt": "unchanged in original location",
+    "android/test-host/build/outputs/apk/androidTest/debug/output-metadata.json": "unchanged in original location",
+    "android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk": "unchanged in original location",
+    "android/test-host/build/outputs/apk/debug/output-metadata.json": "unchanged in original location",
+    "android/test-host/build/outputs/apk/debug/test-host-debug.apk": "expected generated delta; original SHA verified in baseline backup",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/host-badging.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/host-manifest.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/host-permissions.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/host-signature.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/host-zipalign.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/product-badging.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/product-manifest.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/product-permissions.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/product-signature.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/product-zipalign.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/receipt.json": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/test-badging.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/test-manifest.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/test-permissions.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/test-signature.txt": "unchanged in original location",
+    "build/verification/android-test/run-89e47fb33e5547a0b63a13fd1de31b69/test-zipalign.txt": "unchanged in original location"
+  },
+  "native578_content_mode_inode_mtime_preserved": true,
+  "native_DSO_provenance_bytes_preserved": true,
+  "all_tools_current_SHA_preserved": true,
+  "index_empty_SHA_preserved": true,
+  "tracked_diff_SHA_preserved": true,
+  "unknown": [],
+  "related_live_tools": [],
+  "full_PID_identities_gone": true
+}

@@ -1,0 +1,16 @@
+{
+  "label": "tool-identity",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "python3",
+    ".work/p2enum-build/tools.py"
+  ],
+  "started_utc": "2026-10-16T07:10:48.264842+00:00",
+  "finished_utc": "2026-10-16T07:10:52.050838+00:00",
+  "exit": 0,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/tool-identity.log",
+  "log_sha256": "5c2986ea68b75862f0ca8f1bcd369011a859373f8f442fd6dff9bbe83238df4d"
+}

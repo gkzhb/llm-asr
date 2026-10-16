@@ -1,0 +1,180 @@
+gradle/wrapper/gradle-wrapper.jar: OK
+VERIFY_LAYER fast task=verifyFast
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+
+> Configure project :app
+WARNING: The option setting 'android.aapt2FromMavenOverride=/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2' is experimental.
+
+> Task :verifyArchitecture
+PASS model dependency boundaries and forbidden-reference negative fixtures (lexical, not AST)
+PASS R2 mechanism/policy/private-feature boundaries, direct lifecycle wiring and negative fixtures (lexical, not Android runtime)
+PASS R3 graph/shared-adapter/JNI/report boundaries and negative fixtures (lexical, not runtime)
+PASS R6 complete recursive package map, allowed edges and 15 actual-checker negative fixtures (lexical)
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.006s
+
+OK
+PASS Android source wiring/manifest policy and checker clause mutation fixtures (not compiled APK)
+PASS log page source wiring and isolated log component negative fixtures (not Android runtime)
+PASS R5 Activity lifecycle/observer/atomic edit/export status wiring and 8 negative fixtures (not Android runtime)
+PASS frozen pre-R3 report bodies + 8 negative fixtures; native source identical except JNI class symbol prefix (not runtime)
+
+> Task :verifyFormat
+PASS maintained text: 41 explicit/live module files (read-only)
+
+> Task :verifyLocalGuards
+PASS static fast/full/Lint/checksum wiring (not a real Gradle task graph)
+PASS local entry target refusals, strict/full/graph/DEX/exit contracts and Nix cache-only argument construction (mock executables)
+tee failure: actual=23 expected=23 target='log capture failed' PASS
+Gradle and tee arbitration: actual=7 expected=7 target='log capture failed' PASS
+tee recovery: actual=0 expected=0 target='' PASS
+grep log read failure: actual=2 expected=2 target='DEX log scan failed' PASS
+log read recovery: actual=0 expected=0 target='' PASS
+grep execution failure: actual=2 expected=2 target='DEX log scan failed' PASS
+grep recovery: actual=0 expected=0 target='' PASS
+DEX target: actual=1 expected=1 target='DEX diagnostics require review' PASS
+graph forbidden lintAnalyzeDebug: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden verifyDependencyEvidence: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden verifyHost: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden verifyJniObject: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden configureCMakeDebug: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden buildNativeArtifact: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden assembleDebug: actual=1 expected=1 target='forbidden heavy task' PASS
+graph forbidden packageDebug: actual=1 expected=1 target='forbidden heavy task' PASS
+unknown core task: actual=1 expected=1 target='unreviewed task path' PASS
+leading whitespace task ' ': actual=1 expected=1 target='unrecognized' PASS
+leading whitespace task '\t': actual=1 expected=1 target='unrecognized' PASS
+graph recovery: actual=0 expected=0 target='' PASS
+PASS real-entry executable-fault/graph target refusals and recovery (mock Gradle)
+PASS fast graph: 5 complete dry-run tasks; no heavy families
+PASS fast graph: 5 complete dry-run tasks; no heavy families
+PASS complete graph parser heavy-family/scope/malformed target negatives and recovery
+PASS unique checksum mutation and target-row expected/actual negatives/recovery (not real Gradle)
+PASS maintained text: 41 explicit/live module files (read-only)
+PASS maintained-text target negatives and raw evidence exclusion (no writes to repository)
+PASS maintained text: 41 explicit/live module files (read-only)
+PASS maintained-text target negatives and raw evidence exclusion (no writes to repository)
+
+> Task :core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:compileKotlin
+> Task :core:compileJava
+> Task :core:processResources NO-SOURCE
+> Task :core:classes
+> Task :core:jar
+> Task :asr-runtime:preBuild UP-TO-DATE
+> Task :asr-runtime:preDebugBuild UP-TO-DATE
+> Task :asr-runtime:generateDebugResValues
+> Task :asr-runtime:generateDebugResources
+> Task :asr-runtime:packageDebugResources
+> Task :asr-runtime:parseDebugLocalResources
+> Task :asr-runtime:generateDebugRFile
+> Task :asr-runtime:javaPreCompileDebug
+> Task :asr-runtime:compileDebugJavaWithJavac
+> Task :asr-runtime:bundleLibRuntimeToJarDebug
+> Task :asr-runtime:bundleLibCompileToJarDebug
+> Task :asr-runtime:preDebugUnitTestBuild UP-TO-DATE
+> Task :asr-runtime:generateDebugUnitTestStubRFile
+> Task :asr-runtime:javaPreCompileDebugUnitTest
+> Task :asr-runtime:compileDebugUnitTestJavaWithJavac
+> Task :asr-runtime:processDebugJavaRes NO-SOURCE
+> Task :asr-runtime:processDebugUnitTestJavaRes NO-SOURCE
+
+> Task :asr-runtime:verifyModuleBoundary
+PASS actual module compile boundary: asr-runtime -> core positive exit 0
+PASS actual module compile boundary: runtime -> JNI/Android positive exit 0
+PASS actual module compile boundary: runtime !-> app exit 1
+
+> Task :asr-runtime:testDebugUnitTest
+
+RuntimeRegressionJUnitTest > inferenceAdapterAndJniConstruction PASSED
+
+> Task :core:compileTestKotlin NO-SOURCE
+> Task :core:compileTestJava
+> Task :core:processTestResources NO-SOURCE
+> Task :core:testClasses
+
+> Task :core:verifyModuleBoundary
+PASS actual module compile boundary: core -> core positive exit 0
+PASS actual module compile boundary: core !-> android.content.Context exit 1
+PASS actual module compile boundary: core !-> org.json.JSONObject exit 1
+PASS actual module compile boundary: core !-> org.llmasr.minimal.asr.JniNativeTranscription exit 1
+PASS actual module compile boundary: core !-> org.llmasr.minimal.AppGraph exit 1
+
+> Task :core:test
+
+CoreRegressionJUnitTest > runtimeLogErrorIdentity PASSED
+
+CoreRegressionJUnitTest > modelReadiness PASSED
+
+CoreRegressionJUnitTest > imeSessionPrivacy PASSED
+
+CoreRegressionJUnitTest > reviewWindow PASSED
+
+CoreRegressionJUnitTest > reviewPublication PASSED
+
+CoreRegressionJUnitTest > reviewDeletion PASSED
+
+CoreRegressionJUnitTest > reviewLiveDeletion PASSED
+
+CoreRegressionJUnitTest > resultFiles PASSED
+
+CoreRegressionJUnitTest > modelPageHelpers PASSED
+
+CoreRegressionJUnitTest > recordingRaces PASSED
+
+CoreRegressionJUnitTest > kotlinJavaAbi PASSED
+
+CoreRegressionJUnitTest > logExportGenerations PASSED
+
+CoreRegressionJUnitTest > modelNotifications PASSED
+
+CoreRegressionJUnitTest > admissionOwnerBoundary PASSED
+
+CoreRegressionJUnitTest > privateModelRoot PASSED
+
+CoreRegressionJUnitTest > reviewPlanning PASSED
+
+CoreRegressionJUnitTest > modelOperationControl PASSED
+
+CoreRegressionJUnitTest > modelWhitelistDeletion PASSED
+
+CoreRegressionJUnitTest > reviewBoundary PASSED
+
+CoreRegressionJUnitTest > modelRepository PASSED
+
+CoreRegressionJUnitTest > runtimeLogCore PASSED
+
+CoreRegressionJUnitTest > nativeResponseProtocol PASSED
+
+CoreRegressionJUnitTest > modelCancelCleanup PASSED
+
+CoreRegressionJUnitTest > textExportFatalIdentity PASSED
+
+CoreRegressionJUnitTest > providerErrorAndStreamBoundary PASSED
+
+CoreRegressionJUnitTest > requestRunner PASSED
+
+CoreRegressionJUnitTest > reviewTerminal PASSED
+
+CoreRegressionJUnitTest > textExport PASSED
+
+CoreRegressionJUnitTest > partRecoveryProductionMutant PASSED
+
+CoreRegressionJUnitTest > waveAndRecordingProtocol PASSED
+
+CoreRegressionJUnitTest > modelManagementController PASSED
+
+CoreRegressionJUnitTest > textExportSafety PASSED
+
+CoreRegressionJUnitTest > reviewHistory PASSED
+
+CoreRegressionJUnitTest > taskCoordinator PASSED
+
+> Task :verifyFast
+
+BUILD SUCCESSFUL in 22s
+23 actionable tasks: 23 executed
+PIPELINE_STATUS Gradle=0 tee=0 scan=1
+GRADLE_VERIFY_LOG /home/zhb/gitrep/llm-asr/.work/verify-local/fast-qZLP9H/build.log exit=0

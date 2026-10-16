@@ -1,0 +1,91 @@
+{
+  "engineering_commands": 8,
+  "valid_inventory_reds": [
+    "inputs-old-red",
+    "audio-old-red"
+  ],
+  "first_fixture_compile_failure_not_behavior_red": "fixture-behavior",
+  "successful_commands": [
+    "inputs-green",
+    "inputs-optimized",
+    "inputs-audio-green",
+    "inputs-audio-optimized",
+    "fixture-behavior-fixed"
+  ],
+  "final_current_inputs_only": [
+    "inputs-audio-green",
+    "inputs-audio-optimized",
+    "fixture-behavior-fixed"
+  ],
+  "actual_current_source_inventory": 74,
+  "fixture_inputs": 94,
+  "production_sources": {
+    "kotlin": 12,
+    "java": 51,
+    "total": 63
+  },
+  "fixture_phases": [
+    {
+      "phase": "green-initial",
+      "exit": 0,
+      "tests": 7,
+      "failures": [],
+      "log_sha256": "28ea226b056b97e3adf434be808af733bf2a811c93dd1c65237f11dcc0697c7e",
+      "xml_sha256": "f3fa26988049659823f33781ee8bc4ee80f89236ed74cd3186056ac35e723f47"
+    },
+    {
+      "phase": "red-payload",
+      "exit": 1,
+      "tests": 7,
+      "failures": [
+        [
+          "enginePayloadAndOrder",
+          {
+            "message": "java.lang.AssertionError: engine payload display",
+            "type": "java.lang.AssertionError"
+          }
+        ]
+      ],
+      "log_sha256": "ebd28774edff4f83d26780a054cb7a61c2071ffb61a83ce910a3fcfdac256901",
+      "xml_sha256": "6ff85ec2bfb263d829025c100c06e6b19349282aec7d6e9b91121d58aefc830c"
+    },
+    {
+      "phase": "green-payload-restored",
+      "exit": 0,
+      "tests": 7,
+      "failures": [],
+      "log_sha256": "a42da8ce68fd07e7bf5b6fc6a554479b6ae9281561dab1d613ae280233dc66fc",
+      "xml_sha256": "856ae89782a84ea36a4acde501a756f8c8992496937dbd1738c6546dfe00bc40"
+    },
+    {
+      "phase": "red-cleanup",
+      "exit": 1,
+      "tests": 7,
+      "failures": [
+        [
+          "cleanupRetainsOwner",
+          {
+            "message": "java.lang.AssertionError: cleanup must wait for release",
+            "type": "java.lang.AssertionError"
+          }
+        ]
+      ],
+      "log_sha256": "49f6e1fd054909a7c4651d49fd19769a82d4e983f0da3a124b4059caf50a2bf0",
+      "xml_sha256": "a1847fc95f72db0e37c5135f5ef2980c6e7d7bad9a1a73449a26ba6cc6a8a7a9"
+    },
+    {
+      "phase": "green-final",
+      "exit": 0,
+      "tests": 7,
+      "failures": [],
+      "log_sha256": "a42da8ce68fd07e7bf5b6fc6a554479b6ae9281561dab1d613ae280233dc66fc",
+      "xml_sha256": "a4aae9c2e4e0173bdc92b912edc4db14ad303cca2fc384702affe49c359ce42f"
+    }
+  ],
+  "failed_directory_kept": ".work/p1b-build/2b/behavior-c8y1ugqj",
+  "successful_directory": ".work/p1b-build/2b/behavior-wouf1ujv",
+  "new_authorized_behavior_directories": 2,
+  "warning": "Existing aapt2FromMavenOverride experimental warning in each phase; no DEX warning match",
+  "full_lint_apk_device_not_run": true,
+  "notification_recovery": "fixture-terminal-recovery.json; one exact unknown registry after resume/disk terminal; launch PID absent"
+}

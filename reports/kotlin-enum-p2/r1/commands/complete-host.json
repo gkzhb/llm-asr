@@ -1,0 +1,16 @@
+{
+  "label": "complete-host",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "bash",
+    "scripts/test-minimal-apk.sh"
+  ],
+  "started_utc": "2026-10-16T07:43:39.365982+00:00",
+  "finished_utc": "2026-10-16T07:44:40.773355+00:00",
+  "exit": 0,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/complete-host.log",
+  "log_sha256": "5f5669edd4932ae0d2d3ce73163cc84eab515c1870ff3e60130c092f1aea60cd"
+}

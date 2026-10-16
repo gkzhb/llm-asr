@@ -1,0 +1,27 @@
+{
+  "evidence": ".work/p2enum-build/r1-main/cleanup/run-gzdw236s",
+  "target": "R1 main restored live mutant source after StopUnconfirmed",
+  "observation": {
+    "target": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-vlqqs901/tree-fzf5701c/android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt",
+    "tree": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-vlqqs901/tree-fzf5701c",
+    "classes": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-vlqqs901/tree-fzf5701c/classes-RuntimeLogSource-red",
+    "mutant_sha256": "7b4d0139f005a68757e5238c6ef6410ed5f0e1c77911581b1a6faa0ec6d784b1",
+    "original_sha256": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3",
+    "calls": [
+      "green0-compile",
+      "green0-run",
+      "RuntimeLogSource-red-compile"
+    ],
+    "stop_unconfirmed_propagated": true,
+    "exception": "owned SID stop not confirmed: controlled main stop observation unavailable",
+    "source_sha256_after": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3",
+    "classes_retained": true,
+    "marker_retained": true
+  },
+  "finally": {
+    "matching_live_workers": [],
+    "tree_exists": false
+  },
+  "old_driver_snapshot": "before/tests/runtime_log_enum_mutant_test.py",
+  "red_cleanup_snapshot": "red-cleanup.py"
+}

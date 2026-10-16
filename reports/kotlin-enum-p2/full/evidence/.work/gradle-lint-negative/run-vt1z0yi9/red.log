@@ -1,0 +1,166 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+
+> Configure project :
+WARNING: The option setting 'android.aapt2FromMavenOverride=/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2' is experimental.
+WARNING: The option setting 'android.experimental.lint.heapSize=768m' is experimental.
+
+> Task :preBuild UP-TO-DATE
+> Task :preDebugBuild UP-TO-DATE
+> Task :mergeDebugJniLibFolders
+> Task :mergeDebugNativeLibs NO-SOURCE
+> Task :stripDebugDebugSymbols NO-SOURCE
+> Task :copyDebugJniLibsProjectAndLocalJars
+> Task :generateDebugResValues
+> Task :generateDebugResources
+> Task :packageDebugResources
+> Task :parseDebugLocalResources
+> Task :generateDebugRFile
+> Task :extractDebugAnnotations
+> Task :extractDeepLinksForAarDebug
+> Task :javaPreCompileDebug
+> Task :compileDebugJavaWithJavac
+> Task :mergeDebugGeneratedProguardFiles
+> Task :mergeDebugConsumerProguardFiles
+> Task :mergeDebugShaders
+> Task :compileDebugShaders NO-SOURCE
+> Task :generateDebugAssets UP-TO-DATE
+> Task :packageDebugAssets
+> Task :prepareDebugArtProfile
+> Task :prepareLintJarForPublish
+> Task :processDebugManifest
+> Task :processDebugJavaRes NO-SOURCE
+> Task :mergeDebugJavaResource
+> Task :syncDebugLibJars
+> Task :writeDebugAarMetadata
+> Task :bundleDebugLocalLintAar
+> Task :bundleLibRuntimeToJarDebug
+> Task :createFullJarDebug
+> Task :preDebugAndroidTestBuild UP-TO-DATE
+> Task :generateDebugAndroidTestResValues
+> Task :writeDebugLintModelMetadata
+> Task :generateDebugAndroidTestLintModel
+> Task :extractProguardFiles
+> Task :generateDebugLintReportModel
+> Task :preDebugUnitTestBuild UP-TO-DATE
+> Task :generateDebugUnitTestLintModel
+
+> Task :verifyLintToolIdentity
+LINT_IDENTITY_PASS task=:lintReportDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintAnalyzeDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintAnalyzeDebugAndroidTest phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintAnalyzeDebugUnitTest phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:updateLintBaselineDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintVitalAnalyzeDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintFixDebug phase=gate artifacts=66 edges=171
+
+> Task :lintAnalyzeDebug
+LINT_IDENTITY_PASS task=:lintAnalyzeDebug phase=consumer artifacts=66 edges=171
+
+> Task :lintAnalyzeDebugAndroidTest
+LINT_IDENTITY_PASS task=:lintAnalyzeDebugAndroidTest phase=consumer artifacts=66 edges=171
+
+> Task :lintAnalyzeDebugUnitTest
+LINT_IDENTITY_PASS task=:lintAnalyzeDebugUnitTest phase=consumer artifacts=66 edges=171
+
+> Task :lintReportDebug
+LINT_IDENTITY_PASS task=:lintReportDebug phase=consumer artifacts=66 edges=171
+Wrote HTML report to file:///home/zhb/gitrep/llm-asr/.work/gradle-lint-negative/run-vt1z0yi9/build/reports/lint-results-debug.html
+
+> Task :lintDebug FAILED
+Lint found 1 errors, 0 warnings. First failure:
+
+/home/zhb/gitrep/llm-asr/.work/gradle-lint-negative/run-vt1z0yi9/src/main/java/org/llmasr/lintfixture/LintProbe.java:5: Error: Call requires API level 33 (current min is 29): android.app.Activity#getOnBackInvokedDispatcher [NewApi]
+            activity.getOnBackInvokedDispatcher();
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "NewApi":
+   This check scans through all the Android API calls in the application and
+   warns about any calls that are not available on all versions targeted by
+   this application (according to its minimum SDK attribute in the manifest).
+
+   If you really want to use this API and don't need to support older devices
+   just set the minSdkVersion in your build.gradle or AndroidManifest.xml
+   files.
+
+   If your code is deliberately accessing newer APIs, and you have ensured
+   (e.g. with conditional execution) that this code will only ever be called
+   on a supported platform, then you can annotate your class or method with
+   the @TargetApi annotation specifying the local minimum SDK to apply, such
+   as @TargetApi(11), such that this check considers 11 rather than your
+   manifest file's minimum SDK as the required API level.
+
+   If you are deliberately setting android: attributes in style definitions,
+   make sure you place this in a values-vNN folder in order to avoid running
+   into runtime conflicts on certain devices where manufacturers have added
+   custom attributes whose ids conflict with the new ones on later platforms.
+
+   Similarly, you can use tools:targetApi="11" in an XML file to indicate that
+   the element will only be inflated in an adequate context.
+
+
+The full lint text report is located at:
+  /home/zhb/gitrep/llm-asr/.work/gradle-lint-negative/run-vt1z0yi9/build/intermediates/lint_intermediate_text_report/debug/lintReportDebug/lint-results-debug.txt
+
+> Task :copyDebugLintReports
+Copying lint XML report to /home/zhb/gitrep/llm-asr/.work/gradle-lint-negative/run-vt1z0yi9/build/reports/lint-target.xml
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':lintDebug'.
+> Lint found errors in the project; aborting build.
+
+  Fix the issues identified by lint, or create a baseline to see only new errors.
+  To create a baseline, run `gradlew updateLintBaseline` after adding the following to the module's build.gradle file:
+  ```
+  android {
+      lint {
+          baseline = file("lint-baseline.xml")
+      }
+  }
+  ```
+  For more details, see https://developer.android.com/studio/write/lint#snapshot
+
+  Lint found 1 errors, 0 warnings. First failure:
+
+  /home/zhb/gitrep/llm-asr/.work/gradle-lint-negative/run-vt1z0yi9/src/main/java/org/llmasr/lintfixture/LintProbe.java:5: Error: Call requires API level 33 (current min is 29): android.app.Activity#getOnBackInvokedDispatcher [NewApi]
+              activity.getOnBackInvokedDispatcher();
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+     Explanation for issues of type "NewApi":
+     This check scans through all the Android API calls in the application and
+     warns about any calls that are not available on all versions targeted by
+     this application (according to its minimum SDK attribute in the manifest).
+
+     If you really want to use this API and don't need to support older devices
+     just set the minSdkVersion in your build.gradle or AndroidManifest.xml
+     files.
+
+     If your code is deliberately accessing newer APIs, and you have ensured
+     (e.g. with conditional execution) that this code will only ever be called
+     on a supported platform, then you can annotate your class or method with
+     the @TargetApi annotation specifying the local minimum SDK to apply, such
+     as @TargetApi(11), such that this check considers 11 rather than your
+     manifest file's minimum SDK as the required API level.
+
+     If you are deliberately setting android: attributes in style definitions,
+     make sure you place this in a values-vNN folder in order to avoid running
+     into runtime conflicts on certain devices where manufacturers have added
+     custom attributes whose ids conflict with the new ones on later platforms.
+
+     Similarly, you can use tools:targetApi="11" in an XML file to indicate that
+     the element will only be inflated in an adequate context.
+
+
+  The full lint text report is located at:
+    /home/zhb/gitrep/llm-asr/.work/gradle-lint-negative/run-vt1z0yi9/build/intermediates/lint_intermediate_text_report/debug/lintReportDebug/lint-results-debug.txt
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 22s
+37 actionable tasks: 37 executed

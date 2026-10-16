@@ -1,0 +1,206 @@
+{
+  "core": {
+    "source": "core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml",
+    "copy": ".work/p2enum-full/evidence/core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml",
+    "sha256": "eb51fa41d343bd77fe665d11de0ba7636b10b93a04679cc29f400b11b0fd7371",
+    "bytes": 6514,
+    "tests": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "methods": [
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "runtimeLogErrorIdentity"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelReadiness"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "imeSessionPrivacy"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewWindow"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewPublication"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewDeletion"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewLiveDeletion"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "resultFiles"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelPageHelpers"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "recordingRaces"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "kotlinJavaAbi"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "logExportGenerations"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelNotifications"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "admissionOwnerBoundary"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "privateModelRoot"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewPlanning"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelOperationControl"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelWhitelistDeletion"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewBoundary"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelRepository"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "runtimeLogCore"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "nativeResponseProtocol"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelCancelCleanup"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "textExportFatalIdentity"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "providerErrorAndStreamBoundary"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "requestRunner"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewTerminal"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "textExport"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "partRecoveryProductionMutant"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "waveAndRecordingProtocol"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "modelManagementController"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "textExportSafety"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "reviewHistory"
+      },
+      {
+        "class": "CoreRegressionJUnitTest",
+        "name": "taskCoordinator"
+      }
+    ]
+  },
+  "runtime": {
+    "source": "android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml",
+    "copy": ".work/p2enum-full/evidence/android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml",
+    "sha256": "6ac519d19cfd73e39c6ef7ba5c0cb038a0c878e4ab78b8be12153a97fc85ee03",
+    "bytes": 1190,
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "methods": [
+      {
+        "class": "RuntimeRegressionJUnitTest",
+        "name": "inferenceAdapterAndJniConstruction"
+      }
+    ]
+  },
+  "host": {
+    "source": "android/test-host/build/test-results/testDebugUnitTest/TEST-org.llmasr.minimal.testhost.FixtureContractTest.xml",
+    "copy": ".work/p2enum-full/evidence/android/test-host/build/test-results/testDebugUnitTest/TEST-org.llmasr.minimal.testhost.FixtureContractTest.xml",
+    "sha256": "0798d57c1755b48d24fdba6fae819193220779bee1c91819ba9bb02c8c0dacad",
+    "bytes": 1152,
+    "tests": 7,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "methods": [
+      {
+        "class": "org.llmasr.minimal.testhost.FixtureContractTest",
+        "name": "badBytesAreSafe"
+      },
+      {
+        "class": "org.llmasr.minimal.testhost.FixtureContractTest",
+        "name": "enginePayloadAndOrder"
+      },
+      {
+        "class": "org.llmasr.minimal.testhost.FixtureContractTest",
+        "name": "lateResultIsInvalidated"
+      },
+      {
+        "class": "org.llmasr.minimal.testhost.FixtureContractTest",
+        "name": "singleConfirmationAndPassword"
+      },
+      {
+        "class": "org.llmasr.minimal.testhost.FixtureContractTest",
+        "name": "cleanupRetainsOwner"
+      },
+      {
+        "class": "org.llmasr.minimal.testhost.FixtureContractTest",
+        "name": "readinessRejectsBeforeLoad"
+      },
+      {
+        "class": "org.llmasr.minimal.testhost.FixtureContractTest",
+        "name": "reusedBackendQueuedCancellation"
+      }
+    ]
+  }
+}

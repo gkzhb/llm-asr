@@ -1,0 +1,22 @@
+PASS cleanup kotlinc/term actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/hup actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/timeout actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/term actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/hup actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/timeout actual-driver/base-wrapper; no live work before deletion
+PASS cleanup java/term actual-driver/base-wrapper; no live work before deletion
+PASS cleanup java/hup actual-driver/base-wrapper; no live work before deletion
+PASS cleanup java/timeout actual-driver/base-wrapper; no live work before deletion
+Traceback (most recent call last):
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 234, in <module>
+    main()
+    ~~~~^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 229, in main
+    case(evidence, tool, fault)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 178, in case
+    require(code == 124, 'base GNU timeout deadline exit not propagated')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 26, in require
+    raise RuntimeError(message)
+RuntimeError: base GNU timeout deadline exit not propagated

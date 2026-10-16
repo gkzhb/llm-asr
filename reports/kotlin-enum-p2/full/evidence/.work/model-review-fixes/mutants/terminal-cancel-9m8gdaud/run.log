@@ -1,0 +1,4 @@
+Exception in thread "main" java.lang.AssertionError: late reentrant cancel must not overwrite terminal
+	at ModelReviewFixTest.check(ModelReviewFixTest.java:18)
+	at ModelReviewFixTest.terminal(ModelReviewFixTest.java:73)
+	at ModelReviewFixTest.main(ModelReviewFixTest.java:215)

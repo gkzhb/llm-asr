@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CoreRegressionJUnitTest" tests="34" skipped="0" failures="0" errors="0" timestamp="2026-10-16T08:50:39" hostname="zhb-nixos" time="2.006">
+  <properties/>
+  <testcase name="runtimeLogErrorIdentity" classname="CoreRegressionJUnitTest" time="0.013"/>
+  <testcase name="modelReadiness" classname="CoreRegressionJUnitTest" time="0.004"/>
+  <testcase name="imeSessionPrivacy" classname="CoreRegressionJUnitTest" time="0.023"/>
+  <testcase name="reviewWindow" classname="CoreRegressionJUnitTest" time="0.031"/>
+  <testcase name="reviewPublication" classname="CoreRegressionJUnitTest" time="0.014"/>
+  <testcase name="reviewDeletion" classname="CoreRegressionJUnitTest" time="0.001"/>
+  <testcase name="reviewLiveDeletion" classname="CoreRegressionJUnitTest" time="0.004"/>
+  <testcase name="resultFiles" classname="CoreRegressionJUnitTest" time="0.006"/>
+  <testcase name="modelPageHelpers" classname="CoreRegressionJUnitTest" time="0.033"/>
+  <testcase name="recordingRaces" classname="CoreRegressionJUnitTest" time="0.004"/>
+  <testcase name="kotlinJavaAbi" classname="CoreRegressionJUnitTest" time="0.04"/>
+  <testcase name="logExportGenerations" classname="CoreRegressionJUnitTest" time="0.007"/>
+  <testcase name="modelNotifications" classname="CoreRegressionJUnitTest" time="0.006"/>
+  <testcase name="admissionOwnerBoundary" classname="CoreRegressionJUnitTest" time="0.009"/>
+  <testcase name="privateModelRoot" classname="CoreRegressionJUnitTest" time="0.013"/>
+  <testcase name="reviewPlanning" classname="CoreRegressionJUnitTest" time="0.016"/>
+  <testcase name="modelOperationControl" classname="CoreRegressionJUnitTest" time="0.001"/>
+  <testcase name="modelWhitelistDeletion" classname="CoreRegressionJUnitTest" time="0.006"/>
+  <testcase name="reviewBoundary" classname="CoreRegressionJUnitTest" time="0.006"/>
+  <testcase name="modelRepository" classname="CoreRegressionJUnitTest" time="0.015"/>
+  <testcase name="runtimeLogCore" classname="CoreRegressionJUnitTest" time="0.176"/>
+  <testcase name="nativeResponseProtocol" classname="CoreRegressionJUnitTest" time="0.001"/>
+  <testcase name="modelCancelCleanup" classname="CoreRegressionJUnitTest" time="0.077"/>
+  <testcase name="textExportFatalIdentity" classname="CoreRegressionJUnitTest" time="0.002"/>
+  <testcase name="providerErrorAndStreamBoundary" classname="CoreRegressionJUnitTest" time="0.012"/>
+  <testcase name="requestRunner" classname="CoreRegressionJUnitTest" time="0.009"/>
+  <testcase name="reviewTerminal" classname="CoreRegressionJUnitTest" time="0.003"/>
+  <testcase name="textExport" classname="CoreRegressionJUnitTest" time="0.042"/>
+  <testcase name="partRecoveryProductionMutant" classname="CoreRegressionJUnitTest" time="1.367"/>
+  <testcase name="waveAndRecordingProtocol" classname="CoreRegressionJUnitTest" time="0.029"/>
+  <testcase name="modelManagementController" classname="CoreRegressionJUnitTest" time="0.02"/>
+  <testcase name="textExportSafety" classname="CoreRegressionJUnitTest" time="0.001"/>
+  <testcase name="reviewHistory" classname="CoreRegressionJUnitTest" time="0.005"/>
+  <testcase name="taskCoordinator" classname="CoreRegressionJUnitTest" time="0.004"/>
+  <system-out><![CDATA[PASS RuntimeLogStoreErrorTest: 20 recovery/fatal/concurrent/reentrant checks
+PASS 33 model readiness state checks (shared ASR/IME truth)
+PASS 177 IME production controller checks (not Android hardware/InputConnection tests)
+PASS review regression window
+PASS review regression publication
+PASS review regression deletion
+PASS review regression liveDeletion
+PASS 34 result cleanup/export checks (host only)
+PASS Android production policy/lazy helpers 100 checks (host, not Android runtime)
+PASS 20 recording lifecycle gate checks (fake backend; not device release latency)
+PASS runtime log enums Java ABI/order/switch/errors and production persistence/codec
+PASS Kotlin migration Java ABI/behavior: 322 checks
+PASS LogExportTest: 100 checks (production tickets/owner/streams; not Android runtime)
+PASS controller inspect/cancel notifications outside monitor
+PASS 70 production admission/owner/recording/export boundary checks (host only)
+PASS private-root alias import/inspect/verify/reuse/delete and symlink safety (host filesystem only)
+PASS review regression planning
+PASS 39 model operation control checks (cancel/publish/terminal arbitration)
+PASS 27 model repository delete whitelist / partial / no-recursion checks
+PASS review regression boundary
+PASS 33 model repository checks (host only; no test backdoors)
+PASS typed privacy boundary, canonical UUID, timestamp/elapsed formatting, immutable bounded snapshots
+PASS real concurrent sequence/eviction, serialized coalescing sinks, reentrancy and listener fault isolation
+PASS real file reopen, strict complete parser (all truncated prefixes), corrupt/private/oversize rejection, hard caps and stale part
+PASS real final/part symlinks including dangling, leaf directories, trusted parent alias pinning, failed atomic staging and permission-denied IO
+PASS plain/injected executors, first asynchronous recovery preserving early events, blocked write + 10000 appends, latest coalescing/close/retry
+PASS production-owned background executor: no synchronous startup disk, nonblocking close and graceful accepted drain
+PASS observable/deduped disk failure, recursive callback isolation, recovery from failure and hostile sequence overflow
+PASS immutable picker-time UTF8 export through RuntimeLogCodec, exact byte preflight/cap, write/flush failures, close owned by caller
+PASS RuntimeLogCoreTest: 8 groups
+PASS 25 native response parser checks (host only; strict UTF-8, 128 token cap, empty raw allowed)
+PASS 123 deterministic repository cancel/IO/progress checks
+PASS compound write/close exact fatal propagation and cleanup
+PASS production provider boundary exception/stream/owner regressions
+PASS 57 request runner checks (host only; covers success/failure/cancel/report-failure/owner/cleanup-id/clear-text policy)
+PASS review regression terminal
+PASS TextExportTest: 104 checks; full code exhaustion and open/write/close interleavings
+PASS 15 part-recovery red/green checks (host only)
+PASS 32 minimal APK Java checks
+PASS 223 deterministic model controller/connected runner isolation checks
+PASS clear-before-admission production regression
+PASS review regression history
+PASS 22 task coordinator checks (host only; no Thread.sleep busy polling)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

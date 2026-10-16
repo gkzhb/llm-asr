@@ -1,0 +1,16 @@
+{
+  "label": "inputs-audio-green",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "python3",
+    "tests/android_test_fixture_inputs_test.py"
+  ],
+  "started_utc": "2026-10-16T10:07:28.107886+00:00",
+  "finished_utc": "2026-10-16T10:07:30.253042+00:00",
+  "exit": 0,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/fixture-input/inputs-audio-green.log",
+  "log_sha256": "e5d0b304ac689c067452a4d212fa536a31bd20c8fc95c6300f23b928dfb8d03d"
+}

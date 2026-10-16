@@ -1,0 +1,14 @@
+PASS cleanup kotlinc/term actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/hup actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/timeout actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/term actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/hup actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/timeout actual-driver/base-wrapper; no live work before deletion
+PASS cleanup java/term actual-driver/base-wrapper; no live work before deletion
+PASS cleanup java/hup actual-driver/base-wrapper; no live work before deletion
+PASS cleanup java/timeout actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/deadline actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/deadline actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/unconfirmed actual-driver/base-wrapper; unconfirmed stop retains tree/source
+PASS cleanup kotlinc/main-unconfirmed actual-driver/base-wrapper; unconfirmed stop retains tree/source
+PASS enum cleanup lifecycle cases=13 evidence=.work/p2enum-build/r1-main/cleanup/run-_aqfjqlh

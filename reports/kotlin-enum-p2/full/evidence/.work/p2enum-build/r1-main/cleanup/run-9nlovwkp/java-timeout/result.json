@@ -1,0 +1,55 @@
+{
+  "tool": "java",
+  "fault": "timeout",
+  "exit": 1,
+  "worker_identities": [
+    {
+      "pid": 1453920,
+      "start": "79734649",
+      "state": "S",
+      "pgid": 1453920,
+      "sid": 1453920
+    },
+    {
+      "pid": 1453921,
+      "start": "79734649",
+      "state": "R",
+      "pgid": 1453920,
+      "sid": 1453920
+    }
+  ],
+  "observation": {
+    "workers": [
+      {
+        "pid": 1453920,
+        "start": "79734649",
+        "state": "S",
+        "pgid": 1453920,
+        "sid": 1453920
+      },
+      {
+        "pid": 1453921,
+        "start": "79734649",
+        "state": "R",
+        "pgid": 1453920,
+        "sid": 1453920
+      }
+    ],
+    "live_before_cleanup": [],
+    "tree_exists": true,
+    "records": [
+      {
+        "phase": "java-timeout",
+        "command": [
+          "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/bin/java"
+        ],
+        "exit": 124,
+        "timeout": true,
+        "log": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/java-timeout/actual-run.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "tree_retained": false,
+  "scaled_inner_deadline": false
+}

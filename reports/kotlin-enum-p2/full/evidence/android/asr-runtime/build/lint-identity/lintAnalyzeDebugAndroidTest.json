@@ -1,0 +1,3767 @@
+{
+    "task": ":asr-runtime:lintAnalyzeDebugAndroidTest",
+    "configuration": "detachedConfiguration1",
+    "phase": "consumer",
+    "manifest_sha256": "54043cd3b63f494ab0182d6122b152680c5e54041b3f4998e428e41a970c3fbf",
+    "actual": {
+        "root": "<owner>",
+        "roots": [
+            "com.android.tools.lint:lint-gradle:31.6.1"
+        ],
+        "flags": {
+            "canBeResolved": true,
+            "canBeConsumed": false,
+            "transitive": true
+        },
+        "attributes": {
+
+        },
+        "components": [
+            "<owner>",
+            "com.android.tools.analytics-library:protos:31.6.1",
+            "com.android.tools.analytics-library:shared:31.6.1",
+            "com.android.tools.analytics-library:tracker:31.6.1",
+            "com.android.tools.build:aapt2-proto:8.6.1-11315950",
+            "com.android.tools.build:builder-model:8.6.1",
+            "com.android.tools.build:manifest-merger:31.6.1",
+            "com.android.tools.ddms:ddmlib:31.6.1",
+            "com.android.tools.external.com-intellij:intellij-core:31.6.1",
+            "com.android.tools.external.com-intellij:kotlin-compiler:31.6.1",
+            "com.android.tools.external.org-jetbrains:uast:31.6.1",
+            "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+            "com.android.tools.lint:lint-api:31.6.1",
+            "com.android.tools.lint:lint-checks:31.6.1",
+            "com.android.tools.lint:lint-gradle:31.6.1",
+            "com.android.tools.lint:lint-model:31.6.1",
+            "com.android.tools.lint:lint-typedef-remover:31.6.1",
+            "com.android.tools.lint:lint:31.6.1",
+            "com.android.tools:annotations:31.6.1",
+            "com.android.tools:common:31.6.1",
+            "com.android.tools:dvlib:31.6.1",
+            "com.android.tools:play-sdk-proto:31.6.1",
+            "com.android.tools:repository:31.6.1",
+            "com.android.tools:sdk-common:31.6.1",
+            "com.android.tools:sdklib:31.6.1",
+            "com.google.code.findbugs:jsr305:3.0.2",
+            "com.google.code.gson:gson:2.10.1",
+            "com.google.errorprone:error_prone_annotations:2.18.0",
+            "com.google.guava:failureaccess:1.0.1",
+            "com.google.guava:guava:32.0.1-jre",
+            "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava",
+            "com.google.j2objc:j2objc-annotations:2.8",
+            "com.google.jimfs:jimfs:1.1",
+            "com.google.protobuf:protobuf-java:3.22.3",
+            "com.sun.activation:javax.activation:1.2.0",
+            "com.sun.istack:istack-commons-runtime:3.0.8",
+            "com.sun.xml.fastinfoset:FastInfoset:1.2.16",
+            "commons-codec:commons-codec:1.10",
+            "commons-io:commons-io:2.13.0",
+            "commons-logging:commons-logging:1.2",
+            "jakarta.activation:jakarta.activation-api:1.2.1",
+            "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2",
+            "javax.inject:javax.inject:1",
+            "net.java.dev.jna:jna-platform:5.6.0",
+            "net.java.dev.jna:jna:5.6.0",
+            "net.sf.kxml:kxml2:2.3.0",
+            "org.apache.commons:commons-compress:1.21",
+            "org.apache.httpcomponents:httpclient:4.5.6",
+            "org.apache.httpcomponents:httpcore:4.4.16",
+            "org.apache.httpcomponents:httpmime:4.5.6",
+            "org.bouncycastle:bcpkix-jdk18on:1.77",
+            "org.bouncycastle:bcprov-jdk18on:1.77",
+            "org.bouncycastle:bcutil-jdk18on:1.77",
+            "org.checkerframework:checker-qual:3.33.0",
+            "org.codehaus.groovy:groovy:3.0.17",
+            "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+            "org.glassfish.jaxb:txw2:2.3.2",
+            "org.jetbrains.intellij.deps:trove4j:1.0.20200330",
+            "org.jetbrains.kotlin:kotlin-reflect:1.9.20",
+            "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20",
+            "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+            "org.jetbrains.kotlin:kotlin-stdlib:1.9.20",
+            "org.jetbrains:annotations:23.0.0",
+            "org.jvnet.staxex:stax-ex:1.8.1",
+            "org.ow2.asm:asm-analysis:9.6",
+            "org.ow2.asm:asm-tree:9.6",
+            "org.ow2.asm:asm:9.6"
+        ],
+        "edges": [
+            {
+                "from": "<owner>",
+                "requested": "com.android.tools.lint:lint-gradle:31.6.1",
+                "selected": "com.android.tools.lint:lint-gradle:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.lint",
+                    "module": "lint-gradle",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-gradle:31.6.1",
+                "requested": "com.android.tools.external.com-intellij:intellij-core:31.6.1",
+                "selected": "com.android.tools.external.com-intellij:intellij-core:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.external.com-intellij",
+                    "module": "intellij-core",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.external.com-intellij:intellij-core:31.6.1",
+                "requested": "org.jetbrains.intellij.deps:trove4j:1.0.20200330",
+                "selected": "org.jetbrains.intellij.deps:trove4j:1.0.20200330",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.intellij.deps",
+                    "module": "trove4j",
+                    "version": "1.0.20200330",
+                    "required": "1.0.20200330",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-gradle:31.6.1",
+                "requested": "com.android.tools.external.com-intellij:kotlin-compiler:31.6.1",
+                "selected": "com.android.tools.external.com-intellij:kotlin-compiler:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.external.com-intellij",
+                    "module": "kotlin-compiler",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-gradle:31.6.1",
+                "requested": "com.android.tools.external.org-jetbrains:uast:31.6.1",
+                "selected": "com.android.tools.external.org-jetbrains:uast:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.external.org-jetbrains",
+                    "module": "uast",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-gradle:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:common:31.6.1",
+                "requested": "com.android.tools:annotations:31.6.1",
+                "selected": "com.android.tools:annotations:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "annotations",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:common:31.6.1",
+                "requested": "com.google.guava:guava:32.0.1-jre",
+                "selected": "com.google.guava:guava:32.0.1-jre",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.guava",
+                    "module": "guava",
+                    "version": "32.0.1-jre",
+                    "required": "32.0.1-jre",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.google.guava:guava:32.0.1-jre",
+                "requested": "com.google.guava:failureaccess:1.0.1",
+                "selected": "com.google.guava:failureaccess:1.0.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.guava",
+                    "module": "failureaccess",
+                    "version": "1.0.1",
+                    "required": "1.0.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.google.guava:guava:32.0.1-jre",
+                "requested": "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava",
+                "selected": "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.guava",
+                    "module": "listenablefuture",
+                    "version": "9999.0-empty-to-avoid-conflict-with-guava",
+                    "required": "9999.0-empty-to-avoid-conflict-with-guava",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.google.guava:guava:32.0.1-jre",
+                "requested": "com.google.code.findbugs:jsr305:3.0.2",
+                "selected": "com.google.code.findbugs:jsr305:3.0.2",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.code.findbugs",
+                    "module": "jsr305",
+                    "version": "3.0.2",
+                    "required": "3.0.2",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.google.guava:guava:32.0.1-jre",
+                "requested": "org.checkerframework:checker-qual:3.33.0",
+                "selected": "org.checkerframework:checker-qual:3.33.0",
+                "constraint": false,
+                "selector": {
+                    "group": "org.checkerframework",
+                    "module": "checker-qual",
+                    "version": "3.33.0",
+                    "required": "3.33.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.google.guava:guava:32.0.1-jre",
+                "requested": "com.google.errorprone:error_prone_annotations:2.18.0",
+                "selected": "com.google.errorprone:error_prone_annotations:2.18.0",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.errorprone",
+                    "module": "error_prone_annotations",
+                    "version": "2.18.0",
+                    "required": "2.18.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.google.guava:guava:32.0.1-jre",
+                "requested": "com.google.j2objc:j2objc-annotations:2.8",
+                "selected": "com.google.j2objc:j2objc-annotations:2.8",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.j2objc",
+                    "module": "j2objc-annotations",
+                    "version": "2.8",
+                    "required": "2.8",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:common:31.6.1",
+                "requested": "net.java.dev.jna:jna-platform:5.6.0",
+                "selected": "net.java.dev.jna:jna-platform:5.6.0",
+                "constraint": false,
+                "selector": {
+                    "group": "net.java.dev.jna",
+                    "module": "jna-platform",
+                    "version": "5.6.0",
+                    "required": "5.6.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "net.java.dev.jna:jna-platform:5.6.0",
+                "requested": "net.java.dev.jna:jna:5.6.0",
+                "selected": "net.java.dev.jna:jna:5.6.0",
+                "constraint": false,
+                "selector": {
+                    "group": "net.java.dev.jna",
+                    "module": "jna",
+                    "version": "5.6.0",
+                    "required": "5.6.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:common:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk8",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.jetbrains.kotlin:kotlin-stdlib:1.9.20",
+                "requested": "org.jetbrains:annotations:13.0",
+                "selected": "org.jetbrains:annotations:23.0.0",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains",
+                    "module": "annotations",
+                    "version": "13.0",
+                    "required": "13.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.jetbrains.kotlin:kotlin-stdlib:1.9.20",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20",
+                "constraint": true,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk7",
+                    "version": "1.8.0",
+                    "required": "1.8.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.jetbrains.kotlin:kotlin-stdlib:1.9.20",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "constraint": true,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk8",
+                    "version": "1.8.0",
+                    "required": "1.8.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk7",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-gradle:31.6.1",
+                "requested": "com.android.tools.lint:lint:31.6.1",
+                "selected": "com.android.tools.lint:lint:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.lint",
+                    "module": "lint",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools.lint:lint-api:31.6.1",
+                "selected": "com.android.tools.lint:lint-api:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.lint",
+                    "module": "lint-api",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "com.android.tools.lint:lint-model:31.6.1",
+                "selected": "com.android.tools.lint:lint-model:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.lint",
+                    "module": "lint-model",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-model:31.6.1",
+                "requested": "com.android.tools.build:builder-model:8.6.1",
+                "selected": "com.android.tools.build:builder-model:8.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.build",
+                    "module": "builder-model",
+                    "version": "8.6.1",
+                    "required": "8.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.build:builder-model:8.6.1",
+                "requested": "com.android.tools:annotations:31.6.1",
+                "selected": "com.android.tools:annotations:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "annotations",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.build:builder-model:8.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk8",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-model:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-model:31.6.1",
+                "requested": "com.android.tools:sdk-common:31.6.1",
+                "selected": "com.android.tools:sdk-common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "sdk-common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "com.android.tools.analytics-library:shared:31.6.1",
+                "selected": "com.android.tools.analytics-library:shared:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.analytics-library",
+                    "module": "shared",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:shared:31.6.1",
+                "requested": "com.android.tools.analytics-library:protos:31.6.1",
+                "selected": "com.android.tools.analytics-library:protos:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.analytics-library",
+                    "module": "protos",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:protos:31.6.1",
+                "requested": "com.google.protobuf:protobuf-java:3.22.3",
+                "selected": "com.google.protobuf:protobuf-java:3.22.3",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.protobuf",
+                    "module": "protobuf-java",
+                    "version": "3.22.3",
+                    "required": "3.22.3",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:shared:31.6.1",
+                "requested": "com.android.tools:annotations:31.6.1",
+                "selected": "com.android.tools:annotations:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "annotations",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:shared:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:shared:31.6.1",
+                "requested": "com.google.code.gson:gson:2.10.1",
+                "selected": "com.google.code.gson:gson:2.10.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.code.gson",
+                    "module": "gson",
+                    "version": "2.10.1",
+                    "required": "2.10.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:shared:31.6.1",
+                "requested": "com.google.guava:guava:32.0.1-jre",
+                "selected": "com.google.guava:guava:32.0.1-jre",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.guava",
+                    "module": "guava",
+                    "version": "32.0.1-jre",
+                    "required": "32.0.1-jre",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:shared:31.6.1",
+                "requested": "net.java.dev.jna:jna-platform:5.6.0",
+                "selected": "net.java.dev.jna:jna-platform:5.6.0",
+                "constraint": false,
+                "selector": {
+                    "group": "net.java.dev.jna",
+                    "module": "jna-platform",
+                    "version": "5.6.0",
+                    "required": "5.6.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:shared:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk8",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "com.android.tools.build:aapt2-proto:8.6.1-11315950",
+                "selected": "com.android.tools.build:aapt2-proto:8.6.1-11315950",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.build",
+                    "module": "aapt2-proto",
+                    "version": "8.6.1-11315950",
+                    "required": "8.6.1-11315950",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.build:aapt2-proto:8.6.1-11315950",
+                "requested": "com.google.protobuf:protobuf-java:3.22.3",
+                "selected": "com.google.protobuf:protobuf-java:3.22.3",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.protobuf",
+                    "module": "protobuf-java",
+                    "version": "3.22.3",
+                    "required": "3.22.3",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "com.android.tools.ddms:ddmlib:31.6.1",
+                "selected": "com.android.tools.ddms:ddmlib:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.ddms",
+                    "module": "ddmlib",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.ddms:ddmlib:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.ddms:ddmlib:31.6.1",
+                "requested": "com.google.protobuf:protobuf-java:3.22.3",
+                "selected": "com.google.protobuf:protobuf-java:3.22.3",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.protobuf",
+                    "module": "protobuf-java",
+                    "version": "3.22.3",
+                    "required": "3.22.3",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.ddms:ddmlib:31.6.1",
+                "requested": "net.sf.kxml:kxml2:2.3.0",
+                "selected": "net.sf.kxml:kxml2:2.3.0",
+                "constraint": false,
+                "selector": {
+                    "group": "net.sf.kxml",
+                    "module": "kxml2",
+                    "version": "2.3.0",
+                    "required": "2.3.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.ddms:ddmlib:31.6.1",
+                "requested": "org.jetbrains:annotations:23.0.0",
+                "selected": "org.jetbrains:annotations:23.0.0",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains",
+                    "module": "annotations",
+                    "version": "23.0.0",
+                    "required": "23.0.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "selected": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.layoutlib",
+                    "module": "layoutlib-api",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "requested": "com.android.tools:annotations:31.6.1",
+                "selected": "com.android.tools:annotations:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "annotations",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "requested": "net.sf.kxml:kxml2:2.3.0",
+                "selected": "net.sf.kxml:kxml2:2.3.0",
+                "constraint": false,
+                "selector": {
+                    "group": "net.sf.kxml",
+                    "module": "kxml2",
+                    "version": "2.3.0",
+                    "required": "2.3.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "requested": "org.jetbrains:annotations:23.0.0",
+                "selected": "org.jetbrains:annotations:23.0.0",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains",
+                    "module": "annotations",
+                    "version": "23.0.0",
+                    "required": "23.0.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "com.android.tools:sdklib:31.6.1",
+                "selected": "com.android.tools:sdklib:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "sdklib",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdklib:31.6.1",
+                "requested": "com.android.tools:repository:31.6.1",
+                "selected": "com.android.tools:repository:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "repository",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:repository:31.6.1",
+                "requested": "com.android.tools.analytics-library:shared:31.6.1",
+                "selected": "com.android.tools.analytics-library:shared:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.analytics-library",
+                    "module": "shared",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:repository:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:repository:31.6.1",
+                "requested": "com.google.jimfs:jimfs:1.1",
+                "selected": "com.google.jimfs:jimfs:1.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.jimfs",
+                    "module": "jimfs",
+                    "version": "1.1",
+                    "required": "1.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.google.jimfs:jimfs:1.1",
+                "requested": "com.google.guava:guava:18.0",
+                "selected": "com.google.guava:guava:32.0.1-jre",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.guava",
+                    "module": "guava",
+                    "version": "18.0",
+                    "required": "18.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:repository:31.6.1",
+                "requested": "com.sun.activation:javax.activation:1.2.0",
+                "selected": "com.sun.activation:javax.activation:1.2.0",
+                "constraint": false,
+                "selector": {
+                    "group": "com.sun.activation",
+                    "module": "javax.activation",
+                    "version": "1.2.0",
+                    "required": "1.2.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:repository:31.6.1",
+                "requested": "org.apache.commons:commons-compress:1.21",
+                "selected": "org.apache.commons:commons-compress:1.21",
+                "constraint": false,
+                "selector": {
+                    "group": "org.apache.commons",
+                    "module": "commons-compress",
+                    "version": "1.21",
+                    "required": "1.21",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:repository:31.6.1",
+                "requested": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "selected": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "constraint": false,
+                "selector": {
+                    "group": "org.glassfish.jaxb",
+                    "module": "jaxb-runtime",
+                    "version": "2.3.2",
+                    "required": "2.3.2",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "requested": "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2",
+                "selected": "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2",
+                "constraint": false,
+                "selector": {
+                    "group": "jakarta.xml.bind",
+                    "module": "jakarta.xml.bind-api",
+                    "version": "2.3.2",
+                    "required": "2.3.2",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2",
+                "requested": "jakarta.activation:jakarta.activation-api:1.2.1",
+                "selected": "jakarta.activation:jakarta.activation-api:1.2.1",
+                "constraint": false,
+                "selector": {
+                    "group": "jakarta.activation",
+                    "module": "jakarta.activation-api",
+                    "version": "1.2.1",
+                    "required": "1.2.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "requested": "org.glassfish.jaxb:txw2:2.3.2",
+                "selected": "org.glassfish.jaxb:txw2:2.3.2",
+                "constraint": false,
+                "selector": {
+                    "group": "org.glassfish.jaxb",
+                    "module": "txw2",
+                    "version": "2.3.2",
+                    "required": "2.3.2",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "requested": "com.sun.istack:istack-commons-runtime:3.0.8",
+                "selected": "com.sun.istack:istack-commons-runtime:3.0.8",
+                "constraint": false,
+                "selector": {
+                    "group": "com.sun.istack",
+                    "module": "istack-commons-runtime",
+                    "version": "3.0.8",
+                    "required": "3.0.8",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.sun.istack:istack-commons-runtime:3.0.8",
+                "requested": "jakarta.activation:jakarta.activation-api:1.2.1",
+                "selected": "jakarta.activation:jakarta.activation-api:1.2.1",
+                "constraint": false,
+                "selector": {
+                    "group": "jakarta.activation",
+                    "module": "jakarta.activation-api",
+                    "version": "1.2.1",
+                    "required": "1.2.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "requested": "org.jvnet.staxex:stax-ex:1.8.1",
+                "selected": "org.jvnet.staxex:stax-ex:1.8.1",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jvnet.staxex",
+                    "module": "stax-ex",
+                    "version": "1.8.1",
+                    "required": "1.8.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.jvnet.staxex:stax-ex:1.8.1",
+                "requested": "jakarta.activation:jakarta.activation-api:1.2.1",
+                "selected": "jakarta.activation:jakarta.activation-api:1.2.1",
+                "constraint": false,
+                "selector": {
+                    "group": "jakarta.activation",
+                    "module": "jakarta.activation-api",
+                    "version": "1.2.1",
+                    "required": "1.2.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.jvnet.staxex:stax-ex:1.8.1",
+                "requested": "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2",
+                "selected": "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2",
+                "constraint": false,
+                "selector": {
+                    "group": "jakarta.xml.bind",
+                    "module": "jakarta.xml.bind-api",
+                    "version": "2.3.2",
+                    "required": "2.3.2",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "requested": "com.sun.xml.fastinfoset:FastInfoset:1.2.16",
+                "selected": "com.sun.xml.fastinfoset:FastInfoset:1.2.16",
+                "constraint": false,
+                "selector": {
+                    "group": "com.sun.xml.fastinfoset",
+                    "module": "FastInfoset",
+                    "version": "1.2.16",
+                    "required": "1.2.16",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "requested": "jakarta.activation:jakarta.activation-api:1.2.1",
+                "selected": "jakarta.activation:jakarta.activation-api:1.2.1",
+                "constraint": false,
+                "selector": {
+                    "group": "jakarta.activation",
+                    "module": "jakarta.activation-api",
+                    "version": "1.2.1",
+                    "required": "1.2.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:repository:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk8",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdklib:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdklib:31.6.1",
+                "requested": "com.android.tools:dvlib:31.6.1",
+                "selected": "com.android.tools:dvlib:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "dvlib",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:dvlib:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdklib:31.6.1",
+                "requested": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "selected": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.layoutlib",
+                    "module": "layoutlib-api",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdklib:31.6.1",
+                "requested": "com.google.code.gson:gson:2.10.1",
+                "selected": "com.google.code.gson:gson:2.10.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.code.gson",
+                    "module": "gson",
+                    "version": "2.10.1",
+                    "required": "2.10.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdklib:31.6.1",
+                "requested": "org.apache.commons:commons-compress:1.21",
+                "selected": "org.apache.commons:commons-compress:1.21",
+                "constraint": false,
+                "selector": {
+                    "group": "org.apache.commons",
+                    "module": "commons-compress",
+                    "version": "1.21",
+                    "required": "1.21",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdklib:31.6.1",
+                "requested": "org.apache.httpcomponents:httpcore:4.4.16",
+                "selected": "org.apache.httpcomponents:httpcore:4.4.16",
+                "constraint": false,
+                "selector": {
+                    "group": "org.apache.httpcomponents",
+                    "module": "httpcore",
+                    "version": "4.4.16",
+                    "required": "4.4.16",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdklib:31.6.1",
+                "requested": "org.apache.httpcomponents:httpmime:4.5.6",
+                "selected": "org.apache.httpcomponents:httpmime:4.5.6",
+                "constraint": false,
+                "selector": {
+                    "group": "org.apache.httpcomponents",
+                    "module": "httpmime",
+                    "version": "4.5.6",
+                    "required": "4.5.6",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.apache.httpcomponents:httpmime:4.5.6",
+                "requested": "org.apache.httpcomponents:httpclient:4.5.6",
+                "selected": "org.apache.httpcomponents:httpclient:4.5.6",
+                "constraint": false,
+                "selector": {
+                    "group": "org.apache.httpcomponents",
+                    "module": "httpclient",
+                    "version": "4.5.6",
+                    "required": "4.5.6",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.apache.httpcomponents:httpclient:4.5.6",
+                "requested": "org.apache.httpcomponents:httpcore:4.4.10",
+                "selected": "org.apache.httpcomponents:httpcore:4.4.16",
+                "constraint": false,
+                "selector": {
+                    "group": "org.apache.httpcomponents",
+                    "module": "httpcore",
+                    "version": "4.4.10",
+                    "required": "4.4.10",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.apache.httpcomponents:httpclient:4.5.6",
+                "requested": "commons-logging:commons-logging:1.2",
+                "selected": "commons-logging:commons-logging:1.2",
+                "constraint": false,
+                "selector": {
+                    "group": "commons-logging",
+                    "module": "commons-logging",
+                    "version": "1.2",
+                    "required": "1.2",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.apache.httpcomponents:httpclient:4.5.6",
+                "requested": "commons-codec:commons-codec:1.10",
+                "selected": "commons-codec:commons-codec:1.10",
+                "constraint": false,
+                "selector": {
+                    "group": "commons-codec",
+                    "module": "commons-codec",
+                    "version": "1.10",
+                    "required": "1.10",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdklib:31.6.1",
+                "requested": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "selected": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "constraint": false,
+                "selector": {
+                    "group": "org.glassfish.jaxb",
+                    "module": "jaxb-runtime",
+                    "version": "2.3.2",
+                    "required": "2.3.2",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "com.google.code.gson:gson:2.10.1",
+                "selected": "com.google.code.gson:gson:2.10.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.code.gson",
+                    "module": "gson",
+                    "version": "2.10.1",
+                    "required": "2.10.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "com.google.guava:guava:32.0.1-jre",
+                "selected": "com.google.guava:guava:32.0.1-jre",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.guava",
+                    "module": "guava",
+                    "version": "32.0.1-jre",
+                    "required": "32.0.1-jre",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "com.google.protobuf:protobuf-java:3.22.3",
+                "selected": "com.google.protobuf:protobuf-java:3.22.3",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.protobuf",
+                    "module": "protobuf-java",
+                    "version": "3.22.3",
+                    "required": "3.22.3",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "javax.inject:javax.inject:1",
+                "selected": "javax.inject:javax.inject:1",
+                "constraint": false,
+                "selector": {
+                    "group": "javax.inject",
+                    "module": "javax.inject",
+                    "version": "1",
+                    "required": "1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "net.sf.kxml:kxml2:2.3.0",
+                "selected": "net.sf.kxml:kxml2:2.3.0",
+                "constraint": false,
+                "selector": {
+                    "group": "net.sf.kxml",
+                    "module": "kxml2",
+                    "version": "2.3.0",
+                    "required": "2.3.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "org.bouncycastle:bcpkix-jdk18on:1.77",
+                "selected": "org.bouncycastle:bcpkix-jdk18on:1.77",
+                "constraint": false,
+                "selector": {
+                    "group": "org.bouncycastle",
+                    "module": "bcpkix-jdk18on",
+                    "version": "1.77",
+                    "required": "1.77",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.bouncycastle:bcpkix-jdk18on:1.77",
+                "requested": "org.bouncycastle:bcprov-jdk18on:1.77",
+                "selected": "org.bouncycastle:bcprov-jdk18on:1.77",
+                "constraint": false,
+                "selector": {
+                    "group": "org.bouncycastle",
+                    "module": "bcprov-jdk18on",
+                    "version": "1.77",
+                    "required": "1.77",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.bouncycastle:bcpkix-jdk18on:1.77",
+                "requested": "org.bouncycastle:bcutil-jdk18on:1.77",
+                "selected": "org.bouncycastle:bcutil-jdk18on:1.77",
+                "constraint": false,
+                "selector": {
+                    "group": "org.bouncycastle",
+                    "module": "bcutil-jdk18on",
+                    "version": "1.77",
+                    "required": "1.77",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.bouncycastle:bcutil-jdk18on:1.77",
+                "requested": "org.bouncycastle:bcprov-jdk18on:1.77",
+                "selected": "org.bouncycastle:bcprov-jdk18on:1.77",
+                "constraint": false,
+                "selector": {
+                    "group": "org.bouncycastle",
+                    "module": "bcprov-jdk18on",
+                    "version": "1.77",
+                    "required": "1.77",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "org.bouncycastle:bcprov-jdk18on:1.77",
+                "selected": "org.bouncycastle:bcprov-jdk18on:1.77",
+                "constraint": false,
+                "selector": {
+                    "group": "org.bouncycastle",
+                    "module": "bcprov-jdk18on",
+                    "version": "1.77",
+                    "required": "1.77",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "selected": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "constraint": false,
+                "selector": {
+                    "group": "org.glassfish.jaxb",
+                    "module": "jaxb-runtime",
+                    "version": "2.3.2",
+                    "required": "2.3.2",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "org.jetbrains.intellij.deps:trove4j:1.0.20200330",
+                "selected": "org.jetbrains.intellij.deps:trove4j:1.0.20200330",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.intellij.deps",
+                    "module": "trove4j",
+                    "version": "1.0.20200330",
+                    "required": "1.0.20200330",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-reflect:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-reflect:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-reflect",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.jetbrains.kotlin:kotlin-reflect:1.9.20",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:sdk-common:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk8",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-model:31.6.1",
+                "requested": "net.sf.kxml:kxml2:2.3.0",
+                "selected": "net.sf.kxml:kxml2:2.3.0",
+                "constraint": false,
+                "selector": {
+                    "group": "net.sf.kxml",
+                    "module": "kxml2",
+                    "version": "2.3.0",
+                    "required": "2.3.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-model:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk8",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "com.android.tools.external.com-intellij:intellij-core:31.6.1",
+                "selected": "com.android.tools.external.com-intellij:intellij-core:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.external.com-intellij",
+                    "module": "intellij-core",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "com.android.tools.external.com-intellij:kotlin-compiler:31.6.1",
+                "selected": "com.android.tools.external.com-intellij:kotlin-compiler:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.external.com-intellij",
+                    "module": "kotlin-compiler",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "com.android.tools.external.org-jetbrains:uast:31.6.1",
+                "selected": "com.android.tools.external.org-jetbrains:uast:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.external.org-jetbrains",
+                    "module": "uast",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "com.android.tools.build:manifest-merger:31.6.1",
+                "selected": "com.android.tools.build:manifest-merger:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.build",
+                    "module": "manifest-merger",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.build:manifest-merger:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.build:manifest-merger:31.6.1",
+                "requested": "com.android.tools:sdklib:31.6.1",
+                "selected": "com.android.tools:sdklib:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "sdklib",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.build:manifest-merger:31.6.1",
+                "requested": "com.android.tools:sdk-common:31.6.1",
+                "selected": "com.android.tools:sdk-common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "sdk-common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.build:manifest-merger:31.6.1",
+                "requested": "com.google.code.gson:gson:2.10.1",
+                "selected": "com.google.code.gson:gson:2.10.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.code.gson",
+                    "module": "gson",
+                    "version": "2.10.1",
+                    "required": "2.10.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.build:manifest-merger:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk8",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.build:manifest-merger:31.6.1",
+                "requested": "net.sf.kxml:kxml2:2.3.0",
+                "selected": "net.sf.kxml:kxml2:2.3.0",
+                "constraint": false,
+                "selector": {
+                    "group": "net.sf.kxml",
+                    "module": "kxml2",
+                    "version": "2.3.0",
+                    "required": "2.3.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "selected": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.layoutlib",
+                    "module": "layoutlib-api",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "com.android.tools:sdk-common:31.6.1",
+                "selected": "com.android.tools:sdk-common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "sdk-common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "com.android.tools:sdklib:31.6.1",
+                "selected": "com.android.tools:sdklib:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "sdklib",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "commons-io:commons-io:2.13.0",
+                "selected": "commons-io:commons-io:2.13.0",
+                "constraint": false,
+                "selector": {
+                    "group": "commons-io",
+                    "module": "commons-io",
+                    "version": "2.13.0",
+                    "required": "2.13.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "net.sf.kxml:kxml2:2.3.0",
+                "selected": "net.sf.kxml:kxml2:2.3.0",
+                "constraint": false,
+                "selector": {
+                    "group": "net.sf.kxml",
+                    "module": "kxml2",
+                    "version": "2.3.0",
+                    "required": "2.3.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-reflect:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-reflect:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-reflect",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk8",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "org.ow2.asm:asm:9.6",
+                "selected": "org.ow2.asm:asm:9.6",
+                "constraint": false,
+                "selector": {
+                    "group": "org.ow2.asm",
+                    "module": "asm",
+                    "version": "9.6",
+                    "required": "9.6",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "org.ow2.asm:asm-tree:9.6",
+                "selected": "org.ow2.asm:asm-tree:9.6",
+                "constraint": false,
+                "selector": {
+                    "group": "org.ow2.asm",
+                    "module": "asm-tree",
+                    "version": "9.6",
+                    "required": "9.6",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.ow2.asm:asm-tree:9.6",
+                "requested": "org.ow2.asm:asm:9.6",
+                "selected": "org.ow2.asm:asm:9.6",
+                "constraint": false,
+                "selector": {
+                    "group": "org.ow2.asm",
+                    "module": "asm",
+                    "version": "9.6",
+                    "required": "9.6",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "com.android.tools.build:builder-model:8.6.1",
+                "selected": "com.android.tools.build:builder-model:8.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.build",
+                    "module": "builder-model",
+                    "version": "8.6.1",
+                    "required": "8.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-api:31.6.1",
+                "requested": "com.google.guava:guava:32.0.1-jre",
+                "selected": "com.google.guava:guava:32.0.1-jre",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.guava",
+                    "module": "guava",
+                    "version": "32.0.1-jre",
+                    "required": "32.0.1-jre",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools.lint:lint-checks:31.6.1",
+                "selected": "com.android.tools.lint:lint-checks:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.lint",
+                    "module": "lint-checks",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "com.android.tools.lint:lint-api:31.6.1",
+                "selected": "com.android.tools.lint:lint-api:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.lint",
+                    "module": "lint-api",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk8",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "com.android.tools.external.com-intellij:intellij-core:31.6.1",
+                "selected": "com.android.tools.external.com-intellij:intellij-core:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.external.com-intellij",
+                    "module": "intellij-core",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "com.android.tools.external.com-intellij:kotlin-compiler:31.6.1",
+                "selected": "com.android.tools.external.com-intellij:kotlin-compiler:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.external.com-intellij",
+                    "module": "kotlin-compiler",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "com.android.tools.external.org-jetbrains:uast:31.6.1",
+                "selected": "com.android.tools.external.org-jetbrains:uast:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.external.org-jetbrains",
+                    "module": "uast",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "selected": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.layoutlib",
+                    "module": "layoutlib-api",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "com.android.tools:play-sdk-proto:31.6.1",
+                "selected": "com.android.tools:play-sdk-proto:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "play-sdk-proto",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools:play-sdk-proto:31.6.1",
+                "requested": "com.google.protobuf:protobuf-java:3.22.3",
+                "selected": "com.google.protobuf:protobuf-java:3.22.3",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.protobuf",
+                    "module": "protobuf-java",
+                    "version": "3.22.3",
+                    "required": "3.22.3",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "com.android.tools:sdk-common:31.6.1",
+                "selected": "com.android.tools:sdk-common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "sdk-common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "com.android.tools:sdklib:31.6.1",
+                "selected": "com.android.tools:sdklib:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "sdklib",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "com.google.code.gson:gson:2.10.1",
+                "selected": "com.google.code.gson:gson:2.10.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.code.gson",
+                    "module": "gson",
+                    "version": "2.10.1",
+                    "required": "2.10.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "com.google.guava:guava:32.0.1-jre",
+                "selected": "com.google.guava:guava:32.0.1-jre",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.guava",
+                    "module": "guava",
+                    "version": "32.0.1-jre",
+                    "required": "32.0.1-jre",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "net.sf.kxml:kxml2:2.3.0",
+                "selected": "net.sf.kxml:kxml2:2.3.0",
+                "constraint": false,
+                "selector": {
+                    "group": "net.sf.kxml",
+                    "module": "kxml2",
+                    "version": "2.3.0",
+                    "required": "2.3.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "org.jetbrains.intellij.deps:trove4j:1.0.20200330",
+                "selected": "org.jetbrains.intellij.deps:trove4j:1.0.20200330",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.intellij.deps",
+                    "module": "trove4j",
+                    "version": "1.0.20200330",
+                    "required": "1.0.20200330",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-checks:31.6.1",
+                "requested": "org.ow2.asm:asm-analysis:9.6",
+                "selected": "org.ow2.asm:asm-analysis:9.6",
+                "constraint": false,
+                "selector": {
+                    "group": "org.ow2.asm",
+                    "module": "asm-analysis",
+                    "version": "9.6",
+                    "required": "9.6",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "org.ow2.asm:asm-analysis:9.6",
+                "requested": "org.ow2.asm:asm-tree:9.6",
+                "selected": "org.ow2.asm:asm-tree:9.6",
+                "constraint": false,
+                "selector": {
+                    "group": "org.ow2.asm",
+                    "module": "asm-tree",
+                    "version": "9.6",
+                    "required": "9.6",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools.external.com-intellij:intellij-core:31.6.1",
+                "selected": "com.android.tools.external.com-intellij:intellij-core:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.external.com-intellij",
+                    "module": "intellij-core",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools.external.com-intellij:kotlin-compiler:31.6.1",
+                "selected": "com.android.tools.external.com-intellij:kotlin-compiler:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.external.com-intellij",
+                    "module": "kotlin-compiler",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools.external.org-jetbrains:uast:31.6.1",
+                "selected": "com.android.tools.external.org-jetbrains:uast:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.external.org-jetbrains",
+                    "module": "uast",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools.analytics-library:protos:31.6.1",
+                "selected": "com.android.tools.analytics-library:protos:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.analytics-library",
+                    "module": "protos",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools.analytics-library:shared:31.6.1",
+                "selected": "com.android.tools.analytics-library:shared:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.analytics-library",
+                    "module": "shared",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools.analytics-library:tracker:31.6.1",
+                "selected": "com.android.tools.analytics-library:tracker:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.analytics-library",
+                    "module": "tracker",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:tracker:31.6.1",
+                "requested": "com.android.tools.analytics-library:protos:31.6.1",
+                "selected": "com.android.tools.analytics-library:protos:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.analytics-library",
+                    "module": "protos",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:tracker:31.6.1",
+                "requested": "com.android.tools.analytics-library:shared:31.6.1",
+                "selected": "com.android.tools.analytics-library:shared:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.analytics-library",
+                    "module": "shared",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:tracker:31.6.1",
+                "requested": "com.android.tools:annotations:31.6.1",
+                "selected": "com.android.tools:annotations:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "annotations",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:tracker:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:tracker:31.6.1",
+                "requested": "com.google.guava:guava:32.0.1-jre",
+                "selected": "com.google.guava:guava:32.0.1-jre",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.guava",
+                    "module": "guava",
+                    "version": "32.0.1-jre",
+                    "required": "32.0.1-jre",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:tracker:31.6.1",
+                "requested": "com.google.protobuf:protobuf-java:3.22.3",
+                "selected": "com.google.protobuf:protobuf-java:3.22.3",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.protobuf",
+                    "module": "protobuf-java",
+                    "version": "3.22.3",
+                    "required": "3.22.3",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.analytics-library:tracker:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk8",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools.build:manifest-merger:31.6.1",
+                "selected": "com.android.tools.build:manifest-merger:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.build",
+                    "module": "manifest-merger",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools:common:31.6.1",
+                "selected": "com.android.tools:common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "selected": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.layoutlib",
+                    "module": "layoutlib-api",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools:sdk-common:31.6.1",
+                "selected": "com.android.tools:sdk-common:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "sdk-common",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.android.tools:sdklib:31.6.1",
+                "selected": "com.android.tools:sdklib:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "sdklib",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "com.google.guava:guava:32.0.1-jre",
+                "selected": "com.google.guava:guava:32.0.1-jre",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.guava",
+                    "module": "guava",
+                    "version": "32.0.1-jre",
+                    "required": "32.0.1-jre",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "net.sf.kxml:kxml2:2.3.0",
+                "selected": "net.sf.kxml:kxml2:2.3.0",
+                "constraint": false,
+                "selector": {
+                    "group": "net.sf.kxml",
+                    "module": "kxml2",
+                    "version": "2.3.0",
+                    "required": "2.3.0",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-reflect:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-reflect:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-reflect",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint:31.6.1",
+                "requested": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "selected": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "constraint": false,
+                "selector": {
+                    "group": "org.jetbrains.kotlin",
+                    "module": "kotlin-stdlib-jdk8",
+                    "version": "1.9.20",
+                    "required": "1.9.20",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-gradle:31.6.1",
+                "requested": "com.android.tools.lint:lint-typedef-remover:31.6.1",
+                "selected": "com.android.tools.lint:lint-typedef-remover:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools.lint",
+                    "module": "lint-typedef-remover",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-typedef-remover:31.6.1",
+                "requested": "com.android.tools:annotations:31.6.1",
+                "selected": "com.android.tools:annotations:31.6.1",
+                "constraint": false,
+                "selector": {
+                    "group": "com.android.tools",
+                    "module": "annotations",
+                    "version": "31.6.1",
+                    "required": "31.6.1",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-typedef-remover:31.6.1",
+                "requested": "com.google.guava:guava:32.0.1-jre",
+                "selected": "com.google.guava:guava:32.0.1-jre",
+                "constraint": false,
+                "selector": {
+                    "group": "com.google.guava",
+                    "module": "guava",
+                    "version": "32.0.1-jre",
+                    "required": "32.0.1-jre",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-typedef-remover:31.6.1",
+                "requested": "org.ow2.asm:asm:9.6",
+                "selected": "org.ow2.asm:asm:9.6",
+                "constraint": false,
+                "selector": {
+                    "group": "org.ow2.asm",
+                    "module": "asm",
+                    "version": "9.6",
+                    "required": "9.6",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            },
+            {
+                "from": "com.android.tools.lint:lint-gradle:31.6.1",
+                "requested": "org.codehaus.groovy:groovy:3.0.17",
+                "selected": "org.codehaus.groovy:groovy:3.0.17",
+                "constraint": false,
+                "selector": {
+                    "group": "org.codehaus.groovy",
+                    "module": "groovy",
+                    "version": "3.0.17",
+                    "required": "3.0.17",
+                    "strict": "",
+                    "preferred": "",
+                    "rejected": [
+
+                    ],
+                    "branch": null
+                }
+            }
+        ],
+        "artifacts": [
+            {
+                "component": "com.android.tools.lint:lint-gradle:31.6.1",
+                "name": "lint-gradle-31.6.1.jar",
+                "sha256": "ec188c62447a6c7cd781072577b04470d7a8c321de926a95f5c7f92342060fbe"
+            },
+            {
+                "component": "com.android.tools.lint:lint:31.6.1",
+                "name": "lint-31.6.1.jar",
+                "sha256": "9b5a4f5c1c40753739f72500394d296f1142e58bd3406bd0c698ccb4b165b4b6"
+            },
+            {
+                "component": "com.android.tools.lint:lint-checks:31.6.1",
+                "name": "lint-checks-31.6.1.jar",
+                "sha256": "a173f51fb5e4f3234c0b84941b0482cd597b07a7a22e921308039c8d0cf8c69d"
+            },
+            {
+                "component": "com.android.tools.lint:lint-api:31.6.1",
+                "name": "lint-api-31.6.1.jar",
+                "sha256": "19d0976922d5685cbdf2a8497f323823004c85d97f23807b86388e2816259083"
+            },
+            {
+                "component": "com.android.tools.external.com-intellij:intellij-core:31.6.1",
+                "name": "intellij-core-31.6.1.jar",
+                "sha256": "4805b8e2ef4ba140b7b3d77ea619a752ff112bbd88a01a59219e04c01f76365d"
+            },
+            {
+                "component": "com.android.tools.external.com-intellij:kotlin-compiler:31.6.1",
+                "name": "kotlin-compiler-31.6.1.jar",
+                "sha256": "e9b4614ceddf7bad65fd547e9136f870379cf0e23be45616ca7bdebadb7702e4"
+            },
+            {
+                "component": "com.android.tools.external.org-jetbrains:uast:31.6.1",
+                "name": "uast-31.6.1.jar",
+                "sha256": "f85e9b1673cc78353c21592407f02448dc7178b127eef2d8e1afa0addea161fb"
+            },
+            {
+                "component": "com.android.tools.analytics-library:tracker:31.6.1",
+                "name": "tracker-31.6.1.jar",
+                "sha256": "7e8f45aada8beda71c2976c15f1a316eaa00fd4a9683221311ced2bdbc026408"
+            },
+            {
+                "component": "com.android.tools.build:manifest-merger:31.6.1",
+                "name": "manifest-merger-31.6.1.jar",
+                "sha256": "aa963d4af45ab031c570783ce9286d2111eeb0b8c3bdf44e48ca90714cccb754"
+            },
+            {
+                "component": "com.android.tools.lint:lint-model:31.6.1",
+                "name": "lint-model-31.6.1.jar",
+                "sha256": "3bb6186f775dce7a106391e24bcc3c8d270bccdf2f551b92161c6adc0bc2ecde"
+            },
+            {
+                "component": "com.android.tools:sdk-common:31.6.1",
+                "name": "sdk-common-31.6.1.jar",
+                "sha256": "ad66eec685eebe2e6ae4303e70c89f72317fa7d8cc2b39e36fdfa8645a2260fd"
+            },
+            {
+                "component": "com.android.tools:sdklib:31.6.1",
+                "name": "sdklib-31.6.1.jar",
+                "sha256": "31a2e1410bacd7e8a4647e397ccf914b686b3232296e4229128e3bad96706e24"
+            },
+            {
+                "component": "com.android.tools:repository:31.6.1",
+                "name": "repository-31.6.1.jar",
+                "sha256": "169c2e7a77aa30978879dbf8b30436671165872fcbdfdda6c735aaddb6710340"
+            },
+            {
+                "component": "com.android.tools.analytics-library:shared:31.6.1",
+                "name": "shared-31.6.1.jar",
+                "sha256": "188ec3cb881ed655df9311cc58701dcb32997365004e8aa6854acfb60f6e35e1"
+            },
+            {
+                "component": "com.android.tools.layoutlib:layoutlib-api:31.6.1",
+                "name": "layoutlib-api-31.6.1.jar",
+                "sha256": "98bae36ff051e114dd4eef5effa80fbe5e552944f4233ce892160da2cd9eeaed"
+            },
+            {
+                "component": "com.android.tools.ddms:ddmlib:31.6.1",
+                "name": "ddmlib-31.6.1.jar",
+                "sha256": "c571c0224fe3e7e6607196d95cc3142fdc19f013e8f1510f68c7b4a686c53809"
+            },
+            {
+                "component": "com.android.tools:dvlib:31.6.1",
+                "name": "dvlib-31.6.1.jar",
+                "sha256": "5ccc490258202850630c59eecb9d29a6c849bb17f10f4ca9017db649f72e481f"
+            },
+            {
+                "component": "com.android.tools:common:31.6.1",
+                "name": "common-31.6.1.jar",
+                "sha256": "4921a6610bf28f02911eb7d6e1ba498db98884e5f233e55272619a0841bd4c79"
+            },
+            {
+                "component": "com.android.tools.lint:lint-typedef-remover:31.6.1",
+                "name": "lint-typedef-remover-31.6.1.jar",
+                "sha256": "5b4f485215ca4d86ef2319fc398b5f2251e62f5446bc5fd0e00653648ddde318"
+            },
+            {
+                "component": "org.codehaus.groovy:groovy:3.0.17",
+                "name": "groovy-3.0.17.jar",
+                "sha256": "9ed2a565a8592a9f63f410afed892d0ca6bec1ff96277ce4cc7f3e2e366e794f"
+            },
+            {
+                "component": "org.jetbrains.intellij.deps:trove4j:1.0.20200330",
+                "name": "trove4j-1.0.20200330.jar",
+                "sha256": "c5fd725bffab51846bf3c77db1383c60aaaebfe1b7fe2f00d23fe1b7df0a439d"
+            },
+            {
+                "component": "com.android.tools.build:builder-model:8.6.1",
+                "name": "builder-model-8.6.1.jar",
+                "sha256": "516e0ff378141532683fb3b16cb0e71517bf8b35388c27976fa90687289a8458"
+            },
+            {
+                "component": "com.android.tools:annotations:31.6.1",
+                "name": "annotations-31.6.1.jar",
+                "sha256": "b25995fa7b220d35fbb8e325df071f8291691bfbaff9734c98e38f45ec2a73ee"
+            },
+            {
+                "component": "com.google.jimfs:jimfs:1.1",
+                "name": "jimfs-1.1.jar",
+                "sha256": "c4828e28d7c0a930af9387510b3bada7daa5c04d7c25a75c7b8b081f1c257ddd"
+            },
+            {
+                "component": "com.google.guava:guava:32.0.1-jre",
+                "name": "guava-32.0.1-jre.jar",
+                "sha256": "bd7fa227591fb8509677d0d1122cf95158f3b8a9f45653f58281d879f6dc48c5"
+            },
+            {
+                "component": "net.java.dev.jna:jna-platform:5.6.0",
+                "name": "jna-platform-5.6.0.jar",
+                "sha256": "9ecea8bf2b1b39963939d18b70464eef60c508fed8820f9dcaba0c35518eabf7"
+            },
+            {
+                "component": "org.jetbrains.kotlin:kotlin-reflect:1.9.20",
+                "name": "kotlin-reflect-1.9.20.jar",
+                "sha256": "49b66f9a89d50fd2954c2e8aeac80e4f488b0a09322a25efad6261576713dc0f"
+            },
+            {
+                "component": "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20",
+                "name": "kotlin-stdlib-jdk7-1.9.20.jar",
+                "sha256": "c5451d67a27f33afd09913c67e1ceba3897ae70884b24ef0ff71157e55b60865"
+            },
+            {
+                "component": "org.jetbrains.kotlin:kotlin-stdlib:1.9.20",
+                "name": "kotlin-stdlib-1.9.20.jar",
+                "sha256": "28a35bcdff46d864f80f346a617e486284b208d17378c41900dfb1de95a90e6c"
+            },
+            {
+                "component": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20",
+                "name": "kotlin-stdlib-jdk8-1.9.20.jar",
+                "sha256": "f833fcc94f0bb1c31b9e78bd4bda7ea23f579ff3408ae1a94e2eb5747086a2ab"
+            },
+            {
+                "component": "com.android.tools.analytics-library:protos:31.6.1",
+                "name": "protos-31.6.1.jar",
+                "sha256": "0cd13ddedc22dfe3535a4c6adc564d1fc380f695dd1fd74cf02130c510cfb573"
+            },
+            {
+                "component": "net.sf.kxml:kxml2:2.3.0",
+                "name": "kxml2-2.3.0.jar",
+                "sha256": "f264dd9f79a1fde10ce5ecc53221eff24be4c9331c830b7d52f2f08a7b633de2"
+            },
+            {
+                "component": "org.ow2.asm:asm-analysis:9.6",
+                "name": "asm-analysis-9.6.jar",
+                "sha256": "d92832d7c37edc07c60e2559ac6118b31d642e337a6671edcb7ba9fae68edbbb"
+            },
+            {
+                "component": "org.ow2.asm:asm-tree:9.6",
+                "name": "asm-tree-9.6.jar",
+                "sha256": "c43ecf17b539c777e15da7b5b86553b377e2d39a683de6285567d5283888e7ef"
+            },
+            {
+                "component": "org.ow2.asm:asm:9.6",
+                "name": "asm-9.6.jar",
+                "sha256": "3c6fac2424db3d4a853b669f4e3d1d9c3c552235e19a319673f887083c2303a1"
+            },
+            {
+                "component": "com.google.guava:failureaccess:1.0.1",
+                "name": "failureaccess-1.0.1.jar",
+                "sha256": "a171ee4c734dd2da837e4b16be9df4661afab72a41adaf31eb84dfdaf936ca26"
+            },
+            {
+                "component": "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava",
+                "name": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+                "sha256": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99"
+            },
+            {
+                "component": "com.google.code.findbugs:jsr305:3.0.2",
+                "name": "jsr305-3.0.2.jar",
+                "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7"
+            },
+            {
+                "component": "org.checkerframework:checker-qual:3.33.0",
+                "name": "checker-qual-3.33.0.jar",
+                "sha256": "e316255bbfcd9fe50d165314b85abb2b33cb2a66a93c491db648e498a82c2de1"
+            },
+            {
+                "component": "com.google.errorprone:error_prone_annotations:2.18.0",
+                "name": "error_prone_annotations-2.18.0.jar",
+                "sha256": "9e6814cb71816988a4fd1b07a993a8f21bb7058d522c162b1de849e19bea54ae"
+            },
+            {
+                "component": "com.google.j2objc:j2objc-annotations:2.8",
+                "name": "j2objc-annotations-2.8.jar",
+                "sha256": "f02a95fa1a5e95edb3ed859fd0fb7df709d121a35290eff8b74dce2ab7f4d6ed"
+            },
+            {
+                "component": "net.java.dev.jna:jna:5.6.0",
+                "name": "jna-5.6.0.jar",
+                "sha256": "5557e235a8aa2f9766d5dc609d67948f2a8832c2d796cea9ef1d6cbe0b3b7eaf"
+            },
+            {
+                "component": "commons-io:commons-io:2.13.0",
+                "name": "commons-io-2.13.0.jar",
+                "sha256": "671eaa39688dac2ffaa4645b3c9980ae2d0ea2471e4ae6a5da199cd15ae23666"
+            },
+            {
+                "component": "com.android.tools:play-sdk-proto:31.6.1",
+                "name": "play-sdk-proto-31.6.1.jar",
+                "sha256": "2a0ff337c71b9bfb2a8d8d4fcdf63096b0b25203f764d6143fa2c24957abba7e"
+            },
+            {
+                "component": "com.google.code.gson:gson:2.10.1",
+                "name": "gson-2.10.1.jar",
+                "sha256": "4241c14a7727c34feea6507ec801318a3d4a90f070e4525681079fb94ee4c593"
+            },
+            {
+                "component": "com.android.tools.build:aapt2-proto:8.6.1-11315950",
+                "name": "aapt2-proto-8.6.1-11315950.jar",
+                "sha256": "f79359a88ad1734f249aadca886807b215f26055549c22f34dcea9a2313d14ea"
+            },
+            {
+                "component": "com.google.protobuf:protobuf-java:3.22.3",
+                "name": "protobuf-java-3.22.3.jar",
+                "sha256": "59d388ea6a2d2d76ae8efff7fd4d0c60c6f0f464c3d3ab9be8e5add092975708"
+            },
+            {
+                "component": "org.jetbrains:annotations:23.0.0",
+                "name": "annotations-23.0.0.jar",
+                "sha256": "7b0f19724082cbfcbc66e5abea2b9bc92cf08a1ea11e191933ed43801eb3cd05"
+            },
+            {
+                "component": "javax.inject:javax.inject:1",
+                "name": "javax.inject-1.jar",
+                "sha256": "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff"
+            },
+            {
+                "component": "org.bouncycastle:bcpkix-jdk18on:1.77",
+                "name": "bcpkix-jdk18on-1.77.jar",
+                "sha256": "1ac7fe8efd5b2f38cdc165be5a0675734fe44808dab92707201f03a535d6f1b8"
+            },
+            {
+                "component": "org.bouncycastle:bcutil-jdk18on:1.77",
+                "name": "bcutil-jdk18on-1.77.jar",
+                "sha256": "947673bcbc5a8dde2d2fa688a5b7598d0ca6e2a74a7ea30cd93f04f6b3ad68f8"
+            },
+            {
+                "component": "org.bouncycastle:bcprov-jdk18on:1.77",
+                "name": "bcprov-jdk18on-1.77.jar",
+                "sha256": "dabb98c24d72c9b9f585633d1df9c5cd58d9ad373d0cd681367e6a603a495d58"
+            },
+            {
+                "component": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+                "name": "jaxb-runtime-2.3.2.jar",
+                "sha256": "e6e0a1e89fb6ff786279e6a0082d5cef52dc2ebe67053d041800737652b4fd1b"
+            },
+            {
+                "component": "org.apache.commons:commons-compress:1.21",
+                "name": "commons-compress-1.21.jar",
+                "sha256": "6aecfd5459728a595601cfa07258d131972ffc39b492eb48bdd596577a2f244a"
+            },
+            {
+                "component": "org.apache.httpcomponents:httpmime:4.5.6",
+                "name": "httpmime-4.5.6.jar",
+                "sha256": "0b2b1102c18d3c7e05a77214b9b7501a6f6056174ae5604e0e256776eda7553e"
+            },
+            {
+                "component": "org.apache.httpcomponents:httpclient:4.5.6",
+                "name": "httpclient-4.5.6.jar",
+                "sha256": "c03f813195e7a80e3608d0ddd8da80b21696a4c92a6a2298865bf149071551c7"
+            },
+            {
+                "component": "org.apache.httpcomponents:httpcore:4.4.16",
+                "name": "httpcore-4.4.16.jar",
+                "sha256": "6c9b3dd142a09dc468e23ad39aad6f75a0f2b85125104469f026e52a474e464f"
+            },
+            {
+                "component": "org.jvnet.staxex:stax-ex:1.8.1",
+                "name": "stax-ex-1.8.1.jar",
+                "sha256": "20522549056e9e50aa35ef0b445a2e47a53d06be0b0a9467d704e2483ffb049a"
+            },
+            {
+                "component": "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2",
+                "name": "jakarta.xml.bind-api-2.3.2.jar",
+                "sha256": "69156304079bdeed9fc0ae3b39389f19b3cc4ba4443bc80508995394ead742ea"
+            },
+            {
+                "component": "org.glassfish.jaxb:txw2:2.3.2",
+                "name": "txw2-2.3.2.jar",
+                "sha256": "4a6a9f483388d461b81aa9a28c685b8b74c0597993bf1884b04eddbca95f48fe"
+            },
+            {
+                "component": "com.sun.istack:istack-commons-runtime:3.0.8",
+                "name": "istack-commons-runtime-3.0.8.jar",
+                "sha256": "4ffabb06be454a05e4398e20c77fa2b6308d4b88dfbef7ca30a76b5b7d5505ef"
+            },
+            {
+                "component": "com.sun.xml.fastinfoset:FastInfoset:1.2.16",
+                "name": "FastInfoset-1.2.16.jar",
+                "sha256": "056f3a1e144409f21ed16afc26805f58e9a21f3fce1543c42d400719d250c511"
+            },
+            {
+                "component": "jakarta.activation:jakarta.activation-api:1.2.1",
+                "name": "jakarta.activation-api-1.2.1.jar",
+                "sha256": "8b0a0f52fa8b05c5431921a063ed866efaa41dadf2e3a7ee3e1961f2b0d9645b"
+            },
+            {
+                "component": "com.sun.activation:javax.activation:1.2.0",
+                "name": "javax.activation-1.2.0.jar",
+                "sha256": "993302b16cd7056f21e779cc577d175a810bb4900ef73cd8fbf2b50f928ba9ce"
+            },
+            {
+                "component": "commons-logging:commons-logging:1.2",
+                "name": "commons-logging-1.2.jar",
+                "sha256": "daddea1ea0be0f56978ab3006b8ac92834afeefbd9b7e4e6316fca57df0fa636"
+            },
+            {
+                "component": "commons-codec:commons-codec:1.10",
+                "name": "commons-codec-1.10.jar",
+                "sha256": "4241dfa94e711d435f29a4604a3e2de5c4aa3c165e23bd066be6fc1fc4309569"
+            }
+        ]
+    },
+    "classpathFiles": [
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.lint/lint-gradle/31.6.1/8109951cff039eee3968acf6462bb7a6c4b73ede/lint-gradle-31.6.1.jar",
+            "sha256": "ec188c62447a6c7cd781072577b04470d7a8c321de926a95f5c7f92342060fbe"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.lint/lint/31.6.1/c7258b93de9d7992e0c4f0b7f0b642e6fad2499d/lint-31.6.1.jar",
+            "sha256": "9b5a4f5c1c40753739f72500394d296f1142e58bd3406bd0c698ccb4b165b4b6"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.lint/lint-checks/31.6.1/689cf6c95d6cfce8b9efbb2c73d322c5acf37d95/lint-checks-31.6.1.jar",
+            "sha256": "a173f51fb5e4f3234c0b84941b0482cd597b07a7a22e921308039c8d0cf8c69d"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.lint/lint-api/31.6.1/e71eeb43aa96be930eaca5fb0feb85cd36a7c480/lint-api-31.6.1.jar",
+            "sha256": "19d0976922d5685cbdf2a8497f323823004c85d97f23807b86388e2816259083"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.external.com-intellij/intellij-core/31.6.1/d69a93e5478dca63652ba5b00fe07454ed70241e/intellij-core-31.6.1.jar",
+            "sha256": "4805b8e2ef4ba140b7b3d77ea619a752ff112bbd88a01a59219e04c01f76365d"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.external.com-intellij/kotlin-compiler/31.6.1/4b9028d93466ca8267ea8b9910a02b87a3e43986/kotlin-compiler-31.6.1.jar",
+            "sha256": "e9b4614ceddf7bad65fd547e9136f870379cf0e23be45616ca7bdebadb7702e4"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.external.org-jetbrains/uast/31.6.1/8bfc82764619cca877ab4dbfe3f2cb3ee6a168b5/uast-31.6.1.jar",
+            "sha256": "f85e9b1673cc78353c21592407f02448dc7178b127eef2d8e1afa0addea161fb"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.analytics-library/tracker/31.6.1/6e10f330711874dceeb3935763d82d3792a7e13e/tracker-31.6.1.jar",
+            "sha256": "7e8f45aada8beda71c2976c15f1a316eaa00fd4a9683221311ced2bdbc026408"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.build/manifest-merger/31.6.1/74d2b65c9e2b55d6f7de18cced38aa6c777f63d5/manifest-merger-31.6.1.jar",
+            "sha256": "aa963d4af45ab031c570783ce9286d2111eeb0b8c3bdf44e48ca90714cccb754"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.lint/lint-model/31.6.1/cbd604d021ea85b496427591e08a2c7d35cb79ea/lint-model-31.6.1.jar",
+            "sha256": "3bb6186f775dce7a106391e24bcc3c8d270bccdf2f551b92161c6adc0bc2ecde"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools/sdk-common/31.6.1/6a0bd0ae73e72608ad61c937c7d145d9c77269f6/sdk-common-31.6.1.jar",
+            "sha256": "ad66eec685eebe2e6ae4303e70c89f72317fa7d8cc2b39e36fdfa8645a2260fd"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools/sdklib/31.6.1/66f8e4892069c760cb19cc9377b5f90efb95ce0a/sdklib-31.6.1.jar",
+            "sha256": "31a2e1410bacd7e8a4647e397ccf914b686b3232296e4229128e3bad96706e24"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools/repository/31.6.1/97e2e59d682d3f40706ec140f74e784bca0dc6dc/repository-31.6.1.jar",
+            "sha256": "169c2e7a77aa30978879dbf8b30436671165872fcbdfdda6c735aaddb6710340"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.analytics-library/shared/31.6.1/45eea9de2d45308aa30272dca79ea59d6720eb4a/shared-31.6.1.jar",
+            "sha256": "188ec3cb881ed655df9311cc58701dcb32997365004e8aa6854acfb60f6e35e1"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.layoutlib/layoutlib-api/31.6.1/6abada4555fa60825ea5f353443a7e561445c4f0/layoutlib-api-31.6.1.jar",
+            "sha256": "98bae36ff051e114dd4eef5effa80fbe5e552944f4233ce892160da2cd9eeaed"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.ddms/ddmlib/31.6.1/cec99d30da3f854bde3d734fabca09400097e4bd/ddmlib-31.6.1.jar",
+            "sha256": "c571c0224fe3e7e6607196d95cc3142fdc19f013e8f1510f68c7b4a686c53809"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools/dvlib/31.6.1/8c475e80a82e3c293d792ea9a22847c43904c2fc/dvlib-31.6.1.jar",
+            "sha256": "5ccc490258202850630c59eecb9d29a6c849bb17f10f4ca9017db649f72e481f"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools/common/31.6.1/d5081f3b25bd3afc6ea5adc8273fef0beab29fee/common-31.6.1.jar",
+            "sha256": "4921a6610bf28f02911eb7d6e1ba498db98884e5f233e55272619a0841bd4c79"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.lint/lint-typedef-remover/31.6.1/644ab9b8a697ba83702c4e32eaaf95c504e1a522/lint-typedef-remover-31.6.1.jar",
+            "sha256": "5b4f485215ca4d86ef2319fc398b5f2251e62f5446bc5fd0e00653648ddde318"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.codehaus.groovy/groovy/3.0.17/23a103e379f90f9271209c97129d5568676b2cda/groovy-3.0.17.jar",
+            "sha256": "9ed2a565a8592a9f63f410afed892d0ca6bec1ff96277ce4cc7f3e2e366e794f"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.jetbrains.intellij.deps/trove4j/1.0.20200330/3afb14d5f9ceb459d724e907a21145e8ff394f02/trove4j-1.0.20200330.jar",
+            "sha256": "c5fd725bffab51846bf3c77db1383c60aaaebfe1b7fe2f00d23fe1b7df0a439d"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.build/builder-model/8.6.1/f4e5827bbddac07172f97f5d629911a4d49620a2/builder-model-8.6.1.jar",
+            "sha256": "516e0ff378141532683fb3b16cb0e71517bf8b35388c27976fa90687289a8458"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools/annotations/31.6.1/1946e7f75bc1615b4abfc0f83899934dfcbdf1fc/annotations-31.6.1.jar",
+            "sha256": "b25995fa7b220d35fbb8e325df071f8291691bfbaff9734c98e38f45ec2a73ee"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.google.jimfs/jimfs/1.1/8fbd0579dc68aba6186935cc1bee21d2f3e7ec1c/jimfs-1.1.jar",
+            "sha256": "c4828e28d7c0a930af9387510b3bada7daa5c04d7c25a75c7b8b081f1c257ddd"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.google.guava/guava/32.0.1-jre/6e5d51a72d142f2d40a57dfb897188b36a95b489/guava-32.0.1-jre.jar",
+            "sha256": "bd7fa227591fb8509677d0d1122cf95158f3b8a9f45653f58281d879f6dc48c5"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/net.java.dev.jna/jna-platform/5.6.0/d18424ffb8bbfd036d71bcaab9b546858f2ef986/jna-platform-5.6.0.jar",
+            "sha256": "9ecea8bf2b1b39963939d18b70464eef60c508fed8820f9dcaba0c35518eabf7"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.9.20/34eeb4eed5f493cdbb760ef50a5653ec414006bf/kotlin-reflect-1.9.20.jar",
+            "sha256": "49b66f9a89d50fd2954c2e8aeac80e4f488b0a09322a25efad6261576713dc0f"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.9.20/8b4b73f4e08efaae93fc01d8c6eaab58a72d2ab3/kotlin-stdlib-jdk7-1.9.20.jar",
+            "sha256": "c5451d67a27f33afd09913c67e1ceba3897ae70884b24ef0ff71157e55b60865"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.9.20/e58b4816ac517e9cc5df1db051120c63d4cde669/kotlin-stdlib-1.9.20.jar",
+            "sha256": "28a35bcdff46d864f80f346a617e486284b208d17378c41900dfb1de95a90e6c"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.9.20/e2b4d1f475ae0606d063a84fce4dccdb45c7e12a/kotlin-stdlib-jdk8-1.9.20.jar",
+            "sha256": "f833fcc94f0bb1c31b9e78bd4bda7ea23f579ff3408ae1a94e2eb5747086a2ab"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.analytics-library/protos/31.6.1/a651e7f3d4ebd918607129e9d55e31f291fc7259/protos-31.6.1.jar",
+            "sha256": "0cd13ddedc22dfe3535a4c6adc564d1fc380f695dd1fd74cf02130c510cfb573"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/net.sf.kxml/kxml2/2.3.0/ccbc77a5fd907ef863c29f3596c6f54ffa4e9442/kxml2-2.3.0.jar",
+            "sha256": "f264dd9f79a1fde10ce5ecc53221eff24be4c9331c830b7d52f2f08a7b633de2"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.6/9ce6c7b174bd997fc2552dff47964546bd7a5ec3/asm-analysis-9.6.jar",
+            "sha256": "d92832d7c37edc07c60e2559ac6118b31d642e337a6671edcb7ba9fae68edbbb"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.6/c0cdda9d211e965d2a4448aa3fd86110f2f8c2de/asm-tree-9.6.jar",
+            "sha256": "c43ecf17b539c777e15da7b5b86553b377e2d39a683de6285567d5283888e7ef"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.ow2.asm/asm/9.6/aa205cf0a06dbd8e04ece91c0b37c3f5d567546a/asm-9.6.jar",
+            "sha256": "3c6fac2424db3d4a853b669f4e3d1d9c3c552235e19a319673f887083c2303a1"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar",
+            "sha256": "a171ee4c734dd2da837e4b16be9df4661afab72a41adaf31eb84dfdaf936ca26"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+            "sha256": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar",
+            "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.33.0/de2b60b62da487644fc11f734e73c8b0b431238f/checker-qual-3.33.0.jar",
+            "sha256": "e316255bbfcd9fe50d165314b85abb2b33cb2a66a93c491db648e498a82c2de1"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.18.0/89b684257096f548fa39a7df9fdaa409d4d4df91/error_prone_annotations-2.18.0.jar",
+            "sha256": "9e6814cb71816988a4fd1b07a993a8f21bb7058d522c162b1de849e19bea54ae"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/2.8/c85270e307e7b822f1086b93689124b89768e273/j2objc-annotations-2.8.jar",
+            "sha256": "f02a95fa1a5e95edb3ed859fd0fb7df709d121a35290eff8b74dce2ab7f4d6ed"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.6.0/330f2244e9030119ab3030fc3fededc86713d9cc/jna-5.6.0.jar",
+            "sha256": "5557e235a8aa2f9766d5dc609d67948f2a8832c2d796cea9ef1d6cbe0b3b7eaf"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/commons-io/commons-io/2.13.0/8bb2bc9b4df17e2411533a0708a69f983bf5e83b/commons-io-2.13.0.jar",
+            "sha256": "671eaa39688dac2ffaa4645b3c9980ae2d0ea2471e4ae6a5da199cd15ae23666"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools/play-sdk-proto/31.6.1/101e16af1e5732514e8ad7006c56d683a95aa8d4/play-sdk-proto-31.6.1.jar",
+            "sha256": "2a0ff337c71b9bfb2a8d8d4fcdf63096b0b25203f764d6143fa2c24957abba7e"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10.1/b3add478d4382b78ea20b1671390a858002feb6c/gson-2.10.1.jar",
+            "sha256": "4241c14a7727c34feea6507ec801318a3d4a90f070e4525681079fb94ee4c593"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.android.tools.build/aapt2-proto/8.6.1-11315950/bfe391dbe6e6b74fd7341daa4074beb3da640ae0/aapt2-proto-8.6.1-11315950.jar",
+            "sha256": "f79359a88ad1734f249aadca886807b215f26055549c22f34dcea9a2313d14ea"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.22.3/fdee98b8f6abab73f146a4edb4c09e56f8278d03/protobuf-java-3.22.3.jar",
+            "sha256": "59d388ea6a2d2d76ae8efff7fd4d0c60c6f0f464c3d3ab9be8e5add092975708"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.jetbrains/annotations/23.0.0/8cc20c07506ec18e0834947b84a864bfc094484e/annotations-23.0.0.jar",
+            "sha256": "7b0f19724082cbfcbc66e5abea2b9bc92cf08a1ea11e191933ed43801eb3cd05"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar",
+            "sha256": "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk18on/1.77/ed953791ba0229747dd0fd9911e3d76a462acfd3/bcpkix-jdk18on-1.77.jar",
+            "sha256": "1ac7fe8efd5b2f38cdc165be5a0675734fe44808dab92707201f03a535d6f1b8"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.bouncycastle/bcutil-jdk18on/1.77/de3eaef351545fe8562cf29ddff4a403a45b49b7/bcutil-jdk18on-1.77.jar",
+            "sha256": "947673bcbc5a8dde2d2fa688a5b7598d0ca6e2a74a7ea30cd93f04f6b3ad68f8"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.bouncycastle/bcprov-jdk18on/1.77/2cc971b6c20949c1ff98d1a4bc741ee848a09523/bcprov-jdk18on-1.77.jar",
+            "sha256": "dabb98c24d72c9b9f585633d1df9c5cd58d9ad373d0cd681367e6a603a495d58"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.glassfish.jaxb/jaxb-runtime/2.3.2/5528bc882ea499a09d720b42af11785c4fc6be2a/jaxb-runtime-2.3.2.jar",
+            "sha256": "e6e0a1e89fb6ff786279e6a0082d5cef52dc2ebe67053d041800737652b4fd1b"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.21/4ec95b60d4e86b5c95a0e919cb172a0af98011ef/commons-compress-1.21.jar",
+            "sha256": "6aecfd5459728a595601cfa07258d131972ffc39b492eb48bdd596577a2f244a"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.apache.httpcomponents/httpmime/4.5.6/164343da11db817e81e24e0d9869527e069850c9/httpmime-4.5.6.jar",
+            "sha256": "0b2b1102c18d3c7e05a77214b9b7501a6f6056174ae5604e0e256776eda7553e"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.6/1afe5621985efe90a92d0fbc9be86271efbe796f/httpclient-4.5.6.jar",
+            "sha256": "c03f813195e7a80e3608d0ddd8da80b21696a4c92a6a2298865bf149071551c7"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.16/51cf043c87253c9f58b539c9f7e44c8894223850/httpcore-4.4.16.jar",
+            "sha256": "6c9b3dd142a09dc468e23ad39aad6f75a0f2b85125104469f026e52a474e464f"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.jvnet.staxex/stax-ex/1.8.1/78011e483a21102fb4858f3e8f269a677e50aa23/stax-ex-1.8.1.jar",
+            "sha256": "20522549056e9e50aa35ef0b445a2e47a53d06be0b0a9467d704e2483ffb049a"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/jakarta.xml.bind/jakarta.xml.bind-api/2.3.2/8d49996a4338670764d7ca4b85a1c4ccf7fe665d/jakarta.xml.bind-api-2.3.2.jar",
+            "sha256": "69156304079bdeed9fc0ae3b39389f19b3cc4ba4443bc80508995394ead742ea"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/org.glassfish.jaxb/txw2/2.3.2/ce5be7da2e442c25ec14c766cb60cb802741727b/txw2-2.3.2.jar",
+            "sha256": "4a6a9f483388d461b81aa9a28c685b8b74c0597993bf1884b04eddbca95f48fe"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.sun.istack/istack-commons-runtime/3.0.8/d6a97364045aa6b99bf2d3c566a3f98599c2d296/istack-commons-runtime-3.0.8.jar",
+            "sha256": "4ffabb06be454a05e4398e20c77fa2b6308d4b88dfbef7ca30a76b5b7d5505ef"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.sun.xml.fastinfoset/FastInfoset/1.2.16/4eb6a0adad553bf759ffe86927df6f3b848c8bea/FastInfoset-1.2.16.jar",
+            "sha256": "056f3a1e144409f21ed16afc26805f58e9a21f3fce1543c42d400719d250c511"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/jakarta.activation/jakarta.activation-api/1.2.1/562a587face36ec7eff2db7f2fc95425c6602bc1/jakarta.activation-api-1.2.1.jar",
+            "sha256": "8b0a0f52fa8b05c5431921a063ed866efaa41dadf2e3a7ee3e1961f2b0d9645b"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/com.sun.activation/javax.activation/1.2.0/bf744c1e2776ed1de3c55c8dac1057ec331ef744/javax.activation-1.2.0.jar",
+            "sha256": "993302b16cd7056f21e779cc577d175a810bb4900ef73cd8fbf2b50f928ba9ce"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar",
+            "sha256": "daddea1ea0be0f56978ab3006b8ac92834afeefbd9b7e4e6316fca57df0fa636"
+        },
+        {
+            "path": "/home/zhb/gitrep/llm-asr/.cache/gradle-user-home/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/4b95f4897fa13f2cd904aee711aeafc0c5295cd8/commons-codec-1.10.jar",
+            "sha256": "4241dfa94e711d435f29a4604a3e2de5c4aa3c165e23bd066be6fc1fc4309569"
+        }
+    ]
+}

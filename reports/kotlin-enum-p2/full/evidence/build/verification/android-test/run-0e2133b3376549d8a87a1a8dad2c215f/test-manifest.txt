@@ -1,0 +1,26 @@
+N: android=http://schemas.android.com/apk/res/android (line=2)
+  E: manifest (line=2)
+    A: http://schemas.android.com/apk/res/android:compileSdkVersion(0x01010572)=35
+    A: http://schemas.android.com/apk/res/android:compileSdkVersionCodename(0x01010573)="15" (Raw: "15")
+    A: package="org.llmasr.minimal.testhost.test" (Raw: "org.llmasr.minimal.testhost.test")
+    A: platformBuildVersionCode=35
+    A: platformBuildVersionName=15
+      E: uses-sdk (line=5)
+        A: http://schemas.android.com/apk/res/android:minSdkVersion(0x0101020c)=29
+        A: http://schemas.android.com/apk/res/android:targetSdkVersion(0x01010270)=35
+      E: instrumentation (line=9)
+        A: http://schemas.android.com/apk/res/android:label(0x01010001)="Tests for org.llmasr.minimal.testhost" (Raw: "Tests for org.llmasr.minimal.testhost")
+        A: http://schemas.android.com/apk/res/android:name(0x01010003)="android.test.InstrumentationTestRunner" (Raw: "android.test.InstrumentationTestRunner")
+        A: http://schemas.android.com/apk/res/android:targetPackage(0x01010021)="org.llmasr.minimal.testhost" (Raw: "org.llmasr.minimal.testhost")
+        A: http://schemas.android.com/apk/res/android:handleProfiling(0x01010022)=false
+        A: http://schemas.android.com/apk/res/android:functionalTest(0x01010023)=false
+      E: application (line=16)
+        A: http://schemas.android.com/apk/res/android:debuggable(0x0101000f)=true
+        A: http://schemas.android.com/apk/res/android:allowBackup(0x01010280)=false
+        A: http://schemas.android.com/apk/res/android:extractNativeLibs(0x010104ea)=false
+          E: uses-library (line=20)
+            A: http://schemas.android.com/apk/res/android:name(0x01010003)="android.test.runner" (Raw: "android.test.runner")
+            A: http://schemas.android.com/apk/res/android:required(0x0101028e)=true
+          E: uses-library (line=23)
+            A: http://schemas.android.com/apk/res/android:name(0x01010003)="android.test.base" (Raw: "android.test.base")
+            A: http://schemas.android.com/apk/res/android:required(0x0101028e)=true

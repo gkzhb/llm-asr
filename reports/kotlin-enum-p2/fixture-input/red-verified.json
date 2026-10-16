@@ -1,0 +1,8 @@
+{
+  "exit": 1,
+  "target": "F1 deleted tracked Java remains in fixture inventory",
+  "kind": "actual extracted legacy collector in real temporary Git index with tracked Old.java removed and untracked Old.kt added; no compiler/tool/cache error",
+  "red_driver_sha256": "3ed27d25bb57a0a394452d729553f5f7084b52b404e288b4644406069b816a5c",
+  "red_test_sha256": "f1ec6434ae1f37d07b1d614e030ec5d671f44fe42abfe5d57872f90ec5d618e8",
+  "red_log_sha256": "da76088f275be5d1e16284201695409235208f4ca882b8e4c92a5a06418ac41e"
+}

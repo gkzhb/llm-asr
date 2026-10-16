@@ -1,0 +1,122 @@
+[
+  {
+    "label": "cleanup-old-red",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/runtime_log_enum_cleanup_test.py",
+      "--case",
+      "term-kotlinc"
+    ],
+    "started_utc": "2026-10-16T07:37:03.042306+00:00",
+    "finished_utc": "2026-10-16T07:37:05.234945+00:00",
+    "exit": 1,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/cleanup-old-red.log",
+    "log_sha256": "3df1faf96fa1e76ce3d04c8fb56d80f51380e5ac0a6c2b09cce20c3ca8012395"
+  },
+  {
+    "label": "cleanup-green",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/runtime_log_enum_cleanup_test.py"
+    ],
+    "started_utc": "2026-10-16T07:38:53.053804+00:00",
+    "finished_utc": "2026-10-16T07:38:58.279276+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/cleanup-green.log",
+    "log_sha256": "ea8f35a329d12cd3e9e76c6647cdfc5ceaf353f20780d4f708374da1ba1c0df2"
+  },
+  {
+    "label": "cleanup-optimized",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "-O",
+      "tests/runtime_log_enum_cleanup_test.py"
+    ],
+    "started_utc": "2026-10-16T07:40:04.115482+00:00",
+    "finished_utc": "2026-10-16T07:40:09.340831+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/cleanup-optimized.log",
+    "log_sha256": "1345e58d7cf791d10e61333595422dead8cf3b8ca7f3b655d12610b56028ec1f"
+  },
+  {
+    "label": "enum-mutants",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "python3",
+      "tests/runtime_log_enum_mutant_test.py"
+    ],
+    "started_utc": "2026-10-16T07:41:15.109264+00:00",
+    "finished_utc": "2026-10-16T07:41:46.234585+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/enum-mutants.log",
+    "log_sha256": "7371853ae633eb319c0f47182a1874af0d901e9952e959037bb6d912971f5fd2"
+  },
+  {
+    "label": "complete-host",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "bash",
+      "scripts/test-minimal-apk.sh"
+    ],
+    "started_utc": "2026-10-16T07:43:39.365982+00:00",
+    "finished_utc": "2026-10-16T07:44:40.773355+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/complete-host.log",
+    "log_sha256": "5f5669edd4932ae0d2d3ce73163cc84eab515c1870ff3e60130c092f1aea60cd"
+  },
+  {
+    "label": "fast",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "bash",
+      "scripts/verify-local.sh",
+      "fast",
+      "--offline",
+      "--rerun-tasks"
+    ],
+    "started_utc": "2026-10-16T07:46:24.498371+00:00",
+    "finished_utc": "2026-10-16T07:46:49.537369+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/fast.log",
+    "log_sha256": "c0c4f3ddaee2b39da000dae716e6e4e11a91a03318eeefcd206abf41d3b29072"
+  },
+  {
+    "label": "format",
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "bash",
+      "scripts/verify-local.sh",
+      "format",
+      "--offline"
+    ],
+    "started_utc": "2026-10-16T07:46:49.571732+00:00",
+    "finished_utc": "2026-10-16T07:46:58.439888+00:00",
+    "exit": 0,
+    "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-fix/format.log",
+    "log_sha256": "3d632e6a907239b63c4887af38b983eade4ffb453873444ef6ac93981d8fc17f"
+  }
+]

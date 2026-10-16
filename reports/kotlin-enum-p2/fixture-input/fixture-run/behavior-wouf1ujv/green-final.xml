@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.llmasr.minimal.testhost.FixtureContractTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-16T10:10:33" hostname="zhb-nixos" time="0.027">
+  <properties/>
+  <testcase name="badBytesAreSafe" classname="org.llmasr.minimal.testhost.FixtureContractTest" time="0.011"/>
+  <testcase name="enginePayloadAndOrder" classname="org.llmasr.minimal.testhost.FixtureContractTest" time="0.0"/>
+  <testcase name="lateResultIsInvalidated" classname="org.llmasr.minimal.testhost.FixtureContractTest" time="0.011"/>
+  <testcase name="singleConfirmationAndPassword" classname="org.llmasr.minimal.testhost.FixtureContractTest" time="0.001"/>
+  <testcase name="cleanupRetainsOwner" classname="org.llmasr.minimal.testhost.FixtureContractTest" time="0.002"/>
+  <testcase name="readinessRejectsBeforeLoad" classname="org.llmasr.minimal.testhost.FixtureContractTest" time="0.0"/>
+  <testcase name="reusedBackendQueuedCancellation" classname="org.llmasr.minimal.testhost.FixtureContractTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

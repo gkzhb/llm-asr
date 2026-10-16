@@ -1,0 +1,106 @@
+{
+  "inputs.json": {
+    "sha256": "94e7dca5955b5d4fdedb7ad167abd47b51183ace96321a9098698aef147b286e",
+    "bytes": 330,
+    "json": {
+      "tests/runtime_log_enum_mutant_test.py": "fbfb415d39e90f849e145a8622c3027eb0cd12b1c54ae9419fc32368a5e81fe4",
+      "scripts/compile-jvm-sources.sh": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf",
+      "tests/runtime_log_enum_cleanup_test.py": "611b092569f46f86ed1c7105da7a12f8e361568cff6233197deae715bd22188e"
+    }
+  },
+  "kotlinc-unconfirmed/actual-run.log": {
+    "sha256": "889e38b5028cdf92354a115f5dc18a021ea42d6aaeae81be97941d6253b8898d",
+    "bytes": 249,
+    "text": "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh: line 33: 1384488 \u5df2\u6740\u6b7b                  timeout 120 kotlinc -jvm-target 1.8 -Xjvm-default=all -no-stdlib -no-reflect -classpath \"$cp\" -d \"$out\" \"${kotlin_sources[@]}\" \"${java_sources[@]}\"\n"
+  },
+  "kotlinc-unconfirmed/after-scope.json": {
+    "sha256": "e781dcd612bde8ee4b6c1e698c8b6a280e3222759f3e960fe5bef403251157f4",
+    "bytes": 23,
+    "json": {
+      "tree_exists": false
+    }
+  },
+  "kotlinc-unconfirmed/before-cleanup.json": {
+    "sha256": "8eac6ec35735d93f10dc4b01d480e10d947fa7dee7c3afac6b02dfaa73a287ab",
+    "bytes": 597,
+    "json": {
+      "workers": [
+        {
+          "pid": 1384489,
+          "start": "78947715",
+          "state": "S",
+          "pgid": 1384488,
+          "sid": 1384485
+        },
+        {
+          "pid": 1384490,
+          "start": "78947715",
+          "state": "R",
+          "pgid": 1384488,
+          "sid": 1384485
+        }
+      ],
+      "live_before_cleanup": [
+        {
+          "pid": 1384489,
+          "start": "78947715",
+          "state": "S",
+          "pgid": 1384488,
+          "sid": 1384485
+        },
+        {
+          "pid": 1384490,
+          "start": "78947715",
+          "state": "R",
+          "pgid": 1384488,
+          "sid": 1384485
+        }
+      ],
+      "tree_exists": true,
+      "records": []
+    }
+  },
+  "kotlinc-unconfirmed/finally.json": {
+    "sha256": "ab62f60e8e3e47c610f7c06b5d9a9a3eaddcef9a72f3400f324f7e7d98e9b5ef",
+    "bytes": 52,
+    "json": {
+      "matching_live_workers": [],
+      "tree_exists": false
+    }
+  },
+  "kotlinc-unconfirmed/ready.json": {
+    "sha256": "6792dfde085be1d99134318dfb6ce7bebb5278068400376d430e3ea452605d2c",
+    "bytes": 172,
+    "json": [
+      {
+        "pid": 1384489,
+        "start": "78947715",
+        "state": "S",
+        "pgid": 1384488,
+        "sid": 1384485
+      },
+      {
+        "pid": 1384490,
+        "start": "78947715",
+        "state": "R",
+        "pgid": 1384488,
+        "sid": 1384485
+      }
+    ]
+  },
+  "kotlinc-unconfirmed/supplemental-reclaimed.json": {
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "bytes": 3,
+    "json": []
+  },
+  "kotlinc-unconfirmed/tree.json": {
+    "sha256": "648168e23dbe99fadcd9f5a723f238bb340f846bcd8b272c17b199a49eb82c4b",
+    "bytes": 109,
+    "json": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-local/cleanup/run-4omrnfso/kotlinc-unconfirmed/tree-xqh_jl4h"
+  },
+  "kotlinc-unconfirmed/worker.log": {
+    "sha256": "bec320eb6ff2770ecae385b29b7e646415c3fce72bd80cc59d7350b181b6cc66",
+    "bytes": 1167,
+    "text": "Traceback (most recent call last):\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 234, in <module>\n    main()\n    ~~~~^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 216, in main\n    worker(Path(sys.argv[2]), sys.argv[3], sys.argv[4])\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 84, in worker\n    code, _ = driver.run(command, base / 'actual-run.log', records, tool + '-' + fault,\n              ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                         0.8 if fault in ('timeout', 'unconfirmed') else 8)\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py\", line 96, in run\n    finish_group(process)\n    ~~~~~~~~~~~~^^^^^^^^^\n  File \"/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py\", line 71, in fail_stop\n    raise driver.StopUnconfirmed('controlled stop observation unavailable')\nactual_enum_driver.StopUnconfirmed: controlled stop observation unavailable\n"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "evidence": ".work/p2enum-build/r1-local/cleanup/run-4omrnfso",
+  "target": "R1 stop-unconfirmed deleted owned tree",
+  "exit": 1,
+  "live_at_stop_failure": [
+    {
+      "pid": 1384489,
+      "start": "78947715",
+      "state": "S",
+      "pgid": 1384488,
+      "sid": 1384485
+    },
+    {
+      "pid": 1384490,
+      "start": "78947715",
+      "state": "R",
+      "pgid": 1384488,
+      "sid": 1384485
+    }
+  ],
+  "finally": {
+    "matching_live_workers": [],
+    "tree_exists": false
+  },
+  "driver_sha256": "fbfb415d39e90f849e145a8622c3027eb0cd12b1c54ae9419fc32368a5e81fe4",
+  "red_test_sha256": "611b092569f46f86ed1c7105da7a12f8e361568cff6233197deae715bd22188e",
+  "red_driver_snapshot": "retention-red-driver.py",
+  "red_driver_snapshot_provenance": "Reconstructed from preserved before snapshot plus the exact three pre-red seam edits; SHA checked against actual red inputs.json, not an original in-place snapshot.",
+  "red_test_snapshot_provenance": "Reconstructed by reversing exactly the subsequent test-finally/deadline fixture edits; SHA matches actual red inputs.json.",
+  "old_group_only_lifecycle_red_consumed": {
+    "path": ".work/p2enum-build/r1-fix/old-red-verified.json",
+    "scope": "Historical actual base wrapper + original group-only driver red consumed, not rerun; inputs preserved separately, not relabeled current."
+  }
+}

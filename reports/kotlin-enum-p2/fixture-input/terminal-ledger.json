@@ -1,0 +1,53 @@
+{
+  "tasks": [
+    {
+      "id": "b8777174f",
+      "exit": 1,
+      "terminal": "failed",
+      "kind": "valid deleted-Java inventory target red; automatic notification consumed"
+    },
+    {
+      "id": "bef4f6124",
+      "exit": 0,
+      "terminal": "completed",
+      "kind": "actual collector ordinary all boundaries; automatic notification consumed"
+    },
+    {
+      "id": "bad84c944",
+      "exit": 0,
+      "terminal": "completed",
+      "kind": "actual collector -O all boundaries; automatic notification consumed"
+    },
+    {
+      "id": "b5919fca4",
+      "exit": 1,
+      "terminal": "failed",
+      "kind": "actual fixture green-initial compile failed; missing legitimate audio package, not behavior red; automatic terminal consumed"
+    },
+    {
+      "id": "b12bb2729",
+      "terminal": "failed",
+      "exit": 1,
+      "kind": "valid actual audio package inventory red; auto notification consumed"
+    },
+    {
+      "id": "b64b91cb3",
+      "terminal": "completed",
+      "exit": 0,
+      "kind": "corrected all boundaries and actual source inventory74; auto notification consumed"
+    },
+    {
+      "id": "bd81baf9a",
+      "terminal": "completed",
+      "exit": 0,
+      "kind": "corrected collector optimized/all74 sources; auto notification consumed"
+    },
+    {
+      "id": "b4f62b430",
+      "terminal": "recovered disk terminal",
+      "exit": 0,
+      "kind": "full disk execution/exit/logSHA and absent launchPID; one exact registry unknown; no visible notification after resume"
+    }
+  ],
+  "pending": []
+}

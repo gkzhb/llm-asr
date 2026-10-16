@@ -1,0 +1,5 @@
+Exception in thread "main" java.lang.AssertionError: RuntimeLogSource inventory/order mismatch
+	at KotlinMigrationTest.require(KotlinMigrationTest.java:29)
+	at KotlinMigrationTest.enumAbi(KotlinMigrationTest.java:94)
+	at KotlinMigrationTest.runtimeLogEnums(KotlinMigrationTest.java:113)
+	at KotlinMigrationTest.main(KotlinMigrationTest.java:192)

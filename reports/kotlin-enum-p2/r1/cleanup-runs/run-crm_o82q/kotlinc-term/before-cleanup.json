@@ -1,0 +1,32 @@
+{
+  "workers": [
+    {
+      "pid": 1360693,
+      "start": "78644912",
+      "state": "R",
+      "pgid": 1360692
+    },
+    {
+      "pid": 1360695,
+      "start": "78644915",
+      "state": "R",
+      "pgid": 1360692
+    }
+  ],
+  "live_before_cleanup": [
+    {
+      "pid": 1360693,
+      "start": "78644912",
+      "state": "R",
+      "pgid": 1360692
+    },
+    {
+      "pid": 1360695,
+      "start": "78644915",
+      "state": "R",
+      "pgid": 1360692
+    }
+  ],
+  "tree_exists": true,
+  "records": []
+}

@@ -1,0 +1,41 @@
+FAIL stop unconfirmed; retained owned tree=/home/zhb/gitrep/llm-asr/.work/p2enum-build/mutants/run-2ebe8ujz/tree-aunoik4o
+Traceback (most recent call last):
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py", line 113, in finish_session
+    members = session_members(owner)
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 108, in unavailable
+    raise OSError('controlled main stop observation unavailable')
+OSError: controlled main stop observation unavailable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 314, in <module>
+    main()
+    ~~~~^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 296, in main
+    worker(Path(sys.argv[2]), sys.argv[3], sys.argv[4])
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 63, in worker
+    main_fault(driver, base)
+    ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 135, in main_fault
+    driver.main()
+    ~~~~~~~~~~~^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py", line 210, in main
+    compile_and_run(name + '-red', name + ' inventory/order mismatch')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py", line 179, in compile_and_run
+    code, text = run(['bash', str(ROOT / 'scripts/compile-jvm-sources.sh'), str(classes), '',
+                 ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      *map(str, copies)], evidence / (label + '-compile.log'), records,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     label + '-compile', 270)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 128, in fault_run
+    return actual_run(command, log, records, label, 0.8)
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py", line 145, in run
+    finish_session(process, owner)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py", line 125, in finish_session
+    raise StopUnconfirmed('owned SID stop not confirmed: ' + str(error)) from error
+actual_enum_driver.StopUnconfirmed: owned SID stop not confirmed: controlled main stop observation unavailable

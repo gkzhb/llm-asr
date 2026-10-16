@@ -1,0 +1,36 @@
+{
+  "workers": [
+    {
+      "pid": 1453936,
+      "start": "79734830",
+      "state": "S",
+      "pgid": 1453935,
+      "sid": 1453932
+    },
+    {
+      "pid": 1453937,
+      "start": "79734831",
+      "state": "R",
+      "pgid": 1453935,
+      "sid": 1453932
+    }
+  ],
+  "live_before_cleanup": [],
+  "tree_exists": true,
+  "records": [
+    {
+      "phase": "javac-deadline",
+      "command": [
+        "bash",
+        "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+        "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/tree-14wdo04f/classes",
+        "",
+        "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/tree-14wdo04f/Probe.java"
+      ],
+      "exit": 124,
+      "timeout": false,
+      "log": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/javac-deadline/actual-run.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "label": "enum-mutants",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "python3",
+    "tests/runtime_log_enum_mutant_test.py"
+  ],
+  "started_utc": "2026-10-16T09:16:16.658576+00:00",
+  "finished_utc": "2026-10-16T09:16:48.144862+00:00",
+  "exit": 0,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/enum-mutants.log",
+  "log_sha256": "85fd68c78b099171bfe3922ad36b22d6da05c5c18132f79480e4eb1dfe72f9fb"
+}

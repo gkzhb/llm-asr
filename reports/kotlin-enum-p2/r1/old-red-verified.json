@@ -1,0 +1,7 @@
+{
+  "evidence": ".work/p2enum-build/r1-fix/cleanup/run-crm_o82q",
+  "old_driver_sha256": "f50f30ab61890f1dd9471c52d4d7d7e42217b010629ba28463d59a718ce1a8d9",
+  "old_wrapper_sha256": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf",
+  "lifecycle_assertion": "R1 live owned worker before tree cleanup",
+  "finally_reclaimed_workers": true
+}

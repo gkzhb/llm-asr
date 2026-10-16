@@ -1,0 +1,22 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+
+> Configure project :
+WARNING: The option setting 'android.aapt2FromMavenOverride=/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2' is experimental.
+WARNING: The option setting 'android.experimental.lint.heapSize=768m' is experimental.
+
+> Task :verifyLintToolIdentity
+LINT_IDENTITY_PASS task=:updateLintBaselineDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintReportDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintFixDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintAnalyzeDebugAndroidTest phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintAnalyzeDebugUnitTest phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintVitalAnalyzeDebug phase=gate artifacts=66 edges=171
+LINT_IDENTITY_PASS task=:lintAnalyzeDebug phase=gate artifacts=66 edges=171
+
+> Task :lintFilesProbe
+LINT_IDENTITY_PASS task=:lintFilesProbe phase=fixture-validator artifacts=66 edges=171
+LINT_SHARED_VALIDATOR_RESTORE_PASS
+
+BUILD SUCCESSFUL in 14s
+2 actionable tasks: 2 executed

@@ -1,0 +1,23 @@
+[
+  {
+    "phase": "green0",
+    "exit": 0,
+    "source_sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+    "xml_sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+    "log_sha256": "bb1600811d6111502c6f303ff6b6e50ad088c44b290f1c9e08db8f48abe86b36"
+  },
+  {
+    "phase": "red",
+    "exit": 1,
+    "source_sha256": "7f0cfde58056dadfe1643c9b6e4331103c71044822d1a70032e591da06f96509",
+    "xml_sha256": "b99c488ead11746caf24f8b9b149002181139256ee410545af4f836810117af6",
+    "log_sha256": "4a0e69cd0c2aa52880deda0babad59d4485fe3fbf9692319b3c3c3533e48ee47"
+  },
+  {
+    "phase": "green1",
+    "exit": 0,
+    "source_sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+    "xml_sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+    "log_sha256": "aef92617a5647223c158867a55961cb1a96efbfd7dfb831858dfd2f48b07d097"
+  }
+]

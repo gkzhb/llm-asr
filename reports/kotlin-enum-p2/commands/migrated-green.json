@@ -1,0 +1,17 @@
+{
+  "label": "migrated-green",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "python3",
+    "tests/runtime_log_enum_mutant_test.py",
+    "--green-only"
+  ],
+  "started_utc": "2026-10-16T07:00:57.396015+00:00",
+  "finished_utc": "2026-10-16T07:01:05.274128+00:00",
+  "exit": 0,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/migrated-green.log",
+  "log_sha256": "0faa9cac3609d3f7c3ed9a316e4d79e028b3e000ff8c4f15e14d8715040a8429"
+}

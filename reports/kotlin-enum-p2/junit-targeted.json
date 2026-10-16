@@ -1,0 +1,67 @@
+{
+  "core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml": {
+    "sha256": "9d91e07232d98e7f767c021428324d8890a4a89b71f7da4d3f85bd776352724a",
+    "attributes": {
+      "name": "CoreRegressionJUnitTest",
+      "tests": "34",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T07:07:26",
+      "hostname": "zhb-nixos",
+      "time": "1.975"
+    },
+    "methods": [
+      "runtimeLogErrorIdentity",
+      "modelReadiness",
+      "imeSessionPrivacy",
+      "reviewWindow",
+      "reviewPublication",
+      "reviewDeletion",
+      "reviewLiveDeletion",
+      "resultFiles",
+      "modelPageHelpers",
+      "recordingRaces",
+      "kotlinJavaAbi",
+      "logExportGenerations",
+      "modelNotifications",
+      "admissionOwnerBoundary",
+      "privateModelRoot",
+      "reviewPlanning",
+      "modelOperationControl",
+      "modelWhitelistDeletion",
+      "reviewBoundary",
+      "modelRepository",
+      "runtimeLogCore",
+      "nativeResponseProtocol",
+      "modelCancelCleanup",
+      "textExportFatalIdentity",
+      "providerErrorAndStreamBoundary",
+      "requestRunner",
+      "reviewTerminal",
+      "textExport",
+      "partRecoveryProductionMutant",
+      "waveAndRecordingProtocol",
+      "modelManagementController",
+      "textExportSafety",
+      "reviewHistory",
+      "taskCoordinator"
+    ]
+  },
+  "android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml": {
+    "sha256": "3e75c67465adfc549aa9007546ff5d3aae9a2329282d657b21750658d3dcaa4c",
+    "attributes": {
+      "name": "RuntimeRegressionJUnitTest",
+      "tests": "1",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T07:07:22",
+      "hostname": "zhb-nixos",
+      "time": "0.074"
+    },
+    "methods": [
+      "inferenceAdapterAndJniConstruction"
+    ]
+  }
+}

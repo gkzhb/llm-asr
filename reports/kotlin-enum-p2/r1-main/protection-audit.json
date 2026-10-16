@@ -1,0 +1,29 @@
+{
+  "pass": true,
+  "deltas_from_r1_main_before": {
+    "build": {
+      "tests/runtime_log_enum_cleanup_test.py": {
+        "before": "d0db0057f21e102be87b6338d79b8a1859595990fc2f1450e09b67d36457cb1f",
+        "current": "38e6283ecf313458eda556b16cd24faca2f89ac491b492ee824c145e154786ab"
+      },
+      "tests/runtime_log_enum_mutant_test.py": {
+        "before": "fa09a1178c2f3df20a1d3a7500b9520f25d7f860c9037ed71bf03b9c52f09e7b",
+        "current": "aff8d184177ac526c1261469b0c9fdd89decc61975d451ef04ef5df54ea65c16"
+      }
+    },
+    "module": {},
+    "native": {},
+    "source_owners": {},
+    "tracked": {
+      "docs/kotlin-migration.md": {
+        "before": "6cbbef08b3a34e86428acb497dfadee384abce6551f5d9282347450b57937308",
+        "current": "72294524708f3793ae03122f49d13efc0b0bea5b6e3e592d7a7a97782ff9a3df"
+      }
+    }
+  },
+  "historical_files_preserved": 1651,
+  "excluded26_unchanged": true,
+  "native578_DSO_provenance_unchanged": true,
+  "old32_artifact_evidence_unchanged": true,
+  "index_empty": true
+}

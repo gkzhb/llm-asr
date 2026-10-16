@@ -1,0 +1,29 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Build file '/home/zhb/gitrep/llm-asr/.work/gradle-m1/dependency-negative-ucX7Lt/build.gradle.kts' line: 1
+
+* What went wrong:
+Error resolving plugin [id: 'com.android.application', version: '8.6.1', artifact: 'com.android.tools.build:gradle:8.6.1', apply: false]
+> Dependency verification failed for configuration 'detachedConfiguration1'
+  One artifact failed verification: gradle-8.6.1.jar (com.android.tools.build:gradle:8.6.1) from repository Google
+  This can indicate that a dependency has been compromised. Please carefully verify the checksums.
+
+  Open this report for more details: file:///home/zhb/gitrep/llm-asr/.work/gradle-m1/dependency-negative-ucX7Lt/build/reports/dependency-verification/at-1792147101411/dependency-verification-report.html
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.7/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 2s

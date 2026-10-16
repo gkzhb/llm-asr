@@ -1,0 +1,16 @@
+{
+  "label": "cleanup-green",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "python3",
+    "tests/runtime_log_enum_cleanup_test.py"
+  ],
+  "started_utc": "2026-10-16T08:35:30.174873+00:00",
+  "finished_utc": "2026-10-16T08:35:45.631664+00:00",
+  "exit": 1,
+  "log": "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-local/cleanup-green.log",
+  "log_sha256": "2206e1bec4b42fdb59cc11fb83a5b4f2f53ba5f52c4c9566817380771ce7d0b2"
+}

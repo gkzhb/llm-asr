@@ -1,0 +1,57 @@
+[
+  {
+    "path": "core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml",
+    "tests": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "sha256": "791394c76d62d21921e9e0fbc408a144ca9d25dacf7c3570873003ae0991f19c",
+    "names": [
+      "runtimeLogErrorIdentity",
+      "modelReadiness",
+      "imeSessionPrivacy",
+      "reviewWindow",
+      "reviewPublication",
+      "reviewDeletion",
+      "reviewLiveDeletion",
+      "resultFiles",
+      "modelPageHelpers",
+      "recordingRaces",
+      "kotlinJavaAbi",
+      "logExportGenerations",
+      "modelNotifications",
+      "admissionOwnerBoundary",
+      "privateModelRoot",
+      "reviewPlanning",
+      "modelOperationControl",
+      "modelWhitelistDeletion",
+      "reviewBoundary",
+      "modelRepository",
+      "runtimeLogCore",
+      "nativeResponseProtocol",
+      "modelCancelCleanup",
+      "textExportFatalIdentity",
+      "providerErrorAndStreamBoundary",
+      "requestRunner",
+      "reviewTerminal",
+      "textExport",
+      "partRecoveryProductionMutant",
+      "waveAndRecordingProtocol",
+      "modelManagementController",
+      "textExportSafety",
+      "reviewHistory",
+      "taskCoordinator"
+    ]
+  },
+  {
+    "path": "android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "sha256": "502fee06d0bf755e8a04db292e47fe60797051330c928c6955181676c3494d14",
+    "names": [
+      "inferenceAdapterAndJniConstruction"
+    ]
+  }
+]

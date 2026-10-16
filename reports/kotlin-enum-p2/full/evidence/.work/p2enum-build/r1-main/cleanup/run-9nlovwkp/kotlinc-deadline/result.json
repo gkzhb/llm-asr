@@ -1,0 +1,59 @@
+{
+  "tool": "kotlinc",
+  "fault": "deadline",
+  "exit": 124,
+  "worker_identities": [
+    {
+      "pid": 1453928,
+      "start": "79734762",
+      "state": "S",
+      "pgid": 1453927,
+      "sid": 1453924
+    },
+    {
+      "pid": 1453929,
+      "start": "79734762",
+      "state": "R",
+      "pgid": 1453927,
+      "sid": 1453924
+    }
+  ],
+  "observation": {
+    "workers": [
+      {
+        "pid": 1453928,
+        "start": "79734762",
+        "state": "S",
+        "pgid": 1453927,
+        "sid": 1453924
+      },
+      {
+        "pid": 1453929,
+        "start": "79734762",
+        "state": "R",
+        "pgid": 1453927,
+        "sid": 1453924
+      }
+    ],
+    "live_before_cleanup": [],
+    "tree_exists": true,
+    "records": [
+      {
+        "phase": "kotlinc-deadline",
+        "command": [
+          "bash",
+          "/home/zhb/gitrep/llm-asr/scripts/compile-jvm-sources.sh",
+          "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/tree-smxvyhq0/classes",
+          "",
+          "/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/tree-smxvyhq0/Probe.kt"
+        ],
+        "exit": 124,
+        "timeout": false,
+        "log": ".work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-deadline/actual-run.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "tree_retained": false,
+  "scaled_inner_deadline": true
+}

@@ -1,0 +1,8 @@
+{
+  "target": "F1 legitimate production audio Kotlin/Java package omitted",
+  "exit": 1,
+  "driver_sha256": "24afa7c1dd01a165430a529ae5f7f99ef16a9de2245d6900c07c13a0d9b8d800",
+  "test_sha256": "7a2eadfeebd601a9a41a95da9e5980dffe1d645232e56b88f13a022e48d4db8f",
+  "log_sha256": "d08edad9acff040b8b46b43388b2cb5f0cbc93544dcf793a315f00069d3000fe",
+  "not_compile_error": true
+}

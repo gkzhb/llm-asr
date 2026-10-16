@@ -1,0 +1,28 @@
+FAIL stop unconfirmed; retained owned tree=/home/zhb/gitrep/llm-asr/.work/p2enum-build/r1-main/cleanup/run-9nlovwkp/kotlinc-unconfirmed/tree-te3ex3a1
+Traceback (most recent call last):
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py", line 113, in finish_session
+    members = session_members(owner)
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 69, in unavailable
+    raise OSError('controlled stop observation unavailable')
+OSError: controlled stop observation unavailable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 314, in <module>
+    main()
+    ~~~~^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 296, in main
+    worker(Path(sys.argv[2]), sys.argv[3], sys.argv[4])
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 87, in worker
+    code, _ = driver.run(command, base / 'actual-run.log', records, tool + '-' + fault,
+              ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         0.8 if fault in ('timeout', 'unconfirmed') else 8)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py", line 145, in run
+    finish_session(process, owner)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_mutant_test.py", line 125, in finish_session
+    raise StopUnconfirmed('owned SID stop not confirmed: ' + str(error)) from error
+actual_enum_driver.StopUnconfirmed: owned SID stop not confirmed: controlled stop observation unavailable

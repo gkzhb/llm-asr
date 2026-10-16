@@ -1,0 +1,39 @@
+PASS cleanup kotlinc/term actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/hup actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/timeout actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/term actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/hup actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/timeout actual-driver/base-wrapper; no live work before deletion
+PASS cleanup java/term actual-driver/base-wrapper; no live work before deletion
+PASS cleanup java/hup actual-driver/base-wrapper; no live work before deletion
+PASS cleanup java/timeout actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/deadline actual-driver/base-wrapper; no live work before deletion
+PASS cleanup javac/deadline actual-driver/base-wrapper; no live work before deletion
+PASS cleanup kotlinc/unconfirmed actual-driver/base-wrapper; unconfirmed stop retains tree/source
+Traceback (most recent call last):
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 314, in <module>
+    main()
+    ~~~~^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 309, in main
+    case(evidence, tool, fault)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 284, in case
+    wait_for(lambda: not any(alive(p) for p in reclaim), 5, 'finally reclaims fault workers')
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 47, in wait_for
+    while not predicate():
+              ~~~~~~~~~^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 284, in <lambda>
+    wait_for(lambda: not any(alive(p) for p in reclaim), 5, 'finally reclaims fault workers')
+                         ^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 284, in <genexpr>
+    wait_for(lambda: not any(alive(p) for p in reclaim), 5, 'finally reclaims fault workers')
+                             ~~~~~^^^
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 40, in alive
+    now = identity(record['pid'])
+  File "/home/zhb/gitrep/llm-asr/tests/runtime_log_enum_cleanup_test.py", line 31, in identity
+    text = Path('/proc', str(pid), 'stat').read_text()
+  File "/nix/store/2i9phsc5kahwi37p1cibm48xg6ysv6ih-python3-3.14.7-env/lib/python3.14/pathlib/__init__.py", line 788, in read_text
+    return f.read()
+           ~~~~~~^^
+ProcessLookupError: [Errno 3] No such process

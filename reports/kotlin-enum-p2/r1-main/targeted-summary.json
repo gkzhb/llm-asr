@@ -1,0 +1,36 @@
+{
+  "engineering_commands": 7,
+  "valid_actual_main_target_red": 1,
+  "development_ESRCH_failure": 1,
+  "green_commands": 5,
+  "green_labels": [
+    "cleanup-final",
+    "cleanup-optimized",
+    "enum-mutants",
+    "complete-host",
+    "format"
+  ],
+  "all_seven_bg_terminal_notification_consumed": true,
+  "pending": [],
+  "production_chains": [
+    "run-hj3tlppu",
+    "run-6xgq5exv"
+  ],
+  "cleanup_current_13case_runs": [
+    "run-_aqfjqlh",
+    "run-uxcvv3gt",
+    "run-i6rvhjat"
+  ],
+  "format": {
+    "actions": 1,
+    "pipeline": {
+      "Gradle": 0,
+      "tee": 0,
+      "scan": 1
+    },
+    "maintained_text_files": 41
+  },
+  "warning": "Existing aapt2FromMavenOverride experimental warning disclosed",
+  "fast_graph": "not rerun: unchanged fast source path; old evidence remains historical",
+  "full": "not run; blocked until fresh point review CLOSED"
+}

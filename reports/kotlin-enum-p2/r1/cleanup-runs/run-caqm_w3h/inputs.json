@@ -1,0 +1,5 @@
+{
+  "tests/runtime_log_enum_mutant_test.py": "2074be1a6bea0624a86539d40e80d7a18550f24646a7154a484dcbb7f6fa196a",
+  "scripts/compile-jvm-sources.sh": "5d8b22c6f81b100642a12a621415634c836a2aa00b1b35c0496848494f11c79e",
+  "tests/runtime_log_enum_cleanup_test.py": "198c46eefe0c31f8d991826e1d6c43def73bb4a88bfe6b343a8e0d1cc19d0c94"
+}

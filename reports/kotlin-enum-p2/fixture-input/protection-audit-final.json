@@ -1,0 +1,37 @@
+{
+  "pass": true,
+  "deltas_from_fixture_input_before": {
+    "build": {
+      "scripts/test-minimal-apk.sh": {
+        "before": "4fad1e43870fa77b7de50c307fa200f8c4356faaa9e8e632dce66fc183aa9c86",
+        "current": "1442b02b927232b4fc5eb7518b980f0c71c0ca9bf73b49f233707dee0360e9aa"
+      },
+      "tests/android_test_fixture_inputs_test.py": {
+        "before": null,
+        "current": "2356a170fb9ef9839f25f17a45152f5b28cc5ce4b7d46252ae7829b64a8b5bf5"
+      },
+      "tests/android_test_fixture_test.py": {
+        "before": "fbb4af0660042b8f2992bc4fb1ee92f126294af6ddc03bf927f4bf5bfb0ff89a",
+        "current": "856579128d11280577d387a71f2f06fe3aaf58dd1651d81ea498399a448838b8"
+      }
+    },
+    "module": {},
+    "native": {},
+    "source_owners": {},
+    "tracked": {
+      "scripts/test-minimal-apk.sh": {
+        "before": "4fad1e43870fa77b7de50c307fa200f8c4356faaa9e8e632dce66fc183aa9c86",
+        "current": "1442b02b927232b4fc5eb7518b980f0c71c0ca9bf73b49f233707dee0360e9aa"
+      },
+      "tests/android_test_fixture_test.py": {
+        "before": "fbb4af0660042b8f2992bc4fb1ee92f126294af6ddc03bf927f4bf5bfb0ff89a",
+        "current": "856579128d11280577d387a71f2f06fe3aaf58dd1651d81ea498399a448838b8"
+      }
+    }
+  },
+  "historical_files_preserved": 2561,
+  "excluded26_unchanged": true,
+  "native578_DSO_provenance_unchanged": true,
+  "old32_artifact_evidence_unchanged": true,
+  "index_empty": true
+}

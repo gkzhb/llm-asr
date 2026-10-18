@@ -27,6 +27,7 @@
 
 ## 项目 Skills
 
+- **审查源代码或检查复杂度回归时**：读取 [llm-asr-code-review](.agents/skills/llm-asr-code-review/SKILL.md)，按同版本同范围 cccc/knots 基线定位热点与相对退化，结合行为测试作人工处置。
 - **派遣、续接未完后台、审查或提交交付时**：读取 [llm-asr-delivery](.agents/skills/llm-asr-delivery/SKILL.md)，执行父协调/leaf 单 writer、分层终态证据、fresh 审查与两阶段安全提交。当前用户约定开发/review 用 `newapi/gpt-6.1-sol`、review `fork:false` 上下文隔离（非跨家族），每次核 live catalog；后续明确授权可更新，不视为永久模型可用保证。
 - 第三方库新增、升级、删除和排查：读取 [llm-asr-dependencies](.agents/skills/llm-asr-dependencies/SKILL.md)，按 Gradle/JVM、Nix 工具链、native 源码和模型资产分类管理，保留版本锁、来源校验、许可与分层验证。Skill 不扩大下载、设备或推送授权；Pi 可用 `/skill:llm-asr-dependencies` 显式加载。
 

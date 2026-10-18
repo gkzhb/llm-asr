@@ -1,0 +1,51 @@
+{
+  "task": "llm-asr-jrq",
+  "base": "4e73662d9210f083146b7dba533426896d3be083",
+  "status": "writer verification complete; fresh review and local commit pending",
+  "analysis": {
+    "first_collection": "collector exit2 after successful cccc CLI: same-line anonymous-name collisions were incorrectly rejected; failed evidence retained outside candidate",
+    "corrected_collection_exit": 0,
+    "independent_repeat_exit": 0,
+    "cccc_cli_exit_each_successful_collection": 0,
+    "knots_cli_exit_each_successful_collection": 0,
+    "stderr_empty": true,
+    "byte_identical_repeat": ["sources.json", "cccc.json", "cccc.stderr.txt", "knots.json", "knots.stderr.txt", "execution.json", "normalized.json"],
+    "compare_exit": 0,
+    "automatic_metric_changes": 0,
+    "ambiguous_manual_map_items": 171,
+    "sample_cli_commands": 10,
+    "sample_cli_exits": "all 0, stderr empty",
+    "empty_and_malformed_java_probe_commands": 4,
+    "probe_conclusion": "exit0 can include partial parsing or silently parsed invalid syntax; zero records is not zero risk"
+  },
+  "regression_tests": {
+    "command": "python3 -B .agents/skills/llm-asr-code-review/scripts/test_baseline.py",
+    "normal_exit": 0,
+    "optimized_variant": "python3 -B -O .agents/skills/llm-asr-code-review/scripts/test_baseline.py",
+    "optimized_exit": 0,
+    "test_methods": 13,
+    "branches": ["growth", "line shift", "same names", "same-line collisions retained", "rename/split/delete", "scope and tool identity drift", "command path mismatch", "stderr diagnostics", "raw drift", "nonzero exit", "zero records", "parse errors", "nested functions", "schema/path/metric validation", "tracked inventory grouping and exclusions", "empty stdout", "malformed JSON"]
+  },
+  "static_checks": {
+    "json_parse_and_current_source_manifest_consistency": "pass",
+    "raw_normalized_correspondence": "pass",
+    "frontmatter_name_description_utf8_lf_fences_local_links": "pass",
+    "regular_text_mode_and_sensitive_path_scan": "pass",
+    "candidate_check_ignore": "no matches; ordinary add admissible without force",
+    "full_candidate_diff_check_in_isolated_shadow_index": 0,
+    "main_index_unchanged": true,
+    "AGENTS_change": "exactly one added source-review trigger line"
+  },
+  "product_protection": {
+    "build_inputs_matched": 212,
+    "module_inputs_matched": 10,
+    "native_inputs_matched": 80,
+    "source_owner_inputs_matched": 63,
+    "existing_apks_sha_bytes_unchanged": 3,
+    "existing_receipts_sha_unchanged": 2,
+    "original_untracked_path_identity_preserved": 72,
+    "parent_supervision_files_preserved": 3,
+    "old_freeze_report_unchanged": true
+  },
+  "not_run": ["Pi runtime skill reload/load", "Gradle/full or product tests/builds", "Android runner", "device/microphone/private-file access", "model computation", "download/install/upgrade", "new APK", "fresh reviewer (parent next stage)"]
+}

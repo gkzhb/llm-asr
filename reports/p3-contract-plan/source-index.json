@@ -1,0 +1,821 @@
+{
+  "schema": 1,
+  "task": "llm-asr-1ir",
+  "kind": "read-only current source locators, not build/test results",
+  "source_base": "eeaf1caf90ba422946bfadf6bcbe9895167685af",
+  "files": [
+    {
+      "path": "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.java",
+      "sha256": "7c4aa16a0d3174b397db839269033190cf34de531c1b395291f52c3c75a06ddc",
+      "bytes": 2524,
+      "lines": 60,
+      "module_owner": "core",
+      "locators": [
+        {
+          "line": 12,
+          "literal": "interface Readiness"
+        },
+        {
+          "line": 27,
+          "literal": "NativeResponse transcribe"
+        },
+        {
+          "line": 33,
+          "literal": "readiness.requireReady()"
+        },
+        {
+          "line": 36,
+          "literal": "library.load()"
+        },
+        {
+          "line": 37,
+          "literal": "nativeBridge.invokeWithListener"
+        },
+        {
+          "line": 43,
+          "literal": "NativeResponse result = parse(output)"
+        },
+        {
+          "line": 44,
+          "literal": "phases.returned()"
+        },
+        {
+          "line": 46,
+          "literal": "catch (Throwable original)"
+        },
+        {
+          "line": 53,
+          "literal": "NativeResponse parse"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/asr/NativeResponse.kt",
+      "sha256": "bd2620ec96a6030d66b7ce103227fc82d5a60ba1611808807bb81a547177f38a",
+      "bytes": 3272,
+      "lines": 69,
+      "module_owner": "core",
+      "locators": [
+        {
+          "line": 14,
+          "literal": "class NativeResponse"
+        },
+        {
+          "line": 26,
+          "literal": "fun parse("
+        },
+        {
+          "line": 38,
+          "literal": "AsrText.display(raw)"
+        },
+        {
+          "line": 41,
+          "literal": "fun decodeUtf8"
+        },
+        {
+          "line": 52,
+          "literal": "fun parseFinite"
+        },
+        {
+          "line": 61,
+          "literal": "fun parseTokens"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/asr/NativeTranscription.java",
+      "sha256": "76cecf33387a49107d13165a1cb92ebb1d5c484300ea2cb1bfc96d13c1c04b4e",
+      "bytes": 588,
+      "lines": 13,
+      "module_owner": "core",
+      "locators": [
+        {
+          "line": 10,
+          "literal": "interface NativeTranscription"
+        },
+        {
+          "line": 11,
+          "literal": "byte[] invokeWithListener"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/asr/LoggingInferencePhaseListener.java",
+      "sha256": "24bc435dbfb6ceb86b3eaf58349a7eb5d688eb40c80a53658ef820631d9931f6",
+      "bytes": 5069,
+      "lines": 110,
+      "module_owner": "core",
+      "locators": [
+        {
+          "line": 52,
+          "literal": "accessStarted"
+        },
+        {
+          "line": 66,
+          "literal": "onPhase"
+        },
+        {
+          "line": 91,
+          "literal": "void returned"
+        },
+        {
+          "line": 97,
+          "literal": "void failed"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/asr/JniNativeTranscription.java",
+      "sha256": "c1d5973768675de52a03792bba9f1fdc44993ad6f05e7d482d83c313dd7687e8",
+      "bytes": 863,
+      "lines": 15,
+      "module_owner": "asr-runtime",
+      "locators": [
+        {
+          "line": 6,
+          "literal": "class JniNativeTranscription"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/AppGraph.java",
+      "sha256": "9f33cdd81234bbf033ac49807205a76a3734f39ac5b1e52ee8291bb96ae0e012",
+      "bytes": 9548,
+      "lines": 173,
+      "module_owner": "app",
+      "locators": [
+        {
+          "line": 66,
+          "literal": "new TaskCoordinator()"
+        },
+        {
+          "line": 71,
+          "literal": "new ModelAccess"
+        },
+        {
+          "line": 77,
+          "literal": "new InferenceAdapter"
+        },
+        {
+          "line": 79,
+          "literal": "new AsrOperation"
+        },
+        {
+          "line": 149,
+          "literal": "new ImeBackend"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/transcription/AsrOperation.java",
+      "sha256": "7dd786d9632354a3b5315baee0aef546e52c7f2f1b70e0ffed4c5ab1dcbf0436",
+      "bytes": 8540,
+      "lines": 176,
+      "module_owner": "app",
+      "locators": [
+        {
+          "line": 81,
+          "literal": "startSample"
+        },
+        {
+          "line": 90,
+          "literal": "startWave"
+        },
+        {
+          "line": 100,
+          "literal": "startRecording"
+        },
+        {
+          "line": 149,
+          "literal": "transcribeFromStream"
+        },
+        {
+          "line": 156,
+          "literal": "runInference"
+        },
+        {
+          "line": 161,
+          "literal": "reports.writeSuccess"
+        },
+        {
+          "line": 163,
+          "literal": "appState.setLastText"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/transcription/AppReportWriter.java",
+      "sha256": "cfb660b72fde442ee29f3b91c5bddd2d1cf28e6dfa20a29df449952f591401db",
+      "bytes": 5679,
+      "lines": 125,
+      "module_owner": "app",
+      "locators": [
+        {
+          "line": 31,
+          "literal": "writeSuccess"
+        },
+        {
+          "line": 40,
+          "literal": "\"text\", r.display"
+        },
+        {
+          "line": 41,
+          "literal": "\"raw\", r.raw"
+        },
+        {
+          "line": 47,
+          "literal": "\"truncated\", false"
+        },
+        {
+          "line": 114,
+          "literal": "failureReport"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ime/ImeBackend.java",
+      "sha256": "ca36d5b7bdbf67c7334363393c1dae267b321621f08bb6e5a30627439a77619b",
+      "bytes": 2201,
+      "lines": 43,
+      "module_owner": "asr-runtime",
+      "locators": [
+        {
+          "line": 29,
+          "literal": "String transcribe"
+        },
+        {
+          "line": 34,
+          "literal": "NativeResponse r = inference.transcribe"
+        },
+        {
+          "line": 37,
+          "literal": "return r.display"
+        },
+        {
+          "line": 39,
+          "literal": "void cleanup"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ime/ImeController.java",
+      "sha256": "05d0dbcafb33b2b64d85b5839bb92854930ad14d7b20c3de0f2d35f4a304fa05",
+      "bytes": 6681,
+      "lines": 118,
+      "module_owner": "core",
+      "locators": [
+        {
+          "line": 39,
+          "literal": "void invalidate"
+        },
+        {
+          "line": 63,
+          "literal": "boolean start"
+        },
+        {
+          "line": 86,
+          "literal": "tryCommitInference"
+        },
+        {
+          "line": 88,
+          "literal": "backend.transcribe"
+        },
+        {
+          "line": 97,
+          "literal": "s.revision = rev"
+        },
+        {
+          "line": 106,
+          "literal": "boolean commit"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/MainActivity.java",
+      "sha256": "88f24a66d9f571c9ab659d4a095c730b90adb8e9a73e89205fa8c0c2156adadc",
+      "bytes": 18785,
+      "lines": 291,
+      "module_owner": "app",
+      "locators": [
+        {
+          "line": 76,
+          "literal": "startSample(language.getSelectedItem()"
+        },
+        {
+          "line": 231,
+          "literal": "startRecording(language.getSelectedItem()"
+        },
+        {
+          "line": 275,
+          "literal": "startWave(uri, language.getSelectedItem()"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/AsrImeService.java",
+      "sha256": "cff9fe4493b01bd26720e953b5606704c353e011ccd634c0f171d925a505f971",
+      "bytes": 9785,
+      "lines": 174,
+      "module_owner": "app",
+      "locators": [
+        {
+          "line": 138,
+          "literal": "void startRecording"
+        },
+        {
+          "line": 140,
+          "literal": "controller.start(session, language.getSelectedItem()"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/task/RequestRunner.kt",
+      "sha256": "50be8c887bb762f422a551b0b856f6fc84de24bc3aa6390f488b70ee58ac62e4",
+      "bytes": 3682,
+      "lines": 82,
+      "module_owner": "core",
+      "locators": [
+        {
+          "line": 42,
+          "literal": "fun submit"
+        },
+        {
+          "line": 47,
+          "literal": "val finishOnce"
+        },
+        {
+          "line": 56,
+          "literal": "if (!accepted) lifecycle.busy(ctx)"
+        },
+        {
+          "line": 58,
+          "literal": "catch (rejected"
+        },
+        {
+          "line": 64,
+          "literal": "fun execute"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/task/TaskCoordinator.kt",
+      "sha256": "9557fb0f244bd896b5d33e95e84e61cac25a66a242bf633102a7f05ccdd0ccd3",
+      "bytes": 3725,
+      "lines": 85,
+      "module_owner": "core",
+      "locators": [
+        {
+          "line": 40,
+          "literal": "fun submit"
+        },
+        {
+          "line": 43,
+          "literal": "running.compareAndSet"
+        },
+        {
+          "line": 49,
+          "literal": "admitted.run()"
+        },
+        {
+          "line": 58,
+          "literal": "abandoned.run()"
+        },
+        {
+          "line": 73,
+          "literal": "fun release"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/task/RequestContext.kt",
+      "sha256": "160f70966971c8276a41107b4e8779244f247af17d352744777af085181d6d03",
+      "bytes": 546,
+      "lines": 16,
+      "module_owner": "core",
+      "locators": [
+        {
+          "line": 6,
+          "literal": "class RequestContext"
+        },
+        {
+          "line": 15,
+          "literal": "inputWav"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelAccess.java",
+      "sha256": "77fdf3135de4be63a0d13dd0e7534a5477f7befdc1936c9e008f146c313af3df",
+      "bytes": 1765,
+      "lines": 34,
+      "module_owner": "core",
+      "locators": [
+        {
+          "line": 13,
+          "literal": "void requireReady"
+        },
+        {
+          "line": 17,
+          "literal": "repository.validateManagedBoundary"
+        },
+        {
+          "line": 20,
+          "literal": "repository.verifyAll"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelReadiness.java",
+      "sha256": "985fe1c96b779e7079ac77205cea0daf4e3c19233c407ce16b05a27ec78834a7",
+      "bytes": 6511,
+      "lines": 166,
+      "module_owner": "core",
+      "locators": [
+        {
+          "line": 50,
+          "literal": "epoch"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelRepository.java",
+      "sha256": "4e842f6960d9568b01c8c79fee8f800791d9e32d53539abc4ead70641dd39b59",
+      "bytes": 31648,
+      "lines": 606,
+      "module_owner": "core",
+      "locators": [
+        {
+          "line": 142,
+          "literal": "File modelDir()"
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/audio/AsrText.kt",
+      "sha256": "c720692ffea1d69b88d5ddbe8233d72b86f90cc3068748bde7a2432f62f21d34",
+      "bytes": 526,
+      "lines": 14,
+      "module_owner": "core",
+      "locators": [
+        {
+          "line": 7,
+          "literal": "fun display"
+        },
+        {
+          "line": 11,
+          "literal": "replace(\"<|im_end|>\""
+        }
+      ]
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/audio/RecordingControl.kt",
+      "sha256": "dfa9ac879776138aca236aeb2216582e37221fd79c5dc56485d77c2a33e690ac",
+      "bytes": 1471,
+      "lines": 41,
+      "module_owner": "core",
+      "locators": []
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/audio/ForegroundRecorder.java",
+      "sha256": "fa4de7649c0d40ed168126d31e59beb60953f3ef60fe5f7ce5e7424081c6a16f",
+      "bytes": 3573,
+      "lines": 58,
+      "module_owner": "asr-runtime",
+      "locators": []
+    },
+    {
+      "path": "native/apk/asr_jni.cpp",
+      "sha256": "4eaca3d66b90c63954a65f69887fe94b1ea97ebdb474ecfda5b306ce9cc07946",
+      "bytes": 6336,
+      "lines": 136,
+      "module_owner": "native artifact (app build owner)",
+      "locators": [
+        {
+          "line": 84,
+          "literal": "if (env->ExceptionCheck())"
+        },
+        {
+          "line": 96,
+          "literal": "Llm::createLLM"
+        },
+        {
+          "line": 103,
+          "literal": "llm->set_config"
+        },
+        {
+          "line": 106,
+          "literal": "llm->load()"
+        },
+        {
+          "line": 112,
+          "literal": "llm->response"
+        },
+        {
+          "line": 115,
+          "literal": "NORMAL_FINISHED"
+        },
+        {
+          "line": 117,
+          "literal": "Output truncated"
+        },
+        {
+          "line": 129,
+          "literal": "return out;"
+        }
+      ]
+    },
+    {
+      "path": "tests/NativeResponseTest.java",
+      "sha256": "795dcc46a30c51038c18024774f81076dd3d3e196825d39a1c65a2af3f3ed842",
+      "bytes": 6738,
+      "lines": 139,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": [
+        {
+          "line": 17,
+          "literal": "void main"
+        },
+        {
+          "line": 26,
+          "literal": "Zero values"
+        },
+        {
+          "line": 31,
+          "literal": "Empty raw"
+        }
+      ]
+    },
+    {
+      "path": "tests/InferenceAdapterTest.java",
+      "sha256": "0f82a6da87b82518fd112439d88a91026cf99ef1b6f131735a3f9a8d303bd33e",
+      "bytes": 31093,
+      "lines": 431,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": [
+        {
+          "line": 96,
+          "literal": "void payload"
+        },
+        {
+          "line": 105,
+          "literal": "void successAndTime"
+        },
+        {
+          "line": 180,
+          "literal": "void failureIdentity"
+        },
+        {
+          "line": 200,
+          "literal": "void resultFailures"
+        },
+        {
+          "line": 235,
+          "literal": "void invalidCallbacks"
+        },
+        {
+          "line": 278,
+          "literal": "void loggingFaultsAndPrivacy"
+        },
+        {
+          "line": 342,
+          "literal": "void ownerBoundaries"
+        },
+        {
+          "line": 371,
+          "literal": "void sourceContracts"
+        }
+      ]
+    },
+    {
+      "path": "tests/architecture_boundary_test.py",
+      "sha256": "2048d2ee5d1c83618b571a5eb488539c91c6eef94457649ecdea9390729502ba",
+      "bytes": 10966,
+      "lines": 176,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": [
+        {
+          "line": 12,
+          "literal": "PACKAGE_MAP"
+        },
+        {
+          "line": 147,
+          "literal": "def check_package"
+        },
+        {
+          "line": 156,
+          "literal": "len(actual) == len(PACKAGE_MAP)"
+        }
+      ]
+    },
+    {
+      "path": "tests/module_owners_test.py",
+      "sha256": "12a9ddce4edc945ef426aee730ef7fd69969dc211952b1007addf2f12672dcc7",
+      "bytes": 3590,
+      "lines": 64,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": [
+        {
+          "line": 12,
+          "literal": "def check"
+        },
+        {
+          "line": 15,
+          "literal": "len(sources) != 63"
+        }
+      ]
+    },
+    {
+      "path": "tests/module_owners_guard_test.py",
+      "sha256": "a4a94d7de555995c2d5c5b495e3386ce889036e891e2b428c0edcee0b0835088",
+      "bytes": 2430,
+      "lines": 57,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": []
+    },
+    {
+      "path": "tests/module_boundary_test.py",
+      "sha256": "8630b9223a0032a7d99ddb3566b45f587ec8b9d1686e371453f01652080716d3",
+      "bytes": 2527,
+      "lines": 44,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": []
+    },
+    {
+      "path": "tests/gradle_apk_identity_test.py",
+      "sha256": "c04841b8e1727e8d34e0154c981e1d9c85711ca8a2983789287249a4d00155d4",
+      "bytes": 5550,
+      "lines": 108,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": []
+    },
+    {
+      "path": "tests/app_report_source_test.py",
+      "sha256": "f60d0ef92098cff80d0d70e873fcced244fb62ac28efcc382b0420bcffc90d26",
+      "bytes": 3462,
+      "lines": 63,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": []
+    },
+    {
+      "path": "tests/model_android_source_test.py",
+      "sha256": "b76fb4250b735c82b1ee69d7cfe26abbb7604306d8b51d7bb596a563658dc9be",
+      "bytes": 8509,
+      "lines": 141,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": []
+    },
+    {
+      "path": "tests/runtime_log_enum_mutant_test.py",
+      "sha256": "aff8d184177ac526c1261469b0c9fdd89decc61975d451ef04ef5df54ea65c16",
+      "bytes": 11244,
+      "lines": 243,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": []
+    },
+    {
+      "path": "tests/runtime_log_enum_cleanup_test.py",
+      "sha256": "38e6283ecf313458eda556b16cd24faca2f89ac491b492ee824c145e154786ab",
+      "bytes": 16617,
+      "lines": 314,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": []
+    },
+    {
+      "path": "core/build.gradle.kts",
+      "sha256": "ad5d3a56dc5ee64e6b0e310828469eee7ec859b276ae7f13b85c7dd19b3f0baf",
+      "bytes": 2618,
+      "lines": 75,
+      "module_owner": "build/tooling",
+      "locators": [
+        {
+          "line": 13,
+          "literal": "main {"
+        },
+        {
+          "line": 20,
+          "literal": "java.exclude(\"InferenceAdapterTest.java\")"
+        }
+      ]
+    },
+    {
+      "path": "core/src/test/java/CoreRegressionJUnitTest.java",
+      "sha256": "c1152779feca1807d508a346169582a9dc829c4e873b78bb2c3c81735ec20301",
+      "bytes": 4394,
+      "lines": 43,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": [
+        {
+          "line": 13,
+          "literal": "NativeResponseTest.main"
+        }
+      ]
+    },
+    {
+      "path": "android/asr-runtime/build.gradle.kts",
+      "sha256": "5bb0c3faa584244ac0abfbd65a35d453f3e398e5867c786eedf25e3e817d6746",
+      "bytes": 2898,
+      "lines": 74,
+      "module_owner": "build/tooling",
+      "locators": [
+        {
+          "line": 16,
+          "literal": "java.include(\"InferenceAdapterTest.java\""
+        }
+      ]
+    },
+    {
+      "path": "android/asr-runtime/src/test/java/RuntimeRegressionJUnitTest.java",
+      "sha256": "e33805928ba02ca2c37ec736b29687118211198beb7d7ef3e9c58bc59aaa42f1",
+      "bytes": 329,
+      "lines": 8,
+      "module_owner": "test/tooling; see module-test-map",
+      "locators": []
+    },
+    {
+      "path": "build.gradle.kts",
+      "sha256": "6f5f40b6775171581783f63809483af1c8a8e0e14c24f01dc73377bb219d6c39",
+      "bytes": 8841,
+      "lines": 158,
+      "module_owner": "build/tooling",
+      "locators": [
+        {
+          "line": 15,
+          "literal": "extra[\"appSources\"]"
+        },
+        {
+          "line": 19,
+          "literal": "extra[\"runtimeSources\"]"
+        }
+      ]
+    },
+    {
+      "path": "scripts/test-minimal-apk.sh",
+      "sha256": "1442b02b927232b4fc5eb7518b980f0c71c0ca9bf73b49f233707dee0360e9aa",
+      "bytes": 5554,
+      "lines": 126,
+      "module_owner": "build/tooling",
+      "locators": [
+        {
+          "line": 17,
+          "literal": "host_classes=("
+        }
+      ]
+    },
+    {
+      "path": "scripts/compile-jvm-sources.sh",
+      "sha256": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf",
+      "bytes": 1668,
+      "lines": 37,
+      "module_owner": "build/tooling",
+      "locators": []
+    },
+    {
+      "path": "scripts/compile-android-java.sh",
+      "sha256": "16c0f6a517e9867595512dae7c33a124b2e6b1d7c2acc595560d8da735511a95",
+      "bytes": 653,
+      "lines": 12,
+      "module_owner": "build/tooling",
+      "locators": []
+    },
+    {
+      "path": "scripts/compile-jni-object.sh",
+      "sha256": "d8096057e9e0a76e46f3771f3154de1151e657806d73440b8eef34bfd25357ed",
+      "bytes": 2161,
+      "lines": 32,
+      "module_owner": "build/tooling",
+      "locators": []
+    },
+    {
+      "path": "scripts/prepare-gradle-inputs.py",
+      "sha256": "72823bc5c5437773ba5c2d40cc1d88ad61affad24fb3761733dd5f55f1fbac3a",
+      "bytes": 5111,
+      "lines": 96,
+      "module_owner": "build/tooling",
+      "locators": []
+    },
+    {
+      "path": "scripts/verify-gradle-apk.py",
+      "sha256": "033f2f32a1bceded7c4665cff0816d7c2434bdd75c8d9f6859b198cc485bea33",
+      "bytes": 13090,
+      "lines": 231,
+      "module_owner": "build/tooling",
+      "locators": []
+    },
+    {
+      "path": "gradle/baseline-inputs.json",
+      "sha256": "c93e1a772d5a606fc05c27fc3c8a30f0931475debaee6ab6c1caa0b2b19de4f4",
+      "bytes": 10667,
+      "lines": 90,
+      "module_owner": "build/tooling",
+      "locators": []
+    },
+    {
+      "path": ".agents/skills/llm-asr-code-review/scripts/baseline.py",
+      "sha256": "30d99bcf105fdb657ff947264ae39012f5e1f43318e8a80c3aa6990d5b3f03f5",
+      "bytes": 10387,
+      "lines": 219,
+      "module_owner": "build/tooling",
+      "locators": []
+    }
+  ]
+}

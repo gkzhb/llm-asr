@@ -1,0 +1,386 @@
+{
+  "schema": 1,
+  "kind": "verbatim record subset from stored normalized baseline; no tool execution this batch",
+  "source_base": "eeaf1caf90ba422946bfadf6bcbe9895167685af",
+  "baseline_source_base": "4e73662d9210f083146b7dba533426896d3be083",
+  "provenance": {
+    "reports/complexity-baseline/sources.json": "3baff484e8bd726e62434846f11e471e072ac739b92a6a700d8ddc87b2991902",
+    "reports/complexity-baseline/normalized.json": "139546b1213d91893344d11b2f3f93c3aa3354299d88dc1a1df9881101e8aa10",
+    "reports/complexity-baseline/execution.json": "d83c6d53fc0fb52ca2cdc891033b4cc4cb76801257096671b53b0832d9040662"
+  },
+  "matching_indexed_files_equal_baseline": true,
+  "records": {
+    "cccc": [
+      {
+        "path": "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.java",
+        "name": "parse",
+        "line": 53,
+        "cognitive": 2,
+        "cyclomatic": 2,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.java",
+        "name": "transcribe",
+        "line": 27,
+        "cognitive": 2,
+        "cyclomatic": 3,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/ime/ImeBackend.java",
+        "name": "transcribe",
+        "line": 29,
+        "cognitive": 1,
+        "cyclomatic": 1,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/transcription/AppReportWriter.java",
+        "name": "writeSuccess",
+        "line": 31,
+        "cognitive": 1,
+        "cyclomatic": 2,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/transcription/AsrOperation.java",
+        "name": "runInference",
+        "line": 156,
+        "cognitive": 0,
+        "cyclomatic": 1,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/InferenceAdapterTest.java",
+        "name": "payload",
+        "line": 96,
+        "cognitive": 2,
+        "cyclomatic": 4,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/InferenceAdapterTest.java",
+        "name": "resultFailures",
+        "line": 200,
+        "cognitive": 6,
+        "cyclomatic": 5,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/InferenceAdapterTest.java",
+        "name": "sourceContracts",
+        "line": 371,
+        "cognitive": 12,
+        "cyclomatic": 17,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/InferenceAdapterTest.java",
+        "name": "successAndTime",
+        "line": 105,
+        "cognitive": 9,
+        "cyclomatic": 13,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/NativeResponseTest.java",
+        "name": "main",
+        "line": 17,
+        "cognitive": 17,
+        "cyclomatic": 18,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/architecture_boundary_test.py",
+        "name": "check_package",
+        "line": 147,
+        "cognitive": 1,
+        "cyclomatic": 2,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/module_owners_test.py",
+        "name": "check",
+        "line": 12,
+        "cognitive": 52,
+        "cyclomatic": 24,
+        "occurrence": 1
+      }
+    ],
+    "knots": [
+      {
+        "path": "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.java",
+        "name": "parse",
+        "line": 53,
+        "cognitive": 2,
+        "mccabe": 2,
+        "nesting": 1,
+        "sloc": 6,
+        "aird": 6,
+        "aicp": 7,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.java",
+        "name": "transcribe",
+        "line": 27,
+        "cognitive": 4,
+        "mccabe": 4,
+        "nesting": 1,
+        "sloc": 24,
+        "aird": 18,
+        "aicp": 32,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/asr/NativeResponse.kt",
+        "name": "decodeUtf8",
+        "line": 41,
+        "cognitive": 2,
+        "mccabe": 3,
+        "nesting": 1,
+        "sloc": 10,
+        "aird": 7,
+        "aicp": 23,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/asr/NativeResponse.kt",
+        "name": "parse",
+        "line": 24,
+        "cognitive": 7,
+        "mccabe": 8,
+        "nesting": 1,
+        "sloc": 15,
+        "aird": 13,
+        "aicp": 27,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/asr/NativeResponse.kt",
+        "name": "parseFinite",
+        "line": 52,
+        "cognitive": 7,
+        "mccabe": 8,
+        "nesting": 1,
+        "sloc": 8,
+        "aird": 15,
+        "aicp": 14,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/asr/NativeResponse.kt",
+        "name": "parseTokens",
+        "line": 61,
+        "cognitive": 5,
+        "mccabe": 6,
+        "nesting": 1,
+        "sloc": 7,
+        "aird": 11,
+        "aicp": 10,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/ime/ImeBackend.java",
+        "name": "transcribe",
+        "line": 29,
+        "cognitive": 0,
+        "mccabe": 1,
+        "nesting": 0,
+        "sloc": 10,
+        "aird": 6,
+        "aicp": 26,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/task/RequestRunner.kt",
+        "name": "submit",
+        "line": 40,
+        "cognitive": 0,
+        "mccabe": 1,
+        "nesting": 2,
+        "sloc": 1,
+        "aird": 8,
+        "aicp": 3,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/task/RequestRunner.kt",
+        "name": "submit",
+        "line": 42,
+        "cognitive": 8,
+        "mccabe": 10,
+        "nesting": 3,
+        "sloc": 22,
+        "aird": 16,
+        "aicp": 46,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/task/TaskCoordinator.kt",
+        "name": "release",
+        "line": 73,
+        "cognitive": 0,
+        "mccabe": 2,
+        "nesting": 0,
+        "sloc": 4,
+        "aird": 3,
+        "aicp": 10,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/task/TaskCoordinator.kt",
+        "name": "submit",
+        "line": 37,
+        "cognitive": 0,
+        "mccabe": 1,
+        "nesting": 2,
+        "sloc": 1,
+        "aird": 6,
+        "aicp": 3,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/task/TaskCoordinator.kt",
+        "name": "submit",
+        "line": 38,
+        "cognitive": 0,
+        "mccabe": 1,
+        "nesting": 2,
+        "sloc": 1,
+        "aird": 8,
+        "aicp": 3,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/task/TaskCoordinator.kt",
+        "name": "submit",
+        "line": 40,
+        "cognitive": 15,
+        "mccabe": 15,
+        "nesting": 4,
+        "sloc": 25,
+        "aird": 21,
+        "aicp": 41,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/transcription/AppReportWriter.java",
+        "name": "writeSuccess",
+        "line": 31,
+        "cognitive": 2,
+        "mccabe": 2,
+        "nesting": 1,
+        "sloc": 26,
+        "aird": 16,
+        "aicp": 23,
+        "occurrence": 1
+      },
+      {
+        "path": "android/app/src/org/llmasr/minimal/transcription/AsrOperation.java",
+        "name": "runInference",
+        "line": 156,
+        "cognitive": 0,
+        "mccabe": 1,
+        "nesting": 0,
+        "sloc": 12,
+        "aird": 10,
+        "aicp": 29,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/InferenceAdapterTest.java",
+        "name": "payload",
+        "line": 96,
+        "cognitive": 2,
+        "mccabe": 4,
+        "nesting": 0,
+        "sloc": 6,
+        "aird": 5,
+        "aicp": 7,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/InferenceAdapterTest.java",
+        "name": "resultFailures",
+        "line": 200,
+        "cognitive": 5,
+        "mccabe": 5,
+        "nesting": 2,
+        "sloc": 17,
+        "aird": 10,
+        "aicp": 36,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/InferenceAdapterTest.java",
+        "name": "sourceContracts",
+        "line": 371,
+        "cognitive": 12,
+        "mccabe": 17,
+        "nesting": 1,
+        "sloc": 37,
+        "aird": 19,
+        "aicp": 40,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/InferenceAdapterTest.java",
+        "name": "successAndTime",
+        "line": 105,
+        "cognitive": 5,
+        "mccabe": 13,
+        "nesting": 1,
+        "sloc": 24,
+        "aird": 12,
+        "aicp": 32,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/NativeResponseTest.java",
+        "name": "main",
+        "line": 17,
+        "cognitive": 17,
+        "mccabe": 4,
+        "nesting": 2,
+        "sloc": 84,
+        "aird": 26,
+        "aicp": 47,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/architecture_boundary_test.py",
+        "name": "check_package",
+        "line": 147,
+        "cognitive": 0,
+        "mccabe": 1,
+        "nesting": 0,
+        "sloc": 6,
+        "aird": 5,
+        "aicp": 10,
+        "occurrence": 1
+      },
+      {
+        "path": "tests/module_owners_test.py",
+        "name": "check",
+        "line": 12,
+        "cognitive": 47,
+        "mccabe": 28,
+        "nesting": 4,
+        "sloc": 48,
+        "aird": 58,
+        "aicp": 70,
+        "occurrence": 1
+      }
+    ]
+  },
+  "blind_spots": [
+    "cccc excludes Kotlin",
+    "shell/JSON/Markdown not measured functions",
+    "top-level Python not covered by function ranking",
+    "new TranscriptResult/driver not implemented, no current scores",
+    "JNI cccc partial parse; unchanged"
+  ],
+  "new_functions": "no before; future collect must explicitly include untracked Kt/driver via reviewed temporary source inventory, not main index"
+}

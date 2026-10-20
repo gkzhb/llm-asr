@@ -52,6 +52,7 @@ done
 bash scripts/compile-jvm-sources.sh "$classes" "" "${sources[@]}" \
   tests/KotlinMigrationTest.java \
   tests/RuntimeLogCoreTest.java \
+  tests/RuntimeLogWorkerErrorTest.java \
   tests/RuntimeLogStoreErrorTest.java \
   tests/InferenceAdapterTest.java \
   tests/LogExportTest.java \
@@ -102,6 +103,7 @@ run ModelRepositoryDeleteTest
 run ModelManagementControllerTest
 run ModelAndroidHelpersTest
 run org.llmasr.minimal.diagnostics.RuntimeLogCoreTest
+run org.llmasr.minimal.diagnostics.RuntimeLogWorkerErrorTest
 run org.llmasr.minimal.RuntimeLogStoreErrorTest
 run org.llmasr.minimal.InferenceAdapterTest
 run LogExportTest

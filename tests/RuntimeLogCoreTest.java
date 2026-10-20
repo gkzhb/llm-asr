@@ -421,6 +421,9 @@ public final class RuntimeLogCoreTest {
         try {
             eventBoundary(); publication(); persistence(base); paths(base);
             workers(base); ownedWorker(base); workerFailures(base); export(base);
+            // Fatal drain/executor exits must release the single slot; grouped here
+            // to keep the existing runtimeLogCore JUnit entry (no new JUnit count).
+            RuntimeLogWorkerErrorTest.main(new String[0]);
             System.out.println("PASS RuntimeLogCoreTest: " + groups + " groups");
         } finally {
             try (java.util.stream.Stream<Path> paths = Files.walk(base)) {

@@ -13,7 +13,16 @@ import java.util.concurrent.atomic.AtomicLong;
  * store publications automatically dirty the worker. Production IO is always
  * on the owned background executor; an injected executor must be asynchronous
  * unless deliberately running synchronously in tests. No main-thread disk API.
- * close detaches immediately, drains accepted work, and never waits on IO. */
+ * close detaches immediately, drains accepted work, and never waits on IO.
+ *
+ * Each admission owns an explicit slot token. Normal handoff, a drain's
+ * abnormal exit and an execute that never ran release ONLY the token they were
+ * admitted with, so a stale outer frame (direct executors run the task inline)
+ * can never clear a successor's ownership. A fatal Error keeps its original
+ * identity and propagates after its own release; ordinary RuntimeException is
+ * isolated (known persistence/store/failure boundaries already record status).
+ * Nothing auto-retries here: one drain attempt per schedule, and a later append
+ * retries dirty work. */
 public final class RuntimeLogWorker implements AutoCloseable {
     public static final int MAX_QUEUED = 1;
 
@@ -25,7 +34,11 @@ public final class RuntimeLogWorker implements AutoCloseable {
     private final RuntimeLogSink sink;
     private final Object monitor = new Object();
     private boolean closed;
-    private boolean scheduled;
+    /** Identity of the admission currently owning the single drain slot; 0 = free.
+     * A schedule/drain/execute frame releases only its own token (see releaseSlot),
+     * so one slot is never cleared by a frame that no longer owns it. */
+    private long owner;
+    private long nextOwner;
     private boolean dirty;
     private boolean recovered;
     /** Fixed status only; UI can poll this even without a failure callback. */
@@ -66,27 +79,50 @@ public final class RuntimeLogWorker implements AutoCloseable {
     }
 
     public boolean schedulePersist() {
+        long token;
         synchronized (monitor) {
             if (closed) return false;
             dirty = true;
-            if (scheduled) return true;
-            scheduled = true;
+            if (owner != 0) return true;
+            token = ++nextOwner;
+            owner = token;
         }
         try {
-            executor.execute(this::drain);
+            executor.execute(() -> drain(token));
             return true;
         } catch (RuntimeException rejected) {
-            synchronized (monitor) {
-                scheduled = false;
-                if (closed) shutdownOwned();
-            }
+            releaseSlot(token);
             droppedSchedules.incrementAndGet();
             fail("queue-full");
             return false;
+        } catch (Error fatal) {
+            // Not a rejection: preserve identity and propagate, but release this
+            // admission's own slot so a later append can schedule again. Never
+            // reported as queue-full and never counted as a dropped schedule.
+            releaseSlot(token);
+            throw fatal;
         }
     }
 
-    private void drain() {
+    private void drain(long token) {
+        try {
+            drainBody(token);
+        } catch (RuntimeException unexpected) {
+            // Known ordinary faults are already recorded by the persistence/store/
+            // failure boundaries (status, -1, fixed labels); this guard only makes
+            // an unforeseen non-fatal fault release its own admission, so a later
+            // append can retry. It does not claim or invent a status for such a
+            // fault, and never swallows or rethrows an Error.
+            releaseSlot(token);
+        } catch (Error fatal) {
+            // Fatal faults preserve identity and propagate unchanged. This frame
+            // releases only its own token and touches no state afterwards.
+            releaseSlot(token);
+            throw fatal;
+        }
+    }
+
+    private void drainBody(long token) {
         if (!recovered) {
             List<RuntimeLogEvent> history = persistence.load();
             RuntimeLogPersistence.Status status = persistence.status();
@@ -104,8 +140,7 @@ public final class RuntimeLogWorker implements AutoCloseable {
         while (true) {
             synchronized (monitor) {
                 if (!dirty) {
-                    scheduled = false;
-                    if (closed) shutdownOwned();
+                    releaseLocked(token);
                     return;
                 }
                 dirty = false;
@@ -149,12 +184,27 @@ public final class RuntimeLogWorker implements AutoCloseable {
             closed = true;
             // A scheduled task may not yet have reached executor.execute().
             // Let that drain shut down the pool, rather than rejecting accepted work.
-            if (!scheduled) shutdownOwned();
+            if (owner == 0) shutdownOwned();
         }
         store.removeSink(sink);
     }
     private void shutdownOwned() {
         if (ownedExecutor) ((ThreadPoolExecutor) executor).shutdown();
+    }
+    /** Releases only the admission still owned by this frame's token; a stale
+     * execute/drain frame (direct executors run the task inline) cannot clear a
+     * successor. Runs before fail()/rethrow: the failure callback may append and
+     * schedule fresh work, so the token must already be released. */
+    private void releaseSlot(long token) {
+        synchronized (monitor) {
+            releaseLocked(token);
+        }
+    }
+    /** Caller must hold monitor. Normal empty-dirty handoff and abnormal exits. */
+    private void releaseLocked(long token) {
+        if (owner != token) return;
+        owner = 0;
+        if (closed) shutdownOwned();
     }
 
 }

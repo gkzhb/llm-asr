@@ -22,6 +22,23 @@
 8. 记录达到上限后旧条目受限淘汰；页面不卡顿，历史淘汰提示明确；日志失败不阻止推理。
 9. 模型删除/重导入、清除转写结果后日志仍保留，且导出不包含模型/音频/文本内容。
 
+## Worker fatal 恢复（llm-asr-rpb，2026-10-20，含 R1 修订）
+
+窄修复：`RuntimeLogWorker` 每次 admission 持有显式 slot token。正常空 dirty 交接、drain 异常退出与 execute 未启动失败都只释放**自己 token 仍持有的 owner**（`releaseSlot(token)`/`releaseLocked(token)`，token 不匹配即无操作），因此 direct executor 同一 fatal 穿过内层 drain 与外层 execute 两个 frame 时，旧 frame 不可能清掉后继 slot。fatal `Error` 保留原对象身份并在自己释放后继续传播；普通 `RuntimeException` 隔离（已知 persistence/store/failure 边界已记录 status/-1/固定词表，不新造标签）；`executor.execute` 抛 `Error`（非拒绝）同样只释放自己的 token 后原样重抛，不计 `droppedSchedules`。单 drain+dirty、无自动 retry、close 非阻塞且 accepted 工作收尾、恢复/失败状态与隐私词表不变。
+
+确定性 host 回归 `tests/RuntimeLogWorkerErrorTest.java`（load/restore/failure-callback/save/execute 五条真实 Error 路径 + R1 interleave：direct executor 双层 fatal 窗口内后继在真实 save 阻塞、第三 schedule 只 dirty 不新增 drain + close 期间阻塞 IO/closed 拒新 + reject-before-run 恢复）接入既有 `runtimeLogCore` 入口，JUnit 数不变；隔离副本 a354fb（R1 有效 red 输入）interleave 目标 AssertionError（`submissions=4`）→ 修复后 66 checks green 已本机核验。真实设备/SAF/磁盘故障仍 not run。
+
+## Worker R2 残留（llm-asr-rpb，2026-10-20，含 R2 测试/收尾）
+
+R1 产品修复冻结后只补测试与文稿。新组 `close-fatal`/`reject-window`/`teardown-hold`（同一文件、同一 `runtimeLogCore` 入口，JUnit 数不变）：
+
+- **close-fatal**：真实 save 在受控 `File.getCanonicalFile`（相同真实生产路径）被 latch 阻塞时先 `close`，外部证明 close 不等 IO、closed 无新准入、阻塞期间无新 drain；放开后同一 fatal 抛出，原对象身份保留、worker 实际退出、无 auto retry、不计 `queue-full`/dropped，失败 save 未写任何 staging 文件且已持久文件不变。owned shutdown 不作新观察面，不新增生产 seam。
+- **reject-window**：正常恢复后开启 reject-before-run；拒绝先释放自己的 admission，再进入真实 FailureSink 回调有界暂停；窗口内另一线程获后继 slot 并在真实 save 阻塞；旧拒绝 frame 返回后不清后继，第三 schedule 只 dirty 不新增；后继实际结束并持久化，`queue-full` 固定标签与 `droppedSchedules==1` 核实。只用受支持 direct executor 与既有 FailureSink，不引恶意 executor 框架。
+- **R2-b 收尾窄修**：每次 main 独立 `RunCleanup`，所有 start/首次观察在保护 try 内、所有 gate 先登记；finally 解控后用总纳秒预算 `join(millis,nanos)`，先看 `isAlive`，正剩余不转成无限 `join(0)`，中断保留且不冒终态。未确认由共享 `finishScope` 标保树，main 使用同一删除 guard，以异常返回宿主（无 `System.exit`）；原 Throwable 主身份不变，清理失败 suppressed。close-block 恢复先持 persistence 锁再 start/waitBlocked。
+- **teardown-hold**：真实 save 受 gate 与独立 monitor 控制；共享收尾放 gate 后仍实际 held，999999ns 预算耗尽产生真实未确认错误，再调用 main 同一删除 guard 实际拒删并观察目录仍在。外部断言观察中断、同一主 Throwable 带两个 cleanup suppressed、宿主继续执行；独立 finally 放 monitor 后 bounded 确认实际退出才允许删除。`teardown-interrupt` 专用于宿主验证首次 await 被中断的失败路径。无专用 oldcleanup/ENFORCE 分支或生产 seam。
+
+状态：R1 / R2-a 已 CLOSED；R2-b 修复待 fresh B1–B5 回审，不能用旧成功链代替失败路径证明。新证据 `.work/rpb-build/r2b-fix/`；旧 `.work/rpb-build/r2-fix/`（含专用旧清理演示的历史 red/green）字节保留，不再称其证明共享拒删实现。真实设备/SAF/磁盘故障仍 not run。
+
 ## 证据边界
 - 主机fake验证不了Android系统picker/ContentResolver、真实JNI回调时刻与耗时、Activity前台绘制/IME、SELinux及实际磁盘故障。
 - native编译和源码检查不能替代真机加载/推理。新增回调会改变JNI DSO，不能沿用前版DSO逐字相同结论；底层MNN对象身份可独立核对。

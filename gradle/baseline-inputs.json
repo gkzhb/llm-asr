@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source_commit": "82a5563",
-  "revision_scope": "M6 baseline plus authorized P1 Lint fixes and P2 RuntimeLogSource/RuntimeLogEventKind equivalent Kotlin migration; only the two enum source paths/SHA updated in P2, native/assets/signing and legacy Manifest unchanged",
+  "revision_scope": "M6 baseline plus authorized P1 Lint fixes and P2 RuntimeLogSource/RuntimeLogEventKind equivalent Kotlin migration; llm-asr-rpb RuntimeLogWorker drain/execute fatal slot release plus R1 per-admission slot-token ownership (only that Worker source SHA); native/assets/signing and legacy Manifest unchanged",
   "native": {
     "path": ".work/build/minimal-apk/package/lib/arm64-v8a/libqwen_asr_jni.so",
     "sha256": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416"
@@ -48,7 +48,7 @@
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogStore.java": "4e7dac5068556b79fc67c8fc24882172e37d552809be14a07ea122432d2a2e8c",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogText.java": "ecb3c0dd2e14640a0a819778c8d748245d11ddc64e73fab083b062e7e6455eb5",
-    "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogWorker.java": "ee02ac79845a77a5360f080b5e8f134cf4df367c6c644198c482407cf5334cd7",
+    "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogWorker.java": "d4468f5bb1fc91e099ce22a8eef4d3c3f745995651b89ca6a6d58d850e52f754",
     "android/app/src/org/llmasr/minimal/ime/ImeBackend.java": "ca36d5b7bdbf67c7334363393c1dae267b321621f08bb6e5a30627439a77619b",
     "android/app/src/org/llmasr/minimal/ime/ImeController.java": "05d0dbcafb33b2b64d85b5839bb92854930ad14d7b20c3de0f2d35f4a304fa05",
     "android/app/src/org/llmasr/minimal/ime/ImeFieldPolicy.kt": "549770871e8613bf7fae3d6a112ff08c8cb8464ab7aae7e37d8e8d90d972a309",

@@ -39,6 +39,14 @@ R1 产品修复冻结后只补测试与文稿。新组 `close-fatal`/`reject-win
 
 状态：R1 / R2-a 已 CLOSED；R2-b 修复待 fresh B1–B5 回审，不能用旧成功链代替失败路径证明。新证据 `.work/rpb-build/r2b-fix/`；旧 `.work/rpb-build/r2-fix/`（含专用旧清理演示的历史 red/green）字节保留，不再称其证明共享拒删实现。真实设备/SAF/磁盘故障仍 not run。
 
+## 模型维护日志闭环（llm-asr-mfe，2026-10-20）
+
+本切片仅修模型 IMPORT/VERIFY/DELETE 的 best-effort 日志：已准入 STARTED 与正常决定的终态在状态安装后、controller lock 外先 emit 再通知 presentation；`finish` 只在自身合成 FAILED 时补既有失败事件，不重复正常 terminal，INSPECT 不产生模型维护事件。保留原 observer/worker Error 传播、optional telemetry 隔离、业务状态/ready epoch/取消仲裁及 owner/control 最终释放；不加入字段、事件、outbox、重试或原始异常内容。健康 Store 的每操作日志路径一次尝试不等于坏 Store、磁盘持久化或进程 fatal 存活保证。
+
+`tests/ModelManagementControllerTest.java` 默认 main 与既有 JUnit `modelManagementController` 直接运行新增 logging-enabled 行为组（无新 JUnit 方法/host wrapper）：三种 admitted executor 拒绝、真实 queued worker abnormal unwind、已决定 terminal/pending observer Error，以及正常 success/failure/cancel、无重复、INSPECT/busy/stale、重试新 UUID、RuntimeException/Error telemetry 隔离与合成隐私 sentinel 的真实 codec 导出。断言均在通知回调外，使用同步 Queue；新增 fixture 确认任务实际结束才清理合成模型目录。
+
+当前验证结果、输入身份、失败与边界见 [本切片报告](../reports/runtime-log-model-mfe/summary.md)。near-Long.MAX 历史恢复后耗尽及 picker 失败原因覆盖仍未实施；不因本切片关闭 mfe。完整工程构建/新 APK/Android runner/设备未完成前不称交付。
+
 ## 证据边界
 - 主机fake验证不了Android系统picker/ContentResolver、真实JNI回调时刻与耗时、Activity前台绘制/IME、SELinux及实际磁盘故障。
 - native编译和源码检查不能替代真机加载/推理。新增回调会改变JNI DSO，不能沿用前版DSO逐字相同结论；底层MNN对象身份可独立核对。

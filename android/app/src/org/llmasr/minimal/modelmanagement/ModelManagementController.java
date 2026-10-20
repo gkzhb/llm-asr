@@ -159,8 +159,9 @@ public final class ModelManagementController {
                 applyReadiness(b); state.install(b.build());
             }
         }
-        state.notifyListeners();
+        // Presentation faults must not skip the already-admitted event.
         if (startKind != null) safeLog(startKind, op.id, "ok");
+        state.notifyListeners();
     }
     private ModelManagementState.Builder builder() { return new ModelManagementState.Builder(state.current()); }
     private void applyReadiness(ModelManagementState.Builder b) {
@@ -283,8 +284,9 @@ public final class ModelManagementController {
             }
             }
         }
-        state.notifyListeners();
+        // Emit the decided outcome before a presentation observer can unwind.
         if (terminalKind != null) safeLog(terminalKind, op.id, terminalDetail);
+        state.notifyListeners();
     }
     private void safeLog(RuntimeLogEventKind kind, String id, String detail) {
         if (logStore == null) return;
@@ -294,6 +296,7 @@ public final class ModelManagementController {
     private void finish(ModelOperationControl.Operation op) {
         if (op == null) return;
         boolean succeeded;
+        RuntimeLogEventKind fallbackKind = null;
         synchronized (this) {
             ModelManagementState.Builder b=builder();
             if (op.kind == ModelOperationControl.Kind.INSPECT) {
@@ -305,6 +308,9 @@ public final class ModelManagementController {
                 if (!state.current().isTerminalPhase()) {
                     b.phase=ModelManagementState.Phase.FAILED; b.lastOutcome=ModelManagementState.Outcome.FAILED;
                     b.errorCode="任务未启动或异常终止";
+                    fallbackKind = op.kind == ModelOperationControl.Kind.IMPORT ? RuntimeLogEventKind.MODEL_IMPORT_FAILED
+                        : op.kind == ModelOperationControl.Kind.DELETE ? RuntimeLogEventKind.MODEL_DELETE_FAILED
+                        : RuntimeLogEventKind.MODEL_VERIFY_FAILED;
                 }
                 b.pageOwnerHeld=false;
             }
@@ -312,7 +318,11 @@ public final class ModelManagementController {
             state.install(b.build());
             succeeded=op.isSucceeded();
         }
-        try { state.notifyListeners(); }
-        finally { control.complete(op, succeeded); }
+        try {
+            // Only this synthesized failure needs a terminal event; normal terminal()
+            // already emitted its decision. Telemetry never owns operation release.
+            if (fallbackKind != null) safeLog(fallbackKind, op.id, "failed");
+            state.notifyListeners();
+        } finally { control.complete(op, succeeded); }
     }
 }

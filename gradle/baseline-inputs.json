@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source_commit": "82a5563",
-  "revision_scope": "M6 baseline plus authorized P1 Lint fixes and P2 RuntimeLogSource/RuntimeLogEventKind equivalent Kotlin migration; llm-asr-rpb RuntimeLogWorker drain/execute fatal slot release plus R1 per-admission slot-token ownership (only that Worker source SHA); native/assets/signing and legacy Manifest unchanged",
+  "revision_scope": "M6 baseline plus authorized P1 Lint fixes and P2 RuntimeLogSource/RuntimeLogEventKind equivalent Kotlin migration; llm-asr-rpb RuntimeLogWorker drain/execute fatal slot release plus R1 per-admission slot-token ownership (only that Worker source SHA); llm-asr-mfe model-maintenance best-effort admitted/terminal logging before presentation and synthesized finalizer failure (only Controller source SHA); native/assets/signing and legacy Manifest unchanged",
   "native": {
     "path": ".work/build/minimal-apk/package/lib/arm64-v8a/libqwen_asr_jni.so",
     "sha256": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416"
@@ -63,7 +63,7 @@
     "android/app/src/org/llmasr/minimal/model/ModelRepository.java": "4e842f6960d9568b01c8c79fee8f800791d9e32d53539abc4ead70641dd39b59",
     "android/app/src/org/llmasr/minimal/model/ModelSource.java": "aa53cfe92357e02ff65c7ee212574314af4cab4c9db2deebbb1254d57a9687de",
     "android/app/src/org/llmasr/minimal/model/SafModelSource.java": "4ca318fec09adcd410dbc9a05a62e2ceba350dd4814cda36081cd1d11eaebc07",
-    "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementController.java": "e6cc19db65e44f5e6f50bd85a43b2b100b47a123e6917d7a5d2cd58535d1285d",
+    "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementController.java": "1485ea152e0dbdfbacbb6306e5a77ced61c92aedcc2869a3f4eda4eedb0c5da3",
     "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementState.java": "f0af50bad07b0004763088be08509c23031669e08e88cf108d7dc42dc382018b",
     "android/app/src/org/llmasr/minimal/modelmanagement/ModelOperationControl.java": "8f2e99d0ae960041cb94b615324c1ded4491a80ce60473bc1e2ecd44aa260d51",
     "android/app/src/org/llmasr/minimal/modelmanagement/ModelPageSession.java": "a8a5be02a20c9e604ae522a02dde1d6b981d75e09f4f4fc8c08584e78df01c80",

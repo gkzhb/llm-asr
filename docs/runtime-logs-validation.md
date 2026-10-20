@@ -47,6 +47,14 @@ R1 产品修复冻结后只补测试与文稿。新组 `close-fatal`/`reject-win
 
 当前验证结果、输入身份、失败与边界见 [本切片报告](../reports/runtime-log-model-mfe/summary.md)。near-Long.MAX 历史恢复后耗尽及 picker 失败原因覆盖仍未实施；不因本切片关闭 mfe。完整工程构建/新 APK/Android runner/设备未完成前不称交付。
 
+## 合法极限序号恢复与继续追加（llm-asr-mfe，2026-10-20）
+
+`RuntimeLogStore` 在有效 append 真正遇到 `nextSequence == Long.MAX_VALUE` 时，先验证本次事件、复制当前保留窗口为密集序号并加入新事件，成功后才安装与按原容量 trim。普通历史/间隙和最后合法的 MAX-1 序号不提前改写；不靠预留固定 N 个序号推迟失败。恢复仍先验证完整历史，仅原 offset 无法表示时密集复制 `history || early`，再 trim；严格合法极限历史保留且 Worker 初始恢复状态为 OK，而非丢弃标 CORRUPT。真正非法/乱序/坏文件仍拒绝。只有真实 trim 计 dropped，重编号不计；时间、elapsed、来源、UUID、固定事件/详情及旧不可变 snapshot 全保持。
+
+序号只用于一张快照内严格排序，不是跨恢复或极限重排的永久票据；极限处下一张快照 numeric sequence 可以回落。原单 publisher/coalescing 的因果先后仍保持，publish/trim 主体、Worker/Persistence/Event/Codec/接口均不改。V1 保存/重启恢复及冻结导出兼容，不新增日志内容、格式、权限或依赖。
+
+默认 `RuntimeLogCoreTest`/原 `runtimeLogCore` JUnit 入口新增四组，覆盖真实持久化 noearly/early 边界、多次重启继续追加、容量/drop、普通 gap/early offset、非法 append/clock 无副作用、所有事件字段与旧导出快照不变、非法历史/文件、sink 故障/再入及有界跨界并发。旧 MAX-1+early 的 CORRUPT 断言明确改为合法保留/OK，并保留实际非法历史及坏 V1 文件 CORRUPT 保护。当前真实红绿与后续 targeted/复杂度状态见 [本切片报告](../reports/runtime-log-sequence-mfe/summary.md)；未 fresh 审查/full/安全本地提交，不据此交付新 APK。设备按用户选择跳过，仍为 not run；picker 失败文案项仍未完成，不关闭 mfe/M4/M5。
+
 ## 证据边界
 - 主机fake验证不了Android系统picker/ContentResolver、真实JNI回调时刻与耗时、Activity前台绘制/IME、SELinux及实际磁盘故障。
 - native编译和源码检查不能替代真机加载/推理。新增回调会改变JNI DSO，不能沿用前版DSO逐字相同结论；底层MNN对象身份可独立核对。

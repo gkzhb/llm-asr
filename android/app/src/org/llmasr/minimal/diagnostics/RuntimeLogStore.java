@@ -9,7 +9,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * One publisher coalesces concurrent/reentrant changes, never calling sinks
  * under the store lock and never delivering an older snapshot after a newer one.
  * Sinks must be quick/nonblocking (post UI work, schedule IO); intermediate
- * snapshots may be skipped. Invalid events and listener RuntimeExceptions are isolated. */
+ * snapshots may be skipped. Invalid events and listener RuntimeExceptions are isolated.
+ * Sequences order each snapshot, not permanent IDs: at numeric exhaustion only,
+ * retained events are copied to dense IDs. Older immutable snapshots never change. */
 public final class RuntimeLogStore {
     public static final int DEFAULT_CAPACITY = 1000;
     private final int capacity;
@@ -43,14 +45,22 @@ public final class RuntimeLogStore {
     public boolean append(RuntimeLogEventKind kind, RuntimeLogSource source, String requestId,
                           String detail, long elapsedNanos) {
         synchronized (monitor) {
+            RuntimeLogEvent event;
+            List<RuntimeLogEvent> rebased = null;
             try {
-                RuntimeLogEvent event = new RuntimeLogEvent(nextSequence, clock.wallTimeMillis(),
+                boolean exhausted = nextSequence == Long.MAX_VALUE;
+                event = new RuntimeLogEvent(exhausted ? events.size() : nextSequence, clock.wallTimeMillis(),
                     clock.monotonicNanos(), kind, source, requestId, detail, elapsedNanos);
-                nextSequence++;
-                events.add(event);
-                trim();
-                pending = true;
+                if (exhausted) {
+                    rebased = denseCopy(events);
+                    rebased.add(event);
+                }
             } catch (RuntimeException invalid) { return false; }
+            // All validation/copying precedes installation, including at exhaustion.
+            if (rebased == null) events.add(event); else events = rebased;
+            nextSequence = event.sequence + 1;
+            trim();
+            pending = true;
         }
         publish();
         return true;
@@ -74,6 +84,8 @@ public final class RuntimeLogStore {
 
     /** One worker-owned recovery only. History precedes early live appends;
      * their sequence numbers are rebased above history, their times unchanged.
+     * If that offset is unrepresentable, densely copy history then early events
+     * before trimming; legal history is not corruption. Other IDs/gaps are retained.
      * Previously captured snapshots remain immutable but IDs are not recovery tickets. */
     void restore(List<RuntimeLogEvent> history) {
         synchronized (monitor) {
@@ -83,18 +95,31 @@ public final class RuntimeLogStore {
                 if (e == null || e.sequence <= previous) throw new IllegalArgumentException("invalid history");
                 previous = e.sequence;
             }
-            if (previous >= Long.MAX_VALUE - nextSequence - 1)
-                throw new IllegalArgumentException("sequence overflow");
-            long offset = previous + 1;
             List<RuntimeLogEvent> merged = new ArrayList<>(history);
-            for (RuntimeLogEvent e : events) merged.add(e.withSequence(e.sequence + offset));
-            nextSequence += offset;
+            long next;
+            if (previous >= Long.MAX_VALUE - nextSequence - 1) {
+                merged.addAll(events);
+                merged = denseCopy(merged);
+                next = merged.size();
+            } else {
+                long offset = previous + 1;
+                for (RuntimeLogEvent e : events) merged.add(e.withSequence(e.sequence + offset));
+                next = nextSequence + offset;
+            }
             events = merged;
+            nextSequence = next;
             recovered = true;
             trim();
             pending = true;
         }
         publish();
+    }
+
+    /** Caller holds monitor; copy, never mutate a previously published Event. */
+    private static List<RuntimeLogEvent> denseCopy(List<RuntimeLogEvent> values) {
+        List<RuntimeLogEvent> copy = new ArrayList<>(values.size());
+        for (RuntimeLogEvent event : values) copy.add(event.withSequence(copy.size()));
+        return copy;
     }
 
     public void addSink(RuntimeLogSink sink) { if (sink != null) sinks.add(sink); }

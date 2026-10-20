@@ -353,17 +353,329 @@ public final class RuntimeLogCoreTest {
         Files.createDirectory(part); append(store); executor.runOne();
         check(failures.get() == 2 && worker.failedSaves() == 4, "new failure episode observable, single callback + finite dirty retry");
         worker.close();
-        // Recover overflow history by rejecting the entire history, not early live events.
+        // Typed legal extreme history is normalized, never discarded as corrupt.
         Path overflow = Files.createDirectory(base.resolve("overflow"));
         RuntimeLogPersistence max = new RuntimeLogPersistence(overflow.toFile());
         max.save(Collections.singletonList(event(Long.MAX_VALUE - 1)), null);
         RuntimeLogStore live = new RuntimeLogStore(); append(live);
         ManualExecutor tasks = new ManualExecutor();
         RuntimeLogWorker overflowWorker = new RuntimeLogWorker(live, max, null, tasks);
-        tasks.runOne(); check(live.size() == 1 && live.snapshot().get(0).sequence == 0 && append(live), "overflow history cannot poison live sequence");
-        check(overflowWorker.recoveryStatus() == RuntimeLogPersistence.Status.CORRUPT, "recovery failure remains observable after save");
+        tasks.runOne(); check(live.size() == 2 && live.snapshot().get(0).sequence == 0
+            && live.snapshot().get(1).sequence == 1 && append(live), "legal extreme history and early event retained");
+        check(overflowWorker.recoveryStatus() == RuntimeLogPersistence.Status.OK, "legal extreme recovery remains OK after save");
         overflowWorker.close(); tasks.runOne();
         passed("observable/deduped disk failure, recursive callback isolation, recovery from failure and hostile sequence overflow");
+    }
+
+    /** These fixtures exercise the real Store/Worker/Persistence, never reflected counters. */
+    private static final class SequenceScope implements AutoCloseable {
+        final Path root = Files.createTempDirectory("runtime-sequence-");
+        final List<Thread> threads = new ArrayList<>();
+        final List<CountDownLatch> gates = new ArrayList<>();
+        final List<RuntimeLogWorker> workers = new ArrayList<>();
+        final List<ManualExecutor> executors = new ArrayList<>();
+        SequenceScope() throws IOException {}
+        CountDownLatch gate() { CountDownLatch gate = new CountDownLatch(1); gates.add(gate); return gate; }
+        void start(Thread thread) { threads.add(thread); thread.start(); }
+        RuntimeLogWorker worker(RuntimeLogStore store, RuntimeLogPersistence persistence, ManualExecutor executor) {
+            RuntimeLogWorker worker = new RuntimeLogWorker(store, persistence, null, executor);
+            workers.add(worker); executors.add(executor); return worker;
+        }
+        @Override public void close() throws Exception {
+            for (CountDownLatch gate : gates) gate.countDown();
+            Throwable failure = null;
+            boolean interrupted = Thread.interrupted(), alive = false;
+            long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+            for (Thread thread : threads) {
+                while (thread.isAlive()) {
+                    long left = deadline - System.nanoTime();
+                    if (left <= 0) break;
+                    try { thread.join(left / 1_000_000, (int) (left % 1_000_000)); }
+                    catch (InterruptedException problem) {
+                        interrupted = true;
+                        if (failure == null) failure = problem; else failure.addSuppressed(problem);
+                    }
+                }
+                alive |= thread.isAlive();
+            }
+            if (alive) {
+                IOException problem = new IOException("sequence worker not terminated; preserving fixture");
+                if (failure == null) failure = problem; else failure.addSuppressed(problem);
+            } else {
+                for (int i = 0; i < workers.size(); i++) {
+                    try {
+                        workers.get(i).close();
+                        ManualExecutor executor = executors.get(i);
+                        int remaining = 32;
+                        while (executor.pending() > 0 && remaining-- > 0) executor.runOne();
+                        check(executor.pending() == 0, "sequence cleanup drain bounded");
+                    } catch (Throwable problem) {
+                        if (failure == null) failure = problem; else failure.addSuppressed(problem);
+                    }
+                }
+                try (java.util.stream.Stream<Path> paths = Files.walk(root)) {
+                    for (Path path : (Iterable<Path>) paths.sorted(Comparator.reverseOrder())::iterator)
+                        Files.deleteIfExists(path);
+                } catch (Throwable problem) {
+                    if (failure == null) failure = problem; else failure.addSuppressed(problem);
+                }
+            }
+            if (interrupted) Thread.currentThread().interrupt();
+            if (failure instanceof Error) throw (Error) failure;
+            if (failure instanceof Exception) throw (Exception) failure;
+        }
+    }
+
+    private static final class SequenceClock implements RuntimeLogClock {
+        long wall = 1700000000123L, mono = -900;
+        int walls, monos;
+        boolean broken;
+        @Override public long wallTimeMillis() {
+            walls++;
+            if (broken) throw new IllegalStateException("synthetic clock");
+            return wall--;
+        }
+        @Override public long monotonicNanos() { monos++; return mono++; }
+    }
+
+    private static void ordered(List<RuntimeLogEvent> values) {
+        long previous = -1;
+        for (RuntimeLogEvent value : values) {
+            check(value.sequence > previous && value.sequence < Long.MAX_VALUE, "sequence snapshot strictly ordered");
+            previous = value.sequence;
+        }
+    }
+    private static void sameFields(RuntimeLogEvent expected, RuntimeLogEvent actual) {
+        check(expected.withSequence(actual.sequence).equals(actual), "sequence rebase preserves every other field");
+    }
+    private static byte[] sequenceBytes(List<RuntimeLogEvent> values) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        RuntimeLogCodec.writeSnapshot(values, out); return out.toByteArray();
+    }
+    private static void appendMany(RuntimeLogStore store, int count, String label) {
+        for (int i = 0; i < count; i++) check(append(store), label + " append rejected at i=" + i);
+        ordered(store.snapshot());
+    }
+
+    private static void nearMaxProgress(boolean early) throws Exception {
+        try (SequenceScope scope = new SequenceScope()) {
+            int capacity = 4;
+            RuntimeLogPersistence p = new RuntimeLogPersistence(scope.root.toFile());
+            List<RuntimeLogEvent> history = Collections.singletonList(event(Long.MAX_VALUE - (early ? 3 : 2)));
+            check(p.save(history, null) == 1, "near-max fixture save");
+            check(new RuntimeLogPersistence(scope.root.toFile()).load().equals(history), "near-max fixture is legal V1");
+            RuntimeLogStore store = new RuntimeLogStore(capacity, new SequenceClock());
+            if (early) check(append(store), "near-max early append");
+            List<RuntimeLogEvent> frozenEarly = store.snapshot();
+            ManualExecutor tasks = new ManualExecutor();
+            RuntimeLogWorker worker = scope.worker(store, p, tasks); tasks.runOne();
+            check(worker.recoveryStatus() == RuntimeLogPersistence.Status.OK, "near-max legal recovery OK");
+            List<RuntimeLogEvent> frozen = store.snapshot();
+            byte[] frozenBytes = sequenceBytes(frozen);
+            check(frozen.get(0).equals(history.get(0)), "near-max representable history unchanged");
+            appendMany(store, 4 * capacity + 7, "near-max " + (early ? "early" : "no-early"));
+            check(store.size() == capacity && store.droppedCount() == history.size() + frozenEarly.size() + 4 * capacity + 7 - capacity,
+                "near-max real evictions only");
+            check(frozen.get(0).equals(history.get(0)) && Arrays.equals(frozenBytes, sequenceBytes(frozen)), "high snapshot stays frozen");
+            if (early) check(frozenEarly.get(0).sequence == 0, "early captured ID unchanged");
+            tasks.runOne(); check(p.load().equals(store.snapshot()), "near-max final snapshot persisted");
+            worker.close();
+            for (int restart = 0; restart < 2; restart++) {
+                List<RuntimeLogEvent> saved = p.load();
+                RuntimeLogStore reopened = new RuntimeLogStore(capacity, new SequenceClock());
+                if (restart == 1) check(append(reopened), "restart early event");
+                RuntimeLogPersistence disk = new RuntimeLogPersistence(scope.root.toFile());
+                ManualExecutor queued = new ManualExecutor();
+                RuntimeLogWorker next = scope.worker(reopened, disk, queued); queued.runOne();
+                check(next.recoveryStatus() == RuntimeLogPersistence.Status.OK && next.lastFailure() == null, "restart still OK, not corrupt fallback");
+                List<RuntimeLogEvent> loaded = reopened.snapshot();
+                int skip = restart == 1 ? 1 : 0;
+                for (int i = 0; i < saved.size() - skip; i++) check(loaded.get(i).equals(saved.get(i + skip)), "restart preserves history suffix");
+                appendMany(reopened, 4 * capacity + 7, "restart " + restart);
+                queued.runOne(); check(disk.load().equals(reopened.snapshot()), "restart latest persisted exact");
+                next.close(); p = disk;
+            }
+        }
+    }
+
+    private static void legalMaxRecovery() throws Exception {
+        try (SequenceScope scope = new SequenceScope()) {
+            RuntimeLogPersistence p = new RuntimeLogPersistence(scope.root.toFile());
+            List<RuntimeLogEvent> history = Collections.singletonList(event(Long.MAX_VALUE - 1));
+            check(p.save(history, null) == 1, "max history save legal");
+            RuntimeLogStore store = new RuntimeLogStore(4, new SequenceClock()); check(append(store), "max early");
+            RuntimeLogEvent early = store.snapshot().get(0);
+            ManualExecutor tasks = new ManualExecutor(); RuntimeLogWorker worker = scope.worker(store, p, tasks); tasks.runOne();
+            check(worker.recoveryStatus() == RuntimeLogPersistence.Status.OK && store.size() == 2,
+                "legal max history was discarded or marked corrupt");
+            check(store.snapshot().get(0).sequence == 0 && store.snapshot().get(1).sequence == 1, "unrepresentable recovery dense order");
+            sameFields(history.get(0), store.snapshot().get(0)); sameFields(early, store.snapshot().get(1));
+            check(store.droppedCount() == 0 && p.load().equals(store.snapshot()), "normalize is not drop; persisted V1 exact");
+            appendMany(store, 4 * store.capacity() + 7, "max restored"); tasks.runOne(); worker.close();
+            RuntimeLogStore reopened = new RuntimeLogStore(4);
+            ManualExecutor queued = new ManualExecutor();
+            RuntimeLogWorker next = scope.worker(reopened, new RuntimeLogPersistence(scope.root.toFile()), queued); queued.runOne();
+            check(next.recoveryStatus() == RuntimeLogPersistence.Status.OK, "max normalized history restarts OK");
+            appendMany(reopened, 23, "max restarted"); queued.runOne();
+        }
+    }
+
+    private static void sequenceRecoveryMatrix() throws Exception {
+        for (int capacity : new int[] {1, 4, RuntimeLogStore.DEFAULT_CAPACITY}) {
+            RuntimeLogStore ordinary = new RuntimeLogStore(capacity, new SequenceClock());
+            for (int i = 0; i < capacity + 2; i++) check(append(ordinary), "ordinary early");
+            List<RuntimeLogEvent> early = ordinary.snapshot(); long oldDrop = ordinary.droppedCount();
+            ordinary.restore(Arrays.asList(event(2), event(5)));
+            List<RuntimeLogEvent> current = ordinary.snapshot();
+            check(current.get(current.size() - 1).sequence == capacity + 7L, "ordinary offset uses next, not retained size");
+            check(ordinary.droppedCount() == oldDrop + 2, "ordinary merge drops exact");
+            check(early.get(0).sequence == 2, "ordinary early snapshot unchanged");
+            List<RuntimeLogEvent> once = ordinary.snapshot(); ordinary.restore(Collections.singletonList(event(1)));
+            check(ordinary.snapshot().equals(once), "restore once only");
+            RuntimeLogStore dense = new RuntimeLogStore(capacity, new SequenceClock());
+            for (int i = 0; i < capacity + 2; i++) check(append(dense), "dense early");
+            List<RuntimeLogEvent> before = dense.snapshot();
+            dense.restore(Arrays.asList(event(7), event(Long.MAX_VALUE - 1)));
+            current = dense.snapshot();
+            check(dense.droppedCount() == 4 && current.size() == capacity, "dense trim only counts two merge evictions plus prior two");
+            for (int i = 0; i < capacity; i++) {
+                check(current.get(i).sequence == i + 2L, "dense-before-trim exact indices"); sameFields(before.get(i), current.get(i));
+            }
+            appendMany(dense, 4 * capacity + 7, "dense capacity " + capacity);
+            RuntimeLogStore single = new RuntimeLogStore(capacity, new SequenceClock());
+            single.restore(Collections.singletonList(event(Long.MAX_VALUE - 1)));
+            check(single.snapshot().get(0).sequence == 0, "max no-early normalized");
+            appendMany(single, 4 * capacity + 7, "no-early capacity " + capacity);
+        }
+        RuntimeLogStore gaps = new RuntimeLogStore(4); gaps.restore(Arrays.asList(event(2), event(5)));
+        check(gaps.snapshot().equals(Arrays.asList(event(2), event(5))) && append(gaps) && gaps.snapshot().get(2).sequence == 6, "ordinary gap values exact");
+        RuntimeLogStore empty = new RuntimeLogStore(4); empty.restore(Collections.emptyList());
+        check(append(empty) && empty.snapshot().get(0).sequence == 0, "empty restore");
+        RuntimeLogStore nearGap = new RuntimeLogStore(4); nearGap.restore(Arrays.asList(event(7), event(Long.MAX_VALUE - 2)));
+        check(nearGap.snapshot().get(0).sequence == 7 && append(nearGap) && append(nearGap), "gapped legal history progresses across exhaustion");
+        ordered(nearGap.snapshot());
+    }
+
+    private static void sequenceRejectsAndSnapshots() throws Exception {
+        SequenceClock clock = new SequenceClock(); RuntimeLogStore store = new RuntimeLogStore(4, clock);
+        store.restore(Arrays.asList(event(7), event(Long.MAX_VALUE - 2)));
+        check(store.append(RuntimeLogEventKind.REQUEST_SUCCESS, RuntimeLogSource.APP, ID, "ok", 17), "reach max next");
+        List<RuntimeLogEvent> before = store.snapshot(); byte[] bytes = sequenceBytes(before);
+        AtomicInteger notifications = new AtomicInteger(); store.addSink((s, d) -> notifications.incrementAndGet());
+        int walls = clock.walls, monos = clock.monos;
+        check(!store.append(null, RuntimeLogSource.APP, ID, "ok"), "invalid enum at max");
+        check(!store.append(RuntimeLogEventKind.APP_READY, RuntimeLogSource.APP, "bad", "ok"), "invalid UUID at max");
+        check(!store.append(RuntimeLogEventKind.APP_READY, RuntimeLogSource.APP, ID, "private-sentinel"), "invalid detail at max");
+        check(!store.append(RuntimeLogEventKind.APP_READY, RuntimeLogSource.APP, ID, "ok", -2), "invalid duration at max");
+        check(clock.walls == walls + 4 && clock.monos == monos + 4, "invalid fields retain one clock read per attempt");
+        clock.broken = true; walls = clock.walls; monos = clock.monos;
+        check(!append(store) && clock.walls == walls + 1 && clock.monos == monos, "clock failure reads once, rejects"); clock.broken = false;
+        check(store.snapshot().equals(before) && store.droppedCount() == 0 && notifications.get() == 0, "invalid max append has no state or notification side effects");
+        walls = clock.walls; monos = clock.monos;
+        check(append(store) && clock.walls == walls + 1 && clock.monos == monos + 1, "valid max rebase reads clocks only once");
+        List<RuntimeLogEvent> rebased = store.snapshot();
+        for (int i = 0; i < before.size(); i++) {
+            check(rebased.get(i).sequence == i, "append dense retained order"); sameFields(before.get(i), rebased.get(i));
+        }
+        check(notifications.get() == 1 && store.droppedCount() == 0, "rebase emits only completed append");
+        check(before.get(1).sequence == Long.MAX_VALUE - 2 && before.get(2).sequence == Long.MAX_VALUE - 1, "old high IDs unchanged");
+        check(Arrays.equals(bytes, sequenceBytes(before)), "old captured codec bytes unchanged");
+        rejects(() -> before.clear(), UnsupportedOperationException.class); ordered(rebased);
+        RuntimeLogStore full = new RuntimeLogStore(1); full.restore(Collections.singletonList(event(Long.MAX_VALUE - 2)));
+        check(append(full) && append(full) && full.snapshot().get(0).sequence == 1 && full.droppedCount() == 2, "full append dense then trim exact");
+        RuntimeLogStore invalid = new RuntimeLogStore(2); check(append(invalid), "invalid history early");
+        List<RuntimeLogEvent> early = invalid.snapshot();
+        for (List<RuntimeLogEvent> bad : Arrays.asList(Arrays.asList(event(7), null), Arrays.asList(event(7), event(7)), Arrays.asList(event(7), event(2)))) {
+            rejects(() -> invalid.restore(bad), IllegalArgumentException.class);
+            check(invalid.snapshot().equals(early) && invalid.droppedCount() == 0, "invalid full history rejected before mutation");
+        }
+        invalid.restore(Arrays.asList(event(2), event(5))); check(invalid.snapshot().get(1).sequence == 6, "invalid restore did not consume one-shot");
+        try (SequenceScope scope = new SequenceScope()) {
+            RuntimeLogPersistence p = new RuntimeLogPersistence(scope.root.toFile());
+            List<RuntimeLogEvent> legal = Arrays.asList(event(2), event(5)); check(p.save(legal, null) == 2, "invalid file fixture");
+            String text = new String(Files.readAllBytes(p.file().toPath()), StandardCharsets.UTF_8);
+            for (String changed : new String[] {text.replace("\n5\t", "\n2\t"), text.replace("\n5\t", "\n1\t"), text.replace("\n5\t", "\n" + Long.MAX_VALUE + "\t")}) {
+                Files.write(p.file().toPath(), changed.getBytes(StandardCharsets.UTF_8));
+                RuntimeLogStore live = new RuntimeLogStore(4); check(append(live), "corrupt file early");
+                ManualExecutor tasks = new ManualExecutor(); RuntimeLogWorker worker = scope.worker(live, p, tasks); tasks.runOne();
+                check(worker.recoveryStatus() == RuntimeLogPersistence.Status.CORRUPT && live.size() == 1 && live.snapshot().get(0).sequence == 0,
+                    "actual invalid V1 still CORRUPT; early retained"); worker.close();
+            }
+        }
+    }
+
+    private static void sequenceSinks() throws Exception {
+        RuntimeLogStore store = new RuntimeLogStore(4); store.restore(Collections.singletonList(event(Long.MAX_VALUE - 2)));
+        check(append(store), "sink reach max");
+        AtomicInteger seen = new AtomicInteger();
+        store.addSink((s, d) -> { throw new IllegalStateException("synthetic sink"); });
+        store.addSink((s, d) -> seen.incrementAndGet()); check(append(store) && seen.get() == 1, "RuntimeException isolated at rollover");
+        RuntimeLogStore fatalStore = new RuntimeLogStore(4); fatalStore.restore(Collections.singletonList(event(Long.MAX_VALUE - 2)));
+        check(append(fatalStore), "fatal reach max");
+        Error injected = new AssertionError("synthetic sequence sink"); RuntimeLogSink bad = (s, d) -> { throw injected; };
+        fatalStore.addSink(bad); Error caught = null;
+        try { append(fatalStore); } catch (Error failure) { caught = failure; }
+        check(caught == injected && fatalStore.size() == 3 && fatalStore.snapshot().get(2).sequence == 2, "rollover commits then propagates exact sink Error");
+        fatalStore.removeSink(bad); fatalStore.addSink((s, d) -> seen.incrementAndGet());
+        check(append(fatalStore) && seen.get() == 2, "publisher recovers after rollover fatal");
+        RuntimeLogStore reentrant = new RuntimeLogStore(4); reentrant.restore(Collections.singletonList(event(Long.MAX_VALUE - 2)));
+        check(append(reentrant), "reentrant reach max");
+        AtomicBoolean once = new AtomicBoolean(); List<List<RuntimeLogEvent>> delivered = new ArrayList<>();
+        reentrant.addSink((s, d) -> { if (once.compareAndSet(false, true)) append(reentrant); });
+        reentrant.addSink((s, d) -> delivered.add(s)); check(append(reentrant), "rollover with reentry");
+        check(delivered.size() == 2 && delivered.get(0).size() == 3 && delivered.get(1).size() == 4 && delivered.get(1).get(3).sequence == 3,
+            "one reentrant append drains newer completed snapshot only");
+    }
+
+    private static void sequencePublication() throws Exception {
+        try (SequenceScope scope = new SequenceScope()) {
+            RuntimeLogStore store = new RuntimeLogStore(8, new SequenceClock());
+            store.restore(Collections.singletonList(event(Long.MAX_VALUE - 2)));
+            CountDownLatch entered = scope.gate(), release = scope.gate();
+            AtomicBoolean once = new AtomicBoolean(); AtomicReference<Throwable> failure = new AtomicReference<>();
+            List<List<RuntimeLogEvent>> delivered = new CopyOnWriteArrayList<>();
+            store.addSink((s, d) -> {
+                if (once.compareAndSet(false, true)) {
+                    entered.countDown();
+                    try { await(release); } catch (Throwable problem) { failure.compareAndSet(null, problem); }
+                }
+            });
+            store.addSink((s, d) -> delivered.add(s));
+            Thread publisher = new Thread(() -> {
+                try { check(append(store), "cross-limit initial append"); } catch (Throwable problem) { failure.compareAndSet(null, problem); }
+            });
+            scope.start(publisher); await(entered);
+            List<Thread> producers = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                Thread producer = new Thread(() -> {
+                    try {
+                        store.snapshot();
+                        for (int j = 0; j < 11; j++) check(append(store), "cross-limit concurrent append");
+                    } catch (Throwable problem) { failure.compareAndSet(null, problem); }
+                });
+                producers.add(producer); scope.start(producer);
+            }
+            for (Thread producer : producers) join(producer);
+            check(failure.get() == null && store.size() == 8 && store.droppedCount() == 27, "cross-limit producers finish while sink blocked, exact eviction");
+            List<RuntimeLogEvent> latest = store.snapshot(); ordered(latest);
+            release.countDown(); join(publisher);
+            check(failure.get() == null && delivered.size() == 2, "cross-limit publisher drains exactly old then latest");
+            check(delivered.get(0).get(1).sequence == Long.MAX_VALUE - 1 && delivered.get(1).equals(latest), "numeric decrease is not stale publication");
+            check(delivered.get(0).get(1).wallMillis > latest.get(latest.size() - 1).wallMillis, "payload clock proves newer causal snapshot after numeric rollover");
+            check(append(store) && delivered.size() == 3, "publisher restarts after extreme coalescing");
+        }
+    }
+
+    private static void sequenceCase(String name) throws Exception {
+        switch (name) {
+            case "seq-noearly": nearMaxProgress(false); break;
+            case "seq-early": nearMaxProgress(true); break;
+            case "seq-overflow": legalMaxRecovery(); break;
+            case "seq-protection":
+                sequenceRecoveryMatrix(); sequenceRejectsAndSnapshots(); sequenceSinks(); sequencePublication(); break;
+            default: throw new IllegalArgumentException("unknown sequence case");
+        }
+        passed("sequence case " + name);
     }
 
     private static void export(Path base) throws Exception {
@@ -417,10 +729,13 @@ public final class RuntimeLogCoreTest {
     }
 
     public static void main(String[] args) throws Exception {
+        if (args.length != 0) { sequenceCase(args[0]); return; }
         Path base = Files.createTempDirectory("runtime-log-core-");
         try {
             eventBoundary(); publication(); persistence(base); paths(base);
             workers(base); ownedWorker(base); workerFailures(base); export(base);
+            sequenceCase("seq-noearly"); sequenceCase("seq-early");
+            sequenceCase("seq-overflow"); sequenceCase("seq-protection");
             // Fatal drain/executor exits must release the single slot; grouped here
             // to keep the existing runtimeLogCore JUnit entry (no new JUnit count).
             RuntimeLogWorkerErrorTest.main(new String[0]);

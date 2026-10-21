@@ -152,20 +152,24 @@ def run(command, log, records, label, timeout):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--green-only', action='store_true', help='old Java or migrated focused baseline, no mutants')
-    parser.add_argument('--ports', action='store_true', help='Clock/Sink Java characterization and two production mutants')
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument('--ports', action='store_true', help='Clock/Sink Java characterization and two production mutants')
+    modes.add_argument('--phase', action='store_true', help='Inference phase/ports Java ABI and two production mutants')
     args = parser.parse_args()
     kotlin = Path(os.environ['KOTLIN_HOME'])
     stdlib = kotlin / 'lib/kotlin-stdlib.jar'
     require(stdlib.is_file(), 'fixed Kotlin stdlib missing')
-    parent = ROOT / ('.work/ap5ports-build/mutants' if args.ports else '.work/p2enum-build/mutants')
+    parent = ROOT / ('.work/ap5phase-build/mutants' if args.phase else
+                     '.work/ap5ports-build/mutants' if args.ports else '.work/p2enum-build/mutants')
     parent.mkdir(parents=True, exist_ok=True)
     evidence = Path(tempfile.mkdtemp(prefix='run-', dir=parent))
     records = []
     mutations = []
-    green_marker = ('PASS runtime log ports Java ABI/default/nullable/SAM/clock/store' if args.ports else
+    green_marker = ('PASS inference phase ports Java ABI/codes/NONE/nullable/throws/SAM' if args.phase else
+                    'PASS runtime log ports Java ABI/default/nullable/SAM/clock/store' if args.ports else
                     'PASS runtime log enums Java ABI/order/switch/errors and production persistence/codec')
     tools = {}
-    if args.ports:
+    if args.ports or args.phase:
         for name in ('java', 'javac', 'kotlinc', 'javap'):
             binary = shutil.which(name)
             require(binary is not None, 'cached tool missing: ' + name)
@@ -193,11 +197,15 @@ def main():
                                   *map(str, copies)], evidence / (label + '-compile.log'), records,
                                  label + '-compile', 270)
                 require(code == 0 and 'PASS mixed JVM compile:' in text, label + ' compile must exit 0, not behavioral red')
-                if args.ports and label == 'green0':
-                    names = ['RuntimeLogClock', 'RuntimeLogClock$System', 'RuntimeLogClock$Fake',
-                             'RuntimeLogSink', 'RuntimeLogSink$None']
+                if (args.ports or args.phase) and label == 'green0':
+                    names = (['InferencePhase', 'InferencePhaseListener', 'NativeTranscription'] if args.phase else
+                             ['RuntimeLogClock', 'RuntimeLogClock$System', 'RuntimeLogClock$Fake',
+                              'RuntimeLogSink', 'RuntimeLogSink$None'])
+                    package = 'org.llmasr.minimal.' + ('asr.' if args.phase else 'diagnostics.')
+                    if args.phase and (classes / 'org/llmasr/minimal/asr/InferencePhaseListener$Companion.class').is_file():
+                        names.append('InferencePhaseListener$Companion')
                     code, _ = run(['javap', '-p', '-s', '-v', '-classpath', str(classes),
-                                   *['org.llmasr.minimal.diagnostics.' + name for name in names]],
+                                   *[package + name for name in names]],
                                   evidence / 'green0-javap.log', records, 'green0-javap', 45)
                     require(code == 0, 'ports javap failed')
                 code, text = run(['java', '-cp', str(classes) + ':' + str(stdlib), 'KotlinMigrationTest'],
@@ -212,7 +220,9 @@ def main():
 
             compile_and_run('green0')
             if not args.green_only:
-                options = ([('RuntimeLogClock', 'default-noop', 'RuntimeLogClock default advance exception/message'),
+                options = ([('InferencePhase', 'explicit-code-zero', 'InferencePhase explicit JNI codes must remain 1/2/3/4'),
+                            ('InferencePhaseListener', 'none-int-reject', 'InferencePhaseListener.NONE must ignore every int code')]
+                           if args.phase else [('RuntimeLogClock', 'default-noop', 'RuntimeLogClock default advance exception/message'),
                             ('RuntimeLogSink', 'none-null-reject', 'RuntimeLogSink.None must ignore null snapshot')]
                            if args.ports else [('RuntimeLogSource', 'APP', 'IME'),
                                               ('RuntimeLogEventKind', 'APP_STARTUP', 'APP_READY')])
@@ -221,7 +231,14 @@ def main():
                     require(len(candidates) == 1, 'mutant requires migrated production Kotlin ' + name)
                     target = candidates[0]
                     original = target.read_bytes()
-                    if args.ports:
+                    if args.phase:
+                        if name == 'InferencePhase':
+                            old, new = b'MODEL_LOAD_STARTED(1)', b'MODEL_LOAD_STARTED(0)'
+                        else:
+                            old = b'InferencePhaseListener { }'
+                            new = b'InferencePhaseListener { code -> if (code == Int.MIN_VALUE) throw IllegalStateException("mutant-none") }'
+                        diagnostic = second
+                    elif args.ports:
                         if name == 'RuntimeLogClock':
                             old = b'throw UnsupportedOperationException("clock does not support advance")'
                             new = b'Unit'
@@ -250,10 +267,10 @@ def main():
                             target.write_bytes(original)
                     require(target.read_bytes() == original, 'source restoration failed ' + name)
                     compile_and_run(name + '-restored')
-                    mutations.append({'owner': name, ('mutation' if args.ports else 'swap'): [first, second],
+                    mutations.append({'owner': name, ('mutation' if args.ports or args.phase else 'swap'): [first, second],
                                       'original_sha256': original_sha, 'mutant_sha256': mutated_sha,
                                       'restored_sha256': sha(target), 'diagnostic': diagnostic})
-                    print('PASS ' + ('ports' if args.ports else 'enum') + ' mutant ' + name
+                    print('PASS ' + ('phase' if args.phase else 'ports' if args.ports else 'enum') + ' mutant ' + name
                           + ' compile=0 target-red=1 exact-source-restored-green=0')
         require(all(sha(ROOT / p) == s for p, s in original_hashes.items()), 'working source drift')
         result = {'green_only': args.green_only, 'inputs': original_hashes,
@@ -262,8 +279,10 @@ def main():
                   'temporary_tree_removed': True}
         if args.ports:
             result.update(ports=True, tools=tools)
+        if args.phase:
+            result.update(phase=True, tools=tools)
         (evidence / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
-        print('PASS runtime log ' + ('ports' if args.ports else 'enum') + ' real mixed compilation evidence=' + str(evidence.relative_to(ROOT)))
+        print('PASS runtime log ' + ('phase' if args.phase else 'ports' if args.ports else 'enum') + ' real mixed compilation evidence=' + str(evidence.relative_to(ROOT)))
     except BaseException:
         (evidence / 'failed-records.json').write_text(json.dumps(records, indent=2) + '\n')
         raise

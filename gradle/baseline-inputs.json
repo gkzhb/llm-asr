@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source_commit": "82a5563",
-  "revision_scope": "M6 baseline plus authorized P1 Lint fixes and P2 RuntimeLogSource/RuntimeLogEventKind equivalent Kotlin migration; llm-asr-rpb RuntimeLogWorker drain/execute fatal slot release plus R1 per-admission slot-token ownership (only that Worker source SHA); llm-asr-mfe model-maintenance best-effort admitted/terminal logging before presentation and synthesized finalizer failure (only Controller source SHA); llm-asr-mfe actual-exhaustion bounded RuntimeLogStore rebase and legal unrepresentable recovery normalization (only Store source SHA); llm-asr-ap5 RuntimeLogClock/RuntimeLogSink equivalent Kotlin migration (only corresponding source paths/SHA); native/assets/signing and legacy Manifest unchanged",
+  "revision_scope": "M6 baseline plus authorized P1 Lint fixes and P2 RuntimeLogSource/RuntimeLogEventKind equivalent Kotlin migration; llm-asr-rpb RuntimeLogWorker drain/execute fatal slot release plus R1 per-admission slot-token ownership (only that Worker source SHA); llm-asr-mfe model-maintenance best-effort admitted/terminal logging before presentation and synthesized finalizer failure (only Controller source SHA); llm-asr-mfe actual-exhaustion bounded RuntimeLogStore rebase and legal unrepresentable recovery normalization (only Store source SHA); llm-asr-ap5 RuntimeLogClock/RuntimeLogSink equivalent Kotlin migration (only corresponding source paths/SHA); llm-asr-ap5 InferencePhase/InferencePhaseListener/NativeTranscription equivalent Kotlin migration (only corresponding source paths/SHA); native/assets/signing and legacy Manifest unchanged",
   "native": {
     "path": ".work/build/minimal-apk/package/lib/arm64-v8a/libqwen_asr_jni.so",
     "sha256": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416"
@@ -26,12 +26,12 @@
     "android/app/src/org/llmasr/minimal/ModelManagementActivity.java": "c04da08c22c5530f87aa013af0beeceeb23c88dbac9fd650b4be5ba3a6e08a02",
     "android/app/src/org/llmasr/minimal/platform/ActivityWindow.java": "c581984eb27fb2cbbfe203e69df23d53d3a05d85da84862b67992375e06a6e36",
     "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.java": "7c4aa16a0d3174b397db839269033190cf34de531c1b395291f52c3c75a06ddc",
-    "android/app/src/org/llmasr/minimal/asr/InferencePhase.java": "72bc9400537dc6c2c4769ea09f8f210642bc27922a6f5b7e4481a3157667f00a",
-    "android/app/src/org/llmasr/minimal/asr/InferencePhaseListener.java": "1132c3c4d5040449b9f7e0d1e60872e5652b2d5a42edd07e1d5b5758311dca44",
+    "android/app/src/org/llmasr/minimal/asr/InferencePhase.kt": "16527ee674419379689306e4edb383e7de31ceb87fe2b0c6e52e9f3ac1c032e0",
+    "android/app/src/org/llmasr/minimal/asr/InferencePhaseListener.kt": "b459881f478e4034fbd986f983eda388e4226bda98772d7a4dda6a77b79d912d",
     "android/app/src/org/llmasr/minimal/asr/JniNativeTranscription.java": "c1d5973768675de52a03792bba9f1fdc44993ad6f05e7d482d83c313dd7687e8",
     "android/app/src/org/llmasr/minimal/asr/LoggingInferencePhaseListener.java": "24bc435dbfb6ceb86b3eaf58349a7eb5d688eb40c80a53658ef820631d9931f6",
     "android/app/src/org/llmasr/minimal/asr/NativeResponse.kt": "bd2620ec96a6030d66b7ce103227fc82d5a60ba1611808807bb81a547177f38a",
-    "android/app/src/org/llmasr/minimal/asr/NativeTranscription.java": "76cecf33387a49107d13165a1cb92ebb1d5c484300ea2cb1bfc96d13c1c04b4e",
+    "android/app/src/org/llmasr/minimal/asr/NativeTranscription.kt": "e04807b119e33eef12aeac16a6896644d6e2ad33992e96414c57feafaa896082",
     "android/app/src/org/llmasr/minimal/audio/AsrText.kt": "c720692ffea1d69b88d5ddbe8233d72b86f90cc3068748bde7a2432f62f21d34",
     "android/app/src/org/llmasr/minimal/audio/ForegroundRecorder.java": "fa4de7649c0d40ed168126d31e59beb60953f3ef60fe5f7ce5e7424081c6a16f",
     "android/app/src/org/llmasr/minimal/audio/PcmWave.kt": "ccf20aae11439ba259cc927168011634c15430cf865aa470d83710119e193620",

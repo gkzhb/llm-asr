@@ -1,0 +1,1963 @@
+{
+  "schema": 1,
+  "task": "llm-asr-ap5",
+  "owner": "p1-steward",
+  "base_head": "809c4a986651592bb7e9d855a78880828178582b",
+  "test_source_state": "precommit dirty reviewed freeze; future commit binding is not execution against a new commit object",
+  "accepted_review": {
+    "path": ".work/ap5phase-review/review-receipt.json",
+    "mode": "0644",
+    "bytes": 7883,
+    "sha256": "d852a7041f0a919b166f477ad1306ba4d87f8a254c0c22b17f90e3d1c70e6d14"
+  },
+  "domains": {
+    "build": {
+      "android/app/AndroidManifest.xml": {
+        "mode": "0644",
+        "bytes": 1895,
+        "sha256": "6b8e458f88a044d0ac8837c9ed8b522a70affdbbeea1c8d5eb3f4a387732cc78"
+      },
+      "android/app/assets/KOTLIN-LICENSE.txt": {
+        "mode": "0644",
+        "bytes": 11358,
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      "android/app/assets/KOTLIN-NOTICES.txt": {
+        "mode": "0644",
+        "bytes": 24541,
+        "sha256": "1f7ee5c77ad608a3c7c2b40503f866c6c6abe9dfe7e0f366bb699897e4833d78"
+      },
+      "android/app/assets/MNN-LICENSE.txt": {
+        "mode": "0644",
+        "bytes": 11346,
+        "sha256": "a830d59c4f98d110e0540d0581efada06192ba6e798434307d1794b07a290302"
+      },
+      "android/app/assets/THIRD-PARTY-NOTICES.txt": {
+        "mode": "0644",
+        "bytes": 1476,
+        "sha256": "82e25bfef82694517670c4340471e8dffe32bf6d83eab9f2aec3904ba2008e7d"
+      },
+      "android/app/build.gradle.kts": {
+        "mode": "0644",
+        "bytes": 7078,
+        "sha256": "7838a68854920c259532a576c9d070b6596d06534eb7161827a3f321d0f90195"
+      },
+      "android/app/gradle.lockfile": {
+        "mode": "0644",
+        "bytes": 30496,
+        "sha256": "6dd8e79d95ac27b907a74b8855db94519d8a3f55af7fdeed0c0f6ad093051d7f"
+      },
+      "android/app/res/values/strings.xml": {
+        "mode": "0644",
+        "bytes": 135,
+        "sha256": "1fd511fd92ebf881aacc98fddc2a5ef414d960fbcf00d49ade7309c55be96d68"
+      },
+      "android/app/res/xml/method.xml": {
+        "mode": "0644",
+        "bytes": 277,
+        "sha256": "944818acd60bb81fbb3ecf11bccc36efa8db0b423a0158c9cac7365701d92d37"
+      },
+      "android/app/src/org/llmasr/minimal/AppGraph.java": {
+        "mode": "0644",
+        "bytes": 9548,
+        "sha256": "9f33cdd81234bbf033ac49807205a76a3734f39ac5b1e52ee8291bb96ae0e012"
+      },
+      "android/app/src/org/llmasr/minimal/AsrImeService.java": {
+        "mode": "0644",
+        "bytes": 9785,
+        "sha256": "cff9fe4493b01bd26720e953b5606704c353e011ccd634c0f171d925a505f971"
+      },
+      "android/app/src/org/llmasr/minimal/LogsActivity.java": {
+        "mode": "0644",
+        "bytes": 7526,
+        "sha256": "2b2bb518a33953d1262f3e7c4e6e667f466ac7f52f32c3b8848bb9b0d9ddf671"
+      },
+      "android/app/src/org/llmasr/minimal/MainActivity.java": {
+        "mode": "0644",
+        "bytes": 18785,
+        "sha256": "88f24a66d9f571c9ab659d4a095c730b90adb8e9a73e89205fa8c0c2156adadc"
+      },
+      "android/app/src/org/llmasr/minimal/ModelManagementActivity.java": {
+        "mode": "0644",
+        "bytes": 17768,
+        "sha256": "c04da08c22c5530f87aa013af0beeceeb23c88dbac9fd650b4be5ba3a6e08a02"
+      },
+      "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.java": {
+        "mode": "0644",
+        "bytes": 2524,
+        "sha256": "7c4aa16a0d3174b397db839269033190cf34de531c1b395291f52c3c75a06ddc"
+      },
+      "android/app/src/org/llmasr/minimal/asr/InferencePhase.kt": {
+        "mode": "0644",
+        "bytes": 348,
+        "sha256": "16527ee674419379689306e4edb383e7de31ceb87fe2b0c6e52e9f3ac1c032e0"
+      },
+      "android/app/src/org/llmasr/minimal/asr/InferencePhaseListener.kt": {
+        "mode": "0644",
+        "bytes": 522,
+        "sha256": "b459881f478e4034fbd986f983eda388e4226bda98772d7a4dda6a77b79d912d"
+      },
+      "android/app/src/org/llmasr/minimal/asr/JniNativeTranscription.java": {
+        "mode": "0644",
+        "bytes": 863,
+        "sha256": "c1d5973768675de52a03792bba9f1fdc44993ad6f05e7d482d83c313dd7687e8"
+      },
+      "android/app/src/org/llmasr/minimal/asr/LoggingInferencePhaseListener.java": {
+        "mode": "0644",
+        "bytes": 5069,
+        "sha256": "24bc435dbfb6ceb86b3eaf58349a7eb5d688eb40c80a53658ef820631d9931f6"
+      },
+      "android/app/src/org/llmasr/minimal/asr/NativeResponse.kt": {
+        "mode": "0644",
+        "bytes": 3272,
+        "sha256": "bd2620ec96a6030d66b7ce103227fc82d5a60ba1611808807bb81a547177f38a"
+      },
+      "android/app/src/org/llmasr/minimal/asr/NativeTranscription.kt": {
+        "mode": "0644",
+        "bytes": 611,
+        "sha256": "e04807b119e33eef12aeac16a6896644d6e2ad33992e96414c57feafaa896082"
+      },
+      "android/app/src/org/llmasr/minimal/audio/AsrText.kt": {
+        "mode": "0644",
+        "bytes": 526,
+        "sha256": "c720692ffea1d69b88d5ddbe8233d72b86f90cc3068748bde7a2432f62f21d34"
+      },
+      "android/app/src/org/llmasr/minimal/audio/ForegroundRecorder.java": {
+        "mode": "0644",
+        "bytes": 3573,
+        "sha256": "fa4de7649c0d40ed168126d31e59beb60953f3ef60fe5f7ce5e7424081c6a16f"
+      },
+      "android/app/src/org/llmasr/minimal/audio/PcmWave.kt": {
+        "mode": "0644",
+        "bytes": 1730,
+        "sha256": "ccf20aae11439ba259cc927168011634c15430cf865aa470d83710119e193620"
+      },
+      "android/app/src/org/llmasr/minimal/audio/RecordingControl.kt": {
+        "mode": "0644",
+        "bytes": 1471,
+        "sha256": "dfa9ac879776138aca236aeb2216582e37221fd79c5dc56485d77c2a33e690ac"
+      },
+      "android/app/src/org/llmasr/minimal/audio/WaveInput.java": {
+        "mode": "0644",
+        "bytes": 2742,
+        "sha256": "b46d023aa69cc8eb74d3e6dc1ac815f7c0e1417c82c4534ef7b622ffe5103c83"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/LogExportController.java": {
+        "mode": "0644",
+        "bytes": 6169,
+        "sha256": "b12e279d5b06c8fee6494893ae7de20bf4b6d274ddf50f1e8626f491ce62da92"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/LogExportPage.java": {
+        "mode": "0644",
+        "bytes": 1815,
+        "sha256": "d05ff91be2a166a3e8065e056ff1be3b48bbe9de65ad3b4c9913a2805104da3a"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogClock.kt": {
+        "mode": "0644",
+        "bytes": 1864,
+        "sha256": "109268a07c22514885ba67ffef8635c7a7933af1807d9903fb17ec7a82426453"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogCodec.java": {
+        "mode": "0644",
+        "bytes": 2394,
+        "sha256": "63b698de2118955204e0a4e7621f77cc64c49aff61835edac5b4d383f9db68f2"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEvent.java": {
+        "mode": "0644",
+        "bytes": 4017,
+        "sha256": "ca0eadef27b02602e0dc1b388b05a89a778be976aea487b582ab18869c23375c"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.kt": {
+        "mode": "0644",
+        "bytes": 1179,
+        "sha256": "10712467665202aa6fd6b9deae4223f945051bd69b63d649c317bad00a477390"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogPersistence.java": {
+        "mode": "0644",
+        "bytes": 9696,
+        "sha256": "0be6031cefef8deb1ab90eb9970a56c7f27c286bfdb22899bce8f5410c66d58c"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSink.kt": {
+        "mode": "0644",
+        "bytes": 953,
+        "sha256": "b24ecb6f21253bc2507b2090875a348c92ed74f467f71fb36e20eefcee3efe63"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt": {
+        "mode": "0644",
+        "bytes": 238,
+        "sha256": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogStore.java": {
+        "mode": "0644",
+        "bytes": 7994,
+        "sha256": "9cdde653b37dc6e6fe3d610557ae166d095f4f3539688d9e677a74d4f26779cd"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogText.java": {
+        "mode": "0644",
+        "bytes": 3293,
+        "sha256": "ecb3c0dd2e14640a0a819778c8d748245d11ddc64e73fab083b062e7e6455eb5"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogWorker.java": {
+        "mode": "0644",
+        "bytes": 9350,
+        "sha256": "d4468f5bb1fc91e099ce22a8eef4d3c3f745995651b89ca6a6d58d850e52f754"
+      },
+      "android/app/src/org/llmasr/minimal/ime/ImeBackend.java": {
+        "mode": "0644",
+        "bytes": 2201,
+        "sha256": "ca36d5b7bdbf67c7334363393c1dae267b321621f08bb6e5a30627439a77619b"
+      },
+      "android/app/src/org/llmasr/minimal/ime/ImeController.java": {
+        "mode": "0644",
+        "bytes": 6681,
+        "sha256": "05d0dbcafb33b2b64d85b5839bb92854930ad14d7b20c3de0f2d35f4a304fa05"
+      },
+      "android/app/src/org/llmasr/minimal/ime/ImeFieldPolicy.kt": {
+        "mode": "0644",
+        "bytes": 662,
+        "sha256": "549770871e8613bf7fae3d6a112ff08c8cb8464ab7aae7e37d8e8d90d972a309"
+      },
+      "android/app/src/org/llmasr/minimal/ime/ImeSession.java": {
+        "mode": "0644",
+        "bytes": 714,
+        "sha256": "897f2855fee72b66902acc351e344ba7001d774c83a923f489da798fe40a294d"
+      },
+      "android/app/src/org/llmasr/minimal/model/FileSafety.java": {
+        "mode": "0644",
+        "bytes": 2071,
+        "sha256": "dc5096f4be0f73c5eb0a504d3d1e78a5f55a61e1c64d9b41ab5858a6d37c21ae"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelAccess.java": {
+        "mode": "0644",
+        "bytes": 1765,
+        "sha256": "77fdf3135de4be63a0d13dd0e7534a5477f7befdc1936c9e008f146c313af3df"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelEntry.java": {
+        "mode": "0644",
+        "bytes": 1253,
+        "sha256": "98220f421a4b1cd9ab42fe053d563c44e67e4b7ae16ac904b0fbbeccc29c1e81"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelManifest.java": {
+        "mode": "0644",
+        "bytes": 3282,
+        "sha256": "6f3386847bd25bad71f0309a2a3746b778363087fe766d9d5f16d6b755a3b1c4"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelProviderBoundary.java": {
+        "mode": "0644",
+        "bytes": 1712,
+        "sha256": "ec0a248e331a276ccb9c584bf55a356a6e3cbaf633be8a91aa48468a65ccedd1"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelReadiness.java": {
+        "mode": "0644",
+        "bytes": 6511,
+        "sha256": "985fe1c96b779e7079ac77205cea0daf4e3c19233c407ce16b05a27ec78834a7"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelReports.java": {
+        "mode": "0644",
+        "bytes": 3622,
+        "sha256": "ad7ec1178581388ecd2b85e5b131fef979da55e117313b35a11289511793d6df"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelRepository.java": {
+        "mode": "0644",
+        "bytes": 31648,
+        "sha256": "4e842f6960d9568b01c8c79fee8f800791d9e32d53539abc4ead70641dd39b59"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelSource.java": {
+        "mode": "0644",
+        "bytes": 1961,
+        "sha256": "aa53cfe92357e02ff65c7ee212574314af4cab4c9db2deebbb1254d57a9687de"
+      },
+      "android/app/src/org/llmasr/minimal/model/SafModelSource.java": {
+        "mode": "0644",
+        "bytes": 4577,
+        "sha256": "4ca318fec09adcd410dbc9a05a62e2ceba350dd4814cda36081cd1d11eaebc07"
+      },
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementController.java": {
+        "mode": "0644",
+        "bytes": 19535,
+        "sha256": "1485ea152e0dbdfbacbb6306e5a77ced61c92aedcc2869a3f4eda4eedb0c5da3"
+      },
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementState.java": {
+        "mode": "0644",
+        "bytes": 11441,
+        "sha256": "f0af50bad07b0004763088be08509c23031669e08e88cf108d7dc42dc382018b"
+      },
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelOperationControl.java": {
+        "mode": "0644",
+        "bytes": 3265,
+        "sha256": "8f2e99d0ae960041cb94b615324c1ded4491a80ce60473bc1e2ecd44aa260d51"
+      },
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelPageSession.java": {
+        "mode": "0644",
+        "bytes": 3009,
+        "sha256": "a8a5be02a20c9e604ae522a02dde1d6b981d75e09f4f4fc8c08584e78df01c80"
+      },
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelPickerTickets.java": {
+        "mode": "0644",
+        "bytes": 1099,
+        "sha256": "cc7185e24a1c195643a4a2d592470c330073d2d7107617fd6a7b8497085b44bd"
+      },
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelUiText.java": {
+        "mode": "0644",
+        "bytes": 7545,
+        "sha256": "c65e148fd15b637d7e1c75e2dbc3be56622d84c3236a00f4d2ad78e77202ec48"
+      },
+      "android/app/src/org/llmasr/minimal/platform/ActivityWindow.java": {
+        "mode": "0644",
+        "bytes": 5106,
+        "sha256": "c581984eb27fb2cbbfe203e69df23d53d3a05d85da84862b67992375e06a6e36"
+      },
+      "android/app/src/org/llmasr/minimal/platform/OperationContext.java": {
+        "mode": "0644",
+        "bytes": 1522,
+        "sha256": "f9aa30f017bf4d38f4c55c16a14a52fbe64cf5ce058cde22ef4cedf2d0ecbc52"
+      },
+      "android/app/src/org/llmasr/minimal/task/RequestContext.kt": {
+        "mode": "0644",
+        "bytes": 546,
+        "sha256": "160f70966971c8276a41107b4e8779244f247af17d352744777af085181d6d03"
+      },
+      "android/app/src/org/llmasr/minimal/task/RequestRunner.kt": {
+        "mode": "0644",
+        "bytes": 3682,
+        "sha256": "50be8c887bb762f422a551b0b856f6fc84de24bc3aa6390f488b70ee58ac62e4"
+      },
+      "android/app/src/org/llmasr/minimal/task/TaskCoordinator.kt": {
+        "mode": "0644",
+        "bytes": 3725,
+        "sha256": "9557fb0f244bd896b5d33e95e84e61cac25a66a242bf633102a7f05ccdd0ccd3"
+      },
+      "android/app/src/org/llmasr/minimal/task/TaskKind.kt": {
+        "mode": "0644",
+        "bytes": 193,
+        "sha256": "46a4aaf966b39e674b8ebc2656ad4b4f91172cab1a95aae93ac09f500f075715"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/AppReportWriter.java": {
+        "mode": "0644",
+        "bytes": 5679,
+        "sha256": "cfb660b72fde442ee29f3b91c5bddd2d1cf28e6dfa20a29df449952f591401db"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/AppRequestPolicy.java": {
+        "mode": "0644",
+        "bytes": 2915,
+        "sha256": "6f908f83484a20131bb2d5c84c9ac7c1e3df4bc5f180f2c6ea5cc7d7df860920"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/AppState.kt": {
+        "mode": "0644",
+        "bytes": 1952,
+        "sha256": "49c018c3e8e98fd3953bd3c26f85a1639a1346f553f97ebc46d55b1ef388910d"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/AsrOperation.java": {
+        "mode": "0644",
+        "bytes": 8540,
+        "sha256": "7dd786d9632354a3b5315baee0aef546e52c7f2f1b70e0ffed4c5ab1dcbf0436"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/ResultFiles.java": {
+        "mode": "0644",
+        "bytes": 1831,
+        "sha256": "79df177f5c8d3f5642751b32e7442b31f2851aff17f08dd7f594713c42db3f7a"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/ResultState.java": {
+        "mode": "0644",
+        "bytes": 2224,
+        "sha256": "b6da90abe514c1a8040eba8d3a9e2eb716d81370da4fa6b214267a200b730179"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/TextExportController.java": {
+        "mode": "0644",
+        "bytes": 9821,
+        "sha256": "b1993d243362d02f2496db536461b58f0a42c81c12c8ceb8bdb9a5ab9b3279d7"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/TextExportPage.java": {
+        "mode": "0644",
+        "bytes": 3324,
+        "sha256": "fed5eb7d293bd18c8aa3e68a853162b21d4a39dc0201cbb6cdde71ef6baa9147"
+      },
+      "android/asr-runtime/build.gradle.kts": {
+        "mode": "0644",
+        "bytes": 2898,
+        "sha256": "5bb0c3faa584244ac0abfbd65a35d453f3e398e5867c786eedf25e3e817d6746"
+      },
+      "android/asr-runtime/gradle.lockfile": {
+        "mode": "0644",
+        "bytes": 713,
+        "sha256": "ca9461c9257b6921f76b8dd4fcbc9924a3d8c620350964482d849ce2c655753e"
+      },
+      "android/asr-runtime/src/main/AndroidManifest.xml": {
+        "mode": "0644",
+        "bytes": 153,
+        "sha256": "c731fa1946c9d3fcbd99e690bce46f29efcb2c1da5b0ed262d2c63ee84f280c1"
+      },
+      "android/asr-runtime/src/test/java/RuntimeRegressionJUnitTest.java": {
+        "mode": "0644",
+        "bytes": 329,
+        "sha256": "e33805928ba02ca2c37ec736b29687118211198beb7d7ef3e9c58bc59aaa42f1"
+      },
+      "android/test-host/build.gradle.kts": {
+        "mode": "0644",
+        "bytes": 2521,
+        "sha256": "f9d8a45b9ba58b304f23b20112539953834eaf7f756644fcc61c19ec25e13e6c"
+      },
+      "android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.java": {
+        "mode": "0644",
+        "bytes": 5547,
+        "sha256": "6a9b95fb32416eee8419177f495e8de0370cc2c505a7c875c2fd6d5562754402"
+      },
+      "android/test-host/fixtures/java/org/llmasr/minimal/testhost/FixtureChecks.java": {
+        "mode": "0644",
+        "bytes": 7477,
+        "sha256": "38925c6d774b886099fd9ff33295a0f6b2db501f03ac29adad3eb5ee9f71eb2b"
+      },
+      "android/test-host/gradle.lockfile": {
+        "mode": "0644",
+        "bytes": 913,
+        "sha256": "d05a063c52689a10a5adc40fc0f64e5beec4f5e19c84fc3b6c87d5543dba976e"
+      },
+      "android/test-host/src/androidTest/AndroidManifest.xml": {
+        "mode": "0644",
+        "bytes": 352,
+        "sha256": "d3be5afc63c496147d7ea22887b88f471c312039ba96982423c555f2402b6347"
+      },
+      "android/test-host/src/androidTest/java/org/llmasr/minimal/testhost/FakeDocumentsProvider.java": {
+        "mode": "0644",
+        "bytes": 4453,
+        "sha256": "5e4eeaa7b6860cfcc884952476b1fd19a376cff8a13320fbb0dd635d6a7a381a"
+      },
+      "android/test-host/src/androidTest/java/org/llmasr/minimal/testhost/FixtureInstrumentationTest.java": {
+        "mode": "0644",
+        "bytes": 20399,
+        "sha256": "e9627ca45fc6c3a092c35ff7bfe8ca3fd194238f81f03973472685ad7b1c8a92"
+      },
+      "android/test-host/src/main/AndroidManifest.xml": {
+        "mode": "0644",
+        "bytes": 691,
+        "sha256": "0ded82a2305a1a40be0b09b5f4fecd5734acd216f971de9235c786380494dccd"
+      },
+      "android/test-host/src/main/java/org/llmasr/minimal/testhost/ImeHostActivity.java": {
+        "mode": "0644",
+        "bytes": 1073,
+        "sha256": "34bd990d93f9ab2527b587ba188749b443c0d7662640c2e98fb393f57c25849d"
+      },
+      "android/test-host/src/test/java/org/llmasr/minimal/testhost/FixtureContractTest.java": {
+        "mode": "0644",
+        "bytes": 913,
+        "sha256": "16360aa4fdd5829f20872bdac4d15806c8f4d76a6f97963cc3d9514274c79b23"
+      },
+      "build.gradle.kts": {
+        "mode": "0644",
+        "bytes": 8841,
+        "sha256": "6f5f40b6775171581783f63809483af1c8a8e0e14c24f01dc73377bb219d6c39"
+      },
+      "buildscript-gradle.lockfile": {
+        "mode": "0644",
+        "bytes": 7736,
+        "sha256": "e3061e826738a0f47d99aef3cc0382a911fec202e58b401820e6ad51fb859a8f"
+      },
+      "core/build.gradle.kts": {
+        "mode": "0644",
+        "bytes": 2618,
+        "sha256": "ad5d3a56dc5ee64e6b0e310828469eee7ec859b276ae7f13b85c7dd19b3f0baf"
+      },
+      "core/gradle.lockfile": {
+        "mode": "0644",
+        "bytes": 2315,
+        "sha256": "a95da16fb4c5e6598d2baab99234f60abc80268b6a7f8f3b4798cb019b7df67b"
+      },
+      "core/src/test/java/CoreRegressionJUnitTest.java": {
+        "mode": "0644",
+        "bytes": 4394,
+        "sha256": "c1152779feca1807d508a346169582a9dc829c4e873b78bb2c3c81735ec20301"
+      },
+      "flake.lock": {
+        "mode": "0644",
+        "bytes": 567,
+        "sha256": "0ae8d7124e7a06626bd764744beac322a1f032eb6f4a0d223b18781ab0f16afc"
+      },
+      "flake.nix": {
+        "mode": "0644",
+        "bytes": 3772,
+        "sha256": "08015cbff0ab064b799f8a638a314fdee878042130b9f6ce7f8a30a273a2c50f"
+      },
+      "gradle.properties": {
+        "mode": "0644",
+        "bytes": 423,
+        "sha256": "f74fd6b21d9422f9202d862a6d841f273134854ecfcbd0310a3f00d6b57ff825"
+      },
+      "gradle/baseline-inputs.json": {
+        "mode": "0644",
+        "bytes": 11277,
+        "sha256": "e7e2cc1e094ff9047bb45ff9aaf90f3f713082749985f9f9753c4f75ce2f5e29"
+      },
+      "gradle/lint-tool-identity.json": {
+        "mode": "0644",
+        "bytes": 97700,
+        "sha256": "54043cd3b63f494ab0182d6122b152680c5e54041b3f4998e428e41a970c3fbf"
+      },
+      "gradle/verification-metadata.xml": {
+        "mode": "0644",
+        "bytes": 114376,
+        "sha256": "c2ad4bfd7e430df923faa14e4cb3a309b4c1e73bc3adad937d7a15ff55fc219a"
+      },
+      "gradle/verify-lint-tools.gradle": {
+        "mode": "0644",
+        "bytes": 7564,
+        "sha256": "a4001f33fd3692166c9510cf402fe357678e3157e977828a76b170c3fda1faef"
+      },
+      "gradle/wrapper/gradle-wrapper.jar": {
+        "mode": "0644",
+        "bytes": 43453,
+        "sha256": "cb0da6751c2b753a16ac168bb354870ebb1e162e9083f116729cec9c781156b8"
+      },
+      "gradle/wrapper/gradle-wrapper.properties": {
+        "mode": "0644",
+        "bytes": 338,
+        "sha256": "16572c7e88f2ebd8683b1003556934c23922c1f817397795120e5e75c667da49"
+      },
+      "gradlew": {
+        "mode": "0755",
+        "bytes": 8692,
+        "sha256": "fc977a94723af68aaffa4e5d60496fb4aeed1884b6b19e5e2f2fd7612673313d"
+      },
+      "gradlew.bat": {
+        "mode": "0644",
+        "bytes": 2918,
+        "sha256": "bdecf875b6868cbcbd36a1f85eedf0832f358ff28092c5797ed645f7edce77d9"
+      },
+      "native/apk/asr_jni.cpp": {
+        "mode": "0644",
+        "bytes": 6336,
+        "sha256": "4eaca3d66b90c63954a65f69887fe94b1ea97ebdb474ecfda5b306ce9cc07946"
+      },
+      "native/cmake/finalize-mnn.cmake": {
+        "mode": "0644",
+        "bytes": 1769,
+        "sha256": "0a7bd60ebdd656f8856551af7111ceecfdac37c9c8d307b6d911bc7259a4b7ca"
+      },
+      "native/cmake/mnn-artifact.cmake": {
+        "mode": "0644",
+        "bytes": 225,
+        "sha256": "380b331ac71b22830281e4104342bd65dde2e92c14d89cbd24cf63fb6282e2b2"
+      },
+      "native/source-lock.json": {
+        "mode": "0644",
+        "bytes": 771,
+        "sha256": "b3b4bc3a7c2947163d80deebc8686aecccaf38efd74b2025fe9557bfb0ccc497"
+      },
+      "patches/mnn-asr-boundary-positions.patch": {
+        "mode": "0644",
+        "bytes": 729,
+        "sha256": "bd643768d175ef9f2a46099bdcecc46216d8fdb9f1a0e6662dd6825ad827fe84"
+      },
+      "patches/mnn-p0.patch": {
+        "mode": "0644",
+        "bytes": 3504,
+        "sha256": "c0ea13850febb20ee8f4d01d4028461fd49daf4b8730a84de0f5e38876d7f363"
+      },
+      "patches/mnn-whisper-periodic-hann.patch": {
+        "mode": "0644",
+        "bytes": 2096,
+        "sha256": "b1642f6bc52372e1d800d763e47888c746e1a3e3575c75f11177f337f5acaa4f"
+      },
+      "patches/qwen-lazy-nagisa.patch": {
+        "mode": "0644",
+        "bytes": 649,
+        "sha256": "c24bf1940bab19c2a89c34159f3900be0fdf9e7e502d89de4cba5936f045abe8"
+      },
+      "reports/p0/mnn-model-manifest.json": {
+        "mode": "0644",
+        "bytes": 1125,
+        "sha256": "1435b19c210472fa88d04e471595b4a709264b164a3eae2cec432643eaee380e"
+      },
+      "scripts/apk_report_binding.py": {
+        "mode": "0644",
+        "bytes": 1639,
+        "sha256": "77905416ef703b2694a4a17995969fa611cf68e7fb96d45feadcb36c970d3f5a"
+      },
+      "scripts/build-minimal-apk.sh": {
+        "mode": "0755",
+        "bytes": 8056,
+        "sha256": "2e254359d1ae386419a43fdbe1a236704b1b7037f2726d2d259f93b36019d519"
+      },
+      "scripts/build-mnn-p0.sh": {
+        "mode": "0644",
+        "bytes": 1206,
+        "sha256": "a5432375eb9cc29862b2b52389bbfc52c9ed1b322a5bd969b0e2d11dcb7c8c40"
+      },
+      "scripts/build-native-artifact.sh": {
+        "mode": "0644",
+        "bytes": 2593,
+        "sha256": "e25d2d1b61cfea051e5397568a4938ca73c41b0aceba7f6ee6a25f9fc7aced38"
+      },
+      "scripts/build-p0-harness.sh": {
+        "mode": "0644",
+        "bytes": 965,
+        "sha256": "9e233c936f0590eff48698006138d4192c70d2d922500c3403c3120b52c36dd6"
+      },
+      "scripts/check-fast-task-graph.py": {
+        "mode": "0644",
+        "bytes": 3776,
+        "sha256": "54113ef5c572351ba9e8d038adaf613be47d804a32363592024764a7781f0d4d"
+      },
+      "scripts/check-jni-symbols.py": {
+        "mode": "0644",
+        "bytes": 2468,
+        "sha256": "e75f21aef99a384bb663695e70df7cf8e5f294532761542885f680c8bb4fdfe7"
+      },
+      "scripts/check-maintained-text.py": {
+        "mode": "0644",
+        "bytes": 4284,
+        "sha256": "50d7810d959028d76a64c7ce19e201a0be66889229ab1996697e072407bd14b7"
+      },
+      "scripts/check-minimal-apk.py": {
+        "mode": "0644",
+        "bytes": 5866,
+        "sha256": "1d0f34cced09f0acbe890e698f9871f370d9df2c92d9a0567753d06df1286a55"
+      },
+      "scripts/compile-android-java.sh": {
+        "mode": "0644",
+        "bytes": 653,
+        "sha256": "16c0f6a517e9867595512dae7c33a124b2e6b1d7c2acc595560d8da735511a95"
+      },
+      "scripts/compile-jni-object.sh": {
+        "mode": "0644",
+        "bytes": 2161,
+        "sha256": "d8096057e9e0a76e46f3771f3154de1151e657806d73440b8eef34bfd25357ed"
+      },
+      "scripts/compile-jvm-sources.sh": {
+        "mode": "0644",
+        "bytes": 1668,
+        "sha256": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf"
+      },
+      "scripts/deploy-minimal-apk.py": {
+        "mode": "0755",
+        "bytes": 6650,
+        "sha256": "27c7d56383bbb2afd54fd4b5c3bfaa7fb47ca6308350b6fe8e4ee6f3fdd02be5"
+      },
+      "scripts/deploy-p0-model.py": {
+        "mode": "0644",
+        "bytes": 4809,
+        "sha256": "9c589d61c896e7f97f62e03e2b1ffc39016f692d76ded0dba941be52cc7ba961"
+      },
+      "scripts/device-probe.sh": {
+        "mode": "0644",
+        "bytes": 1988,
+        "sha256": "39388266fbeb52e67572eb9b03697dcfb1e5a4e16738e3ac4cb26d567d95855e"
+      },
+      "scripts/dex_class_inventory.py": {
+        "mode": "0644",
+        "bytes": 2109,
+        "sha256": "4232600594ba3b5075f0f511434a38d9a7163fa2397a025b5bebbc898848190a"
+      },
+      "scripts/link-apk-native.py": {
+        "mode": "0644",
+        "bytes": 2574,
+        "sha256": "95a1f6917732f5d30bc4db7d4bf65353cdb826b49899a03a9d1bac3bf8cbad42"
+      },
+      "scripts/link-native-artifact.py": {
+        "mode": "0644",
+        "bytes": 3121,
+        "sha256": "7f0e3515d9f248fe43eb4eaaa4bda17bc0a17450bf88af3cfc7d72183d3eb4af"
+      },
+      "scripts/nix-env.sh": {
+        "mode": "0755",
+        "bytes": 1067,
+        "sha256": "1e56fb4297ffa6569de095fef630a620f14f324289af5e678f5fad472008e753"
+      },
+      "scripts/prepare-gradle-inputs.py": {
+        "mode": "0644",
+        "bytes": 5111,
+        "sha256": "72823bc5c5437773ba5c2d40cc1d88ad61affad24fb3761733dd5f55f1fbac3a"
+      },
+      "scripts/prepare-model-configs.py": {
+        "mode": "0644",
+        "bytes": 6074,
+        "sha256": "ca86915297b62fad32fafc9957bf29aa94685ee838e0d9c5c5dedc2815944d80"
+      },
+      "scripts/prepare-native-sources.py": {
+        "mode": "0644",
+        "bytes": 6233,
+        "sha256": "ad1ac36fc25d0505ce808ee140827201b0f4e45235ffb6db9e977c9f84b069e1"
+      },
+      "scripts/run-device-p0.sh": {
+        "mode": "0644",
+        "bytes": 3327,
+        "sha256": "a788934858214fac6a5947ac642064b4512d76eae49aad70cf17d50d270263ae"
+      },
+      "scripts/test-minimal-apk.sh": {
+        "mode": "0755",
+        "bytes": 5848,
+        "sha256": "8d78d7729f64074cab9095a499c244c30f3c44967b86b0dd840169f152bfc2e4"
+      },
+      "scripts/verify-android-test-apk.py": {
+        "mode": "0644",
+        "bytes": 19159,
+        "sha256": "745d130b26a61bee2244e80b83c839af07f8b47dcbf036116001435091d9fa9b"
+      },
+      "scripts/verify-gradle-apk.py": {
+        "mode": "0644",
+        "bytes": 13090,
+        "sha256": "033f2f32a1bceded7c4665cff0816d7c2434bdd75c8d9f6859b198cc485bea33"
+      },
+      "scripts/verify-gradle.sh": {
+        "mode": "0644",
+        "bytes": 211,
+        "sha256": "c09c83d3d368e4ab15b15f5fe1b937e5084b0c99188e68cb58fd359a05145c35"
+      },
+      "scripts/verify-local.sh": {
+        "mode": "0644",
+        "bytes": 3093,
+        "sha256": "3b465e83da8f3920e6d75f654111f6ca13ae0f6b7a7f3ab7d22ed163dce0a920"
+      },
+      "scripts/verify-native-artifact.py": {
+        "mode": "0644",
+        "bytes": 6966,
+        "sha256": "f3931747fc4d956704c6bdab2881027f19f6160ed5c07fdf0c6bd2bfd5f57c04"
+      },
+      "settings.gradle.kts": {
+        "mode": "0644",
+        "bytes": 1062,
+        "sha256": "cea3d1a9071109cfb30ffcfd44baf073873bf891af49ce01a5f88244b6aba35b"
+      },
+      "tests/AdmissionBoundaryTest.java": {
+        "mode": "0644",
+        "bytes": 11277,
+        "sha256": "31a764ac034705b014f6615153e3019406ce4f86dafa77650eb7b728b45785a1"
+      },
+      "tests/ImeSessionTest.java": {
+        "mode": "0644",
+        "bytes": 12629,
+        "sha256": "bd1649801d7fafea76af66be18a696c4036a1e581217062dfb1f6e1046f70109"
+      },
+      "tests/InferenceAdapterTest.java": {
+        "mode": "0644",
+        "bytes": 31093,
+        "sha256": "0f82a6da87b82518fd112439d88a91026cf99ef1b6f131735a3f9a8d303bd33e"
+      },
+      "tests/KotlinMigrationTest.java": {
+        "mode": "0644",
+        "bytes": 38418,
+        "sha256": "2d39e8d0b35ffa3f35c2b07a21ff1e78b74c0aa99538d5acab8b18c7def5fc7d"
+      },
+      "tests/LogExportTest.java": {
+        "mode": "0644",
+        "bytes": 10230,
+        "sha256": "11eb184ae4ff0b3d5b891ba530c28598d9cf4256131dcefbed34298895822cdc"
+      },
+      "tests/MinimalApkTest.java": {
+        "mode": "0644",
+        "bytes": 4810,
+        "sha256": "e70c7fec19d15ee73dd014c50adad2fffe2aa18e1ef4b0473edb18f6031b6030"
+      },
+      "tests/ModelAndroidHelpersTest.java": {
+        "mode": "0644",
+        "bytes": 15043,
+        "sha256": "f6128a93379b225d8a9782762a03e2cf0232371287905cc6221931dda9a307f1"
+      },
+      "tests/ModelManagementControllerTest.java": {
+        "mode": "0644",
+        "bytes": 29618,
+        "sha256": "68243c45c5b778352c10983d447fb82dfa87f210eda119aaa9462750be5279d7"
+      },
+      "tests/ModelNotificationTest.java": {
+        "mode": "0644",
+        "bytes": 3249,
+        "sha256": "f7f4cefa3ce735847d5dd311a2d059329287224d0c0d6e776cae8e3371ec469d"
+      },
+      "tests/ModelOperationControlTest.java": {
+        "mode": "0644",
+        "bytes": 8150,
+        "sha256": "c031d1ad079f816aaf99834eaf8c5f6295667aa2ec6609a1e7279272b3688427"
+      },
+      "tests/ModelPrivateRootTest.java": {
+        "mode": "0644",
+        "bytes": 6280,
+        "sha256": "c88f2d9f264a88969e3e13a707ec9cf3cb5f301ad23d1a5b0d11d32c0e14daf5"
+      },
+      "tests/ModelProviderBoundaryTest.java": {
+        "mode": "0644",
+        "bytes": 6294,
+        "sha256": "09de2281671bb38f283695b6acad73b99d5ecff74791bdd4447b00d99330e8dc"
+      },
+      "tests/ModelReadinessTest.java": {
+        "mode": "0644",
+        "bytes": 8298,
+        "sha256": "043e406fb58017f9c2838974c551904e35cf01475dad73911b00b5bcc4d21948"
+      },
+      "tests/ModelRepositoryCancelTest.java": {
+        "mode": "0644",
+        "bytes": 10970,
+        "sha256": "cb4340e200b2d82bfe3a0c6f4185db2a08550c2292bfb836813615ff664f66bf"
+      },
+      "tests/ModelRepositoryDeleteTest.java": {
+        "mode": "0644",
+        "bytes": 9818,
+        "sha256": "fea9405054b97623ba642a61201d96e1292e85dedd128c15f90215092b89af25"
+      },
+      "tests/ModelRepositoryTest.java": {
+        "mode": "0644",
+        "bytes": 15575,
+        "sha256": "e377cd0b6534310907f5504ae18cd65907e5bd38bc24eb7ba656238c5e3a0768"
+      },
+      "tests/ModelReviewFixTest.java": {
+        "mode": "0644",
+        "bytes": 18123,
+        "sha256": "6302a228d0aa9499230a3dd8a659cd6e367514fc3b7a8ce4ba63f1d96575383c"
+      },
+      "tests/NativeResponseTest.java": {
+        "mode": "0644",
+        "bytes": 6738,
+        "sha256": "795dcc46a30c51038c18024774f81076dd3d3e196825d39a1c65a2af3f3ed842"
+      },
+      "tests/PartRecoveryTest.java": {
+        "mode": "0644",
+        "bytes": 13158,
+        "sha256": "6df659cf58e01b266b52b1ffd383b902ce763ba056a021c2c3ec1655022caf41"
+      },
+      "tests/RecordingRaceTest.java": {
+        "mode": "0644",
+        "bytes": 4615,
+        "sha256": "c0566ea863df6aee3a881e32f6ba5ed20ad73560fedd291850c59816f91e13c6"
+      },
+      "tests/RequestRunnerTest.java": {
+        "mode": "0644",
+        "bytes": 15178,
+        "sha256": "4fd5ef10e58091d7400178eab7cd9988ec83c1a0845e95d8117cfedeecc038aa"
+      },
+      "tests/ResultFilesTest.java": {
+        "mode": "0644",
+        "bytes": 5905,
+        "sha256": "18b4a6494f0329327dc1cb1a8120a7f3e2e12607f4923421e49c3d6441657f29"
+      },
+      "tests/RuntimeLogCoreTest.java": {
+        "mode": "0644",
+        "bytes": 52142,
+        "sha256": "77ff00d89183a23e203200a5496e7999eeea57dd5bb4a9e82491887adeb398c7"
+      },
+      "tests/RuntimeLogStoreErrorTest.java": {
+        "mode": "0644",
+        "bytes": 5535,
+        "sha256": "284365418da61429bbf47e615e4743fb5f3699e49263aa03cc2988322bcdce2c"
+      },
+      "tests/RuntimeLogWorkerErrorTest.java": {
+        "mode": "0644",
+        "bytes": 44851,
+        "sha256": "081382d8ab6d451d6e581b5ac3a75c00b1f4fb37a966bc371320ccb2e8c3c216"
+      },
+      "tests/TaskCoordinatorTest.java": {
+        "mode": "0644",
+        "bytes": 7619,
+        "sha256": "bcf475da0b82c6f0077614d85ed8229b70ae478278fe1e9e7a270f3e9ebe783a"
+      },
+      "tests/TextExportFatalTest.java": {
+        "mode": "0644",
+        "bytes": 1820,
+        "sha256": "8842707be158e9ed067dffdedc34c102d41488b6d56b16f81bfc45ad2703d7a8"
+      },
+      "tests/TextExportSafetyTest.java": {
+        "mode": "0644",
+        "bytes": 1077,
+        "sha256": "3592f07a161fa75110b9fa3d3ffbe0050b6a8990e6a844c827be5822287bde8e"
+      },
+      "tests/TextExportTest.java": {
+        "mode": "0644",
+        "bytes": 13084,
+        "sha256": "7e4eebf6adb7977a4c0b9c116967a5aff5abf6f7243b61109c0a42924eed618a"
+      },
+      "tests/activity_window_source_test.py": {
+        "mode": "0644",
+        "bytes": 5695,
+        "sha256": "d9ff361a8798f8f86c222cfaa1d033955043666978ad2ee0cf2f5481d9d6ff9a"
+      },
+      "tests/activity_window_test.py": {
+        "mode": "0644",
+        "bytes": 10244,
+        "sha256": "7fe4c2bbf7541be0a47790eaf5421d3eadd8803c6e3cf051f6a9271a9cd48c3a"
+      },
+      "tests/android_test_apk_test.py": {
+        "mode": "0644",
+        "bytes": 11398,
+        "sha256": "f1caabe5cde4976e4284dc3eaa8d5e6fad8e95c115f3fad09ca1f0bc1ce42680"
+      },
+      "tests/android_test_fixture_inputs_test.py": {
+        "mode": "0644",
+        "bytes": 8251,
+        "sha256": "2356a170fb9ef9839f25f17a45152f5b28cc5ce4b7d46252ae7829b64a8b5bf5"
+      },
+      "tests/android_test_fixture_test.py": {
+        "mode": "0644",
+        "bytes": 9918,
+        "sha256": "856579128d11280577d387a71f2f06fe3aaf58dd1651d81ea498399a448838b8"
+      },
+      "tests/android_test_inputs_test.py": {
+        "mode": "0644",
+        "bytes": 3829,
+        "sha256": "36d2e3c5cb4fb34b6cbeac6ed49c805d4de9be7c1eab00f32f11eae6452b4603"
+      },
+      "tests/apk_report_binding_test.py": {
+        "mode": "0644",
+        "bytes": 7140,
+        "sha256": "712f242bf9e70d965f9e7235f09df3cfb1edda91dc60aa7cbac429f82aeb952a"
+      },
+      "tests/app_report_source_test.py": {
+        "mode": "0644",
+        "bytes": 3462,
+        "sha256": "f60d0ef92098cff80d0d70e873fcced244fb62ac28efcc382b0420bcffc90d26"
+      },
+      "tests/architecture_boundary_test.py": {
+        "mode": "0644",
+        "bytes": 10966,
+        "sha256": "2048d2ee5d1c83618b571a5eb488539c91c6eef94457649ecdea9390729502ba"
+      },
+      "tests/dependency_checksum_fixture.py": {
+        "mode": "0644",
+        "bytes": 5492,
+        "sha256": "fbfc2ad3d857fd94bfb91228c16e9361feb4db0c2bb006de7c54be1347b43ee9"
+      },
+      "tests/dependency_checksum_fixture_test.py": {
+        "mode": "0644",
+        "bytes": 2990,
+        "sha256": "3054d555a17016c92cfc5011d5fb7a7039167c5ae7b7e9012727644f0c0efb5f"
+      },
+      "tests/fast_task_graph_test.py": {
+        "mode": "0644",
+        "bytes": 2978,
+        "sha256": "9576b21a2c993ae48ed7cf8376259b4a7af78d3c08130f3c6a311feafcc9d148"
+      },
+      "tests/fixtures/app-report-pre-r3.json": {
+        "mode": "0644",
+        "bytes": 1041,
+        "sha256": "82a2c8c1e38f7ca11bb66293a2771a96a7f0a9125dca3adb9693cae8873c099b"
+      },
+      "tests/fixtures/jni-pre-r3.sha256": {
+        "mode": "0644",
+        "bytes": 65,
+        "sha256": "ce7a0622dc94d392b5c571afaa89ef73461b6daf71c76a716d3ca7de718f6df8"
+      },
+      "tests/fixtures/lint-error/build.gradle": {
+        "mode": "0644",
+        "bytes": 613,
+        "sha256": "84cbfbda2c2fe098322692d8faf70e317076360dadc487db9b33ada3e269a602"
+      },
+      "tests/fixtures/lint-error/buildscript-gradle.lockfile": {
+        "mode": "0644",
+        "bytes": 6556,
+        "sha256": "56da4d9f5426658c68d8b6e2de9464fe1019cf5d50f1873cb909ad93fde4df87"
+      },
+      "tests/fixtures/lint-error/settings.gradle": {
+        "mode": "0644",
+        "bytes": 402,
+        "sha256": "7159cb8c44421044df49aaff4510df600ffd0834be6042f86225271589d7148e"
+      },
+      "tests/fixtures/lint-error/src/main/AndroidManifest.xml": {
+        "mode": "0644",
+        "bytes": 102,
+        "sha256": "cba879f740245c76ab09f2664d7ebb3bc37845dce24eba0112cb8441e8bc8744"
+      },
+      "tests/fixtures/lint-error/src/main/java/org/llmasr/lintfixture/LintProbe.java": {
+        "mode": "0644",
+        "bytes": 249,
+        "sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242"
+      },
+      "tests/foreground_recorder_test.py": {
+        "mode": "0644",
+        "bytes": 6186,
+        "sha256": "37e2db80488075c6ddde19f78d778c256d9298c33dd6cf20e7128164143d5d6f"
+      },
+      "tests/gradle_apk_identity_test.py": {
+        "mode": "0644",
+        "bytes": 5550,
+        "sha256": "c04841b8e1727e8d34e0154c981e1d9c85711ca8a2983789287249a4d00155d4"
+      },
+      "tests/gradle_dependency_verification_test.sh": {
+        "mode": "0644",
+        "bytes": 1956,
+        "sha256": "06a1890c835b3fda1430d6035334a730382963bc9aa780ec5191d636a6d6668f"
+      },
+      "tests/gradle_inputs_test.py": {
+        "mode": "0644",
+        "bytes": 6905,
+        "sha256": "37e1ddc4a82e44cab7a2df2c9703df55ad02ddadce4b54bbf65cfedcf3dd1d81"
+      },
+      "tests/gradle_lint_verification_test.py": {
+        "mode": "0644",
+        "bytes": 11935,
+        "sha256": "d07d69757b599dc50ebbe73d4ebe8f1fe8c69a6afef852b6db2c4b478d3e690f"
+      },
+      "tests/jni_symbol_checker_test.py": {
+        "mode": "0644",
+        "bytes": 1480,
+        "sha256": "f560451c7ad6daf0246d23912e16f4a9d4b97ac41ac507bd89f0c6d576aff82e"
+      },
+      "tests/lint_identity_test.py": {
+        "mode": "0644",
+        "bytes": 6022,
+        "sha256": "bf0d410ea14cff05d5a162de50a6fc87921ac6e54f0d008c4055873a49250690"
+      },
+      "tests/lint_report_test.py": {
+        "mode": "0644",
+        "bytes": 2191,
+        "sha256": "486134d3a2185a158d24b6d04992dcb26fbef623aab2d8a1369630736db9cd56"
+      },
+      "tests/local_verify_entry_test.py": {
+        "mode": "0644",
+        "bytes": 7830,
+        "sha256": "8084998f896e074fe03fa5528d2635f8bb79486f116220b9b91629c074718101"
+      },
+      "tests/local_verify_fault_test.py": {
+        "mode": "0644",
+        "bytes": 3828,
+        "sha256": "2f65e8b235bf345b0f8b9d14580d411eebd8e55bd12a2138ba6c77dd88497009"
+      },
+      "tests/logs_activity_picker_test.py": {
+        "mode": "0644",
+        "bytes": 37428,
+        "sha256": "e52383160e396649f9a30953f380067413ff23e39aa4f73f22149f95eb7117d9"
+      },
+      "tests/maintained_text_test.py": {
+        "mode": "0644",
+        "bytes": 2158,
+        "sha256": "d954f4da41328b15b76f5ec11e5d790b57277f04830cd5921844a845d054bcf7"
+      },
+      "tests/manifest_permission_test.py": {
+        "mode": "0644",
+        "bytes": 4722,
+        "sha256": "eae2334072ef8c7d29dafc58ad43dc51d1dc9798928b757a147efc91807b963c"
+      },
+      "tests/model_android_source_test.py": {
+        "mode": "0644",
+        "bytes": 8509,
+        "sha256": "b76fb4250b735c82b1ee69d7cfe26abbb7604306d8b51d7bb596a563658dc9be"
+      },
+      "tests/model_review_mutation_test.py": {
+        "mode": "0644",
+        "bytes": 3827,
+        "sha256": "e697a3fba3b1ded3cbd59cfd1f58e644721a9f99b08101cca748ce5fde9e04e8"
+      },
+      "tests/module_boundary_test.py": {
+        "mode": "0644",
+        "bytes": 2527,
+        "sha256": "8630b9223a0032a7d99ddb3566b45f587ec8b9d1686e371453f01652080716d3"
+      },
+      "tests/module_owners_guard_test.py": {
+        "mode": "0644",
+        "bytes": 2430,
+        "sha256": "a4a94d7de555995c2d5c5b495e3386ce889036e891e2b428c0edcee0b0835088"
+      },
+      "tests/module_owners_test.py": {
+        "mode": "0644",
+        "bytes": 3590,
+        "sha256": "12a9ddce4edc945ef426aee730ef7fd69969dc211952b1007addf2f12672dcc7"
+      },
+      "tests/native_artifact_test.py": {
+        "mode": "0644",
+        "bytes": 4021,
+        "sha256": "529866df098190a3dd25e51987d6c74e9bcef1ee376f729a244c59df3a1ed72e"
+      },
+      "tests/native_sources_test.py": {
+        "mode": "0644",
+        "bytes": 6146,
+        "sha256": "cce71a985b742041bb8c23fb2d9ebc5756438cfe8b604f6e45794dda297166d9"
+      },
+      "tests/p0/test_audio_contract.py": {
+        "mode": "0644",
+        "bytes": 2684,
+        "sha256": "564ed2874aed42c325e788d295a398cbc31a6e7d65c8ae0d691d8ff595688632"
+      },
+      "tests/prepare_model_configs_test.py": {
+        "mode": "0644",
+        "bytes": 10157,
+        "sha256": "258351939cdbd67a67e17b2fcb33f8aad050930b28d1d5d1c9ce19845820f460"
+      },
+      "tests/runtime_log_enum_cleanup_test.py": {
+        "mode": "0644",
+        "bytes": 16617,
+        "sha256": "38e6283ecf313458eda556b16cd24faca2f89ac491b492ee824c145e154786ab"
+      },
+      "tests/runtime_log_enum_mutant_test.py": {
+        "mode": "0644",
+        "bytes": 15479,
+        "sha256": "88df1cf49ae0393149c4214df1b0d53d6ddc5e00595eb2354ee72be556f8a52d"
+      },
+      "tests/text_export_source_test.py": {
+        "mode": "0644",
+        "bytes": 2515,
+        "sha256": "ddeceeceb6816a78b729ca641a438fadcb217969f7f0d04d7b34a724c678619e"
+      }
+    },
+    "module": {
+      "android/test-host/build.gradle.kts": {
+        "mode": "0644",
+        "bytes": 2521,
+        "sha256": "f9d8a45b9ba58b304f23b20112539953834eaf7f756644fcc61c19ec25e13e6c"
+      },
+      "android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.java": {
+        "mode": "0644",
+        "bytes": 5547,
+        "sha256": "6a9b95fb32416eee8419177f495e8de0370cc2c505a7c875c2fd6d5562754402"
+      },
+      "android/test-host/fixtures/java/org/llmasr/minimal/testhost/FixtureChecks.java": {
+        "mode": "0644",
+        "bytes": 7477,
+        "sha256": "38925c6d774b886099fd9ff33295a0f6b2db501f03ac29adad3eb5ee9f71eb2b"
+      },
+      "android/test-host/gradle.lockfile": {
+        "mode": "0644",
+        "bytes": 913,
+        "sha256": "d05a063c52689a10a5adc40fc0f64e5beec4f5e19c84fc3b6c87d5543dba976e"
+      },
+      "android/test-host/src/androidTest/AndroidManifest.xml": {
+        "mode": "0644",
+        "bytes": 352,
+        "sha256": "d3be5afc63c496147d7ea22887b88f471c312039ba96982423c555f2402b6347"
+      },
+      "android/test-host/src/androidTest/java/org/llmasr/minimal/testhost/FakeDocumentsProvider.java": {
+        "mode": "0644",
+        "bytes": 4453,
+        "sha256": "5e4eeaa7b6860cfcc884952476b1fd19a376cff8a13320fbb0dd635d6a7a381a"
+      },
+      "android/test-host/src/androidTest/java/org/llmasr/minimal/testhost/FixtureInstrumentationTest.java": {
+        "mode": "0644",
+        "bytes": 20399,
+        "sha256": "e9627ca45fc6c3a092c35ff7bfe8ca3fd194238f81f03973472685ad7b1c8a92"
+      },
+      "android/test-host/src/main/AndroidManifest.xml": {
+        "mode": "0644",
+        "bytes": 691,
+        "sha256": "0ded82a2305a1a40be0b09b5f4fecd5734acd216f971de9235c786380494dccd"
+      },
+      "android/test-host/src/main/java/org/llmasr/minimal/testhost/ImeHostActivity.java": {
+        "mode": "0644",
+        "bytes": 1073,
+        "sha256": "34bd990d93f9ab2527b587ba188749b443c0d7662640c2e98fb393f57c25849d"
+      },
+      "android/test-host/src/test/java/org/llmasr/minimal/testhost/FixtureContractTest.java": {
+        "mode": "0644",
+        "bytes": 913,
+        "sha256": "16360aa4fdd5829f20872bdac4d15806c8f4d76a6f97963cc3d9514274c79b23"
+      }
+    },
+    "native": {
+      "android/app/src/org/llmasr/minimal/AppGraph.java": {
+        "mode": "0644",
+        "bytes": 9548,
+        "sha256": "9f33cdd81234bbf033ac49807205a76a3734f39ac5b1e52ee8291bb96ae0e012"
+      },
+      "android/app/src/org/llmasr/minimal/AsrImeService.java": {
+        "mode": "0644",
+        "bytes": 9785,
+        "sha256": "cff9fe4493b01bd26720e953b5606704c353e011ccd634c0f171d925a505f971"
+      },
+      "android/app/src/org/llmasr/minimal/LogsActivity.java": {
+        "mode": "0644",
+        "bytes": 7526,
+        "sha256": "2b2bb518a33953d1262f3e7c4e6e667f466ac7f52f32c3b8848bb9b0d9ddf671"
+      },
+      "android/app/src/org/llmasr/minimal/MainActivity.java": {
+        "mode": "0644",
+        "bytes": 18785,
+        "sha256": "88f24a66d9f571c9ab659d4a095c730b90adb8e9a73e89205fa8c0c2156adadc"
+      },
+      "android/app/src/org/llmasr/minimal/ModelManagementActivity.java": {
+        "mode": "0644",
+        "bytes": 17768,
+        "sha256": "c04da08c22c5530f87aa013af0beeceeb23c88dbac9fd650b4be5ba3a6e08a02"
+      },
+      "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.java": {
+        "mode": "0644",
+        "bytes": 2524,
+        "sha256": "7c4aa16a0d3174b397db839269033190cf34de531c1b395291f52c3c75a06ddc"
+      },
+      "android/app/src/org/llmasr/minimal/asr/InferencePhase.kt": {
+        "mode": "0644",
+        "bytes": 348,
+        "sha256": "16527ee674419379689306e4edb383e7de31ceb87fe2b0c6e52e9f3ac1c032e0"
+      },
+      "android/app/src/org/llmasr/minimal/asr/InferencePhaseListener.kt": {
+        "mode": "0644",
+        "bytes": 522,
+        "sha256": "b459881f478e4034fbd986f983eda388e4226bda98772d7a4dda6a77b79d912d"
+      },
+      "android/app/src/org/llmasr/minimal/asr/JniNativeTranscription.java": {
+        "mode": "0644",
+        "bytes": 863,
+        "sha256": "c1d5973768675de52a03792bba9f1fdc44993ad6f05e7d482d83c313dd7687e8"
+      },
+      "android/app/src/org/llmasr/minimal/asr/LoggingInferencePhaseListener.java": {
+        "mode": "0644",
+        "bytes": 5069,
+        "sha256": "24bc435dbfb6ceb86b3eaf58349a7eb5d688eb40c80a53658ef820631d9931f6"
+      },
+      "android/app/src/org/llmasr/minimal/asr/NativeResponse.kt": {
+        "mode": "0644",
+        "bytes": 3272,
+        "sha256": "bd2620ec96a6030d66b7ce103227fc82d5a60ba1611808807bb81a547177f38a"
+      },
+      "android/app/src/org/llmasr/minimal/asr/NativeTranscription.kt": {
+        "mode": "0644",
+        "bytes": 611,
+        "sha256": "e04807b119e33eef12aeac16a6896644d6e2ad33992e96414c57feafaa896082"
+      },
+      "android/app/src/org/llmasr/minimal/audio/AsrText.kt": {
+        "mode": "0644",
+        "bytes": 526,
+        "sha256": "c720692ffea1d69b88d5ddbe8233d72b86f90cc3068748bde7a2432f62f21d34"
+      },
+      "android/app/src/org/llmasr/minimal/audio/ForegroundRecorder.java": {
+        "mode": "0644",
+        "bytes": 3573,
+        "sha256": "fa4de7649c0d40ed168126d31e59beb60953f3ef60fe5f7ce5e7424081c6a16f"
+      },
+      "android/app/src/org/llmasr/minimal/audio/PcmWave.kt": {
+        "mode": "0644",
+        "bytes": 1730,
+        "sha256": "ccf20aae11439ba259cc927168011634c15430cf865aa470d83710119e193620"
+      },
+      "android/app/src/org/llmasr/minimal/audio/RecordingControl.kt": {
+        "mode": "0644",
+        "bytes": 1471,
+        "sha256": "dfa9ac879776138aca236aeb2216582e37221fd79c5dc56485d77c2a33e690ac"
+      },
+      "android/app/src/org/llmasr/minimal/audio/WaveInput.java": {
+        "mode": "0644",
+        "bytes": 2742,
+        "sha256": "b46d023aa69cc8eb74d3e6dc1ac815f7c0e1417c82c4534ef7b622ffe5103c83"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/LogExportController.java": {
+        "mode": "0644",
+        "bytes": 6169,
+        "sha256": "b12e279d5b06c8fee6494893ae7de20bf4b6d274ddf50f1e8626f491ce62da92"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/LogExportPage.java": {
+        "mode": "0644",
+        "bytes": 1815,
+        "sha256": "d05ff91be2a166a3e8065e056ff1be3b48bbe9de65ad3b4c9913a2805104da3a"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogClock.kt": {
+        "mode": "0644",
+        "bytes": 1864,
+        "sha256": "109268a07c22514885ba67ffef8635c7a7933af1807d9903fb17ec7a82426453"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogCodec.java": {
+        "mode": "0644",
+        "bytes": 2394,
+        "sha256": "63b698de2118955204e0a4e7621f77cc64c49aff61835edac5b4d383f9db68f2"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEvent.java": {
+        "mode": "0644",
+        "bytes": 4017,
+        "sha256": "ca0eadef27b02602e0dc1b388b05a89a778be976aea487b582ab18869c23375c"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.kt": {
+        "mode": "0644",
+        "bytes": 1179,
+        "sha256": "10712467665202aa6fd6b9deae4223f945051bd69b63d649c317bad00a477390"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogPersistence.java": {
+        "mode": "0644",
+        "bytes": 9696,
+        "sha256": "0be6031cefef8deb1ab90eb9970a56c7f27c286bfdb22899bce8f5410c66d58c"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSink.kt": {
+        "mode": "0644",
+        "bytes": 953,
+        "sha256": "b24ecb6f21253bc2507b2090875a348c92ed74f467f71fb36e20eefcee3efe63"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt": {
+        "mode": "0644",
+        "bytes": 238,
+        "sha256": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogStore.java": {
+        "mode": "0644",
+        "bytes": 7994,
+        "sha256": "9cdde653b37dc6e6fe3d610557ae166d095f4f3539688d9e677a74d4f26779cd"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogText.java": {
+        "mode": "0644",
+        "bytes": 3293,
+        "sha256": "ecb3c0dd2e14640a0a819778c8d748245d11ddc64e73fab083b062e7e6455eb5"
+      },
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogWorker.java": {
+        "mode": "0644",
+        "bytes": 9350,
+        "sha256": "d4468f5bb1fc91e099ce22a8eef4d3c3f745995651b89ca6a6d58d850e52f754"
+      },
+      "android/app/src/org/llmasr/minimal/ime/ImeBackend.java": {
+        "mode": "0644",
+        "bytes": 2201,
+        "sha256": "ca36d5b7bdbf67c7334363393c1dae267b321621f08bb6e5a30627439a77619b"
+      },
+      "android/app/src/org/llmasr/minimal/ime/ImeController.java": {
+        "mode": "0644",
+        "bytes": 6681,
+        "sha256": "05d0dbcafb33b2b64d85b5839bb92854930ad14d7b20c3de0f2d35f4a304fa05"
+      },
+      "android/app/src/org/llmasr/minimal/ime/ImeFieldPolicy.kt": {
+        "mode": "0644",
+        "bytes": 662,
+        "sha256": "549770871e8613bf7fae3d6a112ff08c8cb8464ab7aae7e37d8e8d90d972a309"
+      },
+      "android/app/src/org/llmasr/minimal/ime/ImeSession.java": {
+        "mode": "0644",
+        "bytes": 714,
+        "sha256": "897f2855fee72b66902acc351e344ba7001d774c83a923f489da798fe40a294d"
+      },
+      "android/app/src/org/llmasr/minimal/model/FileSafety.java": {
+        "mode": "0644",
+        "bytes": 2071,
+        "sha256": "dc5096f4be0f73c5eb0a504d3d1e78a5f55a61e1c64d9b41ab5858a6d37c21ae"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelAccess.java": {
+        "mode": "0644",
+        "bytes": 1765,
+        "sha256": "77fdf3135de4be63a0d13dd0e7534a5477f7befdc1936c9e008f146c313af3df"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelEntry.java": {
+        "mode": "0644",
+        "bytes": 1253,
+        "sha256": "98220f421a4b1cd9ab42fe053d563c44e67e4b7ae16ac904b0fbbeccc29c1e81"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelManifest.java": {
+        "mode": "0644",
+        "bytes": 3282,
+        "sha256": "6f3386847bd25bad71f0309a2a3746b778363087fe766d9d5f16d6b755a3b1c4"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelProviderBoundary.java": {
+        "mode": "0644",
+        "bytes": 1712,
+        "sha256": "ec0a248e331a276ccb9c584bf55a356a6e3cbaf633be8a91aa48468a65ccedd1"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelReadiness.java": {
+        "mode": "0644",
+        "bytes": 6511,
+        "sha256": "985fe1c96b779e7079ac77205cea0daf4e3c19233c407ce16b05a27ec78834a7"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelReports.java": {
+        "mode": "0644",
+        "bytes": 3622,
+        "sha256": "ad7ec1178581388ecd2b85e5b131fef979da55e117313b35a11289511793d6df"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelRepository.java": {
+        "mode": "0644",
+        "bytes": 31648,
+        "sha256": "4e842f6960d9568b01c8c79fee8f800791d9e32d53539abc4ead70641dd39b59"
+      },
+      "android/app/src/org/llmasr/minimal/model/ModelSource.java": {
+        "mode": "0644",
+        "bytes": 1961,
+        "sha256": "aa53cfe92357e02ff65c7ee212574314af4cab4c9db2deebbb1254d57a9687de"
+      },
+      "android/app/src/org/llmasr/minimal/model/SafModelSource.java": {
+        "mode": "0644",
+        "bytes": 4577,
+        "sha256": "4ca318fec09adcd410dbc9a05a62e2ceba350dd4814cda36081cd1d11eaebc07"
+      },
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementController.java": {
+        "mode": "0644",
+        "bytes": 19535,
+        "sha256": "1485ea152e0dbdfbacbb6306e5a77ced61c92aedcc2869a3f4eda4eedb0c5da3"
+      },
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementState.java": {
+        "mode": "0644",
+        "bytes": 11441,
+        "sha256": "f0af50bad07b0004763088be08509c23031669e08e88cf108d7dc42dc382018b"
+      },
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelOperationControl.java": {
+        "mode": "0644",
+        "bytes": 3265,
+        "sha256": "8f2e99d0ae960041cb94b615324c1ded4491a80ce60473bc1e2ecd44aa260d51"
+      },
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelPageSession.java": {
+        "mode": "0644",
+        "bytes": 3009,
+        "sha256": "a8a5be02a20c9e604ae522a02dde1d6b981d75e09f4f4fc8c08584e78df01c80"
+      },
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelPickerTickets.java": {
+        "mode": "0644",
+        "bytes": 1099,
+        "sha256": "cc7185e24a1c195643a4a2d592470c330073d2d7107617fd6a7b8497085b44bd"
+      },
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelUiText.java": {
+        "mode": "0644",
+        "bytes": 7545,
+        "sha256": "c65e148fd15b637d7e1c75e2dbc3be56622d84c3236a00f4d2ad78e77202ec48"
+      },
+      "android/app/src/org/llmasr/minimal/platform/ActivityWindow.java": {
+        "mode": "0644",
+        "bytes": 5106,
+        "sha256": "c581984eb27fb2cbbfe203e69df23d53d3a05d85da84862b67992375e06a6e36"
+      },
+      "android/app/src/org/llmasr/minimal/platform/OperationContext.java": {
+        "mode": "0644",
+        "bytes": 1522,
+        "sha256": "f9aa30f017bf4d38f4c55c16a14a52fbe64cf5ce058cde22ef4cedf2d0ecbc52"
+      },
+      "android/app/src/org/llmasr/minimal/task/RequestContext.kt": {
+        "mode": "0644",
+        "bytes": 546,
+        "sha256": "160f70966971c8276a41107b4e8779244f247af17d352744777af085181d6d03"
+      },
+      "android/app/src/org/llmasr/minimal/task/RequestRunner.kt": {
+        "mode": "0644",
+        "bytes": 3682,
+        "sha256": "50be8c887bb762f422a551b0b856f6fc84de24bc3aa6390f488b70ee58ac62e4"
+      },
+      "android/app/src/org/llmasr/minimal/task/TaskCoordinator.kt": {
+        "mode": "0644",
+        "bytes": 3725,
+        "sha256": "9557fb0f244bd896b5d33e95e84e61cac25a66a242bf633102a7f05ccdd0ccd3"
+      },
+      "android/app/src/org/llmasr/minimal/task/TaskKind.kt": {
+        "mode": "0644",
+        "bytes": 193,
+        "sha256": "46a4aaf966b39e674b8ebc2656ad4b4f91172cab1a95aae93ac09f500f075715"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/AppReportWriter.java": {
+        "mode": "0644",
+        "bytes": 5679,
+        "sha256": "cfb660b72fde442ee29f3b91c5bddd2d1cf28e6dfa20a29df449952f591401db"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/AppRequestPolicy.java": {
+        "mode": "0644",
+        "bytes": 2915,
+        "sha256": "6f908f83484a20131bb2d5c84c9ac7c1e3df4bc5f180f2c6ea5cc7d7df860920"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/AppState.kt": {
+        "mode": "0644",
+        "bytes": 1952,
+        "sha256": "49c018c3e8e98fd3953bd3c26f85a1639a1346f553f97ebc46d55b1ef388910d"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/AsrOperation.java": {
+        "mode": "0644",
+        "bytes": 8540,
+        "sha256": "7dd786d9632354a3b5315baee0aef546e52c7f2f1b70e0ffed4c5ab1dcbf0436"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/ResultFiles.java": {
+        "mode": "0644",
+        "bytes": 1831,
+        "sha256": "79df177f5c8d3f5642751b32e7442b31f2851aff17f08dd7f594713c42db3f7a"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/ResultState.java": {
+        "mode": "0644",
+        "bytes": 2224,
+        "sha256": "b6da90abe514c1a8040eba8d3a9e2eb716d81370da4fa6b214267a200b730179"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/TextExportController.java": {
+        "mode": "0644",
+        "bytes": 9821,
+        "sha256": "b1993d243362d02f2496db536461b58f0a42c81c12c8ceb8bdb9a5ab9b3279d7"
+      },
+      "android/app/src/org/llmasr/minimal/transcription/TextExportPage.java": {
+        "mode": "0644",
+        "bytes": 3324,
+        "sha256": "fed5eb7d293bd18c8aa3e68a853162b21d4a39dc0201cbb6cdde71ef6baa9147"
+      },
+      "flake.lock": {
+        "mode": "0644",
+        "bytes": 567,
+        "sha256": "0ae8d7124e7a06626bd764744beac322a1f032eb6f4a0d223b18781ab0f16afc"
+      },
+      "flake.nix": {
+        "mode": "0644",
+        "bytes": 3772,
+        "sha256": "08015cbff0ab064b799f8a638a314fdee878042130b9f6ce7f8a30a273a2c50f"
+      },
+      "native/apk/asr_jni.cpp": {
+        "mode": "0644",
+        "bytes": 6336,
+        "sha256": "4eaca3d66b90c63954a65f69887fe94b1ea97ebdb474ecfda5b306ce9cc07946"
+      },
+      "native/cmake/finalize-mnn.cmake": {
+        "mode": "0644",
+        "bytes": 1769,
+        "sha256": "0a7bd60ebdd656f8856551af7111ceecfdac37c9c8d307b6d911bc7259a4b7ca"
+      },
+      "native/cmake/mnn-artifact.cmake": {
+        "mode": "0644",
+        "bytes": 225,
+        "sha256": "380b331ac71b22830281e4104342bd65dde2e92c14d89cbd24cf63fb6282e2b2"
+      },
+      "native/source-lock.json": {
+        "mode": "0644",
+        "bytes": 771,
+        "sha256": "b3b4bc3a7c2947163d80deebc8686aecccaf38efd74b2025fe9557bfb0ccc497"
+      },
+      "patches/mnn-asr-boundary-positions.patch": {
+        "mode": "0644",
+        "bytes": 729,
+        "sha256": "bd643768d175ef9f2a46099bdcecc46216d8fdb9f1a0e6662dd6825ad827fe84"
+      },
+      "patches/mnn-p0.patch": {
+        "mode": "0644",
+        "bytes": 3504,
+        "sha256": "c0ea13850febb20ee8f4d01d4028461fd49daf4b8730a84de0f5e38876d7f363"
+      },
+      "patches/mnn-whisper-periodic-hann.patch": {
+        "mode": "0644",
+        "bytes": 2096,
+        "sha256": "b1642f6bc52372e1d800d763e47888c746e1a3e3575c75f11177f337f5acaa4f"
+      },
+      "patches/qwen-lazy-nagisa.patch": {
+        "mode": "0644",
+        "bytes": 649,
+        "sha256": "c24bf1940bab19c2a89c34159f3900be0fdf9e7e502d89de4cba5936f045abe8"
+      },
+      "scripts/build-native-artifact.sh": {
+        "mode": "0644",
+        "bytes": 2593,
+        "sha256": "e25d2d1b61cfea051e5397568a4938ca73c41b0aceba7f6ee6a25f9fc7aced38"
+      },
+      "scripts/check-jni-symbols.py": {
+        "mode": "0644",
+        "bytes": 2468,
+        "sha256": "e75f21aef99a384bb663695e70df7cf8e5f294532761542885f680c8bb4fdfe7"
+      },
+      "scripts/compile-jni-object.sh": {
+        "mode": "0644",
+        "bytes": 2161,
+        "sha256": "d8096057e9e0a76e46f3771f3154de1151e657806d73440b8eef34bfd25357ed"
+      },
+      "scripts/compile-jvm-sources.sh": {
+        "mode": "0644",
+        "bytes": 1668,
+        "sha256": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf"
+      },
+      "scripts/link-native-artifact.py": {
+        "mode": "0644",
+        "bytes": 3121,
+        "sha256": "7f0e3515d9f248fe43eb4eaaa4bda17bc0a17450bf88af3cfc7d72183d3eb4af"
+      },
+      "scripts/prepare-native-sources.py": {
+        "mode": "0644",
+        "bytes": 6233,
+        "sha256": "ad1ac36fc25d0505ce808ee140827201b0f4e45235ffb6db9e977c9f84b069e1"
+      },
+      "scripts/verify-native-artifact.py": {
+        "mode": "0644",
+        "bytes": 6966,
+        "sha256": "f3931747fc4d956704c6bdab2881027f19f6160ed5c07fdf0c6bd2bfd5f57c04"
+      }
+    }
+  },
+  "domain_counts": {
+    "build": 214,
+    "module": 10,
+    "native": 80
+  },
+  "current_equals_frozen_equals_both_formal_receipts": true,
+  "external_tools": {
+    "tools": {
+      "java": {
+        "entry": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/bin/java",
+        "entry_mode": "0555",
+        "entry_bytes": 16672,
+        "entry_sha256": "b1ee79d941a1e822a48ed151dc4c603ec33eb96a225268fcbc15a838afa0e8aa",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/lib/openjdk/bin/java",
+        "target": {
+          "mode": "0555",
+          "bytes": 16672,
+          "sha256": "b1ee79d941a1e822a48ed151dc4c603ec33eb96a225268fcbc15a838afa0e8aa"
+        }
+      },
+      "javac": {
+        "entry": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/bin/javac",
+        "entry_mode": "0555",
+        "entry_bytes": 16672,
+        "entry_sha256": "7fcf568cd388ec6430220f70083c08b4591a8a046f2906ca10356503aaa5ed14",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/lib/openjdk/bin/javac",
+        "target": {
+          "mode": "0555",
+          "bytes": 16672,
+          "sha256": "7fcf568cd388ec6430220f70083c08b4591a8a046f2906ca10356503aaa5ed14"
+        }
+      },
+      "kotlinc": {
+        "entry": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/bin/kotlinc",
+        "entry_mode": "0555",
+        "entry_bytes": 417,
+        "entry_sha256": "aa3b6fe59694c1464416d8ab87a9d3ab1f79ea817c33c57d99ebef415b5940e5",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/bin/kotlinc",
+        "target": {
+          "mode": "0555",
+          "bytes": 417,
+          "sha256": "aa3b6fe59694c1464416d8ab87a9d3ab1f79ea817c33c57d99ebef415b5940e5"
+        }
+      },
+      "python3": {
+        "entry": "/nix/store/2i9phsc5kahwi37p1cibm48xg6ysv6ih-python3-3.14.7-env/bin/python3",
+        "entry_mode": "0777",
+        "entry_bytes": 10,
+        "entry_sha256": "2d831a37080f22a6cb263b9fd10bc07b8dd5171693f808d7d243b1701607b2dc",
+        "entry_kind": "symlink",
+        "link_text": "python3.14",
+        "resolved": "/nix/store/2i9phsc5kahwi37p1cibm48xg6ysv6ih-python3-3.14.7-env/bin/python3.14",
+        "target": {
+          "mode": "0555",
+          "bytes": 16528,
+          "sha256": "f5cce9ecc914b0c2eee78056c1c816aa02ae4c73c0aaf958eb5e0bb9281f34ea"
+        }
+      },
+      "bash": {
+        "entry": "/nix/store/svx59425zxp552p2b8gm11qj5r09b56i-bash-5.3p15/bin/bash",
+        "entry_mode": "0555",
+        "entry_bytes": 1112872,
+        "entry_sha256": "0f2e8b62037cc1187fe7136e114892b7a180821e7f52bba2930e002293e566d2",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/svx59425zxp552p2b8gm11qj5r09b56i-bash-5.3p15/bin/bash",
+        "target": {
+          "mode": "0555",
+          "bytes": 1112872,
+          "sha256": "0f2e8b62037cc1187fe7136e114892b7a180821e7f52bba2930e002293e566d2"
+        }
+      },
+      "kotlin-stdlib.jar": {
+        "entry": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/lib/kotlin-stdlib.jar",
+        "entry_mode": "0444",
+        "entry_bytes": 1747660,
+        "entry_sha256": "f31cc53f105a7e48c093683bbd5437561d1233920513774b470805641bedbc09",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/lib/kotlin-stdlib.jar",
+        "target": {
+          "mode": "0444",
+          "bytes": 1747660,
+          "sha256": "f31cc53f105a7e48c093683bbd5437561d1233920513774b470805641bedbc09"
+        }
+      },
+      "kotlin-compiler.jar": {
+        "entry": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/lib/kotlin-compiler.jar",
+        "entry_mode": "0444",
+        "entry_bytes": 59704164,
+        "entry_sha256": "0e272ff5af49e060b85c4ba7cbdb3518f15f7b2426f591cdf8fd2d704a28c077",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/lib/kotlin-compiler.jar",
+        "target": {
+          "mode": "0444",
+          "bytes": 59704164,
+          "sha256": "0e272ff5af49e060b85c4ba7cbdb3518f15f7b2426f591cdf8fd2d704a28c077"
+        }
+      },
+      "annotations-13.0.jar": {
+        "entry": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/lib/annotations-13.0.jar",
+        "entry_mode": "0444",
+        "entry_bytes": 17536,
+        "entry_sha256": "ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/lib/annotations-13.0.jar",
+        "target": {
+          "mode": "0444",
+          "bytes": 17536,
+          "sha256": "ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478"
+        }
+      },
+      "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2": {
+        "entry": "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2",
+        "entry_mode": "0555",
+        "entry_bytes": 6305360,
+        "entry_sha256": "70cd2d97c18ea25fc3ad1e6bc2c7e2e86c7c9076cf2549b3609f304b182cc246",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/6i3nv35s75qizrn5cgbfyi0y7z9jzg6g-android-sdk-build-tools-35.0.0/libexec/android-sdk/build-tools/35.0.0/aapt2",
+        "target": {
+          "mode": "0555",
+          "bytes": 6305360,
+          "sha256": "70cd2d97c18ea25fc3ad1e6bc2c7e2e86c7c9076cf2549b3609f304b182cc246"
+        }
+      },
+      "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/zipalign": {
+        "entry": "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/zipalign",
+        "entry_mode": "0555",
+        "entry_bytes": 282456,
+        "entry_sha256": "cab08208e28ebf26e37c91a1f9ef4a871c175c8dabd55c78b0074f4d3a47a03a",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/6i3nv35s75qizrn5cgbfyi0y7z9jzg6g-android-sdk-build-tools-35.0.0/libexec/android-sdk/build-tools/35.0.0/zipalign",
+        "target": {
+          "mode": "0555",
+          "bytes": 282456,
+          "sha256": "cab08208e28ebf26e37c91a1f9ef4a871c175c8dabd55c78b0074f4d3a47a03a"
+        }
+      },
+      "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/lib/apksigner.jar": {
+        "entry": "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/lib/apksigner.jar",
+        "entry_mode": "0444",
+        "entry_bytes": 1074241,
+        "entry_sha256": "00ef9948f843fe395d2440ae3ef41405b8040a6d5d46493bd1902ac0ee6deae7",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/6i3nv35s75qizrn5cgbfyi0y7z9jzg6g-android-sdk-build-tools-35.0.0/libexec/android-sdk/build-tools/35.0.0/lib/apksigner.jar",
+        "target": {
+          "mode": "0444",
+          "bytes": 1074241,
+          "sha256": "00ef9948f843fe395d2440ae3ef41405b8040a6d5d46493bd1902ac0ee6deae7"
+        }
+      },
+      "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/platforms/android-35/optional/android.test.base.jar": {
+        "entry": "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/platforms/android-35/optional/android.test.base.jar",
+        "entry_mode": "0444",
+        "entry_bytes": 15878,
+        "entry_sha256": "c9583729e5cd1695ba93f9aa8e83adeb621fa028e765520b53c6e23f92f25b96",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/hac3cfg5nx1hzzfbyln5pi54xv0rk5nf-android-sdk-platforms-35/libexec/android-sdk/platforms/android-35/optional/android.test.base.jar",
+        "target": {
+          "mode": "0444",
+          "bytes": 15878,
+          "sha256": "c9583729e5cd1695ba93f9aa8e83adeb621fa028e765520b53c6e23f92f25b96"
+        }
+      },
+      "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/platforms/android-35/optional/android.test.runner.jar": {
+        "entry": "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/platforms/android-35/optional/android.test.runner.jar",
+        "entry_mode": "0444",
+        "entry_bytes": 25911,
+        "entry_sha256": "b0ed5e396b0d35cb02a6626f3c2a6c0e9d5f69ad1d189e19d426ffb65bfc580d",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/hac3cfg5nx1hzzfbyln5pi54xv0rk5nf-android-sdk-platforms-35/libexec/android-sdk/platforms/android-35/optional/android.test.runner.jar",
+        "target": {
+          "mode": "0444",
+          "bytes": 25911,
+          "sha256": "b0ed5e396b0d35cb02a6626f3c2a6c0e9d5f69ad1d189e19d426ffb65bfc580d"
+        }
+      },
+      "android.jar": {
+        "entry": "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/platforms/android-35/android.jar",
+        "entry_mode": "0444",
+        "entry_bytes": 27092450,
+        "entry_sha256": "4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/hac3cfg5nx1hzzfbyln5pi54xv0rk5nf-android-sdk-platforms-35/libexec/android-sdk/platforms/android-35/android.jar",
+        "target": {
+          "mode": "0444",
+          "bytes": 27092450,
+          "sha256": "4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b"
+        }
+      },
+      "apksigner": {
+        "entry": "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/apksigner",
+        "entry_mode": "0555",
+        "entry_bytes": 3014,
+        "entry_sha256": "bec6cd902d0fc6ec40eb34e03f4adb3f3af54cf88e48feb1ccdfc50be42c7f7b",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/6i3nv35s75qizrn5cgbfyi0y7z9jzg6g-android-sdk-build-tools-35.0.0/libexec/android-sdk/build-tools/35.0.0/apksigner",
+        "target": {
+          "mode": "0555",
+          "bytes": 3014,
+          "sha256": "bec6cd902d0fc6ec40eb34e03f4adb3f3af54cf88e48feb1ccdfc50be42c7f7b"
+        }
+      },
+      "ndk.source.properties": {
+        "entry": "/nix/store/nvmmpi6zg0qrz6hqxp33prhnbx3pm2jr-android-sdk-ndk-28.2.13676358/libexec/android-sdk/ndk/28.2.13676358/source.properties",
+        "entry_mode": "0444",
+        "entry_bytes": 108,
+        "entry_sha256": "c00aa236fdb205e9be9edd9e2169763e48aca52735efff4e16f34205d49783b5",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/nvmmpi6zg0qrz6hqxp33prhnbx3pm2jr-android-sdk-ndk-28.2.13676358/libexec/android-sdk/ndk/28.2.13676358/source.properties",
+        "target": {
+          "mode": "0444",
+          "bytes": 108,
+          "sha256": "c00aa236fdb205e9be9edd9e2169763e48aca52735efff4e16f34205d49783b5"
+        }
+      },
+      "ndk.compiler": {
+        "entry": "/nix/store/nvmmpi6zg0qrz6hqxp33prhnbx3pm2jr-android-sdk-ndk-28.2.13676358/libexec/android-sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang++",
+        "entry_mode": "0555",
+        "entry_bytes": 252,
+        "entry_sha256": "38eb002ec2af098c20be190e8dfd6f46551856f138599dbc7fcc5eae1225cd4e",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/nvmmpi6zg0qrz6hqxp33prhnbx3pm2jr-android-sdk-ndk-28.2.13676358/libexec/android-sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang++",
+        "target": {
+          "mode": "0555",
+          "bytes": 252,
+          "sha256": "38eb002ec2af098c20be190e8dfd6f46551856f138599dbc7fcc5eae1225cd4e"
+        }
+      },
+      "ndk.readelf": {
+        "entry": "/nix/store/nvmmpi6zg0qrz6hqxp33prhnbx3pm2jr-android-sdk-ndk-28.2.13676358/libexec/android-sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf",
+        "entry_mode": "0777",
+        "entry_bytes": 12,
+        "entry_sha256": "300c7d1bd7e55d1292e4b4da0ff234b59ba020ac5b5b8f77d384918b830eddef",
+        "entry_kind": "symlink",
+        "link_text": "llvm-readobj",
+        "resolved": "/nix/store/nvmmpi6zg0qrz6hqxp33prhnbx3pm2jr-android-sdk-ndk-28.2.13676358/libexec/android-sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readobj",
+        "target": {
+          "mode": "0555",
+          "bytes": 7269336,
+          "sha256": "773606b7a23263021e1b19b266c4d363a73e5bec0279c9cf60e39b4a0b4ac7f9"
+        }
+      },
+      "cmake": {
+        "entry": "/nix/store/c3bm9h7k398cmg00d4rss6hcxkl2zbl2-cmake-4.4.2/bin/cmake",
+        "entry_mode": "0555",
+        "entry_bytes": 19231712,
+        "entry_sha256": "25fef9dd619afd8a2cd352b7d24ad64e85b96e8aa3943f0a3810c036c7540965",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/c3bm9h7k398cmg00d4rss6hcxkl2zbl2-cmake-4.4.2/bin/cmake",
+        "target": {
+          "mode": "0555",
+          "bytes": 19231712,
+          "sha256": "25fef9dd619afd8a2cd352b7d24ad64e85b96e8aa3943f0a3810c036c7540965"
+        }
+      },
+      "ninja": {
+        "entry": "/nix/store/r8a159fqvj0mpczq0dq8d3dwdd2rsz8c-ninja-1.13.2/bin/ninja",
+        "entry_mode": "0555",
+        "entry_bytes": 446880,
+        "entry_sha256": "ca5d70f5c44a69e36619509dba24b0917c374cafc21173e390801f1235044bd9",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/r8a159fqvj0mpczq0dq8d3dwdd2rsz8c-ninja-1.13.2/bin/ninja",
+        "target": {
+          "mode": "0555",
+          "bytes": 446880,
+          "sha256": "ca5d70f5c44a69e36619509dba24b0917c374cafc21173e390801f1235044bd9"
+        }
+      },
+      "nix": {
+        "entry": "/run/current-system/sw/bin/nix",
+        "entry_mode": "0777",
+        "entry_bytes": 62,
+        "entry_sha256": "15b737b186bfdf9e17e6bdf2720183f477bfb1bf455b9dab2f736359342bc210",
+        "entry_kind": "symlink",
+        "link_text": "/nix/store/p21mw72z5mhlkhz6hlf7wibplzkf62rn-nix-2.34.9/bin/nix",
+        "resolved": "/nix/store/9jw399l4lllgai8p7fd4y61lqhi8qzja-nix-2.34.9/bin/nix",
+        "target": {
+          "mode": "0555",
+          "bytes": 4078544,
+          "sha256": "cac9e1cdced503201d9d175b48732cd29b027b066398a358ac98159c0c9128b1"
+        }
+      },
+      "javap": {
+        "entry": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/bin/javap",
+        "entry_mode": "0555",
+        "entry_bytes": 16672,
+        "entry_sha256": "20d7c12b49470b99b3882dd9ab6f9cca7ef41df4760b7da7b8abe6d9458393ce",
+        "entry_kind": "regular",
+        "link_text": null,
+        "resolved": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/lib/openjdk/bin/javap",
+        "target": {
+          "mode": "0555",
+          "bytes": 16672,
+          "sha256": "20d7c12b49470b99b3882dd9ab6f9cca7ef41df4760b7da7b8abe6d9458393ce"
+        }
+      }
+    },
+    "environment": {
+      "ANDROID_HOME": "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk",
+      "ANDROID_NDK_ROOT": "/nix/store/nvmmpi6zg0qrz6hqxp33prhnbx3pm2jr-android-sdk-ndk-28.2.13676358/libexec/android-sdk/ndk/28.2.13676358",
+      "KOTLIN_HOME": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21"
+    },
+    "policy": "Actual current lstat entry and separately resolved file identity; prior only target comparison, not copied entry metadata"
+  },
+  "packages": {
+    "product": {
+      "apk": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "bytes": 5220413,
+      "sha256": "69e775be05ed69604100a3a14833b3fde125f73d9aa4f41aa6b4f67254640720",
+      "metadata_sha256": "6a436665e72cca179545d50650d607f49ceaf965b7f3e76f74bdf68ff3586c8a",
+      "class_count": 1328,
+      "methods": [],
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true
+    },
+    "host": {
+      "apk": "android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+      "bytes": 2588492,
+      "sha256": "c9afa9021bd23f2349eb2b5ec60e7e55ee56a774f8120625b80efb92e6dbbd43",
+      "metadata_sha256": "343379a880059c602d4011bfe4cdeaf01ab32648d9c6cd87e07cdf321b722a1a",
+      "class_count": 1236,
+      "methods": [],
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true
+    },
+    "test": {
+      "apk": "android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+      "bytes": 52318,
+      "sha256": "950619bd90608e77c73cf7152a5d7c027f4f28fdfaeed8a4770a8655c0e6ba41",
+      "metadata_sha256": "d61475692d336c0ec6039fbf628d2643da9eb90a45d22f5e3e22c225dac60ab8",
+      "class_count": 43,
+      "methods": [
+        "testBadBytesAreSafe",
+        "testCleanupRetainsOwner",
+        "testEnginePayloadAndOrder",
+        "testInputConnectionAndManualInvalidation",
+        "testLateResultIsInvalidated",
+        "testProviderCancellationWaitsForQuery",
+        "testProviderCloseErrorIsPrivate",
+        "testProviderEnumerationClosesCursor",
+        "testProviderQueryErrorIsPrivate",
+        "testReadinessRejectsBeforeLoad",
+        "testReusedBackendQueuedCancellation",
+        "testSafImportCancellationWaitsForOpen",
+        "testSafImportOpenFailureThenRetryPreservesHistory",
+        "testSingleConfirmationAndPassword"
+      ],
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true
+    }
+  },
+  "formal_receipts": {
+    "product": {
+      "path": "android/app/build/verification/debug/run-7f320e222bcd491ab858cff1e7f4cac9/result.json",
+      "bytes": 1681,
+      "sha256": "2a1e834e3839458856488a0e109e7a3924224e8373edc421b4c4733e9ef200e6"
+    },
+    "three": {
+      "path": "build/verification/android-test/run-f405eb84dd4e4a2b8dbc8ecdf62a6a23/receipt.json",
+      "bytes": 208315,
+      "sha256": "b782484f3281c27a365f19aafd50269751d52ecd830b1fb4e079355274693de9"
+    }
+  },
+  "full_command": {
+    "command": [
+      "bash",
+      "scripts/nix-env.sh",
+      "apk",
+      "--cache-only",
+      "bash",
+      "scripts/verify-gradle.sh",
+      "--offline",
+      "--rerun-tasks"
+    ],
+    "exit": 0,
+    "seconds": 637.587190813967,
+    "started_utc": "2026-10-21T15:10:43.332752+00:00",
+    "finished_utc": "2026-10-21T15:21:20.919954+00:00",
+    "log_bytes": 46415,
+    "log_sha256": "5eea0d44812a9cd89827d188e88e072494a7deef572ccc79556605e4aa60cf64"
+  },
+  "MNN_object_count": 578,
+  "MNN_object_sha_inode_mtime_unchanged": true,
+  "native_DSO_sha256": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416",
+  "product_actual_phase_class_defs": [
+    "Lorg/llmasr/minimal/asr/InferencePhase;",
+    "Lorg/llmasr/minimal/asr/InferencePhaseListener;",
+    "Lorg/llmasr/minimal/asr/NativeTranscription;",
+    "Lorg/llmasr/minimal/asr/InferencePhaseListener$Companion;"
+  ],
+  "current_class_ABI": {
+    "sha256": "617bad572b7154053c34b4daf9fce548877f8b2c2aefc7fbdebb229af9a1953f",
+    "checks": "JVM8/original public subset/NONE interface field/IOException/6 Nullable, compiler additions distinct; separate from package checker"
+  },
+  "device_runner": "not run",
+  "supplemental_policy": "Only this JSON and full.md new summaries; old status/targeted/review/frozen source remains unchanged"
+}

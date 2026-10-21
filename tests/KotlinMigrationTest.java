@@ -333,9 +333,147 @@ public final class KotlinMigrationTest {
             "ports Store removes identical observer");
         System.out.println("PASS runtime log ports Java ABI/default/nullable/SAM/clock/store");
     }
+    private static void inferencePhaseEnum() throws Exception {
+        org.llmasr.minimal.asr.InferencePhase[] values = org.llmasr.minimal.asr.InferencePhase.values();
+        String[] names = {"MODEL_LOAD_STARTED", "MODEL_LOAD_COMPLETED", "INFERENCE_STARTED", "INFERENCE_COMPLETED"};
+        enumAbi(org.llmasr.minimal.asr.InferencePhase.class, values, names);
+        java.lang.reflect.Field code = org.llmasr.minimal.asr.InferencePhase.class.getField("code");
+        require(code.getType() == int.class && Modifier.isPublic(code.getModifiers())
+            && Modifier.isFinal(code.getModifiers()) && !Modifier.isStatic(code.getModifiers()), "InferencePhase code field ABI");
+        require(org.llmasr.minimal.asr.InferencePhase.class.getGenericSuperclass().getTypeName().equals(
+            "java.lang.Enum<org.llmasr.minimal.asr.InferencePhase>"), "InferencePhase Enum generic signature");
+        int[] codes = {1, 2, 3, 4};
+        for (int i = 0; i < values.length; i++) {
+            require(values[i].code == codes[i] && code.getInt(values[i]) == codes[i],
+                "InferencePhase explicit JNI codes must remain 1/2/3/4");
+            require(phaseSwitch(values[i]) == codes[i], "InferencePhase Java switch");
+        }
+        java.lang.reflect.Constructor<?> constructor = org.llmasr.minimal.asr.InferencePhase.class
+            .getDeclaredConstructor(String.class, int.class, int.class);
+        require(Modifier.isPrivate(constructor.getModifiers()), "InferencePhase private enum constructor");
+        values[0] = null;
+        require(org.llmasr.minimal.asr.InferencePhase.values()[0] == org.llmasr.minimal.asr.InferencePhase.MODEL_LOAD_STARTED,
+            "InferencePhase defensive values array");
+        for (String bad : new String[]{"", "model_load_started", "MODEL_LOAD_STARTED ", "UNKNOWN"})
+            rejectsExactly(() -> org.llmasr.minimal.asr.InferencePhase.valueOf(bad), IllegalArgumentException.class,
+                "InferencePhase invalid valueOf");
+        rejectsExactly(() -> org.llmasr.minimal.asr.InferencePhase.valueOf(null), NullPointerException.class,
+            "InferencePhase null valueOf");
+        rejectsExactly(() -> phaseSwitch(null), NullPointerException.class, "InferencePhase null switch");
+    }
+    private static int phaseSwitch(org.llmasr.minimal.asr.InferencePhase phase) {
+        switch (phase) {
+            case MODEL_LOAD_STARTED: return 1;
+            case MODEL_LOAD_COMPLETED: return 2;
+            case INFERENCE_STARTED: return 3;
+            case INFERENCE_COMPLETED: return 4;
+            default: throw new AssertionError("unexpected inference phase");
+        }
+    }
+    private static java.lang.reflect.Method inferenceSam(Class<?> type, String name, Class<?> result,
+            Class<?>[] exceptions, Class<?>... arguments) throws Exception {
+        require(type.isInterface() && Modifier.isPublic(type.getModifiers()) && Modifier.isAbstract(type.getModifiers())
+            && type.getTypeParameters().length == 0, type.getSimpleName() + " interface ABI");
+        long abstractMethods = Arrays.stream(type.getDeclaredMethods()).filter(m -> Modifier.isPublic(m.getModifiers())
+            && Modifier.isAbstract(m.getModifiers()) && !Modifier.isStatic(m.getModifiers())).count();
+        java.lang.reflect.Method method = type.getDeclaredMethod(name, arguments);
+        int flags = method.getModifiers();
+        require(abstractMethods == 1 && Modifier.isPublic(flags) && Modifier.isAbstract(flags)
+            && !Modifier.isStatic(flags) && !Modifier.isFinal(flags) && !method.isDefault()
+            && method.getReturnType() == result && method.getTypeParameters().length == 0
+            && Arrays.equals(method.getExceptionTypes(), exceptions), type.getSimpleName() + " SAM descriptor/throws ABI");
+        require(Arrays.equals(method.getGenericParameterTypes(), method.getParameterTypes())
+            && method.getGenericReturnType() == result, type.getSimpleName() + " non-generic method ABI");
+        return method;
+    }
+    private static void inferenceListener() throws Exception {
+        inferenceSam(org.llmasr.minimal.asr.InferencePhaseListener.class, "onPhase", void.class,
+            new Class<?>[0], int.class);
+        java.lang.reflect.Field field = org.llmasr.minimal.asr.InferencePhaseListener.class.getField("NONE");
+        require(field.getDeclaringClass() == org.llmasr.minimal.asr.InferencePhaseListener.class
+            && field.getType() == org.llmasr.minimal.asr.InferencePhaseListener.class
+            && Modifier.isPublic(field.getModifiers()) && Modifier.isStatic(field.getModifiers())
+            && Modifier.isFinal(field.getModifiers()), "InferencePhaseListener.NONE interface static final field ABI");
+        org.llmasr.minimal.asr.InferencePhaseListener none = org.llmasr.minimal.asr.InferencePhaseListener.NONE;
+        require(none != null && field.get(null) == none && org.llmasr.minimal.asr.InferencePhaseListener.NONE == none,
+            "InferencePhaseListener.NONE stable identity");
+        final int[] observed = new int[1];
+        org.llmasr.minimal.asr.InferencePhaseListener lambda = code -> { observed[0] = code; };
+        org.llmasr.minimal.asr.InferencePhaseListener anonymous = new org.llmasr.minimal.asr.InferencePhaseListener() {
+            public void onPhase(int code) { observed[0] = code; }
+        };
+        for (int code : new int[]{Integer.MIN_VALUE, Integer.MAX_VALUE, -1, 0, 1, 2, 3, 4}) {
+            Throwable failure = null;
+            try { none.onPhase(code); } catch (Throwable caught) { failure = caught; }
+            require(failure == null, "InferencePhaseListener.NONE must ignore every int code");
+            lambda.onPhase(code);
+            require(observed[0] == code, "InferencePhaseListener Java lambda primitive int");
+            anonymous.onPhase(code);
+            require(observed[0] == code, "InferencePhaseListener Java anonymous primitive int");
+        }
+    }
+    private static void nativeTranscriptionAbi() throws Exception {
+        inferenceSam(org.llmasr.minimal.asr.NativeTranscription.class, "invokeWithListener", byte[].class,
+            new Class<?>[]{java.io.IOException.class}, String.class, String.class, String.class, String.class,
+            org.llmasr.minimal.asr.InferencePhaseListener.class);
+        require(org.llmasr.minimal.asr.NativeTranscription.class.getDeclaredMethods().length == 1,
+            "NativeTranscription abstract-only declaration inventory");
+        final Object[][] captured = new Object[1][];
+        final byte[][] output = new byte[1][];
+        org.llmasr.minimal.asr.NativeTranscription lambda = (config, wav, language, cache, listener) -> {
+            captured[0] = new Object[]{config, wav, language, cache, listener}; return output[0];
+        };
+        org.llmasr.minimal.asr.NativeTranscription anonymous = new org.llmasr.minimal.asr.NativeTranscription() {
+            public byte[] invokeWithListener(String config, String wav, String language, String cache,
+                    org.llmasr.minimal.asr.InferencePhaseListener listener) throws java.io.IOException {
+                captured[0] = new Object[]{config, wav, language, cache, listener}; return output[0];
+            }
+        };
+        for (org.llmasr.minimal.asr.NativeTranscription port : new org.llmasr.minimal.asr.NativeTranscription[]{lambda, anonymous})
+            nativeNullableArguments(port, captured, output);
+        java.io.IOException sentinel = new java.io.IOException("synthetic-native-port");
+        org.llmasr.minimal.asr.NativeTranscription failing = (c, w, l, t, listener) -> { throw sentinel; };
+        org.llmasr.minimal.asr.NativeTranscription failingAnonymous = new org.llmasr.minimal.asr.NativeTranscription() {
+            public byte[] invokeWithListener(String config, String wav, String language, String cache,
+                    org.llmasr.minimal.asr.InferencePhaseListener listener) throws java.io.IOException { throw sentinel; }
+        };
+        for (org.llmasr.minimal.asr.NativeTranscription port :
+                new org.llmasr.minimal.asr.NativeTranscription[]{failing, failingAnonymous}) {
+            java.io.IOException observed = null;
+            try { port.invokeWithListener(null, null, null, null, null); }
+            catch (java.io.IOException caught) { observed = caught; }
+            require(observed == sentinel, "NativeTranscription Java checked IOException identity");
+        }
+    }
+    private static void nativeNullableArguments(org.llmasr.minimal.asr.NativeTranscription port,
+            Object[][] captured, byte[][] output) throws Exception {
+        Object[] full = {new String("config"), new String("wav"), new String("language"), new String("cache"),
+            org.llmasr.minimal.asr.InferencePhaseListener.NONE};
+        for (int nullAt = -1; nullAt <= full.length; nullAt++) {
+            Object[] arguments = full.clone();
+            if (nullAt == full.length) Arrays.fill(arguments, null);
+            else if (nullAt >= 0) arguments[nullAt] = null;
+            for (byte[] bytes : new byte[][]{null, new byte[0], new byte[]{0, -1, 127, -128}}) {
+                output[0] = bytes;
+                byte[] actual = port.invokeWithListener((String) arguments[0], (String) arguments[1],
+                    (String) arguments[2], (String) arguments[3],
+                    (org.llmasr.minimal.asr.InferencePhaseListener) arguments[4]);
+                require(actual == bytes, "NativeTranscription nullable byte array identity");
+                for (int i = 0; i < arguments.length; i++)
+                    require(captured[0][i] == arguments[i], "NativeTranscription nullable argument identity/order");
+            }
+        }
+    }
+    private static void inferencePhasePorts() throws Exception {
+        inferencePhaseEnum();
+        inferenceListener();
+        nativeTranscriptionAbi();
+        System.out.println("PASS inference phase ports Java ABI/codes/NONE/nullable/throws/SAM");
+    }
     public static void main(String[] args) throws Exception {
         runtimeLogEnums();
         runtimeLogPorts();
+        inferencePhasePorts();
         check(AsrText.display("\u0000\t<asr_text> hello <|im_end|>\r\n").equals("hello"));
         check(AsrText.display("\u2003text\u2003").equals("\u2003text\u2003"));
         check(Modifier.isStatic(AsrText.class.getMethod("display", String.class).getModifiers()));

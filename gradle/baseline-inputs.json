@@ -21,7 +21,7 @@
     "patches/qwen-lazy-nagisa.patch": "c24bf1940bab19c2a89c34159f3900be0fdf9e7e502d89de4cba5936f045abe8",
     "android/app/src/org/llmasr/minimal/AppGraph.java": "9f33cdd81234bbf033ac49807205a76a3734f39ac5b1e52ee8291bb96ae0e012",
     "android/app/src/org/llmasr/minimal/AsrImeService.java": "cff9fe4493b01bd26720e953b5606704c353e011ccd634c0f171d925a505f971",
-    "android/app/src/org/llmasr/minimal/LogsActivity.java": "89f921c43c9f5a92e962eb4d03e3b990121f73fe2b2ab0cdd3a5b8b4e2def801",
+    "android/app/src/org/llmasr/minimal/LogsActivity.java": "2b2bb518a33953d1262f3e7c4e6e667f466ac7f52f32c3b8848bb9b0d9ddf671",
     "android/app/src/org/llmasr/minimal/MainActivity.java": "88f24a66d9f571c9ab659d4a095c730b90adb8e9a73e89205fa8c0c2156adadc",
     "android/app/src/org/llmasr/minimal/ModelManagementActivity.java": "c04da08c22c5530f87aa013af0beeceeb23c88dbac9fd650b4be5ba3a6e08a02",
     "android/app/src/org/llmasr/minimal/platform/ActivityWindow.java": "c581984eb27fb2cbbfe203e69df23d53d3a05d85da84862b67992375e06a6e36",

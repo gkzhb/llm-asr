@@ -45,7 +45,7 @@ native显式M2构建与打包任务暂留app，runtime持有Java JNI桥；不改
 | ModelAndroidHelpersTest | modelPageHelpers | 纯host页面策略（非Android runtime） |
 | diagnostics.RuntimeLogCoreTest | runtimeLogCore | 持久化/隐私/worker/清理；llm-asr-mfe 序号极限组默认main执行：真实合法near-MAX noearly/early多次append、合法不可偏移history normalize为OK、普通gap/early/单次restore、capacity1/4/1000与dense-before-trim/drop、非法append及clock失败不变/全字段旧snapshot与codec冻结、真实Worker+Persistence连续重启、非法history/坏文件仍拒绝、sink Error身份/一次再入/跨界并发coalescing（numeric回落不等旧publication），无新JUnit方法；llm-asr-rpb fatal slot 恢复组（load/restore/callback/save/execute 五条 Error 路径 + R1 interleave/close-block/reject token 协议）；R2 残留同入口新增 close-fatal（阻塞真实 save 中 close 后同 fatal 身份/实际退出/无 auto retry/不计 queue-full）、reject-window（拒绝先释放自己 admission→真实 FailureSink 有界暂停→后继入 slot 真实 save→旧 frame 不清后继→第三 schedule 只 dirty→最终持久）与 teardown-hold（所有 start/首次观察在 try 内、gate 预登记；总纳秒预算 join(millis,nanos)+实际 isAlive；run-local 共享收尾/删除 guard 真实拒删 held save，主 Throwable+suppressed/保中断/宿主 noexit；独立释放确认实际退出才删）。R1/R2-a 已 CLOSED，R2-b 待 fresh B1–B5 回审；新证据 r2b-fix，旧专用清理变体仅历史演示，不冒共享拒删证明 |
 | RuntimeLogStoreErrorTest | runtimeLogErrorIdentity | Error身份/publisher |
-| LogExportTest | logExportGenerations | clear/export世代、阻塞owner |
+| LogExportTest | logExportGenerations | clear/export世代、阻塞owner；picker abandon(true) slot释放/零IO/同页新code重试、旧callback拒绝、destroy-deferred跨page EXPIRED，原完整main与close/Error收尾保留 |
 | TextExportTest | textExport | result/ticket/worker |
 | TextExportSafetyTest | textExportSafety | clear-before-admission |
 | TextExportFatalTest | textExportFatalIdentity | compound fatal/close |
@@ -66,6 +66,7 @@ native显式M2构建与打包任务暂留app，runtime持有Java JNI桥；不改
 根 `verifyDebug` 继续连接以下旧gate，额外依赖两个JUnit task和模块边界编译负例：
 - `verifyHost → scripts/test-minimal-apk.sh`：全28 main入口/8参数path、Kotlin ABI、上述原body和3真实模型production mutants（readiness-monitor/provider-cancel-trust/terminal-cancel）；fresh mktemp classes、不读历史classes。
 - `activity_window_test.py`：生产ActivityWindow对可控假平台的行为及3编译mutants；其source负例与pre-M6 red保留。假平台不是仪器/设备。
+- `logs_activity_picker_test.py`：真实完整LogsActivity＋日志core、测试侧platform/AppGraph/ActivityWindow fakes；默认实际按钮launch异常→真实Refresh/render失败原因稳定，slot/零IO/新code/旧callback/pause-defer-resume/destroy-recreate保护与3项可编译consumer mutants及恢复正例。经test-minimal-apk.sh有界接入verifyHost/full；fast不运行此adapter，独立targeted运行普通/-O。所有断言在外部harness，fresh混合编译与有限timeout；R1追加同runner轻量后代故障保护（TERM抵抗需KILL、父先退后代持输出、中断身份、未确认退出拒删保目录/证据、恢复清理），Linux owned session/PID-start/pidfd/subreaper有界退出reap后才删目录。默认普通/-O均执行，不用外层timeout本身冒行为红；不修改共享compiler，不承诺恶意session逃逸沙箱。不是Android runner/系统picker/SAF设备验收，详[本批状态](../reports/runtime-logs-picker/status.md)。
 - `prepare_model_configs_test.py`、`model_android_source_test.py`、`text_export_source_test.py`、`architecture_boundary_test.py`、`app_report_source_test.py`、`jni_symbol_checker_test.py`、`apk_report_binding_test.py`：原构建/隐私/接线/检查器负例保留；lexical不是runtime。
 - `verifyBuildInputs`：真实staging8负例；`verifyNativeInputs`：源码准备9/原生4，普通和Python -O都执行。
 - `verifyApkChecker`：实际AGP包identity变异；`verifyJni`：全63混合源真实生成头/NDKobject/symbol；`verifyDebugPackage`：实际签名APK、组件权限/资产/全部DEX生产owner/JNI/native/provenance/输入指纹。

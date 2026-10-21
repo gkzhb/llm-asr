@@ -113,6 +113,7 @@ run TextExportFatalTest
 run ModelNotificationTest
 timeout 180 python3 tests/foreground_recorder_test.py
 timeout 180 python3 tests/activity_window_test.py
+timeout 900 python3 -B tests/logs_activity_picker_test.py
 timeout 15 python3 tests/activity_window_source_test.py
 timeout 15 python3 tests/manifest_permission_test.py
 timeout 15 python3 -O tests/manifest_permission_test.py

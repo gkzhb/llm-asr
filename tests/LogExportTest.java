@@ -25,7 +25,24 @@ public final class LogExportTest {
         RuntimeLogStore s = new RuntimeLogStore();
         s.append(RuntimeLogEventKind.APP_STARTUP,RuntimeLogSource.APP,null,"ok"); return s;
     }
+    static void abandonedPickerProtection() {
+        RuntimeLogStore s=logs(); Queue q=new Queue(); AtomicInteger opens=new AtomicInteger();
+        LogExportController<String> c=new LogExportController<>(target -> { opens.incrementAndGet(); return new ByteArrayOutputStream(); },q);
+        LogExportPage<String> page=new LogExportPage<>(c); page.foreground(true);
+        LogExportController.Ticket failed=page.begin(s.snapshot()); page.abandon(true);
+        check(c.state().phase==LogExportController.Phase.EXPIRED && !c.state().busy(),"picker abandon releases slot");
+        check(c.state().bytes==0 && q.work.isEmpty() && opens.get()==0,"picker abandon no IO");
+        LogExportController.Ticket retry=page.begin(s.snapshot());
+        check(retry!=null && retry.pageId==failed.pageId && retry.requestCode!=failed.requestCode,"picker retry fresh code same page");
+        check(!page.result(failed.requestCode,"stale"),"failed picker callback rejected");
+        check(c.state().phase==LogExportController.Phase.SELECTING && q.work.isEmpty(),"old callback cannot submit retry");
+        page.foreground(false); check(page.result(retry.requestCode,"deferred"),"picker result deferred"); page.destroy();
+        LogExportPage<String> next=new LogExportPage<>(c); next.foreground(true);
+        check(c.state().phase==LogExportController.Phase.EXPIRED && !next.result(retry.requestCode,"stale"),"recreated page rejects old result");
+        check(q.work.isEmpty() && opens.get()==0,"destroyed deferred picker never writes"); next.destroy();
+    }
     public static void main(String[] args) throws Exception {
+        abandonedPickerProtection();
         RuntimeLogStore s = logs(); Queue q = new Queue(); ByteArrayOutputStream out = new ByteArrayOutputStream();
         AtomicInteger opens = new AtomicInteger();
         LogExportController<String> c = new LogExportController<>(target -> { opens.incrementAndGet(); return out; },q);

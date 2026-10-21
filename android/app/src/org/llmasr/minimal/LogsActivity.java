@@ -24,6 +24,8 @@ import org.llmasr.minimal.platform.ActivityWindow;
 /** Cache-only foreground log viewer. All provider IO belongs to graph's bounded
  * process export lane; the page never supplies worker callbacks capturing UI. */
 public final class LogsActivity extends Activity {
+    private static final String PICKER_UNAVAILABLE = "无法打开保存选择器，请返回后重试。";
+    private boolean pickerUnavailable;
     private AppGraph graph;
     private final ActivityWindow.BackRegistration windowBack = new ActivityWindow.BackRegistration(this, this::onBackPressed);
     private LogExportPage<Uri> page;
@@ -71,10 +73,11 @@ public final class LogsActivity extends Activity {
         if (!visible || page == null) return;
         LogExportController.Ticket ticket = page.begin(graph.runtimeLogStore().snapshot());
         if (ticket == null) { status.setText("暂无日志或另一次导出尚未结束，请等待后重试。"); return; }
+        pickerUnavailable = false;
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT).setType("text/plain")
             .addCategory(Intent.CATEGORY_OPENABLE).putExtra(Intent.EXTRA_TITLE,"qwen-asr-logs-"+System.currentTimeMillis()+".txt");
         try { startActivityForResult(intent,ticket.requestCode); }
-        catch (RuntimeException unavailable) { page.abandon(true); status.setText("无法打开保存选择器，请返回后重试。"); }
+        catch (RuntimeException unavailable) { page.abandon(true); pickerUnavailable = true; status.setText(PICKER_UNAVAILABLE); }
     }
     @Override protected void onActivityResult(int request,int result,Intent data) {
         super.onActivityResult(request,result,data);
@@ -107,7 +110,7 @@ public final class LogsActivity extends Activity {
             +" 条。\n初始历史读取："+worker.recoveryStatus()
             +(worker.lastFailure() == null ? "\n本地保存：无当前错误（异步刷盘）" : "\n本地保存异常："+worker.lastFailure()+"；新事件将触发重试。"));
         LogExportController.State state = graph.logExports().state();
-        status.setText(RuntimeLogText.export(state));
+        status.setText(pickerUnavailable ? PICKER_UNAVAILABLE : RuntimeLogText.export(state));
         export.setEnabled(!snapshot.isEmpty() && !state.busy());
     }
     /** One stable foreground tick observes persistence/export status too; no per-event

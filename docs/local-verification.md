@@ -90,6 +90,23 @@ core34/runtime1共35 JUnit零failure/error/skip，原host/ABI/latch/生产PartRe
 
 本leaf未stage/commit/push；父消费后由reviewagent另授安全清单审与限定提交，成功前不宣称可验证APK已交付。已接受审查为用户指定同模型fresh上下文隔离只读、非跨家族独立，非本leaf重跑。设备4K/16K、麦克风、IME/SAF/JNI运行、模型权重计算、远端CI全部not run；不关M4。
 
+## llm-asr-mfe picker 私有 notice targeted
+
+本批以真实完整 `LogsActivity` 对测试侧 Android 平台/AppGraph 装配/ActivityWindow fakes 的 JVM consumer 回归锁定启动失败→真实 Refresh/render 覆盖原因；不复制生产 begin/render，也不新增产品可见性/DI/API。正式 adapter 默认运行保护组及 render-priority/retry-clear/pause-clear 三个可编译行为 mutants 与恢复正例，经 host 脚本有界接入后续 full；fast 仅运行增强的完整 LogExportTest 等既有 JUnit，不冒称包含此 adapter。
+
+```bash
+bash scripts/nix-env.sh apk --cache-only python3 -B tests/logs_activity_picker_test.py
+bash scripts/nix-env.sh apk --cache-only python3 -O tests/logs_activity_picker_test.py
+bash scripts/nix-env.sh apk --cache-only bash scripts/verify-local.sh fast --offline --rerun-tasks
+bash scripts/nix-env.sh apk --cache-only bash scripts/verify-local.sh format --offline
+```
+
+old/fixed 隔离重放可用 `--activity-source` 与全新 `--evidence-dir`，保持正式 test SHA 不变、主树不回退，记录精确 source/工具/compile/run exit。只有旧源 fresh compile0 且具体 `picker-unavailable reason must survive foreground refresh` 外部 AssertionError1 算目标红；编译/超时/缺 cache 不算。worker 使用永不运行的独立队列，provider 输出仅内存流、无测试线程/活 IO；正常 pause/deferred/resume 和 destroy/recreate 仍走真实 Page/Controller。
+
+R1 后 adapter 的所有编译/Java/工具身份子进程使用 Linux/Nix 本地 owned-session runner（标准库 `/proc` PID-start、pidfd 信号、当前进程 child-subreaper）；不以只杀直接 Bash 或 killpg 单组代替后代退出。嵌套 timeout 新进程组仍受本 session 跟踪，超时/中断有界 TERM→KILL→wait/reap，保存部分 stdout/stderr、实际 exit/原因与确认结果；未确认退出则保留生成目录及证据、拒删/失败，不把活输出标为 closed SHA。主异常/KeyboardInterrupt 保留；可捕获 SIGTERM 同走中断收尾。即使退出已确认，失败默认工作目录也保留诊断供消费，只有正常成功目录自动删除。受控工具须不恶意脱离 session；不是任意逃逸进程沙箱。默认正式 adapter 另执行轻量合成 TERM 抵抗、父先退后代持输出、注入中断、拒删及恢复清理保护，普通/-O 相同路径；不真实阻塞编译器。旧成功证据保历史，新最终测试身份重放及 R1 证据位于 `.work/mfe-picker-r1-fix/`。
+
+当批真实执行与复杂度证据见[状态](../reports/runtime-logs-picker/status.md)及 ignored `.work/mfe-picker-build/`。本阶段 full/APK 覆盖/提交另授，旧 APK 仅上批身份；所有 Android runner、系统 picker/SAF/Binder/grant/真实生命周期、设备/ADB/模拟器/麦克风/私人文件/模型均 not run，host fakes 不替代设备验收。保留原 gate/签名/权限，不下载补绿。
+
 ## 执行冻结辅助工具边界
 
 ignored freeze-a.py仅读真实collector库存span和native input_hashes span，经已人工审完整源码行片段SHA匹配后才compile/exec；任何片段变化须先审批准新身份，不能自动rehash凑通过。此处不是通用AST安全解释器或future unknown code sandbox。新freeze独立build/review/external及generator/tests身份，旧179/13/A-v2历史保留。临时tree新增script/native/source、缺source-lock及unknown源码片段有真实拒绝测试，未知片段不执行；不在main生产源码取红。

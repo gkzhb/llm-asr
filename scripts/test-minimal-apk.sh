@@ -85,6 +85,7 @@ run KotlinMigrationTest
 timeout 180 python3 tests/runtime_log_enum_cleanup_test.py
 # Fresh isolated production enum copies: compile0 -> exact Java assertion1 -> restored0.
 timeout 1440 python3 tests/runtime_log_enum_mutant_test.py
+timeout 1440 python3 tests/runtime_log_enum_mutant_test.py --ports
 run MinimalApkTest bench/audio/zh-original.wav
 run RecordingRaceTest
 run ResultFilesTest

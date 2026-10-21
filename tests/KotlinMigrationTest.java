@@ -188,8 +188,154 @@ public final class KotlinMigrationTest {
             Files.deleteIfExists(root);
         }
     }
+    private static void portMethod(Class<?> owner, String name, Class<?> result, boolean abstractMethod,
+                                   boolean defaultMethod, Class<?>... arguments) throws Exception {
+        java.lang.reflect.Method method = owner.getDeclaredMethod(name, arguments);
+        int flags = method.getModifiers();
+        require(Modifier.isPublic(flags) && !Modifier.isStatic(flags) && !Modifier.isFinal(flags)
+            && Modifier.isAbstract(flags) == abstractMethod && method.isDefault() == defaultMethod
+            && method.getReturnType() == result && method.getExceptionTypes().length == 0,
+            owner.getSimpleName() + "." + name + " Java method ABI");
+    }
+    private static void portClass(Class<?> type, Class<?> enclosing, Class<?> port, int methods,
+                                  Class<?>[]... constructors) throws Exception {
+        int flags = type.getModifiers();
+        require(Modifier.isPublic(flags) && Modifier.isStatic(flags) && Modifier.isFinal(flags)
+            && !Modifier.isAbstract(flags) && type.getEnclosingClass() == enclosing
+            && type.getSuperclass() == Object.class && Arrays.equals(type.getInterfaces(), new Class<?>[]{port})
+            && type.getDeclaredMethods().length == methods, type.getName() + " nested class ABI");
+        require(type.getDeclaredConstructors().length == constructors.length, type.getName() + " constructor inventory");
+        for (Class<?>[] parameters : constructors)
+            require(Modifier.isPublic(type.getDeclaredConstructor(parameters).getModifiers()), type.getName() + " public constructor");
+    }
+    private static void clockAdvanceRejected(RuntimeLogClock clock) {
+        Throwable observed = null;
+        try { clock.advance(Long.MIN_VALUE, Long.MAX_VALUE); } catch (Throwable failure) { observed = failure; }
+        require(observed != null && observed.getClass() == UnsupportedOperationException.class
+            && "clock does not support advance".equals(observed.getMessage()),
+            "RuntimeLogClock default advance exception/message");
+    }
+    private static void noneIgnores(RuntimeLogSink sink, List<RuntimeLogEvent> snapshot, int dropped) {
+        Throwable observed = null;
+        try { sink.onSnapshot(snapshot, dropped); } catch (Throwable failure) { observed = failure; }
+        require(observed == null, snapshot == null ? "RuntimeLogSink.None must ignore null snapshot"
+            : "RuntimeLogSink.None must ignore snapshot contents");
+    }
+    private static void runtimeLogPorts() throws Exception {
+        require(RuntimeLogClock.class.isInterface() && Modifier.isPublic(RuntimeLogClock.class.getModifiers())
+            && RuntimeLogClock.class.getDeclaredMethods().length == 3, "RuntimeLogClock interface ABI");
+        portMethod(RuntimeLogClock.class, "wallTimeMillis", long.class, true, false);
+        portMethod(RuntimeLogClock.class, "monotonicNanos", long.class, true, false);
+        portMethod(RuntimeLogClock.class, "advance", void.class, false, true, long.class, long.class);
+        RuntimeLogClock anonymous = new RuntimeLogClock() {
+            public long wallTimeMillis() { return -31; }
+            public long monotonicNanos() { return 47; }
+        };
+        require(anonymous.wallTimeMillis() == -31 && anonymous.monotonicNanos() == 47,
+            "RuntimeLogClock Java anonymous implementation");
+        clockAdvanceRejected(anonymous);
+        portClass(RuntimeLogClock.System.class, RuntimeLogClock.class, RuntimeLogClock.class, 2, new Class<?>[0]);
+        portMethod(RuntimeLogClock.System.class, "wallTimeMillis", long.class, false, false);
+        portMethod(RuntimeLogClock.System.class, "monotonicNanos", long.class, false, false);
+        require(RuntimeLogClock.System.class.getDeclaredFields().length == 0, "System clock has no cached fields");
+        RuntimeLogClock system = new RuntimeLogClock.System();
+        // Read both real clocks, but impose no positivity, wall-clock or scheduling bounds.
+        system.wallTimeMillis(); system.monotonicNanos(); clockAdvanceRejected(system);
+        require(RuntimeLogClock.System.class.getMethod("advance", long.class, long.class).getDeclaringClass()
+            == RuntimeLogClock.class, "System inherits original interface default");
+        portClass(RuntimeLogClock.Fake.class, RuntimeLogClock.class, RuntimeLogClock.class, 5,
+            new Class<?>[0], new Class<?>[]{long.class, long.class});
+        portMethod(RuntimeLogClock.Fake.class, "wallTimeMillis", long.class, false, false);
+        portMethod(RuntimeLogClock.Fake.class, "monotonicNanos", long.class, false, false);
+        portMethod(RuntimeLogClock.Fake.class, "advance", void.class, false, false, long.class, long.class);
+        portMethod(RuntimeLogClock.Fake.class, "setWall", void.class, false, false, long.class);
+        portMethod(RuntimeLogClock.Fake.class, "setMonotonic", void.class, false, false, long.class);
+        require(RuntimeLogClock.Fake.class.getDeclaredFields().length == 2, "Fake private state inventory");
+        for (String name : new String[]{"wall", "mono"}) {
+            java.lang.reflect.Field field = RuntimeLogClock.Fake.class.getDeclaredField(name);
+            require(field.getType() == long.class && Modifier.isPrivate(field.getModifiers())
+                && !Modifier.isStatic(field.getModifiers()) && !Modifier.isFinal(field.getModifiers()),
+                "Fake private mutable long " + name);
+        }
+        RuntimeLogClock.Fake zero = new RuntimeLogClock.Fake();
+        require(zero.wallTimeMillis() == 0 && zero.monotonicNanos() == 0, "Fake zero constructor");
+        RuntimeLogClock.Fake fake = new RuntimeLogClock.Fake(-7, Long.MIN_VALUE);
+        require(fake.wallTimeMillis() == -7 && fake.monotonicNanos() == Long.MIN_VALUE, "Fake exact constructor values");
+        fake.setWall(Long.MAX_VALUE);
+        require(fake.wallTimeMillis() == Long.MAX_VALUE && fake.monotonicNanos() == Long.MIN_VALUE, "Fake independent wall setter");
+        fake.setMonotonic(11);
+        require(fake.wallTimeMillis() == Long.MAX_VALUE && fake.monotonicNanos() == 11, "Fake independent monotonic setter");
+        RuntimeLogClock dispatch = fake;
+        dispatch.advance(0, 0);
+        require(fake.wallTimeMillis() == Long.MAX_VALUE && fake.monotonicNanos() == 11, "Fake zero advance");
+        dispatch.advance(1, -17);
+        require(fake.wallTimeMillis() == Long.MIN_VALUE && fake.monotonicNanos() == -6,
+            "RuntimeLogClock.Fake independent advance");
+        fake.setWall(23); fake.setMonotonic(Long.MIN_VALUE); dispatch.advance(-9, -1);
+        require(fake.wallTimeMillis() == 14 && fake.monotonicNanos() == Long.MAX_VALUE, "Fake monotonic negative wrap");
+        fake.setWall(Long.MIN_VALUE); fake.setMonotonic(Long.MAX_VALUE); dispatch.advance(-1, 1);
+        require(fake.wallTimeMillis() == Long.MAX_VALUE && fake.monotonicNanos() == Long.MIN_VALUE, "Fake both clocks long wrap");
+        require(RuntimeLogSink.class.isInterface() && Modifier.isPublic(RuntimeLogSink.class.getModifiers())
+            && RuntimeLogSink.class.getDeclaredMethods().length == 1, "RuntimeLogSink Java SAM ABI");
+        portMethod(RuntimeLogSink.class, "onSnapshot", void.class, true, false, List.class, int.class);
+        java.lang.reflect.Type listType = RuntimeLogSink.class.getDeclaredMethod("onSnapshot", List.class, int.class)
+            .getGenericParameterTypes()[0];
+        require(listType.getTypeName().equals("java.util.List<org.llmasr.minimal.diagnostics.RuntimeLogEvent>"),
+            "RuntimeLogSink exact Java generic signature");
+        portClass(RuntimeLogSink.None.class, RuntimeLogSink.class, RuntimeLogSink.class, 1, new Class<?>[0]);
+        portMethod(RuntimeLogSink.None.class, "onSnapshot", void.class, false, false, List.class, int.class);
+        require(RuntimeLogSink.None.class.getDeclaredFields().length == 0, "None has no singleton fields");
+        require(RuntimeLogSink.None.class.getDeclaredMethod("onSnapshot", List.class, int.class)
+            .getGenericParameterTypes()[0].equals(listType), "None exact Java generic signature");
+        RuntimeLogSink none = new RuntimeLogSink.None();
+        noneIgnores(none, null, Integer.MIN_VALUE); noneIgnores(none, null, Integer.MAX_VALUE);
+        noneIgnores(none, java.util.Collections.emptyList(), -1);
+        noneIgnores(none, Arrays.asList((RuntimeLogEvent) null), 0);
+        noneIgnores(none, new java.util.AbstractList<RuntimeLogEvent>() {
+            public RuntimeLogEvent get(int index) { throw new AssertionError("None read element"); }
+            public int size() { throw new AssertionError("None read size"); }
+        }, Integer.MAX_VALUE);
+        final List<?>[] observedList = new List<?>[1];
+        final int[] observedDrop = new int[1];
+        RuntimeLogSink lambda = (snapshot, dropped) -> { observedList[0] = snapshot; observedDrop[0] = dropped; };
+        RuntimeLogSink javaSink = new RuntimeLogSink() {
+            public void onSnapshot(List<RuntimeLogEvent> snapshot, int dropped) {
+                observedList[0] = snapshot; observedDrop[0] = dropped;
+            }
+        };
+        List<RuntimeLogEvent> mutable = new ArrayList<>(); mutable.add(null);
+        for (RuntimeLogSink sink : new RuntimeLogSink[]{lambda, javaSink}) {
+            for (List<RuntimeLogEvent> list : Arrays.asList(mutable, java.util.Collections.unmodifiableList(mutable), null)) {
+                for (int count : new int[]{Integer.MIN_VALUE, -1, 0, Integer.MAX_VALUE}) {
+                    sink.onSnapshot(list, count);
+                    require(observedList[0] == list && observedDrop[0] == count, "Java sink preserves nullable list identity/drop");
+                }
+            }
+        }
+        RuntimeLogClock.Fake injected = new RuntimeLogClock.Fake(-100, 900);
+        RuntimeLogStore store = new RuntimeLogStore(1, injected);
+        require(store.clock() == injected, "Store retains identical injected clock");
+        final int[] calls = new int[1];
+        RuntimeLogSink observer = (snapshot, dropped) -> {
+            observedList[0] = snapshot; observedDrop[0] = dropped; calls[0]++;
+        };
+        store.addSink(null); store.addSink(none); store.addSink(observer);
+        require(store.append(RuntimeLogEventKind.APP_READY, RuntimeLogSource.APP, null, "ok"), "ports Store smoke append");
+        List<RuntimeLogEvent> first = store.snapshot();
+        require(first.get(0).wallMillis == -100 && first.get(0).monotonicNanos == 900
+            && calls[0] == 1 && observedDrop[0] == 0 && observedList[0].equals(first), "ports Store clock/sink smoke");
+        injected.advance(-3, 5);
+        require(store.append(RuntimeLogEventKind.APP_READY, RuntimeLogSource.APP, null, "ok"), "ports Store second append");
+        require(calls[0] == 2 && observedDrop[0] == 1 && store.snapshot().get(0).wallMillis == -103
+            && store.snapshot().get(0).monotonicNanos == 905, "ports Store cumulative drop and clocks");
+        store.removeSink(observer); store.removeSink(none);
+        require(store.append(RuntimeLogEventKind.APP_READY, RuntimeLogSource.APP, null, "ok") && calls[0] == 2,
+            "ports Store removes identical observer");
+        System.out.println("PASS runtime log ports Java ABI/default/nullable/SAM/clock/store");
+    }
     public static void main(String[] args) throws Exception {
         runtimeLogEnums();
+        runtimeLogPorts();
         check(AsrText.display("\u0000\t<asr_text> hello <|im_end|>\r\n").equals("hello"));
         check(AsrText.display("\u2003text\u2003").equals("\u2003text\u2003"));
         check(Modifier.isStatic(AsrText.class.getMethod("display", String.class).getModifiers()));

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source_commit": "82a5563",
-  "revision_scope": "M6 baseline plus authorized P1 Lint fixes and P2 RuntimeLogSource/RuntimeLogEventKind equivalent Kotlin migration; llm-asr-rpb RuntimeLogWorker drain/execute fatal slot release plus R1 per-admission slot-token ownership (only that Worker source SHA); llm-asr-mfe model-maintenance best-effort admitted/terminal logging before presentation and synthesized finalizer failure (only Controller source SHA); llm-asr-mfe actual-exhaustion bounded RuntimeLogStore rebase and legal unrepresentable recovery normalization (only Store source SHA); native/assets/signing and legacy Manifest unchanged",
+  "revision_scope": "M6 baseline plus authorized P1 Lint fixes and P2 RuntimeLogSource/RuntimeLogEventKind equivalent Kotlin migration; llm-asr-rpb RuntimeLogWorker drain/execute fatal slot release plus R1 per-admission slot-token ownership (only that Worker source SHA); llm-asr-mfe model-maintenance best-effort admitted/terminal logging before presentation and synthesized finalizer failure (only Controller source SHA); llm-asr-mfe actual-exhaustion bounded RuntimeLogStore rebase and legal unrepresentable recovery normalization (only Store source SHA); llm-asr-ap5 RuntimeLogClock/RuntimeLogSink equivalent Kotlin migration (only corresponding source paths/SHA); native/assets/signing and legacy Manifest unchanged",
   "native": {
     "path": ".work/build/minimal-apk/package/lib/arm64-v8a/libqwen_asr_jni.so",
     "sha256": "d5bacffc659fb82d862703fc486eda5b34a6184f92a7330dd15eabdb7dcaa416"
@@ -39,12 +39,12 @@
     "android/app/src/org/llmasr/minimal/audio/WaveInput.java": "b46d023aa69cc8eb74d3e6dc1ac815f7c0e1417c82c4534ef7b622ffe5103c83",
     "android/app/src/org/llmasr/minimal/diagnostics/LogExportController.java": "b12e279d5b06c8fee6494893ae7de20bf4b6d274ddf50f1e8626f491ce62da92",
     "android/app/src/org/llmasr/minimal/diagnostics/LogExportPage.java": "d05ff91be2a166a3e8065e056ff1be3b48bbe9de65ad3b4c9913a2805104da3a",
-    "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogClock.java": "5bee09a28ac02855d981aaf3bf497c9bade6f4c0faf742dbe28b69bd72b04e40",
+    "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogClock.kt": "109268a07c22514885ba67ffef8635c7a7933af1807d9903fb17ec7a82426453",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogCodec.java": "63b698de2118955204e0a4e7621f77cc64c49aff61835edac5b4d383f9db68f2",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEvent.java": "ca0eadef27b02602e0dc1b388b05a89a778be976aea487b582ab18869c23375c",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.kt": "10712467665202aa6fd6b9deae4223f945051bd69b63d649c317bad00a477390",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogPersistence.java": "0be6031cefef8deb1ab90eb9970a56c7f27c286bfdb22899bce8f5410c66d58c",
-    "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSink.java": "d4cc560272f969c6e22e9d574459bafb8e07babb9cbe40ff6f8b2b33af7aadff",
+    "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSink.kt": "b24ecb6f21253bc2507b2090875a348c92ed74f467f71fb36e20eefcee3efe63",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogStore.java": "9cdde653b37dc6e6fe3d610557ae166d095f4f3539688d9e677a74d4f26779cd",
     "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogText.java": "ecb3c0dd2e14640a0a819778c8d748245d11ddc64e73fab083b062e7e6455eb5",

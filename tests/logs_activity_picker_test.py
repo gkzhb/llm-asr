@@ -24,7 +24,7 @@ ACTIVITY = 'android/app/src/org/llmasr/minimal/LogsActivity.java'
 DIAGNOSTICS = 'android/app/src/org/llmasr/minimal/diagnostics/'
 SOURCES = tuple(DIAGNOSTICS + name for name in (
     'LogExportController.java', 'LogExportPage.java', 'RuntimeLogEvent.java',
-    'RuntimeLogClock.java', 'RuntimeLogSink.java', 'RuntimeLogStore.java',
+    'RuntimeLogClock.kt', 'RuntimeLogSink.kt', 'RuntimeLogStore.java',
     'RuntimeLogCodec.java', 'RuntimeLogPersistence.java', 'RuntimeLogWorker.java',
     'RuntimeLogText.java', 'RuntimeLogEventKind.kt', 'RuntimeLogSource.kt'))
 REASON = 'picker-unavailable reason must survive foreground refresh'

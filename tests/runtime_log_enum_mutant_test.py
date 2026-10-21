@@ -152,15 +152,28 @@ def run(command, log, records, label, timeout):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--green-only', action='store_true', help='old Java or migrated focused baseline, no mutants')
+    parser.add_argument('--ports', action='store_true', help='Clock/Sink Java characterization and two production mutants')
     args = parser.parse_args()
     kotlin = Path(os.environ['KOTLIN_HOME'])
     stdlib = kotlin / 'lib/kotlin-stdlib.jar'
     require(stdlib.is_file(), 'fixed Kotlin stdlib missing')
-    parent = ROOT / '.work/p2enum-build/mutants'
+    parent = ROOT / ('.work/ap5ports-build/mutants' if args.ports else '.work/p2enum-build/mutants')
     parent.mkdir(parents=True, exist_ok=True)
     evidence = Path(tempfile.mkdtemp(prefix='run-', dir=parent))
     records = []
     mutations = []
+    green_marker = ('PASS runtime log ports Java ABI/default/nullable/SAM/clock/store' if args.ports else
+                    'PASS runtime log enums Java ABI/order/switch/errors and production persistence/codec')
+    tools = {}
+    if args.ports:
+        for name in ('java', 'javac', 'kotlinc', 'javap'):
+            binary = shutil.which(name)
+            require(binary is not None, 'cached tool missing: ' + name)
+            code, text = run([binary, '-version'], evidence / ('tool-' + name + '.log'), records,
+                             'tool-' + name, 30)
+            require(code == 0, 'tool identity failed: ' + name)
+            tools[name] = {'path': binary, 'resolved': str(Path(binary).resolve()),
+                           'sha256': sha(Path(binary).resolve()), 'version': text}
     sources = host_sources() + [ROOT / 'tests/KotlinMigrationTest.java']
     original_hashes = {str(p.relative_to(ROOT)): sha(p) for p in sources}
     try:
@@ -180,10 +193,17 @@ def main():
                                   *map(str, copies)], evidence / (label + '-compile.log'), records,
                                  label + '-compile', 270)
                 require(code == 0 and 'PASS mixed JVM compile:' in text, label + ' compile must exit 0, not behavioral red')
+                if args.ports and label == 'green0':
+                    names = ['RuntimeLogClock', 'RuntimeLogClock$System', 'RuntimeLogClock$Fake',
+                             'RuntimeLogSink', 'RuntimeLogSink$None']
+                    code, _ = run(['javap', '-p', '-s', '-v', '-classpath', str(classes),
+                                   *['org.llmasr.minimal.diagnostics.' + name for name in names]],
+                                  evidence / 'green0-javap.log', records, 'green0-javap', 45)
+                    require(code == 0, 'ports javap failed')
                 code, text = run(['java', '-cp', str(classes) + ':' + str(stdlib), 'KotlinMigrationTest'],
                                  evidence / (label + '-run.log'), records, label + '-run', 45)
                 if diagnostic is None:
-                    require(code == 0 and 'PASS runtime log enums Java ABI/order/switch/errors and production persistence/codec' in text,
+                    require(code == 0 and green_marker in text,
                             label + ' green failed')
                 else:
                     require(code == 1 and 'java.lang.AssertionError: ' + diagnostic in text,
@@ -192,22 +212,35 @@ def main():
 
             compile_and_run('green0')
             if not args.green_only:
-                for name, first, second in [('RuntimeLogSource', 'APP', 'IME'),
-                                            ('RuntimeLogEventKind', 'APP_STARTUP', 'APP_READY')]:
+                options = ([('RuntimeLogClock', 'default-noop', 'RuntimeLogClock default advance exception/message'),
+                            ('RuntimeLogSink', 'none-null-reject', 'RuntimeLogSink.None must ignore null snapshot')]
+                           if args.ports else [('RuntimeLogSource', 'APP', 'IME'),
+                                              ('RuntimeLogEventKind', 'APP_STARTUP', 'APP_READY')])
+                for name, first, second in options:
                     candidates = [p for p in copies if p.name == name + '.kt']
                     require(len(candidates) == 1, 'mutant requires migrated production Kotlin ' + name)
                     target = candidates[0]
                     original = target.read_bytes()
-                    old = ('    ' + first + ',\n    ' + second + ',').encode()
-                    new = ('    ' + second + ',\n    ' + first + ',').encode()
-                    require(original.count(old) == 1, 'enum swap anchor ambiguous ' + name)
+                    if args.ports:
+                        if name == 'RuntimeLogClock':
+                            old = b'throw UnsupportedOperationException("clock does not support advance")'
+                            new = b'Unit'
+                        else:
+                            old = b'open override fun onSnapshot(snapshot: List<RuntimeLogEvent?>?, droppedCount: Int) {}'
+                            new = old[:-2] + b'{ if (snapshot == null) throw IllegalArgumentException("mutant-null") }'
+                        diagnostic = second
+                    else:
+                        old = ('    ' + first + ',\n    ' + second + ',').encode()
+                        new = ('    ' + second + ',\n    ' + first + ',').encode()
+                        diagnostic = name + ' inventory/order mismatch'
+                    require(original.count(old) == 1, 'production mutant anchor ambiguous ' + name)
                     original_sha = sha(target)
                     restore_source = True
                     try:
                         target.write_bytes(original.replace(old, new, 1))
                         mutated_sha = sha(target)
                         require(mutated_sha != original_sha, 'mutant did not change production bytes ' + name)
-                        compile_and_run(name + '-red', name + ' inventory/order mismatch')
+                        compile_and_run(name + '-red', diagnostic)
                     except StopUnconfirmed:
                         # The compiler may still read this exact mutant input.
                         restore_source = False
@@ -217,17 +250,20 @@ def main():
                             target.write_bytes(original)
                     require(target.read_bytes() == original, 'source restoration failed ' + name)
                     compile_and_run(name + '-restored')
-                    mutations.append({'owner': name, 'swap': [first, second], 'original_sha256': original_sha,
-                                      'mutant_sha256': mutated_sha, 'restored_sha256': sha(target),
-                                      'diagnostic': name + ' inventory/order mismatch'})
-                    print('PASS enum mutant ' + name + ' compile=0 target-red=1 exact-source-restored-green=0')
+                    mutations.append({'owner': name, ('mutation' if args.ports else 'swap'): [first, second],
+                                      'original_sha256': original_sha, 'mutant_sha256': mutated_sha,
+                                      'restored_sha256': sha(target), 'diagnostic': diagnostic})
+                    print('PASS ' + ('ports' if args.ports else 'enum') + ' mutant ' + name
+                          + ' compile=0 target-red=1 exact-source-restored-green=0')
         require(all(sha(ROOT / p) == s for p, s in original_hashes.items()), 'working source drift')
         result = {'green_only': args.green_only, 'inputs': original_hashes,
                   'driver_sha256': sha(Path(__file__)), 'compiler_wrapper_sha256': sha(ROOT / 'scripts/compile-jvm-sources.sh'),
                   'stdlib_sha256': sha(stdlib), 'records': records, 'mutations': mutations,
                   'temporary_tree_removed': True}
+        if args.ports:
+            result.update(ports=True, tools=tools)
         (evidence / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
-        print('PASS runtime log enum real mixed compilation evidence=' + str(evidence.relative_to(ROOT)))
+        print('PASS runtime log ' + ('ports' if args.ports else 'enum') + ' real mixed compilation evidence=' + str(evidence.relative_to(ROOT)))
     except BaseException:
         (evidence / 'failed-records.json').write_text(json.dumps(records, indent=2) + '\n')
         raise

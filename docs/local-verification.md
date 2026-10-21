@@ -111,6 +111,23 @@ R1 后 adapter 的所有编译/Java/工具身份子进程使用 Linux/Nix 本地
 
 ignored freeze-a.py仅读真实collector库存span和native input_hashes span，经已人工审完整源码行片段SHA匹配后才compile/exec；任何片段变化须先审批准新身份，不能自动rehash凑通过。此处不是通用AST安全解释器或future unknown code sandbox。新freeze独立build/review/external及generator/tests身份，旧179/13/A-v2历史保留。临时tree新增script/native/source、缺source-lock及unknown源码片段有真实拒绝测试，未知片段不执行；不在main生产源码取红。
 
+## 两条mixed compiler caller的生命周期边界（ap5 batch R1/R2）
+
+`PartRecoveryTest`和`model_review_mutation_test.py`的新混编调用使用窄`tests/mixed_compiler_lifecycle.py` adapter，只读复用既有picker owned-session/pidfd/subreaper机制，不改共享compiler或enum/picker runner。受控Linux/Nix普通工具后代即使由GNU timeout建立其他PGID，仍在owned session内跟踪、TERM→KILL有界wait/reap确认；不是恶意setsid逃逸沙箱。
+
+Java在启动监督前保输入与实际classpath依赖目录reservation，InterruptedException写取消请求并等待监督finally，父退出/TERM的pipe EOF也触发收口；不kill直接bash冒后代终态。Part原cleanup独立Python已移除，固定work由当前Java线程检查租约标记并walkFileTree同步NOFOLLOW删除，遍历/删除与重建前检查interrupt；同work在**任何FileChannel.open之前**以当前测试JVM内小型线程安全集合做normalized absolute身份非阻塞准入，再持work旁文件锁覆盖cleanup到整个本轮复编/运行；finally先释放跨JVM锁并完整关闭channel，最后才释放JVM准入。T2同JVM拒绝不另open/close同inode fd，避免固定Linux/JDK传统fcntl进程锁被失败第二channel的close释放。JUnit中断若同步FS仍阻塞，下一次同/跨JVM准入不能与该Java线程并发重用。锁文件本身不删，避免unlink后双锁inode竞态；不承诺任意慢FS本身可中断或硬截止。Python model caller的SIGTERM/HUP/INT转换owned检查点，普通wrapper先退出不代表session停止。未确认时保输入/依赖目录/输出和marker，日志不伪装closed SHA；host EXIT通过safe-remove遇lease拒删，后续Part固定目录重用/model依赖准入也拒绝。恢复只在独立确认实际退出后显式处置保留标记，不自动凭marker年龄删活目录。
+
+正常预算：Part每子调用20秒、监督25秒及取消收尾5秒，原JUnit45秒不放宽；model每compile15秒/run5秒，三组含各阶段最多3.25秒停止预算共79.5秒，保原host90秒。外层到期不是提前释放依赖许可；确认不了就保留并失败，不以延长timeout替生命周期治理。
+
+```bash
+bash scripts/nix-env.sh apk --cache-only python3 -B tests/mixed_compiler_lifecycle_test.py
+bash scripts/nix-env.sh apk --cache-only python3 -O tests/mixed_compiler_lifecycle_test.py
+```
+
+该driver以实际两caller和实际未改wrapper接受控fake编译器，目标为不同PGID/TERM抵抗后代、父先退、Java中断/父TERM、Python中断/SIGTERM、外90秒GNU机制缩时、未确认保留/下一次拒删和实际退出后恢复。**fixedPart原观测是Java退出后再boundedwaitworker，证明有界观察后/emergency前停止，不证明caller返回前停止；TERM→EOF允许短暂异步收尾，安全依赖reservation拒重用/拒删。** cleanup定向模式`--cleanup-only`实际当前线程阻塞/中断时验证同work锁拒并发、恢复interrupt后不重建、symlink不跟随、retainedlease拒重用；`--legacy-cleanup-red`仅获准隔离旧入口故障重放。`--lock-only`进一步执行实际T1已中断但仍blocked→T2同JVM拒绝完整返回→C独立JVM仍拒且old-input不变→T1退出后同/跨JVM恢复，`--legacy-lock-red`仅获准旧channel方案三方故障重放；不能以原T1/T2双线程green提升为跨JVM证据。它不运行模型或设备；deadline缩时不冒真实等待20/90秒。旧caller目标红必须外部观测存活事实先落盘，再由紧急finally回收合成进程，编译/工具/普通timeout失败不算目标红。原PartRecovery预算顺序生产mutant和model三个compiled语义mutants仍由host/fast必要入口实跑。
+
+C1证据更正：旧batch复杂度compare.json0字节、无独立exit/stderr，旧“实际exit2”无法证实。两collect0及路径语言scopeunknown事实仍在；另授的一次新compare保存原输入/comparatorSHA、新时间/argv/exit2/完整stderr，不追溯替代旧终态，不改旧freeze或基线。
+
 ## 未覆盖/授权边界
 
 上述P1-A历史slice未覆盖P1-B；当前新增P1-B本地测试工程范围见本文2B章节及reports/android-test-p1/status.md。P1-C策略ADR、远端CI配置、release/R8/新签名、模型性能和设备运行仍不在本slice。若宿主工具或Lint缺缓存，保留入口代码及可验证检查点，报告所缺准备输入，由父决定后续授权；不交旧APK、不称本轮全部完成或M4关闭。

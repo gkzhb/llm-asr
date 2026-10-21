@@ -6,7 +6,14 @@ mkdir -p "$root/.work/build" "$root/.work/model-review-fixes"
 timeout 30 python3 tests/prepare_model_configs_test.py
 timeout 30 python3 tests/android_test_fixture_inputs_test.py
 classes=$(mktemp -d "$root/.work/build/minimal-apk-tests-XXXXXX")
-trap 'rm -rf "$classes"' EXIT
+cleanup_classes() {
+  # A supervisor lease remains while a compiler can read this dependency tree.
+  python3 -B tests/mixed_compiler_lifecycle.py safe-remove "$classes" || {
+    echo "FATAL mixed exit unconfirmed; retained dependency classes: $classes" >&2
+    return 1
+  }
+}
+trap cleanup_classes EXIT
 # Pure Java production components only; no Android stub runtime. The
 # recursive compile would pull in classes that depend on android.* / org.json
 # and fail the host-only build, so this list is the canonical host-safe
@@ -87,6 +94,7 @@ timeout 180 python3 tests/runtime_log_enum_cleanup_test.py
 timeout 1440 python3 tests/runtime_log_enum_mutant_test.py
 timeout 1440 python3 tests/runtime_log_enum_mutant_test.py --ports
 timeout 1440 python3 tests/runtime_log_enum_mutant_test.py --phase
+timeout 2700 python3 tests/runtime_log_enum_mutant_test.py --batch
 run MinimalApkTest bench/audio/zh-original.wav
 run RecordingRaceTest
 run ResultFilesTest
@@ -127,5 +135,10 @@ timeout 15 python3 tests/jni_symbol_checker_test.py
 
 for issue in history terminal window boundary deletion liveDeletion planning publication; do run ModelReviewFixTest "$issue"; done
 run ModelProviderBoundaryTest
+# 3 * (15s compile + 5s Java + two <=3.25s owned teardown budgets) < 90s.
+# TERM is handled by the local supervisor; no host cleanup before owned exit.
 MODEL_REVIEW_CLASSES="$classes" timeout 90 python3 tests/model_review_mutation_test.py
+MIXED_LIFECYCLE_CLASSES="$classes" timeout 180 python3 -B tests/mixed_compiler_lifecycle_test.py
+MIXED_LIFECYCLE_CLASSES="$classes" timeout 180 python3 -B tests/mixed_compiler_lifecycle_test.py --cleanup-only
+MIXED_LIFECYCLE_CLASSES="$classes" timeout 180 python3 -B tests/mixed_compiler_lifecycle_test.py --lock-only
 timeout 90 python3 tests/apk_report_binding_test.py

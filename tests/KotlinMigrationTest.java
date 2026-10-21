@@ -9,6 +9,8 @@ import org.llmasr.minimal.transcription.AppState;
 import org.llmasr.minimal.ime.ImeFieldPolicy;
 import java.util.concurrent.Executor;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collections;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -470,10 +472,132 @@ public final class KotlinMigrationTest {
         nativeTranscriptionAbi();
         System.out.println("PASS inference phase ports Java ABI/codes/NONE/nullable/throws/SAM");
     }
+    private interface BatchCall { void run() throws Exception; }
+    private static Throwable batchFailure(BatchCall call) {
+        try { call.run(); return null; } catch (Throwable error) { return error; }
+    }
+    private static void batchModels() throws Exception {
+        org.llmasr.minimal.model.ModelEntry a = new org.llmasr.minimal.model.ModelEntry("a", 7, repeat('A', 64));
+        org.llmasr.minimal.model.ModelEntry b = new org.llmasr.minimal.model.ModelEntry("a", 8, repeat('a', 64));
+        require(a.sha256().equals(repeat('a', 64)) && a.partName().equals("a.part"), "ModelEntry canonical SHA/name");
+        require(a.hashCode() == "a".hashCode()*31 + Long.hashCode(7) && a.hashCode()!=b.hashCode(), "ModelEntry hash must retain byte count");
+        require(a.equals(new org.llmasr.minimal.model.ModelEntry("a",7,repeat('a',64))) && !a.equals(b) && !a.equals(null), "ModelEntry content equality");
+        Throwable error=batchFailure(() -> new org.llmasr.minimal.model.ModelEntry(null,0,"a"));
+        require(error instanceof NullPointerException && "file".equals(error.getMessage()), "ModelEntry null file exact rejection");
+        error=batchFailure(() -> new org.llmasr.minimal.model.ModelManifest(Arrays.asList(a,b)));
+        require(error instanceof IOException && error.getMessage().contains("重复文件名"), "ModelManifest duplicate names must fail closed");
+        for (java.util.List<org.llmasr.minimal.model.ModelEntry> entries : Arrays.asList(null, Collections.<org.llmasr.minimal.model.ModelEntry>emptyList(), Arrays.asList((org.llmasr.minimal.model.ModelEntry)null))) {
+            final java.util.List<org.llmasr.minimal.model.ModelEntry> input=entries;
+            require(batchFailure(() -> new org.llmasr.minimal.model.ModelManifest(input)) instanceof IOException, "ModelManifest invalid list is IOException");
+        }
+        org.llmasr.minimal.model.ModelEntry part=new org.llmasr.minimal.model.ModelEntry("a.part",1,repeat('a',64));
+        for (java.util.List<org.llmasr.minimal.model.ModelEntry> entries : Arrays.asList(Arrays.asList(a,part),Arrays.asList(part,a)))
+            require(batchFailure(() -> new org.llmasr.minimal.model.ModelManifest(entries)) instanceof IOException,"ModelManifest bidirectional part collision");
+        ArrayList<org.llmasr.minimal.model.ModelEntry> input=new ArrayList<>(); input.add(a);
+        org.llmasr.minimal.model.ModelManifest manifest=new org.llmasr.minimal.model.ModelManifest(input); input.clear();
+        require(manifest.entries().size()==1 && manifest.require("a")==a,"ModelManifest defensive snapshot identity");
+        require(batchFailure(() -> manifest.entries().clear()) instanceof UnsupportedOperationException,"ModelManifest unmodifiable entries");
+        require(batchFailure(() -> manifest.require(null)) instanceof IOException,"ModelManifest null lookup");
+        require(batchFailure(() -> org.llmasr.minimal.model.ModelManifest.requireSafeRoot(null)) instanceof IOException,"ModelManifest null root");
+        ArrayList<String> names=new ArrayList<>();names.add("a");
+        org.llmasr.minimal.model.ModelReports.ImportPlan zero=new org.llmasr.minimal.model.ModelReports.ImportPlan(0,9,-1,names);
+        names.clear();require(zero.requiredBytes==0,"ImportPlan zero-copy requires zero extra bytes");
+        require(zero.reusableFiles.equals(Arrays.asList("a")) && batchFailure(() -> zero.reusableFiles.clear()) instanceof UnsupportedOperationException,"ImportPlan defensive unmodifiable list");
+        require(batchFailure(() -> new org.llmasr.minimal.model.ModelReports.ImportPlan(Long.MAX_VALUE,0,0,Collections.emptyList())) instanceof ArithmeticException,"ImportPlan overflow");
+        require(batchFailure(() -> new org.llmasr.minimal.model.ModelReports.FileOutcome(null)) instanceof IllegalArgumentException,"FileOutcome null status");
+        require(new org.llmasr.minimal.model.ModelReports.FileOutcome(org.llmasr.minimal.model.ModelReports.FileOutcome.Status.FAILED).isFailure(),"FileOutcome failure");
+        final boolean[] cancelled={false}; final Object handle=new Object();
+        org.llmasr.minimal.model.ModelSource.UriRef ref=new org.llmasr.minimal.model.ModelSource.UriRef(handle);
+        require(ref.handle()==handle && new org.llmasr.minimal.model.ModelSource.UriRef(null).toString().equals("null"),"ModelSource opaque nullable handle");
+        org.llmasr.minimal.model.ModelSource src=new org.llmasr.minimal.model.ModelSource() {
+            public java.util.Map<String,UriRef> enumerate(java.util.Collection<String> expected,int max) { cancelled[0]=true;return null; }
+            public java.io.InputStream open(UriRef value) { return null; }
+        };
+        org.llmasr.minimal.model.ModelRepository.CancelGate gate=new org.llmasr.minimal.model.ModelRepository.CancelGate() {
+            public boolean cancelled(){return cancelled[0];}public boolean reservePublish(){return true;}
+        };
+        error=batchFailure(() -> src.enumerate(null,3,gate));
+        require(error instanceof org.llmasr.minimal.model.ModelRepository.CancelledException,"ModelSource default must checkpoint after enumerate");
+        require(org.llmasr.minimal.model.ModelSource.class.getMethod("enumerate",java.util.Collection.class,int.class,org.llmasr.minimal.model.ModelRepository.CancelGate.class).isDefault(),"ModelSource real JVM default");
+        error=batchFailure(() -> org.llmasr.minimal.model.ModelProviderBoundary.call("safe",() -> {throw new java.util.concurrent.CancellationException("private");}));
+        require(error instanceof IOException && "safe".equals(error.getMessage()) && error.getCause()==null && error.getSuppressed().length==0,"Provider cancellation must be sanitized");
+        Error fatal=new InternalError("fatal");
+        require(batchFailure(() -> org.llmasr.minimal.model.ModelProviderBoundary.call("safe",() -> {throw fatal;}))==fatal,"Provider fatal identity");
+        org.llmasr.minimal.model.FileSafety.deleteRegular(null);
+    }
+    private static String repeat(char c,int n) { char[] values=new char[n];Arrays.fill(values,c);return new String(values); }
+    private static void batchPagesAndExports() throws Exception {
+        org.llmasr.minimal.modelmanagement.ModelPickerTickets first=new org.llmasr.minimal.modelmanagement.ModelPickerTickets();
+        org.llmasr.minimal.modelmanagement.ModelPickerTickets other=new org.llmasr.minimal.modelmanagement.ModelPickerTickets();
+        org.llmasr.minimal.modelmanagement.ModelPickerTickets.Ticket mine=first.begin(), foreign=other.begin();
+        require(!first.valid(foreign),"ModelPickerTickets foreign ticket must be rejected");
+        first.release(foreign);require(first.valid(mine),"ModelPickerTickets foreign release no-op");first.release(mine);
+        require(Modifier.isSynchronized(first.getClass().getMethod("begin").getModifiers()),"ModelPickerTickets monitor flag");
+        final class Output extends ByteArrayOutputStream { int flushes,closes;public void flush(){flushes++;}public void close(){closes++;} }
+        Output out=new Output();
+        RuntimeLogEvent event=new RuntimeLogEvent(0,1,2,RuntimeLogEventKind.APP_STARTUP,RuntimeLogSource.APP,null,"ok");
+        long bytes=RuntimeLogCodec.writeSnapshot(Arrays.asList(event),out);
+        require(out.flushes==1 && out.closes==0,"RuntimeLogCodec must flush once without closing");
+        require(bytes==out.size() && new String(out.toByteArray(),StandardCharsets.UTF_8).endsWith("\n"),"RuntimeLogCodec byte count/UTF8");
+        Output untouched=new Output();require(batchFailure(() -> RuntimeLogCodec.writeSnapshot(Arrays.asList(event,null),untouched)) instanceof IOException && untouched.size()==0,"RuntimeLogCodec preflight before writes");
+        org.llmasr.minimal.transcription.ResultFiles.writeText(out,"中文😀");require(out.flushes==1 && out.closes==0,"ResultFiles does not flush or close");
+        require(new org.llmasr.minimal.transcription.ResultFiles()!=null,"ResultFiles public default constructor");
+        final int[] opens={0};ArrayList<Runnable> jobs=new ArrayList<>();
+        org.llmasr.minimal.transcription.ResultState result=new org.llmasr.minimal.transcription.ResultState();result.setText("private");
+        org.llmasr.minimal.transcription.TextExportController<String> text=new org.llmasr.minimal.transcription.TextExportController<>(target -> {opens[0]++;return new Output();},jobs::add);
+        org.llmasr.minimal.transcription.TextExportPage<String> page=new org.llmasr.minimal.transcription.TextExportPage<>(text);page.foreground(true);
+        org.llmasr.minimal.transcription.TextExportController.Ticket ticket=page.begin(result);
+        require(page.onResult(ticket.requestCode,"target") && jobs.size()==1,"TXT queued actual page");page.destroy();jobs.remove(0).run();
+        require(opens[0]==0,"Revoked queued TXT must cause zero provider opens");
+        require(!text.state().busy(),"TXT revoked slot releases on runnable exit");
+        org.llmasr.minimal.diagnostics.LogExportController<String> log=new org.llmasr.minimal.diagnostics.LogExportController<>(target -> new Output(),Runnable::run);
+        org.llmasr.minimal.diagnostics.LogExportPage<String> lp=new org.llmasr.minimal.diagnostics.LogExportPage<>(log);lp.foreground(true);
+        org.llmasr.minimal.diagnostics.LogExportController.Ticket lt=lp.begin(Arrays.asList(event));require(lt!=null && lp.result(lt.requestCode,"x") && log.state().phase==org.llmasr.minimal.diagnostics.LogExportController.Phase.SUCCEEDED,"Log actual page writes frozen snapshot");lp.destroy();
+        require(org.llmasr.minimal.diagnostics.RuntimeLogText.event(RuntimeLogEventKind.APP_STARTUP).equals("应用启动"),"RuntimeLogText fixed text");
+        require(org.llmasr.minimal.modelmanagement.ModelUiText.bytes(-1).equals("未知（尚未取得快照）"),"ModelUiText unknown bytes");
+        require(org.llmasr.minimal.modelmanagement.ModelUiText.safeError("content://private").equals("存储或读取失败，请检查可用空间、重新选择并授权本地目录后重试"),"ModelUiText safe provider text");
+    }
+    private static void batchAdapterAndAbi() throws Exception {
+        org.llmasr.minimal.asr.InferenceAdapter adapter=new org.llmasr.minimal.asr.InferenceAdapter(null,() -> {},() -> {},(c,w,l,t,listener) -> null);
+        Throwable error=batchFailure(() -> adapter.transcribe(RuntimeLogSource.APP,null,null,null,null,null));
+        require(error instanceof IOException && "Native returned null".equals(error.getMessage()),"InferenceAdapter null result must use fixed failure");
+        for (Class<?> type : new Class<?>[]{org.llmasr.minimal.model.ModelEntry.class,org.llmasr.minimal.model.ModelManifest.class,org.llmasr.minimal.model.ModelReports.class,org.llmasr.minimal.model.ModelAccess.class,org.llmasr.minimal.model.FileSafety.class,org.llmasr.minimal.model.ModelProviderBoundary.class,org.llmasr.minimal.modelmanagement.ModelPageSession.class,org.llmasr.minimal.modelmanagement.ModelPickerTickets.class,org.llmasr.minimal.modelmanagement.ModelUiText.class,RuntimeLogCodec.class,org.llmasr.minimal.diagnostics.RuntimeLogText.class,org.llmasr.minimal.diagnostics.RuntimeLogWorker.class,org.llmasr.minimal.diagnostics.LogExportController.class,org.llmasr.minimal.diagnostics.LogExportPage.class,org.llmasr.minimal.transcription.TextExportController.class,org.llmasr.minimal.transcription.TextExportPage.class,org.llmasr.minimal.transcription.ResultFiles.class,org.llmasr.minimal.asr.InferenceAdapter.class,org.llmasr.minimal.ime.ImeController.class})
+            require(Modifier.isPublic(type.getModifiers()) && Modifier.isFinal(type.getModifiers()),"batch final class ABI "+type.getName());
+        batchPrivateConstructor(org.llmasr.minimal.modelmanagement.ModelPickerTickets.Ticket.class, int.class);
+        batchPrivateConstructor(org.llmasr.minimal.diagnostics.LogExportController.Ticket.class, long.class, int.class, List.class);
+        batchPrivateConstructor(org.llmasr.minimal.diagnostics.LogExportController.State.class,
+            org.llmasr.minimal.diagnostics.LogExportController.Ticket.class, org.llmasr.minimal.diagnostics.LogExportController.Phase.class, long.class);
+        batchPrivateConstructor(org.llmasr.minimal.transcription.TextExportController.Ticket.class,
+            long.class, int.class, org.llmasr.minimal.transcription.ResultState.class, org.llmasr.minimal.transcription.ResultState.Snapshot.class);
+        batchPrivateConstructor(org.llmasr.minimal.transcription.TextExportController.State.class,
+            org.llmasr.minimal.transcription.TextExportController.Ticket.class, org.llmasr.minimal.transcription.TextExportController.Phase.class, long.class);
+        require(Modifier.isFinal(org.llmasr.minimal.model.ModelReports.ImportPlan.class.getField("requiredBytes").getModifiers()),"ImportPlan real final field");
+        require(org.llmasr.minimal.asr.InferenceAdapter.class.getMethod("transcribe",RuntimeLogSource.class,String.class,String.class,String.class,String.class,String.class).getExceptionTypes()[0]==IOException.class,"InferenceAdapter IOException ABI");
+    }
+    private static void batchPrivateConstructor(Class<?> type, Class<?>... parameters) throws Exception {
+        require(Modifier.isPrivate(type.getDeclaredConstructor(parameters).getModifiers()), "batch private original constructor " + type.getName());
+        int bridges = 0;
+        for (java.lang.reflect.Constructor<?> constructor : type.getDeclaredConstructors()) {
+            if (!Modifier.isPublic(constructor.getModifiers())) continue;
+            Class<?>[] actual = constructor.getParameterTypes();
+            require(constructor.getModifiers() == (Modifier.PUBLIC | 0x1000)
+                && actual.length == parameters.length + 1
+                && Arrays.equals(Arrays.copyOf(actual, parameters.length), parameters)
+                && actual[parameters.length].getName().equals("kotlin.jvm.internal.DefaultConstructorMarker"),
+                "batch exact whitelisted synthetic constructor " + type.getName());
+            bridges++;
+        }
+        require(bridges <= 1, "batch at most one exact constructor bridge " + type.getName());
+    }
+    private static void batchContracts() throws Exception {
+        batchModels();batchPagesAndExports();batchAdapterAndAbi();
+        System.out.println("PASS batch public boundaries Java ABI/nullable/ownership/IO");
+    }
     public static void main(String[] args) throws Exception {
         runtimeLogEnums();
         runtimeLogPorts();
         inferencePhasePorts();
+        batchContracts();
         check(AsrText.display("\u0000\t<asr_text> hello <|im_end|>\r\n").equals("hello"));
         check(AsrText.display("\u2003text\u2003").equals("\u2003text\u2003"));
         check(Modifier.isStatic(AsrText.class.getMethod("display", String.class).getModifiers()));

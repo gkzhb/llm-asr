@@ -100,13 +100,41 @@ public final class PartRecoveryTest {
         repo.verifyAll();
     }
 
+    // Test-only deterministic observation seam; never used by the production app.
+    static volatile Runnable cleanupObservation;
+    private static final Set<Path> ACTIVE_RECOVERY = java.util.concurrent.ConcurrentHashMap.newKeySet();
+
     static void runRedEvidenceAgainstBuggyCopy() throws Exception {
+        Path workPath = Paths.get(System.getProperty("partRecovery.work", ".work/red")).toAbsolutePath().normalize();
+        // Reject before opening any second fd: closing it can release this process's POSIX locks.
+        if (!ACTIVE_RECOVERY.add(workPath)) throw new IOException("recovery work still owned by another caller");
+        try {
+            Path lockPath = Paths.get(workPath + ".cleanup.lock");
+            Files.createDirectories(lockPath.getParent());
+            try (java.nio.channels.FileChannel channel = java.nio.channels.FileChannel.open(lockPath,
+                    StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
+                java.nio.channels.FileLock lock;
+                try { lock = channel.tryLock(); }
+                catch (java.nio.channels.OverlappingFileLockException busy) {
+                    throw new IOException("recovery work still owned by another caller", busy);
+                }
+                if (lock == null) throw new IOException("recovery work still owned by another caller");
+                try { runOwnedRecovery(workPath.toFile()); }
+                finally { lock.release(); }
+            }
+        } finally {
+            // try-with-resources closed the channel (including failure paths) before JVM admission reopens.
+            ACTIVE_RECOVERY.remove(workPath);
+        }
+    }
+
+    static void runOwnedRecovery(File work) throws Exception {
         // Build a buggy ModelRepository in .work/red by copying the production
         // file and injecting a premature refusal inside importFrom. The compiled buggy
         // class is exercised by BuggyDriver with the same fixture.
-        File work = new File(".work/red");
-        if (work.exists()) deleteRecursively(work);
-        work.mkdirs();
+        cleanRecoveryDirectory(work.toPath());
+        checkCleanupInterrupt();
+        Files.createDirectories(work.toPath());
 
         Path source = Paths.get("android/app/src/org/llmasr/minimal/model/ModelRepository.java");
         Path target = Paths.get(work.getPath(), "ModelRepository.java");
@@ -125,39 +153,26 @@ public final class PartRecoveryTest {
         // Compile the buggy ModelRepository plus everything it needs.
         File classes = new File(work, "classes");
         classes.mkdirs();
-        ProcessBuilder pb = new ProcessBuilder("javac", "-encoding", "UTF-8", "-d", classes.getPath(),
-            target.toString(),
-            "android/app/src/org/llmasr/minimal/model/ModelEntry.java",
-            "android/app/src/org/llmasr/minimal/model/ModelManifest.java",
-            "android/app/src/org/llmasr/minimal/model/ModelSource.java",
-            "android/app/src/org/llmasr/minimal/model/FileSafety.java",
-            "android/app/src/org/llmasr/minimal/model/ModelReports.java",
-            "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementState.java",
-            "android/app/src/org/llmasr/minimal/model/ModelReadiness.java");
-        pb.inheritIO();
-        Process p = pb.start();
-        int rc = waitBounded(p);
-        check(rc == 0); if (rc != 0) throw new IOException("buggy compile failed rc=" + rc);
-
-        // BuggyDriver runs the same fixture against the compiled buggy class.
+        // Fresh mixed compilation includes the real dependency sources, not old classes.
         Path driverPath = Paths.get(work.getPath(), "BuggyDriver.java");
         Files.write(driverPath, buildBuggyDriver().getBytes(StandardCharsets.UTF_8));
-        pb = new ProcessBuilder("javac", "-encoding", "UTF-8", "-d", classes.getPath(),
-            "-classpath", classes.getPath(),
-            driverPath.toString());
-        pb.inheritIO();
-        p = pb.start();
-        rc = waitBounded(p);
-        check(rc == 0); if (rc != 0) throw new IOException("buggy driver compile failed rc=" + rc);
+        List<String> command = new ArrayList<>(Arrays.asList("bash", "scripts/compile-jvm-sources.sh",
+            classes.getPath(), "", target.toString(), driverPath.toString()));
+        for (String name : new String[]{"model/ModelEntry", "model/ModelManifest", "model/ModelSource",
+                "model/FileSafety", "model/ModelReports", "modelmanagement/ModelManagementState", "model/ModelReadiness"}) {
+            Path base = Paths.get("android/app/src/org/llmasr/minimal/" + name);
+            Path java = Paths.get(base + ".java"), kotlin = Paths.get(base + ".kt");
+            if (Files.isRegularFile(java) == Files.isRegularFile(kotlin))
+                throw new IOException("missing/duplicate recovery dependency: " + name);
+            command.add((Files.isRegularFile(java) ? java : kotlin).toString());
+        }
+        int rc = supervised(command, work, "compile");
+        check(rc == 0); if (rc != 0) throw new IOException("buggy mixed compile failed rc=" + rc);
 
-        pb = new ProcessBuilder("java", "-cp", classes.getPath(), "BuggyDriver");
-        pb.redirectErrorStream(true);
-        pb.redirectOutput(new File(work, "buggy-run.log"));
-        p = pb.start();
-        rc = waitBounded(p);
-        String output = new String(Files.readAllBytes(new File(work, "buggy-run.log").toPath()), StandardCharsets.UTF_8);
-        // Record the actual buggy-run output for the report.
-        Files.write(Paths.get(work.getPath(), "buggy-run.log"), output.getBytes(StandardCharsets.UTF_8));
+        String stdlib = System.getenv("KOTLIN_HOME") + "/lib/kotlin-stdlib.jar";
+        if (!Files.isRegularFile(Paths.get(stdlib))) throw new IOException("fixed Kotlin runtime missing");
+        rc = supervised(Arrays.asList("java", "-cp", classes.getPath() + File.pathSeparator + stdlib, "BuggyDriver"), work, "run");
+        String output = new String(Files.readAllBytes(new File(work, "run.stdout").toPath()), StandardCharsets.UTF_8);
         // BuggyDriver exits 0 when it caught the expected IOException. So
         // rc==0 means the buggy order refused the import (RED), rc!=0 means
         // the buggy order unexpectedly accepted the fixture.
@@ -173,18 +188,89 @@ public final class PartRecoveryTest {
         runGreenAgainstProduction();
     }
 
-    static int waitBounded(Process p) throws Exception {
-        if (!p.waitFor(20, java.util.concurrent.TimeUnit.SECONDS)) {
-            p.destroyForcibly();
-            p.waitFor(3, java.util.concurrent.TimeUnit.SECONDS);
-            throw new AssertionError("child process timeout");
-        }
-        return p.exitValue();
+    static void checkCleanupInterrupt() throws InterruptedException {
+        if (Thread.currentThread().isInterrupted()) throw new InterruptedException("recovery cleanup interrupted; no input rebuild");
     }
 
-    static void deleteRecursively(File f) {
-        if (f.isDirectory()) for (File c : f.listFiles()) deleteRecursively(c);
-        f.delete();
+    static void cleanRecoveryDirectory(Path work) throws Exception {
+        checkCleanupInterrupt();
+        if (!Files.exists(work, LinkOption.NOFOLLOW_LINKS)) return;
+        // Reject marker admission before deleting any leaf. Never follow a root symlink.
+        if (Files.isSymbolicLink(work)) throw new IOException("refuse symbolic recovery directory");
+        try (DirectoryStream<Path> entries = Files.newDirectoryStream(work)) {
+            for (Path entry : entries) {
+                checkCleanupInterrupt();
+                String name = entry.getFileName().toString();
+                if (name.startsWith(".mixed-lease-") && name.endsWith(".json") || name.equals("MIXED_EXIT_UNCONFIRMED.json"))
+                    throw new IOException("mixed exit unconfirmed; refuse recovery directory reuse");
+            }
+        }
+        Runnable observation = cleanupObservation;
+        if (observation != null) observation.run();
+        checkCleanupInterrupt();
+        Files.walkFileTree(work, new SimpleFileVisitor<Path>() {
+            @Override public FileVisitResult preVisitDirectory(Path directory, java.nio.file.attribute.BasicFileAttributes attrs) throws IOException {
+                if (Thread.currentThread().isInterrupted()) throw new java.io.InterruptedIOException("recovery cleanup interrupted");
+                return FileVisitResult.CONTINUE;
+            }
+            @Override public FileVisitResult visitFile(Path file, java.nio.file.attribute.BasicFileAttributes attrs) throws IOException {
+                if (Thread.currentThread().isInterrupted()) throw new java.io.InterruptedIOException("recovery cleanup interrupted");
+                Files.delete(file); // walkFileTree defaults to NOFOLLOW; a symlink is only a leaf.
+                return FileVisitResult.CONTINUE;
+            }
+            @Override public FileVisitResult postVisitDirectory(Path directory, IOException failure) throws IOException {
+                if (failure != null) throw failure;
+                if (Thread.currentThread().isInterrupted()) throw new java.io.InterruptedIOException("recovery cleanup interrupted");
+                Files.delete(directory);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+        checkCleanupInterrupt();
+    }
+
+    static int supervised(List<String> command, File work, String label) throws Exception {
+        Path cancel = new File(work, label + ".cancel").toPath();
+        Path reservation = new File(work, ".mixed-lease-java-" + UUID.randomUUID() + ".json").toPath();
+        Files.write(reservation, "{\"state\":\"reserved before supervisor launch\"}\n".getBytes(StandardCharsets.UTF_8));
+        String deadline = System.getProperty("partRecovery.childSeconds", "20");
+        double seconds = Double.parseDouble(deadline);
+        if (!(seconds > 0 && seconds <= 20)) throw new IllegalArgumentException("invalid recovery child deadline");
+        List<String> argv = new ArrayList<>(Arrays.asList("python3", "-B", "tests/mixed_compiler_lifecycle.py",
+            "run", "--work", work.getPath(), "--label", label, "--timeout", deadline,
+            "--cancel", cancel.toString(), "--watch-stdin", "--reservation", reservation.toString()));
+        // This class directory is a live compiler dependency until owned teardown finishes.
+        String classpath = System.getProperty("java.class.path");
+        for (String entry : classpath.split(java.util.regex.Pattern.quote(File.pathSeparator))) {
+            if (new File(entry).isDirectory()) {
+                Path dependencyReservation = new File(entry, reservation.getFileName().toString()).toPath();
+                Files.copy(reservation, dependencyReservation);
+                argv.add("--dependency"); argv.add(entry);
+                argv.add("--dependency-reservation"); argv.add(dependencyReservation.toString());
+                break;
+            }
+        }
+        argv.add("--"); argv.addAll(command);
+        Process process = new ProcessBuilder(argv).inheritIO().redirectInput(ProcessBuilder.Redirect.PIPE).start();
+        boolean interrupted = false;
+        try {
+            try {
+                if (!process.waitFor(25, java.util.concurrent.TimeUnit.SECONDS))
+                    throw new IOException("mixed supervisor deadline");
+            } catch (InterruptedException | IOException failure) {
+                interrupted = failure instanceof InterruptedException;
+                Files.write(cancel, new byte[]{1});
+                // Never kill just the supervisor: it still owns ordinary compiler descendants.
+                if (!process.waitFor(5, java.util.concurrent.TimeUnit.SECONDS)) {
+                    Files.write(new File(work, "MIXED_EXIT_UNCONFIRMED.json").toPath(),
+                        "{\"reason\":\"supervisor stop unconfirmed\"}\n".getBytes(StandardCharsets.UTF_8));
+                }
+                throw failure;
+            }
+            return process.exitValue();
+        } finally {
+            process.getOutputStream().close(); // Parent exit/EOF also requests owned teardown.
+            if (interrupted) Thread.currentThread().interrupt();
+        }
     }
 
     /** A small driver class compiled with the buggy ModelRepository. The

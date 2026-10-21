@@ -23,10 +23,10 @@ ROOT = Path(__file__).resolve().parents[1]
 ACTIVITY = 'android/app/src/org/llmasr/minimal/LogsActivity.java'
 DIAGNOSTICS = 'android/app/src/org/llmasr/minimal/diagnostics/'
 SOURCES = tuple(DIAGNOSTICS + name for name in (
-    'LogExportController.java', 'LogExportPage.java', 'RuntimeLogEvent.java',
+    'LogExportController.kt', 'LogExportPage.kt', 'RuntimeLogEvent.java',
     'RuntimeLogClock.kt', 'RuntimeLogSink.kt', 'RuntimeLogStore.java',
-    'RuntimeLogCodec.java', 'RuntimeLogPersistence.java', 'RuntimeLogWorker.java',
-    'RuntimeLogText.java', 'RuntimeLogEventKind.kt', 'RuntimeLogSource.kt'))
+    'RuntimeLogCodec.kt', 'RuntimeLogPersistence.java', 'RuntimeLogWorker.kt',
+    'RuntimeLogText.kt', 'RuntimeLogEventKind.kt', 'RuntimeLogSource.kt'))
 REASON = 'picker-unavailable reason must survive foreground refresh'
 STUBS = {
     'android/os/Bundle.java': 'package android.os; public class Bundle {}\n',

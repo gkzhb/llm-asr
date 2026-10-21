@@ -155,21 +155,24 @@ def main():
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument('--ports', action='store_true', help='Clock/Sink Java characterization and two production mutants')
     modes.add_argument('--phase', action='store_true', help='Inference phase/ports Java ABI and two production mutants')
+    modes.add_argument('--batch', action='store_true', help='Twenty public boundary owners: Java characterization and production mutants')
     args = parser.parse_args()
     kotlin = Path(os.environ['KOTLIN_HOME'])
     stdlib = kotlin / 'lib/kotlin-stdlib.jar'
     require(stdlib.is_file(), 'fixed Kotlin stdlib missing')
-    parent = ROOT / ('.work/ap5phase-build/mutants' if args.phase else
+    parent = ROOT / ('.work/ap5batch-build/mutants' if args.batch else
+                     '.work/ap5phase-build/mutants' if args.phase else
                      '.work/ap5ports-build/mutants' if args.ports else '.work/p2enum-build/mutants')
     parent.mkdir(parents=True, exist_ok=True)
     evidence = Path(tempfile.mkdtemp(prefix='run-', dir=parent))
     records = []
     mutations = []
-    green_marker = ('PASS inference phase ports Java ABI/codes/NONE/nullable/throws/SAM' if args.phase else
+    green_marker = ('PASS batch public boundaries Java ABI/nullable/ownership/IO' if args.batch else
+                    'PASS inference phase ports Java ABI/codes/NONE/nullable/throws/SAM' if args.phase else
                     'PASS runtime log ports Java ABI/default/nullable/SAM/clock/store' if args.ports else
                     'PASS runtime log enums Java ABI/order/switch/errors and production persistence/codec')
     tools = {}
-    if args.ports or args.phase:
+    if args.ports or args.phase or args.batch:
         for name in ('java', 'javac', 'kotlinc', 'javap'):
             binary = shutil.which(name)
             require(binary is not None, 'cached tool missing: ' + name)
@@ -179,6 +182,8 @@ def main():
             tools[name] = {'path': binary, 'resolved': str(Path(binary).resolve()),
                            'sha256': sha(Path(binary).resolve()), 'version': text}
     sources = host_sources() + [ROOT / 'tests/KotlinMigrationTest.java']
+    if args.batch:
+        sources.append(ROOT / 'tests/RuntimeLogWorkerErrorTest.java')
     original_hashes = {str(p.relative_to(ROOT)): sha(p) for p in sources}
     try:
         # Isolated production copies and fresh classes for every compilation.
@@ -197,6 +202,26 @@ def main():
                                   *map(str, copies)], evidence / (label + '-compile.log'), records,
                                  label + '-compile', 270)
                 require(code == 0 and 'PASS mixed JVM compile:' in text, label + ' compile must exit 0, not behavioral red')
+                if args.batch and label == 'green0':
+                    owners = ['asr.InferenceAdapter', 'asr.InferenceAdapter$Readiness', 'asr.InferenceAdapter$Library',
+                              'ime.ImeController', 'ime.ImeController$Backend', 'ime.ImeController$Progress', 'ime.ImeController$Commit',
+                              'diagnostics.RuntimeLogWorker', 'diagnostics.RuntimeLogCodec', 'diagnostics.RuntimeLogText',
+                              'diagnostics.LogExportController', 'diagnostics.LogExportController$Backend',
+                              'diagnostics.LogExportController$State', 'diagnostics.LogExportController$Ticket',
+                              'diagnostics.LogExportPage', 'model.FileSafety', 'model.ModelAccess', 'model.ModelEntry',
+                              'model.ModelManifest', 'model.ModelProviderBoundary', 'model.ModelProviderBoundary$Call',
+                              'model.ModelReports', 'model.ModelReports$ImportPlan', 'model.ModelReports$FileDetail',
+                              'model.ModelReports$FileOutcome', 'model.ModelSource', 'model.ModelSource$UriRef',
+                              'modelmanagement.ModelPickerTickets', 'modelmanagement.ModelPickerTickets$Ticket',
+                              'modelmanagement.ModelPageSession', 'modelmanagement.ModelPageSession$Importer',
+                              'modelmanagement.ModelUiText', 'transcription.ResultFiles',
+                              'transcription.TextExportController', 'transcription.TextExportController$Backend',
+                              'transcription.TextExportController$State', 'transcription.TextExportController$Ticket',
+                              'transcription.TextExportPage']
+                    code, _ = run(['javap', '-p', '-s', '-v', '-classpath', str(classes),
+                                   *['org.llmasr.minimal.' + name for name in owners]],
+                                  evidence / 'green0-javap.log', records, 'green0-javap', 45)
+                    require(code == 0, 'batch javap failed')
                 if (args.ports or args.phase) and label == 'green0':
                     names = (['InferencePhase', 'InferencePhaseListener', 'NativeTranscription'] if args.phase else
                              ['RuntimeLogClock', 'RuntimeLogClock$System', 'RuntimeLogClock$Fake',
@@ -208,11 +233,14 @@ def main():
                                    *[package + name for name in names]],
                                   evidence / 'green0-javap.log', records, 'green0-javap', 45)
                     require(code == 0, 'ports javap failed')
-                code, text = run(['java', '-cp', str(classes) + ':' + str(stdlib), 'KotlinMigrationTest'],
+                worker_case = args.batch and label.startswith('RuntimeLogWorker-')
+                java_test = (['org.llmasr.minimal.diagnostics.RuntimeLogWorkerErrorTest', 'interleave']
+                             if worker_case else ['KotlinMigrationTest'])
+                code, text = run(['java', '-cp', str(classes) + ':' + str(stdlib), *java_test],
                                  evidence / (label + '-run.log'), records, label + '-run', 45)
                 if diagnostic is None:
-                    require(code == 0 and green_marker in text,
-                            label + ' green failed')
+                    marker = 'PASS RuntimeLogWorkerErrorTest:' if worker_case else green_marker
+                    require(code == 0 and marker in text, label + ' green failed')
                 else:
                     require(code == 1 and 'java.lang.AssertionError: ' + diagnostic in text,
                             label + ' did not hit exact runtime assertion: ' + diagnostic)
@@ -220,7 +248,18 @@ def main():
 
             compile_and_run('green0')
             if not args.green_only:
-                options = ([('InferencePhase', 'explicit-code-zero', 'InferencePhase explicit JNI codes must remain 1/2/3/4'),
+                options = ([
+                    ('ModelEntry', 'hash-bytes', 'ModelEntry hash must retain byte count'),
+                    ('ModelManifest', 'duplicate-names', 'ModelManifest duplicate names must fail closed'),
+                    ('ModelReports', 'zero-copy-budget', 'ImportPlan zero-copy requires zero extra bytes'),
+                    ('ModelSource', 'after-enumerate-cancel', 'ModelSource default must checkpoint after enumerate'),
+                    ('ModelProviderBoundary', 'provider-cancel', 'Provider cancellation must be sanitized'),
+                    ('ModelPickerTickets', 'foreign-ticket', 'ModelPickerTickets foreign ticket must be rejected'),
+                    ('RuntimeLogCodec', 'flush-noop', 'RuntimeLogCodec must flush once without closing'),
+                    ('RuntimeLogWorker', 'stale-token', 'third schedule must not admit a new drain while the successor owns the slot'),
+                    ('TextExportController', 'queued-revoke', 'Revoked queued TXT must cause zero provider opens'),
+                    ('InferenceAdapter', 'null-fixed-error', 'InferenceAdapter null result must use fixed failure')]
+                    if args.batch else [('InferencePhase', 'explicit-code-zero', 'InferencePhase explicit JNI codes must remain 1/2/3/4'),
                             ('InferencePhaseListener', 'none-int-reject', 'InferencePhaseListener.NONE must ignore every int code')]
                            if args.phase else [('RuntimeLogClock', 'default-noop', 'RuntimeLogClock default advance exception/message'),
                             ('RuntimeLogSink', 'none-null-reject', 'RuntimeLogSink.None must ignore null snapshot')]
@@ -231,7 +270,25 @@ def main():
                     require(len(candidates) == 1, 'mutant requires migrated production Kotlin ' + name)
                     target = candidates[0]
                     original = target.read_bytes()
-                    if args.phase:
+                    if args.batch:
+                        anchors = {
+                            'ModelEntry': (b'file.hashCode() * 31 + java.lang.Long.hashCode(bytes)', b'file.hashCode() * 31'),
+                            'ModelReports': (b'if (copyBytes == 0L) 0L else', b'if (copyBytes == 0L) ModelRepository.SPACE_PAD else'),
+                            'ModelSource': (b'if (cancel.cancelled()) throw ModelRepository.CancelledException()', b'Unit'),
+                            'ModelProviderBoundary': (b'catch (e: IOException) { throw IOException(safeMessage) }',
+                                b'catch (e: java.util.concurrent.CancellationException) { throw e }\n            catch (e: IOException) { throw IOException(safeMessage) }'),
+                            'ModelPickerTickets': (b'ticket != null && pending === ticket', b'ticket != null'),
+                            'RuntimeLogCodec': (b'out.flush()', b'Unit'),
+                            'RuntimeLogWorker': (b'if (owner != token) return', b'if (false && owner != token) return'),
+                            'TextExportController': (b'if (Ticket.revoked(ticket)) { terminal = Phase.CANCELLED; return }',
+                                b'if (false && Ticket.revoked(ticket)) { terminal = Phase.CANCELLED; return }'),
+                            'InferenceAdapter': (b'IOException("Native returned null")', b'IOException("mutant native null")')}
+                        if name == 'ModelManifest':
+                            old, new = b'if (!fileNames.add(e.file()))', b'if (!fileNames.add(e.file()) && false)'
+                        else:
+                            old, new = anchors[name]
+                        diagnostic = second
+                    elif args.phase:
                         if name == 'InferencePhase':
                             old, new = b'MODEL_LOAD_STARTED(1)', b'MODEL_LOAD_STARTED(0)'
                         else:
@@ -254,7 +311,12 @@ def main():
                     original_sha = sha(target)
                     restore_source = True
                     try:
-                        target.write_bytes(original.replace(old, new, 1))
+                        mutated = original.replace(old, new, 1)
+                        if args.batch and name == 'ModelManifest':
+                            part_old = b'if (!partNames.add(e.partName()))'
+                            require(original.count(part_old) == 1, 'manifest part duplicate anchor ambiguous')
+                            mutated = mutated.replace(part_old, b'if (!partNames.add(e.partName()) && false)', 1)
+                        target.write_bytes(mutated)
                         mutated_sha = sha(target)
                         require(mutated_sha != original_sha, 'mutant did not change production bytes ' + name)
                         compile_and_run(name + '-red', diagnostic)
@@ -267,10 +329,10 @@ def main():
                             target.write_bytes(original)
                     require(target.read_bytes() == original, 'source restoration failed ' + name)
                     compile_and_run(name + '-restored')
-                    mutations.append({'owner': name, ('mutation' if args.ports or args.phase else 'swap'): [first, second],
+                    mutations.append({'owner': name, ('mutation' if args.ports or args.phase or args.batch else 'swap'): [first, second],
                                       'original_sha256': original_sha, 'mutant_sha256': mutated_sha,
                                       'restored_sha256': sha(target), 'diagnostic': diagnostic})
-                    print('PASS ' + ('phase' if args.phase else 'ports' if args.ports else 'enum') + ' mutant ' + name
+                    print('PASS ' + ('batch' if args.batch else 'phase' if args.phase else 'ports' if args.ports else 'enum') + ' mutant ' + name
                           + ' compile=0 target-red=1 exact-source-restored-green=0')
         require(all(sha(ROOT / p) == s for p, s in original_hashes.items()), 'working source drift')
         result = {'green_only': args.green_only, 'inputs': original_hashes,
@@ -281,8 +343,10 @@ def main():
             result.update(ports=True, tools=tools)
         if args.phase:
             result.update(phase=True, tools=tools)
+        if args.batch:
+            result.update(batch=True, tools=tools)
         (evidence / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
-        print('PASS runtime log ' + ('phase' if args.phase else 'ports' if args.ports else 'enum') + ' real mixed compilation evidence=' + str(evidence.relative_to(ROOT)))
+        print('PASS runtime log ' + ('batch' if args.batch else 'phase' if args.phase else 'ports' if args.ports else 'enum') + ' real mixed compilation evidence=' + str(evidence.relative_to(ROOT)))
     except BaseException:
         (evidence / 'failed-records.json').write_text(json.dumps(records, indent=2) + '\n')
         raise

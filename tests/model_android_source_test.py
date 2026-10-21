@@ -121,8 +121,29 @@ assert 'page.destroy()' in log_page and 'page.result(request,' in log_page
 assert 'new LogExportPage<>(graph.logExports())' in log_page
 assert 'new LogExportController<>(target ->' in graph
 assert 'context.contentResolver().openOutputStream(target, "wt")' in graph
-assert 'RuntimeLogCodec.writeSnapshot(ticket.snapshot, out)' in java('LogExportController')
-assert 'new ArrayBlockingQueue<Runnable>(1)' in java('LogExportController')
+def check_log_export_lane(source, kotlin):
+    # Ignore comments: a removed call cannot survive as an explanatory comment.
+    code = re.sub(r'/\*.*?\*/|//[^\n]*', '', source, flags=re.S)
+    required = ('RuntimeLogCodec.writeSnapshot(ticket.snapshot, out)',
+                ('ArrayBlockingQueue<Runnable>(1)' if kotlin else 'new ArrayBlockingQueue<Runnable>(1)'))
+    if any(value not in code for value in required):
+        raise AssertionError('log export codec/bounded queue source contract')
+
+log_export_source = java('LogExportController')
+log_export_kotlin = (SRC_ROOT / 'diagnostics/LogExportController.kt').is_file()
+check_log_export_lane(log_export_source, log_export_kotlin)
+queue = 'ArrayBlockingQueue<Runnable>(1)' if log_export_kotlin else 'new ArrayBlockingQueue<Runnable>(1)'
+codec = 'RuntimeLogCodec.writeSnapshot(ticket.snapshot, out)'
+for old, replacement in [(queue, queue.replace('(1)', '(2)')), (codec, 'bytesWithoutCodec()'),
+                         (codec, '/* ' + codec + ' */')]:
+    if log_export_source.count(old) != 1:
+        raise AssertionError('log export negative anchor ambiguous')
+    try:
+        check_log_export_lane(log_export_source.replace(old, replacement), log_export_kotlin)
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError('log export guard accepted target mutation')
 assert 'runtimeLogStore().snapshot()' in log_page and 'RuntimeLogText.export(state)' in log_page
 assert 'refresh.stop()' in log_page and 'WeakReference<LogsActivity>' in log_page
 assert 'recording.cancel(); startActivity(new Intent(this, LogsActivity.class))' in java('MainActivity')

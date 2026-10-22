@@ -593,7 +593,29 @@ public final class KotlinMigrationTest {
         batchModels();batchPagesAndExports();batchAdapterAndAbi();
         System.out.println("PASS batch public boundaries Java ABI/nullable/ownership/IO");
     }
+    private static void nextControllerAbi() throws Exception {
+        Class<?> type = org.llmasr.minimal.modelmanagement.ModelManagementController.class;
+        require(Modifier.isPublic(type.getModifiers()) && Modifier.isFinal(type.getModifiers()), "next Controller final class ABI");
+        for (String name : new String[]{"startVerify", "refreshInspect", "state", "readiness", "opControl"}) {
+            java.lang.reflect.Method method = type.getDeclaredMethod(name);
+            require(Modifier.isPublic(method.getModifiers()) && !Modifier.isFinal(method.getModifiers())
+                && !Modifier.isSynchronized(method.getModifiers()), "next Controller public nonfinal lock-free method " + name);
+        }
+        Throwable failure = batchFailure(() -> new org.llmasr.minimal.modelmanagement.ModelManagementController(null,null,null,null,null));
+        require(failure instanceof IllegalArgumentException && "wiring required".equals(failure.getMessage()), "next Controller wiring rejection before runner");
+        org.llmasr.minimal.modelmanagement.ModelManagementController controller =
+            new org.llmasr.minimal.modelmanagement.ModelManagementController(new TaskCoordinator(Runnable::run),
+                org.llmasr.minimal.model.ModelRepository.forWorker(new org.llmasr.minimal.model.ModelManifest(
+                    Arrays.asList(new org.llmasr.minimal.model.ModelEntry("a",0,repeat('0',64)))),
+                    new java.io.File("unused-next-controller-no-IO"), () -> Long.MAX_VALUE),
+                new org.llmasr.minimal.model.ModelReadiness(), new org.llmasr.minimal.modelmanagement.ModelOperationControl(),
+                new org.llmasr.minimal.modelmanagement.ModelManagementState());
+        require(!controller.startImport(null) && !controller.startDelete(-1,false), "next Controller nullable/confirmation short circuit");
+        controller.requestCancel(null);
+        System.out.println("PASS next Controller Java ABI/nullable wiring");
+    }
     public static void main(String[] args) throws Exception {
+        nextControllerAbi();
         runtimeLogEnums();
         runtimeLogPorts();
         inferencePhasePorts();

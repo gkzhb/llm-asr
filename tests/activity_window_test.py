@@ -11,7 +11,11 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / 'android/app/src/org/llmasr/minimal/platform/ActivityWindow.java'
+SOURCE_BASE = ROOT / 'android/app/src/org/llmasr/minimal/platform/ActivityWindow'
+SOURCES = [SOURCE_BASE.with_suffix(ext) for ext in ('.java', '.kt') if SOURCE_BASE.with_suffix(ext).is_file()]
+if len(SOURCES) != 1:
+    raise RuntimeError('missing/duplicate ActivityWindow production source')
+SOURCE = SOURCES[0]
 STUBS = {
     'android/annotation/TargetApi.java': '''package android.annotation;
 public @interface TargetApi { int value(); }
@@ -138,21 +142,29 @@ System.out.println("PASS ActivityWindow fake platform "+checks+" checks (NOT And
 
 
 def run_contract(source):
-    with tempfile.TemporaryDirectory(prefix='activity-window-') as temporary:
+    # Only the reviewed owned-session policy may remove these compiler inputs.
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('_window_owned', ROOT / 'tests/logs_activity_picker_test.py')
+    owned = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(owned)
+    with owned.Workspace() as temporary:
         root = Path(temporary)
         for relative, content in STUBS.items():
             path = root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content)
-        production = root / 'org/llmasr/minimal/platform/ActivityWindow.java'
+        production = root / ('org/llmasr/minimal/platform/ActivityWindow' + SOURCE.suffix)
         production.parent.mkdir(parents=True)
         production.write_text(source)
-        compiled = subprocess.run(['javac', '--release', '8', '-d', str(root / 'classes'),
-                                   *map(str, root.rglob('*.java'))], capture_output=True, text=True, timeout=30)
+        paths = sorted(root.rglob('*.java')) + sorted(root.rglob('*.kt'))
+        compiled = owned.execute(['bash', str(ROOT / 'scripts/compile-jvm-sources.sh'), str(root / 'classes'), '',
+                                  *map(str, paths)], root, 'compile', 120)
         if compiled.returncode:
-            raise AssertionError('Fixture/production compilation failed, NOT red behavior:\n' + compiled.stderr)
-        return subprocess.run(['java', '-cp', str(root / 'classes'), 'WindowContractTest'],
-                              capture_output=True, text=True, timeout=15)
+            raise AssertionError('Fixture/production compilation failed, NOT red behavior:\n' + compiled.stderr.decode())
+        stdlib = Path(os.environ['KOTLIN_HOME']) / 'lib/kotlin-stdlib.jar'
+        result = owned.execute(['java', '-cp', str(root / 'classes') + ':' + str(stdlib), 'WindowContractTest'],
+                               root, 'run', 15)
+        return subprocess.CompletedProcess(result.args, result.returncode, result.stdout.decode(), result.stderr.decode())
 
 
 class WindowTests(unittest.TestCase):
@@ -176,6 +188,16 @@ class WindowTests(unittest.TestCase):
             ('API33 unregister guard too high', 'Build.VERSION.SDK_INT >= 33 && callback != null',
              'Build.VERSION.SDK_INT >= 34 && callback != null'),
         ]
+        if SOURCE.suffix == '.kt':
+            mutants = [
+                ('IME omission', ' or WindowInsets.Type.ime()', ''),
+                ('padding accumulation', 'left + safe[0]', 'view.paddingLeft + safe[0]'),
+                ('duplicate callbacks', 'callback == null', 'true'),
+                ('API30 window guard removed', 'if (Build.VERSION.SDK_INT >= 30) Api30.edgeToEdge(window)', 'if (true) Api30.edgeToEdge(window)'),
+                ('API30 insets guard too low', 'if (Build.VERSION.SDK_INT >= 30) return Api30.safeInsets(insets)', 'if (Build.VERSION.SDK_INT >= 29) return Api30.safeInsets(insets)'),
+                ('API33 register guard too low', 'Build.VERSION.SDK_INT >= 33 && callback == null', 'Build.VERSION.SDK_INT >= 32 && callback == null'),
+                ('API33 unregister guard too high', 'Build.VERSION.SDK_INT >= 33 && callback != null', 'Build.VERSION.SDK_INT >= 34 && callback != null'),
+            ]
         for name, before, after in mutants:
             with self.subTest(name=name):
                 self.assertEqual(source.count(before), 1)

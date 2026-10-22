@@ -95,6 +95,9 @@ timeout 1440 python3 tests/runtime_log_enum_mutant_test.py
 timeout 1440 python3 tests/runtime_log_enum_mutant_test.py --ports
 timeout 1440 python3 tests/runtime_log_enum_mutant_test.py --phase
 timeout 2700 python3 tests/runtime_log_enum_mutant_test.py --batch
+# 11 fresh compile/run cases * (270s + 45s + bounded owned teardown) < 3900s.
+timeout 3900 python3 -B tests/kotlin_next_migration_test.py
+timeout 2700 python3 -B tests/kotlin_next_migration_test.py --compat-only
 run MinimalApkTest bench/audio/zh-original.wav
 run RecordingRaceTest
 run ResultFilesTest

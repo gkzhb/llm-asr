@@ -12,9 +12,9 @@ apply(from = "gradle/verify-lint-tools.gradle")
 
 // Exact source ownership, shared by real module compilers; physical paths stay
 // stable during this first extraction. No source is compiled by two modules.
-extra["appSources"] = listOf("AppGraph.java", "AsrImeService.java", "MainActivity.java",
-    "LogsActivity.java", "ModelManagementActivity.java", "platform/ActivityWindow.java",
-    "transcription/AsrOperation.java", "transcription/AppReportWriter.java")
+extra["appSources"] = listOf("AppGraph.kt", "AsrImeService.kt", "MainActivity.java",
+    "LogsActivity.kt", "ModelManagementActivity.java", "platform/ActivityWindow.kt",
+    "transcription/AsrOperation.kt", "transcription/AppReportWriter.java")
     .map { "org/llmasr/minimal/$it" }
 extra["runtimeSources"] = listOf("asr/JniNativeTranscription.java", "audio/ForegroundRecorder.java",
     "model/SafModelSource.java", "platform/OperationContext.java", "ime/ImeBackend.java")
@@ -23,7 +23,13 @@ extra["runtimeSources"] = listOf("asr/JniNativeTranscription.java", "audio/Foreg
 // javac otherwise implicitly recompiles excluded .java files from a shared
 // source root. Dependency types must come only from declared module classpaths.
 subprojects {
-    tasks.withType<JavaCompile>().configureEach { options.sourcepath = files() }
+    tasks.withType<JavaCompile>().configureEach {
+        options.sourcepath = files()
+        // The next host driver compiles this fixture explicitly on isolated fake
+        // platform inputs; it must not enter production or real Android/JUnit tasks.
+        val hostOnlyFixture = rootProject.file("tests/fixtures/kotlin-next/NextAppContractTest.java").canonicalFile
+        exclude { element -> element.file.canonicalFile == hostOnlyFixture }
+    }
 }
 
 // Plugin dependencies are also locked; checksums cover plugins and transitive jars.

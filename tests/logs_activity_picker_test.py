@@ -20,7 +20,12 @@ import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
-ACTIVITY = 'android/app/src/org/llmasr/minimal/LogsActivity.java'
+ACTIVITY_BASE = ROOT / 'android/app/src/org/llmasr/minimal/LogsActivity'
+ACTIVITY_SOURCES = [ACTIVITY_BASE.with_suffix(ext) for ext in ('.java', '.kt') if ACTIVITY_BASE.with_suffix(ext).is_file()]
+if len(ACTIVITY_SOURCES) != 1:
+    raise RuntimeError('missing/duplicate LogsActivity source')
+ACTIVITY = str(ACTIVITY_SOURCES[0].relative_to(ROOT))
+ACTIVITY_SUFFIX = ACTIVITY_SOURCES[0].suffix
 DIAGNOSTICS = 'android/app/src/org/llmasr/minimal/diagnostics/'
 SOURCES = tuple(DIAGNOSTICS + name for name in (
     'LogExportController.kt', 'LogExportPage.kt', 'RuntimeLogEvent.java',
@@ -81,7 +86,7 @@ public boolean post(Runnable r){r.run();return true;}
 public class TextView extends android.view.View {
 private String text=""; public TextView(android.app.Activity a){}
 public void setText(CharSequence t){text=t.toString();} public CharSequence getText(){return text;}
-public void setTextSize(int size){} public void setTextColor(int c){}
+public void setTextSize(float size){} public void setTextColor(int c){}
 public void setTextIsSelectable(boolean b){}
 }
 ''',
@@ -500,11 +505,11 @@ def tool_identity(directory):
     return identities
 
 
-def run_contract(activity_bytes, directory):
+def run_contract(activity_bytes, directory, suffix=None):
     directory.mkdir(parents=True, exist_ok=False)
     generated = dict(STUBS)
     generated['org/llmasr/minimal/PickerContractTest.java'] = HARNESS
-    generated['org/llmasr/minimal/LogsActivity.java'] = activity_bytes.decode('utf-8')
+    generated['org/llmasr/minimal/LogsActivity' + (suffix or ACTIVITY_SUFFIX)] = activity_bytes.decode('utf-8')
     sources = []
     manifest = []
     for relative, content in generated.items():
@@ -680,9 +685,9 @@ def require_green(result):
     print(result.stdout.decode().strip())
 
 
-def run_suite(source, directory, skip_mutants):
+def run_suite(source, directory, skip_mutants, suffix=None):
     runner_fault_contract(directory / 'runner-faults')
-    result = run_contract(source, directory / 'production')
+    result = run_contract(source, directory / 'production', suffix)
     require_green(result)
     if skip_mutants:
         return
@@ -694,15 +699,22 @@ def run_suite(source, directory, skip_mutants):
         ('pause-clear', 'windowBack.paused();', 'windowBack.paused(); pickerUnavailable = false;',
          'failure reason survives pause resume'),
     )
+    if (suffix or ACTIVITY_SUFFIX) == '.kt':
+        mutants = (
+            ('render-priority', 'status!!.setText(if (pickerUnavailable) PICKER_UNAVAILABLE else RuntimeLogText.export(state))',
+             'status!!.setText(RuntimeLogText.export(state))', REASON),
+            ('retry-clear', 'pickerUnavailable = false\n        val intent', 'val intent', 'valid retry must clear picker notice'),
+            ('pause-clear', 'windowBack.paused()', 'windowBack.paused(); pickerUnavailable = false', 'failure reason survives pause resume'),
+        )
     for name, before, after, diagnostic in mutants:
         if text.count(before) != 1:
             raise AssertionError('mutant anchor not unique: ' + name)
-        mutant = run_contract(text.replace(before, after).encode(), directory / name)
+        mutant = run_contract(text.replace(before, after).encode(), directory / name, suffix)
         expected = ('java.lang.AssertionError: ' + diagnostic).encode()
         if mutant.returncode != 1 or expected not in mutant.stderr:
             raise AssertionError('compiling mutant must fail exact external assertion: ' + name + '\n' + mutant.stderr.decode())
         print('PASS compile0/exact assertion1 mutant ' + name)
-    require_green(run_contract(source, directory / 'restored'))
+    require_green(run_contract(source, directory / 'restored', suffix))
 
 
 def interrupted_by_signal(number, frame):
@@ -719,10 +731,10 @@ def main():
     if args.evidence_dir is not None:
         directory = args.evidence_dir.resolve()
         directory.mkdir(parents=True, exist_ok=False)
-        run_suite(source, directory, args.skip_mutants)
+        run_suite(source, directory, args.skip_mutants, args.activity_source.suffix)
     else:
         with Workspace() as temporary:
-            run_suite(source, temporary, args.skip_mutants)
+            run_suite(source, temporary, args.skip_mutants, args.activity_source.suffix)
 
 
 if __name__ == '__main__':

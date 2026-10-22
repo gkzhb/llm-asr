@@ -92,33 +92,74 @@ graph = path_of('AppGraph').read_text()
 assert 'state::notifyChange' not in graph
 for name in ['MainActivity', 'AsrImeService', 'ModelManagementActivity']:
     source = path_of(name).read_text()
-    assert 'coordinator().addListener(' in source and 'coordinator().removeListener(' in source
-    assert 'WeakReference<' in source and re.search(r'main\.post(?:Delayed)?\(this', source)
+    listener_receiver = 'coordinator()!!.' if path_of(name).suffix == '.kt' else 'coordinator().'
+    assert listener_receiver + 'addListener(' in source and listener_receiver + 'removeListener(' in source
+    assert ('WeakReference<' in source or 'WeakReference(' in source) and re.search(r'main\.post(?:Delayed)?\(this', source)
 assert 'TaskKind.INFERENCE' in path_of('ImeController').read_text()
 assert 'TaskKind.MAINTENANCE' not in path_of('ImeController').read_text()
 assert not (references(path_of('AppState').read_text()) & {'ModelReadiness', 'verified', 'setVerified'})
 print('PASS R2 mechanism/policy/private-feature boundaries, direct lifecycle wiring and negative fixtures (lexical, not Android runtime)')
 
 # R3: feature orchestration must not own JNI, JSON or graph assembly.
+def require_adapter_contract(condition, diagnostic):
+    if not condition:
+        raise AssertionError(diagnostic)
+
 def check_inference_caller(source):
     forbidden = references(source) & {'MainActivity', 'JniNativeTranscription', 'System', 'loadLibrary',
         'JSONObject', 'JSONArray', 'MessageDigest', 'ReportWriterImpl', 'AppGraph'}
     assert not forbidden, 'inference caller owns infrastructure: ' + str(forbidden)
-    assert not re.search(r'\bnew\s+InferenceAdapter\s*\(', IGNORED.sub(' ', source))
+    require_adapter_contract(adapter_constructions(source) == 0, 'inference caller must not construct adapter')
+
+def adapter_constructions(source):
+    # Narrow Java/Kotlin construction spelling; literals/comments cannot add or hide a call.
+    code = IGNORED.sub(' ', source)
+    return len(re.findall(r'\b(?:new\s+)?InferenceAdapter\s*\(', code))
 for name in ['AsrOperation', 'ImeBackend']:
     check_inference_caller(path_of(name).read_text())
 for fixture in ['MainActivity.invokeTranscribe();', 'AppGraph graph;', 'JSONObject r;',
-                'MessageDigest digest;', 'new InferenceAdapter(a,b,c,d);', 'System.loadLibrary("x");']:
+                'MessageDigest digest;', 'System.loadLibrary("x");']:
     try: check_inference_caller(fixture)
     except AssertionError: pass
     else: raise AssertionError('R3 guard accepted forbidden fixture: ' + fixture)
-assert graph.count('new InferenceAdapter(') == 1
-assert 'new InferenceAdapter(logStore, access::requireReady,' in graph
-assert '() -> System.loadLibrary("qwen_asr_jni"), new JniNativeTranscription()' in graph
-assert 'inference, new AppReportWriter(opCtx)' in graph
-assert 'logStore, logWorker, inference)' in graph
-assert 'new ImeBackend(context, modelRepository, inference)' in graph
-assert 'graph.imeBackend()' in path_of('AsrImeService').read_text()
+for fixture in ['new InferenceAdapter(a,b,c,d);', 'val copy = InferenceAdapter(null, a, b, c)']:
+    try: check_inference_caller(fixture)
+    except AssertionError as failure:
+        require_adapter_contract(str(failure) == 'inference caller must not construct adapter', 'wrong caller rejection')
+    else: raise AssertionError('caller adapter construction accepted')
+check_inference_caller('val injected: InferenceAdapter? = null // InferenceAdapter(a,b,c,d)\n')
+graph_kotlin = path_of('AppGraph').suffix == '.kt'
+ASSEMBLY = [
+    ('new InferenceAdapter(logStore, access::requireReady,', 'InferenceAdapter(logStore, access::requireReady,'),
+    ('() -> System.loadLibrary("qwen_asr_jni"), new JniNativeTranscription()', '{ System.loadLibrary("qwen_asr_jni") }, JniNativeTranscription()'),
+    ('inference, new AppReportWriter(opCtx)', 'inference, AppReportWriter(opCtx)'),
+    ('logStore, logWorker, inference)', 'logStore, logWorker, inference)'),
+    ('new ImeBackend(context, modelRepository, inference)', 'ImeBackend(context, modelRepository, inference)'),
+]
+def check_assembly(source, kotlin):
+    require_adapter_contract(adapter_constructions(source) == 1, 'graph must construct exactly one inference adapter')
+    # Strip comments but preserve string arguments needed for the library wiring contract.
+    code = IGNORED.sub(lambda match: ' ' if match.group().startswith(('//', '/*')) else match.group(), source)
+    for java_form, kotlin_form in ASSEMBLY:
+        required = kotlin_form if kotlin else java_form
+        require_adapter_contract(code.count(required) == 1, 'graph assembly contract: ' + required)
+check_assembly(graph, graph_kotlin)
+for required in [pair[1 if graph_kotlin else 0] for pair in ASSEMBLY]:
+    try: check_assembly(graph.replace(required, 'removedAssembly'), graph_kotlin)
+    except AssertionError as failure:
+        require_adapter_contract(str(failure).startswith(('graph assembly contract:', 'graph must construct exactly one')), 'wrong missing assembly rejection')
+    else: raise AssertionError('assembly missing fixture accepted by actual checker')
+for kotlin in [False, True]:
+    valid = '\n'.join(pair[1 if kotlin else 0] for pair in ASSEMBLY)
+    check_assembly(valid, kotlin)
+    for bad in [valid.replace('InferenceAdapter(', 'RemovedAdapter(', 1),
+                valid + ('\nval copy = InferenceAdapter(null, a, b, c)' if kotlin else '\nnew InferenceAdapter(null,a,b,c);')]:
+        try: check_assembly(bad, kotlin)
+        except AssertionError as failure:
+            require_adapter_contract(str(failure) == 'graph must construct exactly one inference adapter', 'wrong duplicate/missing constructor rejection')
+        else: raise AssertionError('assembly constructor missing/duplicate accepted')
+    check_assembly(valid + '\n// InferenceAdapter(null,a,b,c)\nString note = "InferenceAdapter(a,b,c,d)";', kotlin)
+assert ('graph!!.imeBackend()' if path_of('AsrImeService').suffix == '.kt' else 'graph.imeBackend()') in path_of('AsrImeService').read_text()
 main = references(path_of('MainActivity').read_text())
 assert not main & {'native', 'transcribe', 'transcribeWithListener', 'invokeTranscribe', 'invokeTranscribeWithListener'}
 jni = path_of('JniNativeTranscription').read_text()
@@ -126,9 +167,21 @@ assert 'implements NativeTranscription' in jni and 'loadLibrary' not in referenc
 assert 'if (listener == null) return transcribe(config, wav, language, cache);' in jni
 assert 'return transcribeWithListener(config, wav, language, cache, listener);' in jni
 operation = path_of('AsrOperation').read_text()
-assert operation.count('public AsrOperation(') == 1
-assert 'new AppRequestPolicy(reports, new StateImpl())' in operation
-assert operation.index('reports.writeSuccess(ctx, r, wav, seconds, language, source);') < operation.index('ctx.inferenceReported = true;') < operation.index('appState.setLastText(r.display);')
+operation_kotlin = path_of('AsrOperation').suffix == '.kt'
+assert operation.count('class AsrOperation(' if operation_kotlin else 'public AsrOperation(') == 1
+assert ('AppRequestPolicy(reports, StateImpl())' if operation_kotlin else 'new AppRequestPolicy(reports, new StateImpl())') in operation
+ordered_parts = (['reports!!.writeSuccess(ctx, r, wav, seconds, language, source)', 'ctx.inferenceReported = true', 'appState.setLastText(r.display)']
+                 if operation_kotlin else ['reports.writeSuccess(ctx, r, wav, seconds, language, source);', 'ctx.inferenceReported = true;', 'appState.setLastText(r.display);'])
+def check_report_order(text):
+    positions = [text.index(part) for part in ordered_parts]
+    assert positions == sorted(positions), 'report before inferenceReported before text'
+check_report_order(operation)
+try:
+    check_report_order(operation.replace(ordered_parts[0], ordered_parts[2], 1))
+except (AssertionError, ValueError):
+    pass
+else:
+    raise AssertionError('report order guard accepted missing writeSuccess')
 print('PASS R3 graph/shared-adapter/JNI/report boundaries and negative fixtures (lexical, not runtime)')
 
 # R6 allowed dependencies. Same checker is exercised against real source and

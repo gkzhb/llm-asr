@@ -19,20 +19,23 @@ def check(root=ROOT):
         module = 'app' if path.stem in APP else 'asr-runtime' if path.stem in RUNTIME else 'core'
         expected[module].add(str(path.relative_to('android/app/src').with_suffix('')))
     roots = {
-        'app': [root / 'android/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes'],
+        'app': [root / 'android/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes',
+                root / 'android/app/build/tmp/kotlin-classes/debug'],
         'asr-runtime': [root / 'android/asr-runtime/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes'],
         'core': [root / 'core/build/classes/java/main', root / 'core/build/classes/kotlin/main'],
     }
-    # A source-less task can otherwise leave pre-extraction Kotlin classes.
-    kotlin_app = root / 'android/app/build/tmp/kotlin-classes/debug'
-    if any(kotlin_app.rglob('*.class')):
-        raise AssertionError('app must not compile/retain core Kotlin owners')
+    # Java/Kotlin roots are checked together, including direct definitions: a
+    # private nested class cannot conceal a missing top-level production owner.
     seen = set()
     for module, directories in roots.items():
         owners = set()
         direct_owners = set()
         for directory in directories:
             if not directory.is_dir():
+                # Before this migration the declared app Kotlin output is source-less.
+                if module == 'app' and directory.name == 'debug' and not any(
+                        p.suffix == '.kt' and p.stem in APP for p in sources):
+                    continue
                 raise AssertionError('current module class output missing: ' + str(directory))
             for path in directory.rglob('*.class'):
                 name = str(path.relative_to(directory).with_suffix(''))

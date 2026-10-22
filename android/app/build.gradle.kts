@@ -101,8 +101,13 @@ android {
     buildFeatures { buildConfig = false }
 }
 
-// All ten production Kotlin owners belong to core, not app.
-kotlin.sourceSets.named("main") { kotlin.exclude("**/*.kt") }
+// Only the exact five declared app Kotlin owners may enter this compiler.
+@Suppress("UNCHECKED_CAST")
+val appKotlinSources = (rootProject.extra["appSources"] as List<String>).filter { it.endsWith(".kt") }
+kotlin.sourceSets.named("main") {
+    kotlin.setSrcDirs(listOf("src"))
+    kotlin.include(appKotlinSources)
+}
 tasks.withType<JavaCompile>().configureEach {
     if (name == "compileDebugJavaWithJavac") {
         @Suppress("UNCHECKED_CAST")
@@ -113,7 +118,12 @@ tasks.named("preBuild") { dependsOn(prepareInputs) }
 tasks.withType<KotlinCompile>().configureEach {
     // Android's Java source root is also added to the Kotlin task by AGP.
     // Source-set exclusion alone doesn't constrain that task-level collection.
-    exclude("**/*.kt")
+    if (name == "compileDebugKotlin") {
+        val allowed = appKotlinSources.map { file("src/$it").canonicalFile }.toSet()
+        // AGP contributes an additional shared-root tree after source-set includes.
+        // Filter actual task files, not just patterns on one contributed root.
+        exclude { element -> element.file.extension == "kt" && element.file.canonicalFile !in allowed }
+    } else exclude("**/*.kt")
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_1_8)
         freeCompilerArgs.add("-Xjvm-default=all")

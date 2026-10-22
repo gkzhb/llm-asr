@@ -11,17 +11,29 @@ BASE = ROOT / 'android/app/src/org/llmasr/minimal'
 NS = '{http://schemas.android.com/apk/res/android}'
 
 
+def production(name):
+    paths = [BASE / (name + ext) for ext in ('.java', '.kt') if (BASE / (name + ext)).is_file()]
+    if len(paths) != 1:
+        raise ValueError('missing/duplicate source ' + name)
+    return paths[0].read_text()
+
+
+def syntax(text, java, kotlin):
+    return kotlin if text.startswith('package org.llmasr.minimal\n') or 'class ActivityWindow private constructor' in text else java
+
+
 def check_pages(pages, manifest):
     activities = ET.fromstring(manifest).find('application').findall('activity')
     for name, text in pages.items():
-        if 'ActivityWindow.configure(this, scroll);' not in text:
+        configure = syntax(text, 'ActivityWindow.configure(this, scroll);', 'ActivityWindow.configure(this, scroll)')
+        if configure not in text:
             raise ValueError(name + ' normal viewport missing')
         failure_name = 'text' if name == 'LogsActivity' else 'failure'
-        if 'ActivityWindow.configure(this, ' + failure_name + ');' not in text:
+        if syntax(text, 'ActivityWindow.configure(this, ' + failure_name + ');', 'ActivityWindow.configure(this, ' + failure_name + ')') not in text:
             raise ValueError(name + ' failure viewport missing')
-        if 'new ActivityWindow.BackRegistration(this, this::onBackPressed)' not in text:
+        if syntax(text, 'new ActivityWindow.BackRegistration(this, this::onBackPressed)', 'ActivityWindow.BackRegistration(this, this::onBackPressed)') not in text:
             raise ValueError(name + ' callback must use existing back policy')
-        if 'windowBack.resumed();' not in text or 'windowBack.paused();' not in text:
+        if syntax(text, 'windowBack.resumed();', 'windowBack.resumed()') not in text or syntax(text, 'windowBack.paused();', 'windowBack.paused()') not in text:
             raise ValueError(name + ' back lifecycle missing')
         if 'setOnApplyWindowInsetsListener' in text:
             raise ValueError(name + ' duplicate inset strategy')
@@ -42,7 +54,7 @@ def check_api_contract(source):
     # Lexical contract only; actual boundary dispatch runs in activity_window_test.py.
     for level in (30, 33):
         if not re.search(r'@(?:android\.annotation\.)?TargetApi\(' + str(level) +
-                         r'\)\s+private static final class Api' + str(level), source):
+                         r'\)\s+private (?:static final )?class Api' + str(level), source):
             raise ValueError('helper API contract missing: ' + str(level))
     for guarded in (
         'if (Build.VERSION.SDK_INT >= 30) Api30.edgeToEdge(window);',
@@ -50,7 +62,8 @@ def check_api_contract(source):
         'if (Build.VERSION.SDK_INT >= 33 && callback == null)',
         'if (Build.VERSION.SDK_INT >= 33 && callback != null)',
     ):
-        if source.count(guarded) != 1:
+        actual = guarded.rstrip(';') if 'class ActivityWindow private constructor' in source else guarded
+        if source.count(actual) != 1:
             raise ValueError('helper outer SDK guard missing or changed')
     if 'SuppressLint' in source:
         raise ValueError('API diagnostic suppression is not an API contract')
@@ -58,12 +71,12 @@ def check_api_contract(source):
 
 class WiringTests(unittest.TestCase):
     def setUp(self):
-        self.pages = {name: (BASE / (name + '.java')).read_text()
+        self.pages = {name: production(name)
                       for name in ['MainActivity', 'ModelManagementActivity', 'LogsActivity']}
         self.manifest = (ROOT / 'android/app/AndroidManifest.xml').read_text()
 
     def test_api_contract_and_guard_negatives(self):
-        source = (BASE / 'platform/ActivityWindow.java').read_text()
+        source = production('platform/ActivityWindow')
         check_api_contract(source)
         for level in (30, 33):
             before = '@android.annotation.TargetApi(' + str(level) + ')'
@@ -77,7 +90,7 @@ class WiringTests(unittest.TestCase):
 
     def test_current_wiring(self):
         check_pages(self.pages, self.manifest)
-        self.assertNotIn('ActivityWindow', (BASE / 'AsrImeService.java').read_text())
+        self.assertNotIn('ActivityWindow', production('AsrImeService'))
 
     def test_pre_m6_production_is_red(self):
         # Frozen public source baseline only; no prior test/classes/artifact reuse.
@@ -94,8 +107,11 @@ class WiringTests(unittest.TestCase):
                            'windowBack.resumed();', 'windowBack.paused();',
                            'new ActivityWindow.BackRegistration(this, this::onBackPressed)']:
                 pages = dict(self.pages)
-                self.assertEqual(pages[name].count(before), 1)
-                pages[name] = pages[name].replace(before, '')
+                actual = before
+                if syntax(pages[name], 'java', 'kotlin') == 'kotlin':
+                    actual = actual.removeprefix('new ').rstrip(';')
+                self.assertEqual(pages[name].count(actual), 1)
+                pages[name] = pages[name].replace(actual, '')
                 with self.assertRaises(ValueError):
                     check_pages(pages, self.manifest)
         with self.assertRaises(ValueError):

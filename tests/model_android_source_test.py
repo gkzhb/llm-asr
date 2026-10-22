@@ -62,22 +62,27 @@ def java(name):
     assert len(matches) == 1, 'missing/duplicate JVM source ' + name
     return matches[0].read_text()
 graph = java('AppGraph')
-assert 'new AppState()' in graph
+graph_kotlin = (SRC_ROOT / 'AppGraph.kt').is_file()
+assert ('AppState()' if graph_kotlin else 'new AppState()') in graph
 assert 'state::notifyChange' not in graph
-assert 'new ModelAccess(repository, readiness)' in graph
-assert 'new ModelManagementController(coordinator, modelRepository, readiness, modelControl, modelState, runtimeLogStore)' in graph
+assert ('ModelAccess(repository, readiness)' if graph_kotlin else 'new ModelAccess(repository, readiness)') in graph
+assert ('ModelManagementController(coordinator, modelRepository, readiness, modelControl, modelState, runtimeLogStore)' if graph_kotlin else 'new ModelManagementController(coordinator, modelRepository, readiness, modelControl, modelState, runtimeLogStore)') in graph
 assert 'RuntimeLogStore' in graph
 assert 'runtimeLogStore' in graph
 assert 'RuntimeLogPersistence' in graph
 assert 'RuntimeLogWorker' in graph
 assert 'ModelRepository.forAppFiles(manifest, opCtx.filesDir(), space)' in graph
 assert 'access::requireReady' in graph
-assert 'new JniNativeTranscription()' in graph
+assert ('JniNativeTranscription()' if graph_kotlin else 'new JniNativeTranscription()') in graph
 assert 'TaskKind.MODEL_OPERATION' not in java('AsrOperation')
 assert 'MODEL_TREE' not in java('MainActivity')
 assert 'setVerified(true)' not in '\n'.join(p.read_text() for p in (android/'src').rglob('*') if p.suffix in {'.java', '.kt'})
 ime = java('AsrImeService')
-assert re.search(r'"模型管理", \(\) -> leaveForExternalUi\(\(\) ->\s*startActivity\(new Intent\(this, ModelManagementActivity.class\).addFlags\(Intent.FLAG_ACTIVITY_NEW_TASK\)', ime)
+ime_kotlin = (SRC_ROOT / 'AsrImeService.kt').is_file()
+if ime_kotlin:
+    assert re.search(r'"模型管理"\) \{ leaveForExternalUi \{ startActivity\(Intent\(this, ModelManagementActivity::class.java\).addFlags\(Intent.FLAG_ACTIVITY_NEW_TASK\)', ime)
+else:
+    assert re.search(r'"模型管理", \(\) -> leaveForExternalUi\(\(\) ->\s*startActivity\(new Intent\(this, ModelManagementActivity.class\).addFlags\(Intent.FLAG_ACTIVITY_NEW_TASK\)', ime)
 activity = java('ModelManagementActivity')
 assert 'takePersistableUriPermission' not in activity and 'putExtra' not in activity
 assert 'page.stopped(isChangingConfigurations())' in activity
@@ -116,11 +121,14 @@ print('PASS Android source wiring/manifest policy and checker clause mutation fi
 log_page = java('LogsActivity')
 assert 'graph.appState()' not in log_page and 'new Thread' not in log_page
 assert 'exportSnapshot' not in log_page and 'takePersistableUriPermission' not in log_page
-assert 'page.foreground(true)' in log_page and 'page.foreground(false)' in log_page
-assert 'page.destroy()' in log_page and 'page.result(request,' in log_page
-assert 'new LogExportPage<>(graph.logExports())' in log_page
-assert 'new LogExportController<>(target ->' in graph
-assert 'context.contentResolver().openOutputStream(target, "wt")' in graph
+log_kotlin = (SRC_ROOT / 'LogsActivity.kt').is_file()
+page_receiver = 'page!!.' if log_kotlin else 'page.'
+assert page_receiver + 'foreground(true)' in log_page and page_receiver + 'foreground(false)' in log_page
+assert page_receiver + 'destroy()' in log_page and page_receiver + 'result(request,' in log_page
+log_kotlin = (SRC_ROOT / 'LogsActivity.kt').is_file()
+assert ('LogExportPage(graph!!.logExports())' if log_kotlin else 'new LogExportPage<>(graph.logExports())') in log_page
+assert ('LogExportController { target ->' if graph_kotlin else 'new LogExportController<>(target ->') in graph
+assert ('context!!.contentResolver().openOutputStream(unchanged<android.net.Uri>(target), "wt")' if graph_kotlin else 'context.contentResolver().openOutputStream(target, "wt")') in graph
 def check_log_export_lane(source, kotlin):
     # Ignore comments: a removed call cannot survive as an explanatory comment.
     code = re.sub(r'/\*.*?\*/|//[^\n]*', '', source, flags=re.S)
@@ -144,8 +152,8 @@ for old, replacement in [(queue, queue.replace('(1)', '(2)')), (codec, 'bytesWit
         pass
     else:
         raise AssertionError('log export guard accepted target mutation')
-assert 'runtimeLogStore().snapshot()' in log_page and 'RuntimeLogText.export(state)' in log_page
-assert 'refresh.stop()' in log_page and 'WeakReference<LogsActivity>' in log_page
+assert ('runtimeLogStore()!!.snapshot()' if log_kotlin else 'runtimeLogStore().snapshot()') in log_page and 'RuntimeLogText.export(state)' in log_page
+assert 'refresh.stop()' in log_page and ('WeakReference(a)' if log_kotlin else 'WeakReference<LogsActivity>') in log_page
 assert 'recording.cancel(); startActivity(new Intent(this, LogsActivity.class))' in java('MainActivity')
 assert 'if (page.ownsActive())' in activity
 # Isolate weakening of just the LogsActivity node, leaving the model page intact.

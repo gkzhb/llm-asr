@@ -153,6 +153,7 @@ def verify(apk_dir, report_dir, native_build):
     with tempfile.TemporaryDirectory(prefix='jni-classes-', dir=report) as temporary:
         classes = Path(temporary)
         class_roots = [ROOT / 'android/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes',
+                       ROOT / 'android/app/build/tmp/kotlin-classes/debug',
                        ROOT / 'android/asr-runtime/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes',
                        ROOT / 'core/build/classes/java/main',
                        ROOT / 'core/build/classes/kotlin/main']

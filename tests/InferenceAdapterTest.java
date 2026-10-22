@@ -368,16 +368,53 @@ public final class InferenceAdapterTest {
         check(count(f.store, REQUEST_SUCCESS) == 2 && count(f.store, REQUEST_FAILURE) == 0,
             "external failure is NOT rewritten as inference adapter failure");
     }
+    private static int adapterConstructions(String source) {
+        String code = source.replaceAll("\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'|//[^\\n]*|/\\*[\\s\\S]*?\\*/", " ");
+        java.util.regex.Matcher calls = java.util.regex.Pattern.compile("\\b(?:new\\s+)?InferenceAdapter\\s*\\(").matcher(code);
+        int count = 0; while (calls.find()) count++; return count;
+    }
+    private static void checkNoAdapterConstruction(String source) {
+        if (adapterConstructions(source) != 0) throw new AssertionError("inference caller must not construct adapter");
+    }
+    private static void checkSingleAdapter(String source) {
+        if (adapterConstructions(source) != 1) throw new AssertionError("graph must construct exactly one inference adapter");
+    }
     private static void sourceContracts() throws Exception {
+        for (String valid : new String[]{"new InferenceAdapter(log,a,b,c)", "val shared = InferenceAdapter(log,a,b,c)"}) {
+            checkSingleAdapter(valid);
+            for (String bad : new String[]{valid.replace("InferenceAdapter(", "RemovedAdapter("), valid + "; InferenceAdapter(null,a,b,c)"}) {
+                boolean rejected = false;
+                try { checkSingleAdapter(bad); }
+                catch (AssertionError failure) { rejected = "graph must construct exactly one inference adapter".equals(failure.getMessage()); }
+                check(rejected, "actual graph checker rejects missing/different-argument duplicate");
+            }
+        }
+        Path graphBase = java.nio.file.Paths.get("android/app/src/org/llmasr/minimal/AppGraph");
+        Path graphJava = java.nio.file.Paths.get(graphBase + ".java"), graphKotlin = java.nio.file.Paths.get(graphBase + ".kt");
+        check(Files.isRegularFile(graphJava) != Files.isRegularFile(graphKotlin), "unique graph source");
+        checkSingleAdapter(read(Files.isRegularFile(graphJava) ? graphJava : graphKotlin));
+        for (String fixture : new String[]{"new InferenceAdapter(null,a,b,c);", "val copy = InferenceAdapter(null,a,b,c)"}) {
+            boolean rejected = false;
+            try { checkNoAdapterConstruction(fixture); }
+            catch (AssertionError failure) { rejected = "inference caller must not construct adapter".equals(failure.getMessage()); }
+            check(rejected, "actual caller checker rejects Java/Kotlin constructor fixture");
+        }
+        check(adapterConstructions("val injected: InferenceAdapter? = null // InferenceAdapter(a,b,c,d)\n") == 0
+            && adapterConstructions("String note = \"InferenceAdapter(a,b,c,d)\";") == 0, "caller guard ignores types/comments/literals");
         java.util.Map<String, String> callers = new java.util.LinkedHashMap<>();
         callers.put("AsrOperation", "transcription");
         callers.put("ImeBackend", "ime");
         for (java.util.Map.Entry<String, String> e : callers.entrySet()) {
             String caller = e.getKey();
             String sub = e.getValue();
-            String s = read(java.nio.file.Paths.get("android/app/src/org/llmasr/minimal/" + sub + "/" + caller + ".java"));
-            check(!s.contains("new InferenceAdapter(") && s.contains("inference.transcribe(RuntimeLogSource."), "actual " + caller + " uses shared production adapter");
-            check(s.contains("this.inference = inference;") && !s.contains("MainActivity"), "graph-injected inference port " + caller);
+            Path base = java.nio.file.Paths.get("android/app/src/org/llmasr/minimal/" + sub + "/" + caller);
+            Path javaSource = java.nio.file.Paths.get(base + ".java"), kotlinSource = java.nio.file.Paths.get(base + ".kt");
+            check(Files.isRegularFile(javaSource) != Files.isRegularFile(kotlinSource), "unique actual caller source " + caller);
+            boolean kotlin = Files.isRegularFile(kotlinSource);
+            String s = read(kotlin ? kotlinSource : javaSource);
+            checkNoAdapterConstruction(s);
+            check(s.contains(kotlin ? "inference!!.transcribe(RuntimeLogSource." : "inference.transcribe(RuntimeLogSource."), "actual " + caller + " uses shared production adapter");
+            check(s.contains(kotlin ? "private val inference: InferenceAdapter?" : "this.inference = inference;") && !s.contains("MainActivity"), "graph-injected inference port " + caller);
             check(!s.contains("NativeResponse.parse") && !s.contains("onTerminal") && !s.contains("new LoggingInferencePhaseListener"), "no duplicate caller orchestration " + caller);
         }
         String cpp = read(java.nio.file.Paths.get("native/apk/asr_jni.cpp"));

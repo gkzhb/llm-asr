@@ -47,7 +47,7 @@ class AppGraph private constructor(private val context: OperationContext?, priva
     private val logExports: LogExportController<android.net.Uri>
     init {
         imeBackend = ImeBackend(context, modelRepository, inference)
-        logExports = LogExportController { target -> context!!.contentResolver().openOutputStream(unchanged<android.net.Uri>(target), "wt") }
+        logExports = LogExportController { target -> context!!.contentResolver()!!.openOutputStream(unchanged<android.net.Uri>(target), "wt") }
         modelManagement = ModelManagementController(coordinator, modelRepository, readiness, modelControl, modelState, runtimeLogStore)
     }
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun readiness(): ModelReadiness? = readiness
@@ -85,8 +85,8 @@ class AppGraph private constructor(private val context: OperationContext?, priva
                 val readiness = ModelReadiness()
                 val state = AppState()
                 val coordinator = TaskCoordinator()
-                val textExport = TextExportController<android.net.Uri> { target -> opCtx.contentResolver().openOutputStream(unchanged<android.net.Uri>(target), "wt") }
-                val space = ModelRepository.SpaceProvider { opCtx.filesDir().usableSpace }
+                val textExport = TextExportController<android.net.Uri> { target -> opCtx.contentResolver()!!.openOutputStream(unchanged<android.net.Uri>(target), "wt") }
+                val space = ModelRepository.SpaceProvider { opCtx.filesDir()!!.usableSpace }
                 val repository = ModelRepository.forAppFiles(manifest, opCtx.filesDir(), space)
                 val access = ModelAccess(repository, readiness)
                 val logStore = RuntimeLogStore()

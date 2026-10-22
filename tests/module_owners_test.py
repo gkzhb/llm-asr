@@ -21,7 +21,8 @@ def check(root=ROOT):
     roots = {
         'app': [root / 'android/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes',
                 root / 'android/app/build/tmp/kotlin-classes/debug'],
-        'asr-runtime': [root / 'android/asr-runtime/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes'],
+        'asr-runtime': [root / 'android/asr-runtime/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes',
+                        root / 'android/asr-runtime/build/tmp/kotlin-classes/debug'],
         'core': [root / 'core/build/classes/java/main', root / 'core/build/classes/kotlin/main'],
     }
     # Java/Kotlin roots are checked together, including direct definitions: a

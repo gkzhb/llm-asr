@@ -55,7 +55,7 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun startWave(uri: Uri?, language: String?): Boolean = runner.submit(TaskKind.INFERENCE, { ctx ->
         val cr = context!!.contentResolver()
-        val input = cr.openInputStream(unchanged<Uri>(uri))
+        val input = cr!!.openInputStream(unchanged<Uri>(uri))
         var primary: Throwable? = null
         try {
             if (input == null) throw IOException("无法读取音频")
@@ -111,7 +111,7 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
     private fun runInference(ctx: RequestContext, wav: File, seconds: Double, language: String?, source: String) {
         appState!!.setLastStatus("模型加载 / 转写中（CPU，首次可能需要数十秒）……")
         val r = inference!!.transcribe(RuntimeLogSource.APP, ctx.requestId,
-            File(modelRepository!!.modelDir(), "config.json").absolutePath, wav.absolutePath, language, context!!.cacheDir().absolutePath)
+            File(modelRepository!!.modelDir(), "config.json").absolutePath, wav.absolutePath, language, context!!.cacheDir()!!.absolutePath)
         reports!!.writeSuccess(ctx, r, wav, seconds, language, source)
         ctx.inferenceReported = true
         appState.setLastText(r.display)

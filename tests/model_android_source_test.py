@@ -128,7 +128,7 @@ assert page_receiver + 'destroy()' in log_page and page_receiver + 'result(reque
 log_kotlin = (SRC_ROOT / 'LogsActivity.kt').is_file()
 assert ('LogExportPage(graph!!.logExports())' if log_kotlin else 'new LogExportPage<>(graph.logExports())') in log_page
 assert ('LogExportController { target ->' if graph_kotlin else 'new LogExportController<>(target ->') in graph
-assert ('context!!.contentResolver().openOutputStream(unchanged<android.net.Uri>(target), "wt")' if graph_kotlin else 'context.contentResolver().openOutputStream(target, "wt")') in graph
+assert ('context!!.contentResolver()!!.openOutputStream(unchanged<android.net.Uri>(target), "wt")' if graph_kotlin else 'context.contentResolver().openOutputStream(target, "wt")') in graph
 def check_log_export_lane(source, kotlin):
     # Ignore comments: a removed call cannot survive as an explanatory comment.
     code = re.sub(r'/\*.*?\*/|//[^\n]*', '', source, flags=re.S)

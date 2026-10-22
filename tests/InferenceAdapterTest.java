@@ -379,6 +379,69 @@ public final class InferenceAdapterTest {
     private static void checkSingleAdapter(String source) {
         if (adapterConstructions(source) != 1) throw new AssertionError("graph must construct exactly one inference adapter");
     }
+    private static void checkImeSavedInference(String source) {
+        String diagnostic = "IME saved inference source order";
+        java.util.regex.Matcher tokens = java.util.regex.Pattern.compile(
+            "\"\"\"[\\s\\S]*?\"\"\"|\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'|//[^\\n]*|/\\*[\\s\\S]*?\\*/").matcher(source);
+        StringBuffer stripped = new StringBuffer();
+        while (tokens.find()) tokens.appendReplacement(stripped,
+            java.util.regex.Matcher.quoteReplacement(tokens.group().equals("\"config.json\"") ? tokens.group() : " "));
+        tokens.appendTail(stripped);
+        String code = stripped.toString();
+        String start = "override open fun transcribe(", end = "return result.display";
+        int begin = code.indexOf(start), finish = code.indexOf(end, begin + 1);
+        if (begin < 0 || finish < 0 || code.indexOf(start, begin + 1) >= 0) throw new AssertionError(diagnostic);
+        String body = code.substring(begin, finish);
+        String[] required = {
+            "val targetInference = inference", "val source = RuntimeLogSource.IME",
+            "val requestId = targetRequest.requestId",
+            "val config = File(modelRepository!!.modelDir(), \"config.json\").absolutePath",
+            "val wavPath = targetRequest.inputWav!!.absolutePath", "val selectedLanguage = language",
+            "val cache = context.cacheDir()!!.absolutePath",
+            "val result = targetInference!!.transcribe(source, requestId, config, wavPath, selectedLanguage, cache)"
+        };
+        int previous = -1;
+        for (String part : required) {
+            int at = body.indexOf(part);
+            if (at <= previous || body.indexOf(part, at + 1) >= 0) throw new AssertionError(diagnostic);
+            // Require a complete assignment line: an early !! or changed expression cannot share a valid prefix.
+            int lineEnd = body.indexOf('\n', at);
+            String line = body.substring(at, lineEnd < 0 ? body.length() : lineEnd).trim();
+            if (!line.equals(part)) throw new AssertionError(diagnostic);
+            previous = at;
+        }
+        String beforeInvoke = body.substring(0, previous);
+        if (java.util.regex.Pattern.compile("\\b(?:inference|targetInference)\\s*!!").matcher(beforeInvoke).find())
+            throw new AssertionError(diagnostic);
+    }
+    private static void imeSavedInferenceFixtures(String source) {
+        checkImeSavedInference(source);
+        String receiver = "val targetInference = inference", ime = "val source = RuntimeLogSource.IME";
+        String invoke = "val result = targetInference!!.transcribe(source, requestId, config, wavPath, selectedLanguage, cache)";
+        String config = "val config = File(modelRepository!!.modelDir(), \"config.json\").absolutePath";
+        String cache = "val cache = context.cacheDir()!!.absolutePath";
+        String swapped = source.replace(config, "__ORDER_SWAP__").replace(cache, config).replace("__ORDER_SWAP__", cache);
+        String[][] cases = {
+            {"receiver removed", source.replace(receiver, "")},
+            {"receiver replaced", source.replace(receiver, "val targetInference = other")},
+            {"source removed", source.replace(ime, "")},
+            {"source wrong", source.replace(ime, "val source = RuntimeLogSource.APP")},
+            {"invoke removed", source.replace(invoke, "")},
+            {"invoke comment", source.replace(invoke, "/* " + invoke + " */")},
+            {"invoke string", source.replace(invoke, "val decoy = \"" + invoke + "\"")},
+            {"early saved receiver", source.replace(receiver, receiver + "!!")},
+            {"early receiver use", source.replace(ime, "targetInference!!\n        " + ime)},
+            {"model cache swapped", swapped}
+        };
+        for (String[] fixture : cases) {
+            check(!fixture[1].equals(source), "IME source mutant anchor " + fixture[0]);
+            boolean rejected = false;
+            try { checkImeSavedInference(fixture[1]); }
+            catch (AssertionError failure) { rejected = "IME saved inference source order".equals(failure.getMessage()); }
+            check(rejected, "same IME source checker rejects " + fixture[0]);
+        }
+        checkImeSavedInference(source);
+    }
     private static void sourceContracts() throws Exception {
         for (String valid : new String[]{"new InferenceAdapter(log,a,b,c)", "val shared = InferenceAdapter(log,a,b,c)"}) {
             checkSingleAdapter(valid);
@@ -413,7 +476,8 @@ public final class InferenceAdapterTest {
             boolean kotlin = Files.isRegularFile(kotlinSource);
             String s = read(kotlin ? kotlinSource : javaSource);
             checkNoAdapterConstruction(s);
-            check(s.contains(kotlin ? "inference!!.transcribe(RuntimeLogSource." : "inference.transcribe(RuntimeLogSource."), "actual " + caller + " uses shared production adapter");
+            if (kotlin && caller.equals("ImeBackend")) imeSavedInferenceFixtures(s);
+            else check(s.contains(kotlin ? "inference!!.transcribe(RuntimeLogSource." : "inference.transcribe(RuntimeLogSource."), "actual " + caller + " uses shared production adapter");
             check(s.contains(kotlin ? "private val inference: InferenceAdapter?" : "this.inference = inference;") && !s.contains("MainActivity"), "graph-injected inference port " + caller);
             check(!s.contains("NativeResponse.parse") && !s.contains("onTerminal") && !s.contains("new LoggingInferencePhaseListener"), "no duplicate caller orchestration " + caller);
         }

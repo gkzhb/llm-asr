@@ -16,8 +16,8 @@ extra["appSources"] = listOf("AppGraph.kt", "AsrImeService.kt", "MainActivity.ja
     "LogsActivity.kt", "ModelManagementActivity.java", "platform/ActivityWindow.kt",
     "transcription/AsrOperation.kt", "transcription/AppReportWriter.java")
     .map { "org/llmasr/minimal/$it" }
-extra["runtimeSources"] = listOf("asr/JniNativeTranscription.java", "audio/ForegroundRecorder.java",
-    "model/SafModelSource.java", "platform/OperationContext.java", "ime/ImeBackend.java")
+extra["runtimeSources"] = listOf("asr/JniNativeTranscription.java", "audio/ForegroundRecorder.kt",
+    "model/SafModelSource.kt", "platform/OperationContext.kt", "ime/ImeBackend.kt")
     .map { "org/llmasr/minimal/$it" }
 
 // javac otherwise implicitly recompiles excluded .java files from a shared
@@ -28,7 +28,8 @@ subprojects {
         // The next host driver compiles this fixture explicitly on isolated fake
         // platform inputs; it must not enter production or real Android/JUnit tasks.
         val hostOnlyFixture = rootProject.file("tests/fixtures/kotlin-next/NextAppContractTest.java").canonicalFile
-        exclude { element -> element.file.canonicalFile == hostOnlyFixture }
+        val runtimeHostFixture = rootProject.file("tests/fixtures/kotlin-runtime/RuntimeContractTest.java").canonicalFile
+        exclude { element -> element.file.canonicalFile == hostOnlyFixture || element.file.canonicalFile == runtimeHostFixture }
     }
 }
 

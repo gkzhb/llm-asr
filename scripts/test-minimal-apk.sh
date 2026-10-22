@@ -98,6 +98,8 @@ timeout 2700 python3 tests/runtime_log_enum_mutant_test.py --batch
 # 11 fresh compile/run cases * (270s + 45s + bounded owned teardown) < 3900s.
 timeout 3900 python3 -B tests/kotlin_next_migration_test.py
 timeout 2700 python3 -B tests/kotlin_next_migration_test.py --compat-only
+# Fifteen mixed compile routes (30 compiler commands) + fifteen Java runs + owned teardown < 7200s.
+timeout 7200 python3 -B tests/kotlin_runtime_migration_test.py
 run MinimalApkTest bench/audio/zh-original.wav
 run RecordingRaceTest
 run ResultFilesTest

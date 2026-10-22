@@ -155,6 +155,7 @@ def verify(apk_dir, report_dir, native_build):
         class_roots = [ROOT / 'android/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes',
                        ROOT / 'android/app/build/tmp/kotlin-classes/debug',
                        ROOT / 'android/asr-runtime/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes',
+                       ROOT / 'android/asr-runtime/build/tmp/kotlin-classes/debug',
                        ROOT / 'core/build/classes/java/main',
                        ROOT / 'core/build/classes/kotlin/main']
         for source in class_roots:

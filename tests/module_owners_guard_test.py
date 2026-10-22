@@ -10,6 +10,7 @@ APP = Path('android/app/build/intermediates/javac/debug/compileDebugJavaWithJava
 RUNTIME = Path('android/asr-runtime/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes')
 CORE = Path('core/build/classes/java/main')
 APP_KOTLIN = Path('android/app/build/tmp/kotlin-classes/debug')
+RUNTIME_KOTLIN = Path('android/asr-runtime/build/tmp/kotlin-classes/debug')
 PREFIX = Path('org/llmasr/minimal')
 
 
@@ -18,7 +19,7 @@ class OwnersTests(unittest.TestCase):
         self.directory = tempfile.TemporaryDirectory(prefix='owners-negative-')
         self.addCleanup(self.directory.cleanup)
         self.root = Path(self.directory.name)
-        for path in [APP, APP_KOTLIN, RUNTIME, CORE, Path('core/build/classes/kotlin/main')]:
+        for path in [APP, APP_KOTLIN, RUNTIME, RUNTIME_KOTLIN, CORE, Path('core/build/classes/kotlin/main')]:
             if (ROOT / path).is_dir():
                 shutil.copytree(ROOT / path, self.root / path)
         baseline = self.root / 'gradle/baseline-inputs.json'
@@ -71,6 +72,38 @@ class OwnersTests(unittest.TestCase):
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, destination)
         with self.assertRaisesRegex(AssertionError, 'duplicate'):
+            check(self.root)
+
+    def test_runtime_missing_direct_owner(self):
+        (self.root / RUNTIME_KOTLIN / PREFIX / 'audio/ForegroundRecorder.class').unlink()
+        with self.assertRaisesRegex(AssertionError, 'missing'):
+            check(self.root)
+
+    def test_runtime_java_kotlin_duplicate(self):
+        source = self.root / RUNTIME_KOTLIN / PREFIX / 'audio/ForegroundRecorder.class'
+        destination = self.root / RUNTIME / PREFIX / 'audio/ForegroundRecorder.class'
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, destination)
+        with self.assertRaisesRegex(AssertionError, 'duplicate'):
+            check(self.root)
+
+    def test_foreign_owner_in_runtime_kotlin(self):
+        for original in [self.root / CORE / PREFIX / 'model/ModelRepository.class',
+                         self.root / APP_KOTLIN / PREFIX / 'AppGraph.class']:
+            destination = self.root / RUNTIME_KOTLIN / PREFIX / ('model/ModelRepository.class' if original.stem == 'ModelRepository' else 'AppGraph.class')
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(original, destination)
+            try:
+                with self.assertRaisesRegex(AssertionError, 'owner|duplicate|extra'):
+                    check(self.root)
+            finally:
+                destination.unlink()
+
+    def test_runtime_extra_top_owner(self):
+        target = self.root / RUNTIME_KOTLIN / PREFIX / 'Unexpected.class'
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(b'not a declared owner')
+        with self.assertRaisesRegex(AssertionError, 'owner|extra'):
             check(self.root)
 
     def test_extra_app_kotlin_owner(self):

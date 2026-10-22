@@ -19,6 +19,7 @@ APPROVED_PATHS = {':' + task for task in ROOT_TASKS} | {
         'processTestResources', 'testClasses', 'verifyModuleBoundary', 'test')
 } | {
     ':asr-runtime:' + task for task in (
+        'checkKotlinGradlePluginConfigurationErrors', 'compileDebugKotlin', 'compileDebugUnitTestKotlin',
         'preBuild', 'preDebugBuild', 'generateDebugResValues', 'generateDebugResources',
         'packageDebugResources', 'parseDebugLocalResources', 'generateDebugRFile',
         'javaPreCompileDebug', 'compileDebugJavaWithJavac', 'bundleLibRuntimeToJarDebug',

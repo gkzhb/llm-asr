@@ -80,7 +80,10 @@ def compile_capture(root, source):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text)
         paths.append(path)
-    production = root / 'ForegroundRecorder.java'
+    actual = [BASE / ('ForegroundRecorder' + ext) for ext in ('.java', '.kt') if (BASE / ('ForegroundRecorder' + ext)).is_file()]
+    if len(actual) != 1:
+        raise AssertionError('missing/duplicate capture source')
+    production = root / actual[0].name
     production.write_text(source)
     paths += [production, BASE / 'RecordingControl.kt', BASE / 'PcmWave.kt', BASE / 'WaveInput.java']
     classes = root / 'classes'
@@ -94,7 +97,9 @@ def compile_capture(root, source):
 class RecorderTests(unittest.TestCase):
     def test_permission_revocation_and_cleanup(self):
         with tempfile.TemporaryDirectory(prefix='recorder-contract-') as temporary:
-            cp = compile_capture(Path(temporary), (BASE / 'ForegroundRecorder.java').read_text())
+            actual = [BASE / ('ForegroundRecorder' + ext) for ext in ('.java', '.kt') if (BASE / ('ForegroundRecorder' + ext)).is_file()]
+            self.assertEqual(len(actual), 1, 'unique real capture source')
+            cp = compile_capture(Path(temporary), actual[0].read_text())
             for phase in ('minimum', 'constructor', 'state', 'start', 'read', 'recordingState',
                           'stop', 'release', 'cancel', 'fatal', 'success', 'illegalStop'):
                 with self.subTest(phase=phase):

@@ -43,4 +43,15 @@ for text, diagnostic in (
     else:
         raise AssertionError('malformed/unreviewed graph accepted')
 graph.check_text(good)
+# P1 observed and explicitly accepted runtime Kotlin task paths, not a name prefix.
+for name in ('checkKotlinGradlePluginConfigurationErrors', 'compileDebugKotlin', 'compileDebugUnitTestKotlin'):
+    graph.check_text(':asr-runtime:' + name + ' SKIPPED\n' + good)
+for name in ('compileFutureKotlin', 'kotlinDownloadArtifact'):
+    try:
+        graph.check_text(':asr-runtime:' + name + ' SKIPPED\n' + good)
+    except ValueError as error:
+        if 'unreviewed task path' not in str(error):
+            raise AssertionError('wrong unknown Kotlin task rejection') from error
+    else:
+        raise AssertionError('Kotlin task prefix was accepted: ' + name)
 print('PASS complete graph parser heavy-family/scope/malformed target negatives and recovery')

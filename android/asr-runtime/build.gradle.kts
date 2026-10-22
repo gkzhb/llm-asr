@@ -1,4 +1,10 @@
-plugins { id("com.android.library") }
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+plugins {
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
+}
 
 android {
     namespace = "org.llmasr.runtime"
@@ -57,11 +63,11 @@ tasks.withType<JavaCompile>().configureEach {
 }
 val verifyModuleBoundary by tasks.registering(Exec::class) {
     group = "verification"
-    dependsOn("compileDebugJavaWithJavac")
+    dependsOn("compileDebugJavaWithJavac", "compileDebugKotlin")
     workingDir(rootProject.projectDir)
     doFirst {
         val compile = tasks.named<JavaCompile>("compileDebugJavaWithJavac").get()
-        val classpath = files(compile.destinationDirectory, compile.classpath, android.bootClasspath).asPath
+        val classpath = files(compile.destinationDirectory, layout.buildDirectory.dir("tmp/kotlin-classes/debug"), compile.classpath, android.bootClasspath).asPath
         commandLine("python3", rootProject.file("tests/module_boundary_test.py"),
             "--module", "asr-runtime", "--classpath", classpath)
     }
@@ -70,5 +76,24 @@ tasks.configureEach {
     if (name == "testDebugUnitTest") { dependsOn(verifyModuleBoundary) }
     if (name.contains("Release")) {
         doFirst { error("Release variants remain outside M3 (M10 gate)") }
+    }
+}
+
+// Only these four runtime Kotlin owners may enter the production compiler.
+@Suppress("UNCHECKED_CAST")
+val runtimeKotlinSources = (rootProject.extra["runtimeSources"] as List<String>).filter { it.endsWith(".kt") }
+kotlin.sourceSets.named("main") {
+    kotlin.setSrcDirs(listOf(rootProject.file("android/app/src")))
+    kotlin.include(runtimeKotlinSources)
+}
+tasks.withType<KotlinCompile>().configureEach {
+    if (name == "compileDebugKotlin") {
+        val allowed = runtimeKotlinSources.map { rootProject.file("android/app/src/$it").canonicalFile }.toSet()
+        exclude { element -> element.file.extension == "kt" && element.file.canonicalFile !in allowed }
+    } else exclude("**/*.kt")
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
+        freeCompilerArgs.add("-Xjvm-default=all")
+        allWarningsAsErrors.set(true)
     }
 }

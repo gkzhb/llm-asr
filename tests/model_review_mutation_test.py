@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Compiled semantic mutations. Compilation/timeouts never count as killed mutants."""
 import re
+import json
+import hashlib
 from pathlib import Path
 import os
 import subprocess
@@ -48,7 +50,13 @@ mutations = [
      ['ModelReviewFixTest', 'terminal'], 'late reentrant cancel must not overwrite terminal'),
 ]
 for name, cls, old, new, test, expected in mutations:
+    caller = [ROOT / ('tests/' + test[0] + suffix) for suffix in ('.java', '.kt')
+              if (ROOT / ('tests/' + test[0] + suffix)).is_file()]
+    if len(caller) != 1 or caller[0].suffix != '.kt':
+        raise RuntimeError('missing/duplicate migrated model caller ' + test[0])
+    caller_identity = {'path': str(caller[0]), 'sha256': hashlib.sha256(caller[0].read_bytes()).hexdigest()}
     work = Path(tempfile.mkdtemp(prefix=name+'-', dir=OUT))
+    (work / 'caller-identity.json').write_text(json.dumps(caller_identity, indent=2) + '\n')
     production = src_of(cls)
     source = production.read_text()
     if production.suffix == '.kt':
@@ -81,4 +89,7 @@ for name, cls, old, new, test, expected in mutations:
     text = (result.stdout + result.stderr).decode(errors='replace')
     if result.returncode == 0 or expected not in text:
         raise RuntimeError((name, result.returncode, text))
+    if hashlib.sha256(caller[0].read_bytes()).hexdigest() != caller_identity['sha256']:
+        raise RuntimeError('model caller changed during actual route')
+    print('PASS current Kotlin model caller:', test[0], caller_identity['sha256'])
     print('PASS compiled mutant killed:', name, 'exit', result.returncode, 'logs', work.relative_to(ROOT))

@@ -183,7 +183,10 @@ def main():
                            'sha256': sha(Path(binary).resolve()), 'version': text}
     sources = host_sources() + [ROOT / 'tests/KotlinMigrationTest.java']
     if args.batch:
-        sources.append(ROOT / 'tests/RuntimeLogWorkerErrorTest.java')
+        worker = [ROOT / ('tests/RuntimeLogWorkerErrorTest' + suffix) for suffix in ('.java', '.kt')
+                  if (ROOT / ('tests/RuntimeLogWorkerErrorTest' + suffix)).is_file()]
+        require(len(worker) == 1 and worker[0].suffix == '.kt', 'missing/duplicate batch Kotlin worker caller')
+        sources.append(worker[0])
     original_hashes = {str(p.relative_to(ROOT)): sha(p) for p in sources}
     try:
         # Isolated production copies and fresh classes for every compilation.

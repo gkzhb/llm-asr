@@ -172,7 +172,8 @@ def prepare(directory):
         shutil.copyfile(path, target)
         sources.append(target)
     migrated = ('MinimalApkTest', 'ResultFilesTest', 'NativeResponseTest', 'ModelOperationControlTest',
-                'ModelRepositoryDeleteTest', 'ModelPrivateRootTest', 'TextExportFatalTest', 'TextExportSafetyTest')
+                'ModelRepositoryDeleteTest', 'ModelPrivateRootTest', 'TextExportFatalTest', 'TextExportSafetyTest',
+                'AdmissionBoundaryTest', 'ImeSessionTest', 'InferenceAdapterTest', 'LogExportTest', 'ModelAndroidHelpersTest', 'ModelManagementControllerTest', 'ModelNotificationTest', 'ModelProviderBoundaryTest', 'ModelReadinessTest', 'ModelRepositoryCancelTest', 'ModelRepositoryTest', 'ModelReviewFixTest', 'RecordingRaceTest', 'RequestRunnerTest', 'RuntimeLogCoreTest', 'RuntimeLogStoreErrorTest', 'RuntimeLogWorkerErrorTest', 'TaskCoordinatorTest', 'TextExportTest')
     callers = sorted((ROOT / 'tests').glob('*.java'))
     for name in migrated:
         matches = [ROOT / 'tests' / (name + suffix) for suffix in ('.java', '.kt')

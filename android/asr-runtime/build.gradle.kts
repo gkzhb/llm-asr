@@ -18,8 +18,8 @@ android {
         manifest.srcFile("src/main/AndroidManifest.xml")
     }
     sourceSets.named("test") {
-        java.setSrcDirs(listOf("src/test/java", rootProject.file("tests")))
-        java.include("InferenceAdapterTest.java")
+        java.setSrcDirs(listOf("src/test/java"))
+        // The wrapper and adapter body are owned by the exact Kotlin test source set.
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -93,16 +93,17 @@ kotlin.sourceSets.named("main") {
     kotlin.include(runtimeKotlinSources)
 }
 kotlin.sourceSets.named("test") {
-    kotlin.setSrcDirs(listOf("src/test/kotlin"))
-    kotlin.include("RuntimeRegressionJUnitTest.kt")
+    kotlin.setSrcDirs(listOf("src/test/kotlin", rootProject.file("tests")))
+    kotlin.include("RuntimeRegressionJUnitTest.kt", "InferenceAdapterTest.kt")
 }
 tasks.withType<KotlinCompile>().configureEach {
     if (name == "compileDebugKotlin") {
         val allowed = runtimeKotlinSources.map { rootProject.file("android/app/src/$it").canonicalFile }.toSet()
         exclude { element -> element.file.extension == "kt" && element.file.canonicalFile !in allowed }
     } else if (name == "compileDebugUnitTestKotlin") {
-        val wrapper = file("src/test/kotlin/RuntimeRegressionJUnitTest.kt").canonicalFile
-        exclude { element -> element.file.extension == "kt" && element.file.canonicalFile != wrapper }
+        val allowed = setOf(file("src/test/kotlin/RuntimeRegressionJUnitTest.kt").canonicalFile,
+            rootProject.file("tests/InferenceAdapterTest.kt").canonicalFile)
+        exclude { element -> element.file.extension == "kt" && element.file.canonicalFile !in allowed }
     } else exclude("**/*.kt")
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_1_8)

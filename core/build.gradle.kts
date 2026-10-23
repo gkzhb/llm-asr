@@ -17,22 +17,40 @@ sourceSets {
     test {
         java.setSrcDirs(listOf("src/test/java", rootProject.file("tests")))
         java.include("*.java")
-        java.exclude("InferenceAdapterTest.java")
+        java.exclude("InferenceAdapterTest.java", "InferenceAdapterTest.kt")
     }
 }
 kotlin.sourceSets.named("main") {
     kotlin.setSrcDirs(listOf(rootProject.file("android/app/src")))
     kotlin.exclude(platformSources)
 }
-// Only this migrated wrapper and eight maintained bodies enter test Kotlin.
+// Exact migrated wrapper and twenty-six maintained core bodies enter test Kotlin.
 kotlin.sourceSets.named("test") {
     kotlin.setSrcDirs(listOf("src/test/kotlin", rootProject.file("tests")))
     // Java bodies remain visible to kotlinc's mixed-source resolver, not emitted twice.
     kotlin.include("*.java")
-    kotlin.exclude("InferenceAdapterTest.java")
+    kotlin.exclude("InferenceAdapterTest.java", "InferenceAdapterTest.kt")
     kotlin.include("CoreRegressionJUnitTest.kt", "MinimalApkTest.kt", "ResultFilesTest.kt",
         "NativeResponseTest.kt", "ModelOperationControlTest.kt", "ModelRepositoryDeleteTest.kt",
-        "ModelPrivateRootTest.kt", "TextExportFatalTest.kt", "TextExportSafetyTest.kt")
+        "ModelPrivateRootTest.kt", "TextExportFatalTest.kt", "TextExportSafetyTest.kt",
+        "AdmissionBoundaryTest.kt",
+        "ImeSessionTest.kt",
+        "LogExportTest.kt",
+        "ModelAndroidHelpersTest.kt",
+        "ModelManagementControllerTest.kt",
+        "ModelNotificationTest.kt",
+        "ModelProviderBoundaryTest.kt",
+        "ModelReadinessTest.kt",
+        "ModelRepositoryCancelTest.kt",
+        "ModelRepositoryTest.kt",
+        "ModelReviewFixTest.kt",
+        "RecordingRaceTest.kt",
+        "RequestRunnerTest.kt",
+        "RuntimeLogCoreTest.kt",
+        "RuntimeLogStoreErrorTest.kt",
+        "RuntimeLogWorkerErrorTest.kt",
+        "TaskCoordinatorTest.kt",
+        "TextExportTest.kt")
 }
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8

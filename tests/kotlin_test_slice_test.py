@@ -16,7 +16,8 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 BODIES = ('MinimalApkTest', 'ResultFilesTest', 'NativeResponseTest',
           'ModelOperationControlTest', 'ModelRepositoryDeleteTest', 'ModelPrivateRootTest',
-          'TextExportFatalTest', 'TextExportSafetyTest')
+          'TextExportFatalTest', 'TextExportSafetyTest',
+          'AdmissionBoundaryTest', 'ImeSessionTest', 'InferenceAdapterTest', 'LogExportTest', 'ModelAndroidHelpersTest', 'ModelManagementControllerTest', 'ModelNotificationTest', 'ModelProviderBoundaryTest', 'ModelReadinessTest', 'ModelRepositoryCancelTest', 'ModelRepositoryTest', 'ModelReviewFixTest', 'RecordingRaceTest', 'RequestRunnerTest', 'RuntimeLogCoreTest', 'RuntimeLogStoreErrorTest', 'RuntimeLogWorkerErrorTest', 'TaskCoordinatorTest', 'TextExportTest')
 CORE = ('kotlinJavaAbi', 'waveAndRecordingProtocol', 'recordingRaces', 'resultFiles',
         'nativeResponseProtocol', 'modelRepository', 'privateModelRoot', 'partRecoveryProductionMutant',
         'requestRunner', 'taskCoordinator', 'admissionOwnerBoundary', 'imeSessionPrivacy',
@@ -44,7 +45,8 @@ def source_check(root):
         require(source.is_file() and not source.is_symlink(), 'selected Kotlin source missing: ' + name)
         require(not source.with_suffix('.java').exists(), 'duplicate selected Java/Kotlin source: ' + name)
         text = source.read_text()
-        require('class ' + name in text and 'fun main(args: Array<String>?)' in text
+        require('class ' + name in text and ('fun main(args: Array<String>?)' in text or 'fun main(args: Array<String?>?)' in text
+                     or 'fun main(args: Array<out String?>?)' in text)
                 and '@JvmStatic' in text, 'selected static main source shape: ' + name)
     for relative in WRAPPERS:
         source = root / relative
@@ -55,6 +57,25 @@ def source_check(root):
     for name in BODIES:
         require(host.count('  tests/' + name + '.kt') == 1
                 and 'tests/' + name + '.java' not in host, 'host selected caller inventory: ' + name)
+    core = (root / 'core/build.gradle.kts').read_text()
+    runtime = (root / 'android/asr-runtime/build.gradle.kts').read_text()
+    next_driver = (root / 'tests/kotlin_next_migration_test.py').read_text()
+    for name in BODIES:
+        require(repr(name) in next_driver, 'next selected caller inventory: ' + name)
+        if name != 'InferenceAdapterTest':
+            require('"' + name + '.kt"' in core, 'core selected Kotlin inventory: ' + name)
+    require(core.count('exclude("InferenceAdapterTest.java", "InferenceAdapterTest.kt")') == 2,
+            'core excludes both adapter suffixes in both compiler routes')
+    require('kotlin.setSrcDirs(listOf("src/test/kotlin", rootProject.file("tests")))' in runtime
+            and 'kotlin.include("RuntimeRegressionJUnitTest.kt", "InferenceAdapterTest.kt")' in runtime,
+            'runtime exact Kotlin test roots and include')
+    require('rootProject.file("tests/InferenceAdapterTest.kt").canonicalFile' in runtime
+            and 'element.file.canonicalFile !in allowed' in runtime,
+            'runtime exact canonical Kotlin test ownership')
+    for oracle in ('KotlinMigrationTest', 'PartRecoveryTest'):
+        require((root / ('tests/' + oracle + '.java')).is_file()
+                and not (root / ('tests/' + oracle + '.kt')).exists(), 'original Java oracle identity: ' + oracle)
+        require('  tests/' + oracle + '.java' in host, 'host original Java oracle admission: ' + oracle)
     return len(BODIES) + len(WRAPPERS)
 
 
@@ -126,6 +147,12 @@ def self_test():
             path = root / relative; path.parent.mkdir(parents=True, exist_ok=True); path.write_text('wrapper\n')
         host = root / 'scripts/test-minimal-apk.sh'; host.parent.mkdir()
         host.write_text(''.join('  tests/' + name + '.kt\n' for name in BODIES))
+        for relative in ('core/build.gradle.kts', 'android/asr-runtime/build.gradle.kts', 'tests/kotlin_next_migration_test.py'):
+            target = root / relative; target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((ROOT / relative).read_bytes())
+        for oracle in ('KotlinMigrationTest', 'PartRecoveryTest'):
+            (root / ('tests/' + oracle + '.java')).write_text('original Java oracle fixture\n')
+        host.write_text(host.read_text() + ''.join('  tests/' + n + '.java\n' for n in ('KotlinMigrationTest', 'PartRecoveryTest')))
         source_check(root)
         source = root / ('tests/' + BODIES[0] + '.kt'); original = source.read_bytes()
         source.unlink(); rejected(lambda: source_check(root), 'source missing'); source.write_bytes(original)
@@ -139,6 +166,19 @@ def self_test():
         data = wrapper.read_bytes(); wrapper.unlink(); rejected(lambda: source_check(root), 'wrapper Kotlin source missing'); wrapper.write_bytes(data)
         data = host.read_bytes(); host.write_text('')
         rejected(lambda: source_check(root), 'host selected caller inventory'); host.write_bytes(data)
+        for relative, old, new, diagnostic in (
+                ('core/build.gradle.kts', 'exclude("InferenceAdapterTest.java", "InferenceAdapterTest.kt")', 'exclude("InferenceAdapterTest.java")', 'core excludes both'),
+                ('core/build.gradle.kts', '"ModelReadinessTest.kt"', '"RemovedBody.kt"', 'core selected Kotlin'),
+                ('android/asr-runtime/build.gradle.kts', '"RuntimeRegressionJUnitTest.kt", "InferenceAdapterTest.kt"', '"RuntimeRegressionJUnitTest.kt"', 'runtime exact Kotlin'),
+                ('android/asr-runtime/build.gradle.kts', 'rootProject.file("tests/InferenceAdapterTest.kt").canonicalFile', 'rootProject.file("tests/TaskCoordinatorTest.kt").canonicalFile', 'runtime exact canonical'),
+                ('tests/kotlin_next_migration_test.py', "'ModelReadinessTest'", "'RemovedBody'", 'next selected caller')):
+            target = root / relative; original = target.read_bytes()
+            require(old in original.decode(), 'source negative anchor missing: ' + relative)
+            target.write_text(original.decode().replace(old, new))
+            rejected(lambda: source_check(root), diagnostic)
+            target.write_bytes(original)
+        oracle = root / 'tests/KotlinMigrationTest.java'; original = oracle.read_bytes(); oracle.unlink()
+        rejected(lambda: source_check(root), 'original Java oracle identity'); oracle.write_bytes(original)
         source_check(root)
     print('PASS same guard missing/extra/duplicate/class/zero/failure/error/skip/aggregate/source/main target negatives and recovery')
 
@@ -215,6 +255,101 @@ def contracts(classpath, evidence):
     print('PASS selected test production contracts nine routes; JVM only')
 
 
+def jvmnext_contracts(classpath, evidence):
+    import mixed_compiler_lifecycle as life
+    evidence.mkdir(parents=True, exist_ok=False)
+    dependency = Path(classpath).resolve(strict=True)
+    life.guard(dependency)
+    stdlib = Path(os.environ['KOTLIN_HOME']) / 'lib/kotlin-stdlib.jar'
+    require(stdlib.is_file(), 'fixed stdlib missing')
+    mutations = (
+        ('model/ModelReadiness.java', 'public void notifyChange() {', 'public synchronized void notifyChange() {',
+         ['ModelReadinessTest'], 'java.lang.AssertionError: readiness listener lock regression'),
+        ('model/ModelProviderBoundary.kt', 'catch (e: IOException) { throw IOException(safeMessage) }',
+         'catch (e: java.util.concurrent.CancellationException) { throw e }\n            catch (e: IOException) { throw IOException(safeMessage) }',
+         ['ModelProviderBoundaryTest'], 'java.util.concurrent.CancellationException: Private account alice@example.test Confidential'),
+        ('modelmanagement/ModelOperationControl.java', 'if (active == op && op != null) op.terminated = true;',
+         'if (active == op && op != null) { /* mutant forgets terminal decision */ }',
+         ['ModelReviewFixTest', 'terminal'], 'java.lang.AssertionError: late reentrant cancel must not overwrite terminal'),
+        ('diagnostics/RuntimeLogWorker.kt', 'if (owner != token) return', 'if (false && owner != token) return',
+         ['org.llmasr.minimal.diagnostics.RuntimeLogWorkerErrorTest', 'interleave'],
+         'java.lang.AssertionError: third schedule must not admit a new drain while the successor owns the slot'),
+        ('diagnostics/LogExportController.kt', '            throw closing\n', '            return\n',
+         ['LogExportTest'], 'java.lang.AssertionError: compound exact fatal propagation'))
+    tool_inputs = {}
+    import shutil
+    for tool in ('java', 'javac', 'kotlinc'):
+        path = Path(shutil.which(tool)).resolve(strict=True)
+        tool_inputs[tool] = {'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+    dependency_classes = {str(path.relative_to(dependency)): hashlib.sha256(path.read_bytes()).hexdigest()
+                          for path in sorted(dependency.rglob('*.class'))}
+    require(dependency_classes, 'jvmnext compiled caller classes missing')
+    (evidence / 'inputs.json').write_text(json.dumps({'tools': tool_inputs, 'classes': dependency_classes,
+        'stdlib': {'path': str(stdlib), 'sha256': hashlib.sha256(stdlib.read_bytes()).hexdigest()},
+        'wrapper_sha256': hashlib.sha256((ROOT / 'scripts/compile-jvm-sources.sh').read_bytes()).hexdigest()}, indent=2) + '\n')
+    records = []
+    for index, (relative, old, new, caller, diagnostic) in enumerate(mutations):
+        source = ROOT / 'android/app/src/org/llmasr/minimal' / relative
+        original = source.read_bytes()
+        text = original.decode()
+        require(text.count(old) == 1, 'unique jvmnext production mutant anchor: ' + relative)
+        caller_source = ROOT / ('tests/' + caller[0].rsplit('.', 1)[-1] + '.kt')
+        require(caller_source.is_file() and not caller_source.with_suffix('.java').exists(), 'unique jvmnext caller source')
+        caller_sha = hashlib.sha256(caller_source.read_bytes()).hexdigest()
+
+        def lease_free(directory):
+            life.guard(directory)
+            life.guard(dependency)
+            return True
+
+        with life.owned.Workspace(parent=evidence, probe=lambda: lease_free(work)) as work:
+            target = work / source.name
+            for phase, content in (('green', original), ('red', text.replace(old, new, 1).encode()), ('restored', original)):
+                life.guard(work)
+                life.guard(dependency)
+                target.write_bytes(content)
+                classes = work / ('classes-' + phase)
+                compiled = life.run(['bash', str(ROOT / 'scripts/compile-jvm-sources.sh'), str(classes),
+                                     str(dependency), str(target)], work, phase + '-compile', 270, dependency=dependency)
+                require(compiled.returncode == 0, 'jvmnext compilation failure NOT target red: ' + relative)
+                ran = life.run(['java', '-cp', str(classes) + ':' + str(dependency) + ':' + str(stdlib), *caller],
+                               work, phase + '-run', 45, dependency=dependency)
+                output = (ran.stdout + ran.stderr).decode(errors='replace')
+                if phase == 'red':
+                    require(ran.returncode == 1 and diagnostic in output,
+                            'exact jvmnext production red missing: ' + relative + '\n' + output)
+                    if index == 1:
+                        require('java.lang.AssertionError:' not in output, 'provider red must be exact CancellationException')
+                else:
+                    require(ran.returncode == 0 and 'PASS' in output,
+                            'jvmnext production positive failed: ' + relative + '\n' + output)
+                saved = evidence / (str(index) + '-' + phase)
+                saved.mkdir()
+                (saved / target.name).write_bytes(content)
+                executions = {}
+                for kind in ('compile', 'run'):
+                    ledger = work / (phase + '-' + kind + '.json')
+                    state = json.loads(ledger.read_text())
+                    require(state.get('owned_exited') and state.get('root_reaped') and not state.get('timeout'),
+                            'jvmnext owned exit/timeout NOT semantic result')
+                    executions[kind] = state
+                    for extension in ('.json', '.stdout', '.stderr'):
+                        path = work / (phase + '-' + kind + extension)
+                        (saved / path.name).write_bytes(path.read_bytes())
+                require(hashlib.sha256(caller_source.read_bytes()).hexdigest() == caller_sha, 'jvmnext caller drift')
+                require(source.read_bytes() == original, 'working production source drift')
+                records.append({'owner': relative, 'caller': caller, 'phase': phase, 'exit': ran.returncode,
+                                'source_sha256': hashlib.sha256(content).hexdigest(),
+                                'caller_path': str(caller_source), 'caller_sha256': caller_sha,
+                                'driver_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                                'executions': executions})
+                (evidence / 'routes.json').write_text(json.dumps(records, indent=2) + '\n')
+            require(target.read_bytes() == original, 'jvmnext restored exact source SHA')
+        print('PASS jvmnext real production green0/compile0/exact red1/restored0', relative, flush=True)
+    require(len(records) == 15, 'exact bounded fifteen jvmnext mixed routes')
+    print('PASS jvmnext five owners/fifteen routes; JVM only, not Android runtime')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group(required=True)
@@ -222,6 +357,7 @@ def main():
     mode.add_argument('--source', action='store_true')
     mode.add_argument('--junit', choices=SUITES)
     mode.add_argument('--contracts', type=Path)
+    mode.add_argument('--jvmnext-contracts', type=Path)
     parser.add_argument('--evidence-dir', type=Path)
     args = parser.parse_args()
     if args.self_test:
@@ -230,6 +366,9 @@ def main():
         print('PASS exact migrated source/main inventory', source_check(ROOT))
     elif args.junit:
         junit_check(ROOT, args.junit)
+    elif args.jvmnext_contracts is not None:
+        require(args.evidence_dir is not None, 'jvmnext contracts requires fresh evidence directory')
+        jvmnext_contracts(args.jvmnext_contracts, args.evidence_dir)
     else:
         require(args.evidence_dir is not None, 'contracts requires fresh evidence directory')
         contracts(args.contracts, args.evidence_dir)

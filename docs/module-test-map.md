@@ -115,3 +115,11 @@ bash scripts/nix-env.sh apk bash tests/gradle_dependency_verification_test.sh
 ```
 
 所有Android仪器/真实设备/4KiB与16KiB运行/麦克风/SAF/IME runtime均not run（无授权）；不以host通过等同设备验收。本轮pass/fail日志与APK输入见执行计划及[实施报告](../reports/modules-m3/status.md)；父bbb64c7ae独立clean后strict offline rerun70action/35JUnit/全部gate及checksum通过，174current一致、APK SHA a0494d25...a3f3不变。异家族审查及父逐项处置见reports/modules-m3/{independent-review,review-disposition}.md，无本轮阻塞。保留现有core test exclude、app sourcepath保护与hard63门槛；不按review错误前提改源码。功能提交9ec98d3已实核，174current/committedSHA、4external及APK一致；父授权关闭M3成功，功能APK可供用户手动验证，但设备仍未验收。下一步仅等待父提交关闭状态文本，不关闭tc3/质量/epic，不领取下一任务。
+
+## p9：维护 JVM 测试体 Kotlin 迁移（本轮状态另列）
+
+19个原Java测试体真实迁至同名Kt，18进入core、InferenceAdapter进入runtime；连同前批8体，共27个迁移body。两个Kt JUnit wrapper原方法/参数/45000ms不改，实际发现仍须当批core34/runtime1 XML逐方法核，不以class库存冒执行。test-host7不在fast，本阶段未跑完整42/设备runner。core的两Java语言oracle KotlinMigration/PartRecovery保真实javac与host能力，不隐藏源码或删除gate凑清零。
+
+共享测试fixture以最小internal集合保持同module闭包，额外11既有fault字段的18mangled访问器已精确授权；普通class+Companion/static main保持Java调用，实际反射/classfile全集不同。原PrivateRoot Kt与Next两个Java main调用者原字节保留，当前编译/执行身份按当批证据分层记录。TWR使用Java Throwable成员suppression；锁同实例、worker IO确认退出前不得删目录或释放lease。额外teardown-interrupt selector原Java精确InterruptedException/exit1单列，不推广为host失败豁免；default两suppressed/拒删门槛不变。
+
+维护host新增独立`--jvmnext-contracts`普通/-O各5owner×green/red/restored15路由，原全部gate与预算保持：readiness锁外通知、provider取消脱敏（精确CancellationException red）、terminal迟到cancel、Worker后继owner、日志compound fatal。编译错/timeout不是red，恢复源码同SHA后必须fresh compile/run0。SDK全63编译脚本没有Werror，不冒SDK-Werror；实际AGP KotlinCompile Werror独立核。真实结果/失败与not run见[p9状态](../reports/kotlin-tests-p9/status.md)，旧本页M3身份不回写，不拿旧APK当当前p9交付。

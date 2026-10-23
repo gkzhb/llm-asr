@@ -19,9 +19,32 @@
 
 native显式M2构建与打包任务暂留app，runtime持有Java JNI桥；不改变nativeflags/SHA/输出位置。AppGraph手工DI保留。核心不需Android **runtime或SDK classpath**；项目配置仍配置两个Android工程，推荐通过固定Nix入口提供工具环境，不能把这一点称为无SDK整仓配置。
 
+## 当前测试源码 Kotlin 切片（llm-asr-ap5）
+
+当前 core wrapper 为 `core/src/test/kotlin/CoreRegressionJUnitTest.kt`，runtime wrapper 为
+`android/asr-runtime/src/test/kotlin/RuntimeRegressionJUnitTest.kt`。仍为普通 public 无参类，
+34+1 个实例 JUnit4 方法/原 delegate 参数/45000ms timeout；不是 object、反射分派或改名后的未发现方法。
+core test Kotlin 只精确登记该 wrapper 与根 tests 的 MinimalApkTest、ResultFilesTest、NativeResponseTest、
+ModelOperationControlTest、ModelRepositoryDeleteTest、ModelPrivateRootTest、TextExportFatalTest、TextExportSafetyTest
+八个 `.kt` body。其 public static main(String[]) 二进制入口、原六个 throws Exception 与两无 checked throws 保持；
+ResultFilesTest 仍可继承。仅这些 body 未被外部维护 caller 使用的包 helper 收敛为 private 测试实现，新增 Companion
+属附属形状差异，不称测试 classfile 全等，也不授权生产包能力改变。TWR 保 Java Throwable 成员 suppression 顺序。
+
+runtime test Kotlin 只允许 compileDebugUnitTestKotlin 编译唯一新 wrapper，生产四 Kotlin owner 与其他 variant 过滤不放宽；
+Java InferenceAdapterTest 及所有其余 Java bodies/ABI、SAM/default/switch/null、真实 javac 模块负例保留。
+host shell 八路径、next driver 明确八 Kt caller（拒缺失/同 stem 双源）和 legacy 三指纹同步，不递归纳 JUnit/host-only fixture。
+新 tests/kotlin_test_slice_test.py source/self-test/XML guard 使用同 checker 精确方法/class/count/无 failure/error/skip 拒绝，
+core/runtime Test 执行后核实际 XML；注解/ctor/main/Throws 另由 fresh javap 与真实 runner/main 执行附证。
+新三条真实生产可编译 mutants（token cap/clear epoch/compound fatal）普通和 -O 各最多九 routes，compile0→目标外部
+AssertionError1→恢复0，沿现 owned session/lease 清理；不是编译失败或源码 grep 当行为红。原所有 gates/预算不变。
+
+上述接线本身不证明本轮测试已通过：当次命令/输入/发现与保护证据在独占 `.work/alljava-build/`；targeted 后需 fresh
+上下文隔离审查、必要正式 full 与安全本地提交，之后才可交付对应 APK。test-host 7 JVM、14 仪器方法与两个共享 fixture
+本批原样；Android runner/设备/麦克风/SAF/IME/Binder/JNI 运行均未在此切片验收。下文 M3 结果保历史，不沿用为本轮证据。
+
 ## JUnit逐入口完整映射
 
-`core/src/test/java/CoreRegressionJUnitTest.java` 每@Test直接调用原main完整body；不反射、不吞异常、不只查退出码。JUnit4.13.2实际GradleTest执行，XML可核每个方法。原main保留，旧host全部再跑。timeout45000；单fork、512MiB，无并行跑PartRecovery固定工作路径。下列全部core34方法，runtime1方法，总35个；数量不是覆盖等价证明，原body/latch/异常身份/清理断言保持才是依据。
+`core/src/test/kotlin/CoreRegressionJUnitTest.kt` 每@Test直接调用原main完整body；不反射、不吞异常、不只查退出码。JUnit4.13.2实际GradleTest执行，XML可核每个方法。原main保留，旧host全部再跑。timeout45000；单fork、512MiB，无并行跑PartRecovery固定工作路径。下列全部core34方法，runtime1方法，总35个；数量不是覆盖等价证明，原body/latch/异常身份/清理断言保持才是依据。
 
 | 原tests入口/参数 | JUnit方法 | 保留契约 |
 |---|---|---|

@@ -171,7 +171,15 @@ def prepare(directory):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(path, target)
         sources.append(target)
-    for path in sorted((ROOT / 'tests').glob('*.java')):
+    migrated = ('MinimalApkTest', 'ResultFilesTest', 'NativeResponseTest', 'ModelOperationControlTest',
+                'ModelRepositoryDeleteTest', 'ModelPrivateRootTest', 'TextExportFatalTest', 'TextExportSafetyTest')
+    callers = sorted((ROOT / 'tests').glob('*.java'))
+    for name in migrated:
+        matches = [ROOT / 'tests' / (name + suffix) for suffix in ('.java', '.kt')
+                   if (ROOT / 'tests' / (name + suffix)).is_file()]
+        require(len(matches) == 1 and matches[0].suffix == '.kt', 'missing/duplicate migrated caller ' + name)
+        callers.append(matches[0])
+    for path in callers:
         target = directory / 'callers' / path.name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(path, target)

@@ -104,7 +104,7 @@ sha256sum "$apk" "$lib" "$build/package/lib/arm64-v8a/libqwen_asr_jni.so" > repo
 python3 - <<'PY'
 import json,hashlib
 from pathlib import Path
-files=['flake.nix','flake.lock','scripts/build-minimal-apk.sh','scripts/check-minimal-apk.py','scripts/test-minimal-apk.sh','tests/MinimalApkTest.java','tests/RecordingRaceTest.java','tests/ResultFilesTest.java','tests/NativeResponseTest.java','tests/ModelRepositoryTest.java','tests/PartRecoveryTest.java','tests/RequestRunnerTest.java','tests/TaskCoordinatorTest.java','tests/AdmissionBoundaryTest.java','tests/ImeSessionTest.java','reports/p0/mnn-model-manifest.json']
+files=['flake.nix','flake.lock','scripts/build-minimal-apk.sh','scripts/check-minimal-apk.py','scripts/test-minimal-apk.sh','tests/MinimalApkTest.kt','tests/RecordingRaceTest.java','tests/ResultFilesTest.kt','tests/NativeResponseTest.kt','tests/ModelRepositoryTest.java','tests/PartRecoveryTest.java','tests/RequestRunnerTest.java','tests/TaskCoordinatorTest.java','tests/AdmissionBoundaryTest.java','tests/ImeSessionTest.java','reports/p0/mnn-model-manifest.json']
 files += ['scripts/prepare-model-configs.py', 'reports/p0/device-inference-final-patches.txt']
 files += [str(p) for p in sorted(Path('android/app').rglob('*')) if p.is_file()]
 files += [str(p) for p in sorted(Path('tests').glob('*')) if p.is_file()]

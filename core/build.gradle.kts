@@ -24,6 +24,16 @@ kotlin.sourceSets.named("main") {
     kotlin.setSrcDirs(listOf(rootProject.file("android/app/src")))
     kotlin.exclude(platformSources)
 }
+// Only this migrated wrapper and eight maintained bodies enter test Kotlin.
+kotlin.sourceSets.named("test") {
+    kotlin.setSrcDirs(listOf("src/test/kotlin", rootProject.file("tests")))
+    // Java bodies remain visible to kotlinc's mixed-source resolver, not emitted twice.
+    kotlin.include("*.java")
+    kotlin.exclude("InferenceAdapterTest.java")
+    kotlin.include("CoreRegressionJUnitTest.kt", "MinimalApkTest.kt", "ResultFilesTest.kt",
+        "NativeResponseTest.kt", "ModelOperationControlTest.kt", "ModelRepositoryDeleteTest.kt",
+        "ModelPrivateRootTest.kt", "TextExportFatalTest.kt", "TextExportSafetyTest.kt")
+}
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -72,4 +82,10 @@ tasks.test {
     maxHeapSize = "512m"
     include("**/CoreRegressionJUnitTest.class")
     testLogging { events("passed", "failed", "skipped") }
+    doLast {
+        project.exec {
+            workingDir(rootProject.projectDir)
+            commandLine("python3", "-B", "tests/kotlin_test_slice_test.py", "--junit", "core")
+        }
+    }
 }

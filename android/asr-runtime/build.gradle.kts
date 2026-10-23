@@ -19,7 +19,7 @@ android {
     }
     sourceSets.named("test") {
         java.setSrcDirs(listOf("src/test/java", rootProject.file("tests")))
-        java.include("InferenceAdapterTest.java", "RuntimeRegressionJUnitTest.java")
+        java.include("InferenceAdapterTest.java")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -35,6 +35,12 @@ android {
         it.maxParallelForks = 1
         it.include("**/RuntimeRegressionJUnitTest.class")
         it.testLogging { events("passed", "failed", "skipped") }
+        it.doLast {
+            project.exec {
+                workingDir(rootProject.projectDir)
+                commandLine("python3", "-B", "tests/kotlin_test_slice_test.py", "--junit", "runtime")
+            }
+        }
     }
 }
 configurations.configureEach {
@@ -86,10 +92,17 @@ kotlin.sourceSets.named("main") {
     kotlin.setSrcDirs(listOf(rootProject.file("android/app/src")))
     kotlin.include(runtimeKotlinSources)
 }
+kotlin.sourceSets.named("test") {
+    kotlin.setSrcDirs(listOf("src/test/kotlin"))
+    kotlin.include("RuntimeRegressionJUnitTest.kt")
+}
 tasks.withType<KotlinCompile>().configureEach {
     if (name == "compileDebugKotlin") {
         val allowed = runtimeKotlinSources.map { rootProject.file("android/app/src/$it").canonicalFile }.toSet()
         exclude { element -> element.file.extension == "kt" && element.file.canonicalFile !in allowed }
+    } else if (name == "compileDebugUnitTestKotlin") {
+        val wrapper = file("src/test/kotlin/RuntimeRegressionJUnitTest.kt").canonicalFile
+        exclude { element -> element.file.extension == "kt" && element.file.canonicalFile != wrapper }
     } else exclude("**/*.kt")
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_1_8)

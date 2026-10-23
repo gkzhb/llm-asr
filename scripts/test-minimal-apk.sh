@@ -65,29 +65,37 @@ bash scripts/compile-jvm-sources.sh "$classes" "" "${sources[@]}" \
   tests/LogExportTest.java \
   tests/TextExportTest.java \
   tests/ModelNotificationTest.java \
-  tests/TextExportFatalTest.java \
-  tests/TextExportSafetyTest.java \
-  tests/MinimalApkTest.java \
+  tests/TextExportFatalTest.kt \
+  tests/TextExportSafetyTest.kt \
+  tests/MinimalApkTest.kt \
   tests/RecordingRaceTest.java \
-  tests/ResultFilesTest.java \
-  tests/NativeResponseTest.java \
+  tests/ResultFilesTest.kt \
+  tests/NativeResponseTest.kt \
   tests/ModelRepositoryTest.java \
-  tests/ModelPrivateRootTest.java \
+  tests/ModelPrivateRootTest.kt \
   tests/PartRecoveryTest.java \
   tests/RequestRunnerTest.java \
   tests/TaskCoordinatorTest.java \
   tests/AdmissionBoundaryTest.java \
   tests/ImeSessionTest.java \
   tests/ModelReadinessTest.java \
-  tests/ModelOperationControlTest.java \
+  tests/ModelOperationControlTest.kt \
   tests/ModelRepositoryCancelTest.java \
-  tests/ModelRepositoryDeleteTest.java \
+  tests/ModelRepositoryDeleteTest.kt \
   tests/ModelManagementControllerTest.java \
   tests/ModelAndroidHelpersTest.java \
   tests/ModelReviewFixTest.java \
   tests/ModelProviderBoundaryTest.java
 run() { timeout 45 java -cp "$classes:$KOTLIN_HOME/lib/kotlin-stdlib.jar" "$@"; }
 run KotlinMigrationTest
+# The same checker rejects malformed discovery/source fixtures in both Python modes.
+timeout 30 python3 -B tests/kotlin_test_slice_test.py --source
+timeout 30 python3 -B tests/kotlin_test_slice_test.py --self-test
+timeout 30 python3 -O tests/kotlin_test_slice_test.py --self-test
+# New isolated production mutations retain the existing dependency lease until owned exit.
+slice_evidence=$(mktemp -d "$root/.work/build/kotlin-test-slice-XXXXXX")
+timeout 3000 python3 -B tests/kotlin_test_slice_test.py --contracts "$classes" --evidence-dir "$slice_evidence/ordinary"
+timeout 3000 python3 -O tests/kotlin_test_slice_test.py --contracts "$classes" --evidence-dir "$slice_evidence/optimized"
 # Lifecycle faults call the real driver/wrapper; fake workers are not ABI evidence.
 timeout 180 python3 tests/runtime_log_enum_cleanup_test.py
 # Fresh isolated production enum copies: compile0 -> exact Java assertion1 -> restored0.

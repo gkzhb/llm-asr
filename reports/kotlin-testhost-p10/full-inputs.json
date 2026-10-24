@@ -1,0 +1,938 @@
+{
+  "schema": 1,
+  "task": "llm-asr-ap5",
+  "base": "843dc146e1a38db6a184980fe46f60a254081e10",
+  "state": "full0 + original post1 preserved + explicitly accepted generated partition newpost0; not committed or APK delivered",
+  "candidate_count": 24,
+  "candidate_actions": {
+    "D": 5,
+    "A": 9,
+    "M": 10
+  },
+  "original22_frozen_manifest_sha256": "1bdbf7582fa13077ce9e371205461efed87ef3655735b484f0df7ff6ffe96c74",
+  "command": [
+    "bash",
+    "scripts/nix-env.sh",
+    "apk",
+    "--cache-only",
+    "bash",
+    "scripts/verify-gradle.sh",
+    "--offline",
+    "--rerun-tasks"
+  ],
+  "full": {
+    "exit": 0,
+    "seconds": 1802.6767107959604,
+    "owned_exited": true,
+    "root_reaped": true,
+    "timeout": false,
+    "stdout_sha256": "1b1e918c8576de54a3c8fbcf5d1b0ec0a9b6ab4fab6a3c56d9d37c96267ebe83",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ledger_sha256": "d7b9a01e7d5380a7f6fa2fbac34da0d957d09db15d61655b7a997d6e7cd2832a"
+  },
+  "actions": "184 actionable tasks: 184 executed",
+  "input_counts": {
+    "build": 222,
+    "module": 10,
+    "native": 80
+  },
+  "input_domain_map_sha256": {
+    "build": "64270b9cc1b16cd36c955cd1f9ada90207b7d1ae2cc9563194cd2e1229c2b9bc",
+    "module": "2221a97bae084e0604c0c1959e803b13ebd90d8cbc74adc79b0abe49bcc4cd1f",
+    "native": "3c510941bfdbe646683be3bf43c644b289fd9f9677d727854e79f3574516c9d0"
+  },
+  "input_fingerprints": {
+    "build": {
+      "android/app/AndroidManifest.xml": "6b8e458f88a044d0ac8837c9ed8b522a70affdbbeea1c8d5eb3f4a387732cc78",
+      "android/app/assets/KOTLIN-LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "android/app/assets/KOTLIN-NOTICES.txt": "1f7ee5c77ad608a3c7c2b40503f866c6c6abe9dfe7e0f366bb699897e4833d78",
+      "android/app/assets/MNN-LICENSE.txt": "a830d59c4f98d110e0540d0581efada06192ba6e798434307d1794b07a290302",
+      "android/app/assets/THIRD-PARTY-NOTICES.txt": "82e25bfef82694517670c4340471e8dffe32bf6d83eab9f2aec3904ba2008e7d",
+      "android/app/build.gradle.kts": "4317facac26a79abdf170642ecc8406031df2c8cb42bfd20365fc88887849647",
+      "android/app/gradle.lockfile": "6dd8e79d95ac27b907a74b8855db94519d8a3f55af7fdeed0c0f6ad093051d7f",
+      "android/app/res/values/strings.xml": "1fd511fd92ebf881aacc98fddc2a5ef414d960fbcf00d49ade7309c55be96d68",
+      "android/app/res/xml/method.xml": "944818acd60bb81fbb3ecf11bccc36efa8db0b423a0158c9cac7365701d92d37",
+      "android/app/src/org/llmasr/minimal/AppGraph.kt": "751a4bbb6b40875c4ffeece389ee9840becbe9c5456aca8a5aa3fcbaee31b5a9",
+      "android/app/src/org/llmasr/minimal/AsrImeService.kt": "45ed9c9331e4af996cb1b8739ae7fcf1b06f4ba968c7ffc1edaac2b1c3708db8",
+      "android/app/src/org/llmasr/minimal/LogsActivity.kt": "ac1c0e08c0c9e84a8055f9a90be49bdd3959533b320f16665eece20f25d17c4f",
+      "android/app/src/org/llmasr/minimal/MainActivity.java": "88f24a66d9f571c9ab659d4a095c730b90adb8e9a73e89205fa8c0c2156adadc",
+      "android/app/src/org/llmasr/minimal/ModelManagementActivity.java": "c04da08c22c5530f87aa013af0beeceeb23c88dbac9fd650b4be5ba3a6e08a02",
+      "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.kt": "d14c2eaf43e5d068863d5f8ddc431ef64864f598246119bb7b1e7cc0939ec13c",
+      "android/app/src/org/llmasr/minimal/asr/InferencePhase.kt": "16527ee674419379689306e4edb383e7de31ceb87fe2b0c6e52e9f3ac1c032e0",
+      "android/app/src/org/llmasr/minimal/asr/InferencePhaseListener.kt": "b459881f478e4034fbd986f983eda388e4226bda98772d7a4dda6a77b79d912d",
+      "android/app/src/org/llmasr/minimal/asr/JniNativeTranscription.java": "c1d5973768675de52a03792bba9f1fdc44993ad6f05e7d482d83c313dd7687e8",
+      "android/app/src/org/llmasr/minimal/asr/LoggingInferencePhaseListener.java": "24bc435dbfb6ceb86b3eaf58349a7eb5d688eb40c80a53658ef820631d9931f6",
+      "android/app/src/org/llmasr/minimal/asr/NativeResponse.kt": "bd2620ec96a6030d66b7ce103227fc82d5a60ba1611808807bb81a547177f38a",
+      "android/app/src/org/llmasr/minimal/asr/NativeTranscription.kt": "e04807b119e33eef12aeac16a6896644d6e2ad33992e96414c57feafaa896082",
+      "android/app/src/org/llmasr/minimal/audio/AsrText.kt": "c720692ffea1d69b88d5ddbe8233d72b86f90cc3068748bde7a2432f62f21d34",
+      "android/app/src/org/llmasr/minimal/audio/ForegroundRecorder.kt": "01d06c51bb6f97183446303f6a6fde421ed137271d5d1d14d0bb58e29aa887ce",
+      "android/app/src/org/llmasr/minimal/audio/PcmWave.kt": "ccf20aae11439ba259cc927168011634c15430cf865aa470d83710119e193620",
+      "android/app/src/org/llmasr/minimal/audio/RecordingControl.kt": "dfa9ac879776138aca236aeb2216582e37221fd79c5dc56485d77c2a33e690ac",
+      "android/app/src/org/llmasr/minimal/audio/WaveInput.java": "b46d023aa69cc8eb74d3e6dc1ac815f7c0e1417c82c4534ef7b622ffe5103c83",
+      "android/app/src/org/llmasr/minimal/diagnostics/LogExportController.kt": "a45d25e350f5c8f6385d87703e2d3e5f24fe5e91802bccf7e5c0137cdd59a3d2",
+      "android/app/src/org/llmasr/minimal/diagnostics/LogExportPage.kt": "5b19bed882f3a7c491d5791169d9e9ecd5086a1d6d468d24999722afbbc86ecb",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogClock.kt": "109268a07c22514885ba67ffef8635c7a7933af1807d9903fb17ec7a82426453",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogCodec.kt": "1a56ab0933882858c4fcf1af78652635ce846092614e54782c6c790ba5babf00",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEvent.java": "ca0eadef27b02602e0dc1b388b05a89a778be976aea487b582ab18869c23375c",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.kt": "10712467665202aa6fd6b9deae4223f945051bd69b63d649c317bad00a477390",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogPersistence.java": "0be6031cefef8deb1ab90eb9970a56c7f27c286bfdb22899bce8f5410c66d58c",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSink.kt": "b24ecb6f21253bc2507b2090875a348c92ed74f467f71fb36e20eefcee3efe63",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogStore.java": "9cdde653b37dc6e6fe3d610557ae166d095f4f3539688d9e677a74d4f26779cd",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogText.kt": "c1be51d92e2ce111f312d8ac64766c13e87b0054cafba91a5c754479297da31e",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogWorker.kt": "a3d4e89975d2872a29e3d57cf616b3dea9420bf836e0a0756595a4ce4872ac07",
+      "android/app/src/org/llmasr/minimal/ime/ImeBackend.kt": "7160ac06980bddf8cd3fadfe28f8878d14f223bcd9263b7ca38ecf7f5481bc8c",
+      "android/app/src/org/llmasr/minimal/ime/ImeController.kt": "7ea3b31f1d847947c956f92ea36329da4d6149553a79b703f67e78f336a919a7",
+      "android/app/src/org/llmasr/minimal/ime/ImeFieldPolicy.kt": "549770871e8613bf7fae3d6a112ff08c8cb8464ab7aae7e37d8e8d90d972a309",
+      "android/app/src/org/llmasr/minimal/ime/ImeSession.java": "897f2855fee72b66902acc351e344ba7001d774c83a923f489da798fe40a294d",
+      "android/app/src/org/llmasr/minimal/model/FileSafety.kt": "60cfe63f5316895a62abf9d6e8804ad8378d26e1923c2e775942a9b9ca4cc832",
+      "android/app/src/org/llmasr/minimal/model/ModelAccess.kt": "3ec23bde4a086d439ea5a5ca096de0738261cb91a97ec0383467d409bbf8e1be",
+      "android/app/src/org/llmasr/minimal/model/ModelEntry.kt": "080b61998ece277f6d1f3ac45b7fb430248c1f07f736b29a28f3f5c7818b926f",
+      "android/app/src/org/llmasr/minimal/model/ModelManifest.kt": "04e290cf7098128871eca84fe910a1d34f0797168707c452779bdc43b5bc0738",
+      "android/app/src/org/llmasr/minimal/model/ModelProviderBoundary.kt": "727a3ae180fa67b0fd2f04e71fc621d261dcbc90d56fbce9c9c7f795c8bd5814",
+      "android/app/src/org/llmasr/minimal/model/ModelReadiness.java": "985fe1c96b779e7079ac77205cea0daf4e3c19233c407ce16b05a27ec78834a7",
+      "android/app/src/org/llmasr/minimal/model/ModelReports.kt": "60d57569881c8c24530f3167979daea2643d4d63c2fd1f9ca4202094fc7e9d39",
+      "android/app/src/org/llmasr/minimal/model/ModelRepository.java": "4e842f6960d9568b01c8c79fee8f800791d9e32d53539abc4ead70641dd39b59",
+      "android/app/src/org/llmasr/minimal/model/ModelSource.kt": "7c7315b3e5f673204bb7413eaeb28879d836041ae50f22e32819b466c3c263d6",
+      "android/app/src/org/llmasr/minimal/model/SafModelSource.kt": "b7d6f8c23517544499731789649ba53313f0b5dddc9e182931cd9d590347cf44",
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementController.kt": "a037102a568ddec03c8dee7caf835574bc9fe369a66da5debfbf84b52a4a0c6d",
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementState.java": "f0af50bad07b0004763088be08509c23031669e08e88cf108d7dc42dc382018b",
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelOperationControl.java": "8f2e99d0ae960041cb94b615324c1ded4491a80ce60473bc1e2ecd44aa260d51",
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelPageSession.kt": "c846a95cde4a56d41c827f1b6f57a1bb497b7dd889b81c14543607c76de277a9",
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelPickerTickets.kt": "ae9c4a84ab080af5dfc5146fdc63ef4ddbe874f6376ca0f0aa225322fb196048",
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelUiText.kt": "7b6e77f534266504bc60e79a4d2d746a1558210f90cf785d07f013c1e1d144f0",
+      "android/app/src/org/llmasr/minimal/platform/ActivityWindow.kt": "8be5dd785d591929ec2d2a49526df191fc6b921e47932ae871afaea37a14bd49",
+      "android/app/src/org/llmasr/minimal/platform/OperationContext.kt": "e37eb8988a35f24c49932529ba45d3956a268e09f416cff4e51282ca1e1658e1",
+      "android/app/src/org/llmasr/minimal/task/RequestContext.kt": "160f70966971c8276a41107b4e8779244f247af17d352744777af085181d6d03",
+      "android/app/src/org/llmasr/minimal/task/RequestRunner.kt": "50be8c887bb762f422a551b0b856f6fc84de24bc3aa6390f488b70ee58ac62e4",
+      "android/app/src/org/llmasr/minimal/task/TaskCoordinator.kt": "9557fb0f244bd896b5d33e95e84e61cac25a66a242bf633102a7f05ccdd0ccd3",
+      "android/app/src/org/llmasr/minimal/task/TaskKind.kt": "46a4aaf966b39e674b8ebc2656ad4b4f91172cab1a95aae93ac09f500f075715",
+      "android/app/src/org/llmasr/minimal/transcription/AppReportWriter.java": "cfb660b72fde442ee29f3b91c5bddd2d1cf28e6dfa20a29df449952f591401db",
+      "android/app/src/org/llmasr/minimal/transcription/AppRequestPolicy.java": "6f908f83484a20131bb2d5c84c9ac7c1e3df4bc5f180f2c6ea5cc7d7df860920",
+      "android/app/src/org/llmasr/minimal/transcription/AppState.kt": "49c018c3e8e98fd3953bd3c26f85a1639a1346f553f97ebc46d55b1ef388910d",
+      "android/app/src/org/llmasr/minimal/transcription/AsrOperation.kt": "c7414d7e6e255f964b27add8113dd08d1961ab5ce418f741c7ae61c788e30f8b",
+      "android/app/src/org/llmasr/minimal/transcription/ResultFiles.kt": "cf39fd0d04143d1e3c8b8d87b6e62a7981e14cb79dc5f61df681fdea23b538dd",
+      "android/app/src/org/llmasr/minimal/transcription/ResultState.java": "b6da90abe514c1a8040eba8d3a9e2eb716d81370da4fa6b214267a200b730179",
+      "android/app/src/org/llmasr/minimal/transcription/TextExportController.kt": "5a417e410c5389edfe0140212bf57fcc5e6428607c218f0a8cc3dd24760704d2",
+      "android/app/src/org/llmasr/minimal/transcription/TextExportPage.kt": "bb42573394857d1b4a070c4d0e463697c821d2ad92a1bfc5b1fcfc1abb63afc6",
+      "android/asr-runtime/build.gradle.kts": "83f1bcd0a969c1b5fbfa10330976ded9ca2d188a58d2d274da1f65598607f28c",
+      "android/asr-runtime/gradle.lockfile": "86f544db67870d011396820962848e07d46c500b06bfcfc6edce18e7cbe86ee2",
+      "android/asr-runtime/src/main/AndroidManifest.xml": "c731fa1946c9d3fcbd99e690bce46f29efcb2c1da5b0ed262d2c63ee84f280c1",
+      "android/asr-runtime/src/test/kotlin/RuntimeRegressionJUnitTest.kt": "be7200e451028c1f413ec46f7f06781a1a2088ac23b6ec6afd23711b16828e2e",
+      "android/test-host/build.gradle.kts": "3746f043db7e659dcf273294caeeba77cb857bfe59d9930470f0c3973ca72adf",
+      "android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.kt": "58d2f5aae006017ce48b51284e03537fb059a4e0b4c5472d37e63940bd1a8b0c",
+      "android/test-host/fixtures/java/org/llmasr/minimal/testhost/FixtureChecks.kt": "5b8402aa1edbf49800a6d8d08811c8054211040442fcfd58c4139edbe4bc9841",
+      "android/test-host/gradle.lockfile": "f52803fcc340682c8baf4fdf068e9056bd1dce4da7a471199111eb8a3723cd79",
+      "android/test-host/src/androidTest/AndroidManifest.xml": "d3be5afc63c496147d7ea22887b88f471c312039ba96982423c555f2402b6347",
+      "android/test-host/src/androidTest/java/org/llmasr/minimal/testhost/FakeDocumentsProvider.java": "5e4eeaa7b6860cfcc884952476b1fd19a376cff8a13320fbb0dd635d6a7a381a",
+      "android/test-host/src/androidTest/kotlin/org/llmasr/minimal/testhost/FixtureInstrumentationTest.kt": "056680aa2240b2f7fee1d243d422914e8848c03d7137dd2bf0cf24933cf34036",
+      "android/test-host/src/main/AndroidManifest.xml": "0ded82a2305a1a40be0b09b5f4fecd5734acd216f971de9235c786380494dccd",
+      "android/test-host/src/main/kotlin/org/llmasr/minimal/testhost/ImeHostActivity.kt": "e8bc98043ce0ba468d266c95922f04b6432203ffe3bae5b14246ab24a142a35d",
+      "android/test-host/src/test/kotlin/org/llmasr/minimal/testhost/FixtureContractTest.kt": "46989a1adddf70d9131f21e5fe0b56ef95f17e2f1c800c4d8f48d8740a38e259",
+      "build.gradle.kts": "559c791ee199f5cb5bda055df8df963adccb44a96ec5ae52fdf0d83a49f708c1",
+      "buildscript-gradle.lockfile": "e3061e826738a0f47d99aef3cc0382a911fec202e58b401820e6ad51fb859a8f",
+      "core/build.gradle.kts": "09793048eda171d1224839b821d84225c65dc2881060e6127aeee45a6094a7e9",
+      "core/gradle.lockfile": "a95da16fb4c5e6598d2baab99234f60abc80268b6a7f8f3b4798cb019b7df67b",
+      "core/src/test/kotlin/CoreRegressionJUnitTest.kt": "da2d62410f633f2628ca8f29727e563f2bf4445fbbb08d7cecfa3c4514fb4f17",
+      "flake.lock": "0ae8d7124e7a06626bd764744beac322a1f032eb6f4a0d223b18781ab0f16afc",
+      "flake.nix": "08015cbff0ab064b799f8a638a314fdee878042130b9f6ce7f8a30a273a2c50f",
+      "gradle.properties": "f74fd6b21d9422f9202d862a6d841f273134854ecfcbd0310a3f00d6b57ff825",
+      "gradle/baseline-inputs.json": "d435df8b2cfea4fea1460b8b03e670f7066eb140a4d71550171d299e98b3bf07",
+      "gradle/lint-tool-identity.json": "54043cd3b63f494ab0182d6122b152680c5e54041b3f4998e428e41a970c3fbf",
+      "gradle/verification-metadata.xml": "c2ad4bfd7e430df923faa14e4cb3a309b4c1e73bc3adad937d7a15ff55fc219a",
+      "gradle/verify-lint-tools.gradle": "a4001f33fd3692166c9510cf402fe357678e3157e977828a76b170c3fda1faef",
+      "gradle/wrapper/gradle-wrapper.jar": "cb0da6751c2b753a16ac168bb354870ebb1e162e9083f116729cec9c781156b8",
+      "gradle/wrapper/gradle-wrapper.properties": "16572c7e88f2ebd8683b1003556934c23922c1f817397795120e5e75c667da49",
+      "gradlew": "fc977a94723af68aaffa4e5d60496fb4aeed1884b6b19e5e2f2fd7612673313d",
+      "gradlew.bat": "bdecf875b6868cbcbd36a1f85eedf0832f358ff28092c5797ed645f7edce77d9",
+      "native/apk/asr_jni.cpp": "4eaca3d66b90c63954a65f69887fe94b1ea97ebdb474ecfda5b306ce9cc07946",
+      "native/cmake/finalize-mnn.cmake": "0a7bd60ebdd656f8856551af7111ceecfdac37c9c8d307b6d911bc7259a4b7ca",
+      "native/cmake/mnn-artifact.cmake": "380b331ac71b22830281e4104342bd65dde2e92c14d89cbd24cf63fb6282e2b2",
+      "native/source-lock.json": "b3b4bc3a7c2947163d80deebc8686aecccaf38efd74b2025fe9557bfb0ccc497",
+      "patches/mnn-asr-boundary-positions.patch": "bd643768d175ef9f2a46099bdcecc46216d8fdb9f1a0e6662dd6825ad827fe84",
+      "patches/mnn-p0.patch": "c0ea13850febb20ee8f4d01d4028461fd49daf4b8730a84de0f5e38876d7f363",
+      "patches/mnn-whisper-periodic-hann.patch": "b1642f6bc52372e1d800d763e47888c746e1a3e3575c75f11177f337f5acaa4f",
+      "patches/qwen-lazy-nagisa.patch": "c24bf1940bab19c2a89c34159f3900be0fdf9e7e502d89de4cba5936f045abe8",
+      "reports/p0/mnn-model-manifest.json": "1435b19c210472fa88d04e471595b4a709264b164a3eae2cec432643eaee380e",
+      "scripts/apk_report_binding.py": "77905416ef703b2694a4a17995969fa611cf68e7fb96d45feadcb36c970d3f5a",
+      "scripts/build-minimal-apk.sh": "9b1ceda6677b5a349ea0d509b52877fac1a3b32079ea0e352f3f4347d0f8aa51",
+      "scripts/build-mnn-p0.sh": "a5432375eb9cc29862b2b52389bbfc52c9ed1b322a5bd969b0e2d11dcb7c8c40",
+      "scripts/build-native-artifact.sh": "e25d2d1b61cfea051e5397568a4938ca73c41b0aceba7f6ee6a25f9fc7aced38",
+      "scripts/build-p0-harness.sh": "9e233c936f0590eff48698006138d4192c70d2d922500c3403c3120b52c36dd6",
+      "scripts/check-fast-task-graph.py": "7f2b63b3f34732e2290c8124749062e5ad520cc1eb07466d48306cb074395b88",
+      "scripts/check-jni-symbols.py": "e75f21aef99a384bb663695e70df7cf8e5f294532761542885f680c8bb4fdfe7",
+      "scripts/check-maintained-text.py": "7a9900f9fbe4c450557e236aa3bf5945acd5da3793b4f1c9ea1d2627d98135d5",
+      "scripts/check-minimal-apk.py": "1d0f34cced09f0acbe890e698f9871f370d9df2c92d9a0567753d06df1286a55",
+      "scripts/compile-android-java.sh": "16c0f6a517e9867595512dae7c33a124b2e6b1d7c2acc595560d8da735511a95",
+      "scripts/compile-jni-object.sh": "d8096057e9e0a76e46f3771f3154de1151e657806d73440b8eef34bfd25357ed",
+      "scripts/compile-jvm-sources.sh": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf",
+      "scripts/deploy-minimal-apk.py": "27c7d56383bbb2afd54fd4b5c3bfaa7fb47ca6308350b6fe8e4ee6f3fdd02be5",
+      "scripts/deploy-p0-model.py": "9c589d61c896e7f97f62e03e2b1ffc39016f692d76ded0dba941be52cc7ba961",
+      "scripts/device-probe.sh": "39388266fbeb52e67572eb9b03697dcfb1e5a4e16738e3ac4cb26d567d95855e",
+      "scripts/dex_class_inventory.py": "4232600594ba3b5075f0f511434a38d9a7163fa2397a025b5bebbc898848190a",
+      "scripts/link-apk-native.py": "95a1f6917732f5d30bc4db7d4bf65353cdb826b49899a03a9d1bac3bf8cbad42",
+      "scripts/link-native-artifact.py": "7f0e3515d9f248fe43eb4eaaa4bda17bc0a17450bf88af3cfc7d72183d3eb4af",
+      "scripts/nix-env.sh": "1e56fb4297ffa6569de095fef630a620f14f324289af5e678f5fad472008e753",
+      "scripts/prepare-gradle-inputs.py": "72823bc5c5437773ba5c2d40cc1d88ad61affad24fb3761733dd5f55f1fbac3a",
+      "scripts/prepare-model-configs.py": "ca86915297b62fad32fafc9957bf29aa94685ee838e0d9c5c5dedc2815944d80",
+      "scripts/prepare-native-sources.py": "ad1ac36fc25d0505ce808ee140827201b0f4e45235ffb6db9e977c9f84b069e1",
+      "scripts/run-device-p0.sh": "a788934858214fac6a5947ac642064b4512d76eae49aad70cf17d50d270263ae",
+      "scripts/test-minimal-apk.sh": "1dfac66c8ce1e09be2ef03bb83d1d5b47fa4ee58140335bbb39ce5b5e7062989",
+      "scripts/verify-android-test-apk.py": "53468aed7e802a6f456618b9ab061a6e34544331da6ae430aa99d6bdd0141b26",
+      "scripts/verify-gradle-apk.py": "82d25034893f85e2b5d144a394ca5518e334609baf01081edacb3b9c16027619",
+      "scripts/verify-gradle.sh": "c09c83d3d368e4ab15b15f5fe1b937e5084b0c99188e68cb58fd359a05145c35",
+      "scripts/verify-local.sh": "3b465e83da8f3920e6d75f654111f6ca13ae0f6b7a7f3ab7d22ed163dce0a920",
+      "scripts/verify-native-artifact.py": "f3931747fc4d956704c6bdab2881027f19f6160ed5c07fdf0c6bd2bfd5f57c04",
+      "settings.gradle.kts": "cea3d1a9071109cfb30ffcfd44baf073873bf891af49ce01a5f88244b6aba35b",
+      "tests/AdmissionBoundaryTest.kt": "b1bf40c0581973917b6cfbc8ba678cea673217c42850a9526abd0c7dff2c87d3",
+      "tests/ImeSessionTest.kt": "aa6a142cf8e913eb082e2e55a9d4ee13f2e50cec0db4a6bba98e314fba48018b",
+      "tests/InferenceAdapterTest.kt": "19862c2a59e6187729b68903d726c4c72c89c606b667bfff4bc97319909b884b",
+      "tests/KotlinMigrationTest.java": "6f08ac07e9acbdce5163f95455fe6f8f3b44a95df27d5eac32660bdca6b4097c",
+      "tests/LogExportTest.kt": "eaa30ba66193caaf01ba8775d378274442d1ddbab7df74d694169c2f1b882b97",
+      "tests/MinimalApkTest.kt": "93456f5caafcac47f8969758c0ff774c552c7311a4b951f3a777021a7c681e4c",
+      "tests/ModelAndroidHelpersTest.kt": "7b79071f5c33fb087d9294701c805fa7020762befd6637f055e9b020f3a3ff7e",
+      "tests/ModelManagementControllerTest.kt": "d0fa7f83fb57694af11ee62ad6e8d6eb3e38e88b6a680314b50d2bfe386c18a6",
+      "tests/ModelNotificationTest.kt": "f6f61113963d9ac992c85c88ca4bc8f07ebcd7e9ddcf50356275d7ca6e6b0c87",
+      "tests/ModelOperationControlTest.kt": "89919edaebd4862662fcce27a81ca0ef7c688258b7ce14bfb0646659a7cbb1bf",
+      "tests/ModelPrivateRootTest.kt": "8d0d2c365fe9ecca158beaefaa7fdeaec67f4c40074b2c3ed45cb5b22a5ebfcf",
+      "tests/ModelProviderBoundaryTest.kt": "a5ab425b949d19a8659dfeed7d0381fca576e8aa996917492152bfb7be4e36b7",
+      "tests/ModelReadinessTest.kt": "8d140eaecb89aa7e96d55832376f5963ea95b6d2415faacb29c3c2f20dc5648a",
+      "tests/ModelRepositoryCancelTest.kt": "4919de39ea5c7b644bf513eb6f92297cb9992eaf90de2f6c3a64d76c303ea6b4",
+      "tests/ModelRepositoryDeleteTest.kt": "3660c50e6f6e3ebec0c18bae60484767ad85df8cf98922ab9225b173722d84f1",
+      "tests/ModelRepositoryTest.kt": "84e89212ebee58f5d02a541a133d7e01bd87fdf5061825daaa6aec74853fb7b0",
+      "tests/ModelReviewFixTest.kt": "3122887270be397888475e4b5a89112dccf70e025c78db2845ea63e70af9b490",
+      "tests/NativeResponseTest.kt": "4a3cc89d66e63d42e1fda0befaebaa2236a779074ac713145cfbdf3a94f02278",
+      "tests/PartRecoveryTest.java": "bfefd5c2f3aafb7eef6465d3d9596d95a0d7970cd0e58449704976db46454043",
+      "tests/RecordingRaceTest.kt": "e144e621d89b25a53621e70e871f75a025ae221850122ca7e2e5482ac1d40b25",
+      "tests/RequestRunnerTest.kt": "09b663b259224cdcbbe05446f957f5a399746689a4f3b9778e3f5586dcd7d120",
+      "tests/ResultFilesTest.kt": "7eb44db99a38d01b66a5d4faf3dbd842de05804e657980ff6956692bc0b20861",
+      "tests/RuntimeLogCoreTest.kt": "6c56993f52750403a23d86f80dc3656610c3db6bc7aa5af1677d533f704f7c59",
+      "tests/RuntimeLogStoreErrorTest.kt": "9e52f96be1634023728af09e2c843569cec3700dfc020da44ab3af8b50f8bf3f",
+      "tests/RuntimeLogWorkerErrorTest.kt": "6248136457cab1173c2b939f49230d2eb6f20b39bb5ae9f13df03576cbe660a8",
+      "tests/TaskCoordinatorTest.kt": "96580db5437fbcbcdee3ea5d39a9fb567a673b4fb1bc450f4df6462260a3fdf2",
+      "tests/TextExportFatalTest.kt": "441fbf3270a824496eeb48dbcbe9f013c20ad29cae6c343b1e63435be7536b48",
+      "tests/TextExportSafetyTest.kt": "6a88c7809dc7fae1fd05f049f17dc7cca19379365b694b60e549a0ea8f21d731",
+      "tests/TextExportTest.kt": "25970ee2f491b6bc1373b8bf4a116a6ccd244102e117c052ab71bd1d41314dc7",
+      "tests/activity_window_source_test.py": "d86f2c1268c37250d452737dbf4eac077fc900cff2cf5fe0f32188df12f69cac",
+      "tests/activity_window_test.py": "2dc73db4363e4e516beadcda8397ab4ad320bd13c60f492ee25d173308ed058a",
+      "tests/android_test_apk_test.py": "8be1d3792204487d06fa4ca826437b9541661f28d1a0a7f689454181fea1e838",
+      "tests/android_test_fixture_inputs_test.py": "2356a170fb9ef9839f25f17a45152f5b28cc5ce4b7d46252ae7829b64a8b5bf5",
+      "tests/android_test_fixture_test.py": "f88e9f3b2e47e8b01be56a4ebbeb038e72786593a141e2926fde4e79f67c17f8",
+      "tests/android_test_inputs_test.py": "e292ece9080a5ec16a78341f73297fe97af2595646a1fbdd476ad5f0f14a23fc",
+      "tests/apk_report_binding_test.py": "712f242bf9e70d965f9e7235f09df3cfb1edda91dc60aa7cbac429f82aeb952a",
+      "tests/app_report_source_test.py": "f60d0ef92098cff80d0d70e873fcced244fb62ac28efcc382b0420bcffc90d26",
+      "tests/architecture_boundary_test.py": "2ef0a9c98f6c28773f58725380f005666aed6be6c431a605a787fdf3df8bf372",
+      "tests/dependency_checksum_fixture.py": "fbfc2ad3d857fd94bfb91228c16e9361feb4db0c2bb006de7c54be1347b43ee9",
+      "tests/dependency_checksum_fixture_test.py": "3054d555a17016c92cfc5011d5fb7a7039167c5ae7b7e9012727644f0c0efb5f",
+      "tests/fast_task_graph_test.py": "b7326338030c9af210b6451536690f6eab5f2dfa63ce244fe17a2e70427a27ca",
+      "tests/fixtures/app-report-pre-r3.json": "82a2c8c1e38f7ca11bb66293a2771a96a7f0a9125dca3adb9693cae8873c099b",
+      "tests/fixtures/jni-pre-r3.sha256": "ce7a0622dc94d392b5c571afaa89ef73461b6daf71c76a716d3ca7de718f6df8",
+      "tests/fixtures/kotlin-next/NextAppContractTest.java": "47cc1b64482c67e53f279be7be18361aafecd3afced87dc463c74a19e409a200",
+      "tests/fixtures/kotlin-runtime/RuntimeContractTest.java": "42e7ad55f39938437b909b10b0c257e744b2ec3ee0479c0146c7bbde31e23092",
+      "tests/fixtures/lint-error/build.gradle": "84cbfbda2c2fe098322692d8faf70e317076360dadc487db9b33ada3e269a602",
+      "tests/fixtures/lint-error/buildscript-gradle.lockfile": "56da4d9f5426658c68d8b6e2de9464fe1019cf5d50f1873cb909ad93fde4df87",
+      "tests/fixtures/lint-error/settings.gradle": "7159cb8c44421044df49aaff4510df600ffd0834be6042f86225271589d7148e",
+      "tests/fixtures/lint-error/src/main/AndroidManifest.xml": "cba879f740245c76ab09f2664d7ebb3bc37845dce24eba0112cb8441e8bc8744",
+      "tests/fixtures/lint-error/src/main/java/org/llmasr/lintfixture/LintProbe.java": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+      "tests/foreground_recorder_test.py": "445bcd3c96ad9c11e14c4a7aca130fb255cedb2436aff89dd8cf64d9c0b30506",
+      "tests/gradle_apk_identity_test.py": "c04841b8e1727e8d34e0154c981e1d9c85711ca8a2983789287249a4d00155d4",
+      "tests/gradle_dependency_verification_test.sh": "06a1890c835b3fda1430d6035334a730382963bc9aa780ec5191d636a6d6668f",
+      "tests/gradle_inputs_test.py": "37e1ddc4a82e44cab7a2df2c9703df55ad02ddadce4b54bbf65cfedcf3dd1d81",
+      "tests/gradle_lint_verification_test.py": "d07d69757b599dc50ebbe73d4ebe8f1fe8c69a6afef852b6db2c4b478d3e690f",
+      "tests/jni_symbol_checker_test.py": "f560451c7ad6daf0246d23912e16f4a9d4b97ac41ac507bd89f0c6d576aff82e",
+      "tests/kotlin_next_migration_test.py": "ec4dced405088632a0b0867c63e928468906981a7e92781335abfb53cb1e8a58",
+      "tests/kotlin_runtime_migration_test.py": "7cff40b0c698c164baff82037a4e331f89462ca3521f62b87673fca9ffd70c25",
+      "tests/kotlin_test_slice_test.py": "8e7b16e8158018324593654e5736d45fa09c594466f7b15b0d34f1c62a93c33c",
+      "tests/kotlin_testhost_migration_test.py": "80cd2e22cdb823956a4744a7ce1c84374232b3ca73312d05b68b21521a7970a4",
+      "tests/lint_identity_test.py": "bf0d410ea14cff05d5a162de50a6fc87921ac6e54f0d008c4055873a49250690",
+      "tests/lint_report_test.py": "486134d3a2185a158d24b6d04992dcb26fbef623aab2d8a1369630736db9cd56",
+      "tests/local_verify_entry_test.py": "8084998f896e074fe03fa5528d2635f8bb79486f116220b9b91629c074718101",
+      "tests/local_verify_fault_test.py": "2f65e8b235bf345b0f8b9d14580d411eebd8e55bd12a2138ba6c77dd88497009",
+      "tests/logs_activity_picker_test.py": "84faa5abc6b87c933008905a20c2a8c420f2278d19deb16d8c26a2f2a84691e1",
+      "tests/maintained_text_test.py": "d954f4da41328b15b76f5ec11e5d790b57277f04830cd5921844a845d054bcf7",
+      "tests/manifest_permission_test.py": "eae2334072ef8c7d29dafc58ad43dc51d1dc9798928b757a147efc91807b963c",
+      "tests/mixed_compiler_lifecycle.py": "10c890b0c143339d19132b4ebb406cd53dab4ba68daed061140b8ac59ea53064",
+      "tests/mixed_compiler_lifecycle_test.py": "6c9ec6812b5239bfd060df3a5333a06545140a01a1f14ebed973ac7f1d8aad56",
+      "tests/model_android_source_test.py": "92d95f2123afd9b47cef8e2d215bebfe80134c1adf081490183a515ce889e146",
+      "tests/model_review_mutation_test.py": "68821938ba5e4f1e8478a8d6330c1bb546f5e7f85a34834b0d4bcb890d597631",
+      "tests/module_boundary_test.py": "8630b9223a0032a7d99ddb3566b45f587ec8b9d1686e371453f01652080716d3",
+      "tests/module_owners_guard_test.py": "935d471624ef8a8191da030910b1997868dab1a62312f002c6bee2516cb0494d",
+      "tests/module_owners_test.py": "8b7ee78049b49ce487e1a5cd34214db207fc40211ac5d2e332634a8d7478e7ce",
+      "tests/native_artifact_test.py": "529866df098190a3dd25e51987d6c74e9bcef1ee376f729a244c59df3a1ed72e",
+      "tests/native_sources_test.py": "cce71a985b742041bb8c23fb2d9ebc5756438cfe8b604f6e45794dda297166d9",
+      "tests/p0/test_audio_contract.py": "564ed2874aed42c325e788d295a398cbc31a6e7d65c8ae0d691d8ff595688632",
+      "tests/prepare_model_configs_test.py": "258351939cdbd67a67e17b2fcb33f8aad050930b28d1d5d1c9ce19845820f460",
+      "tests/runtime_log_enum_cleanup_test.py": "38e6283ecf313458eda556b16cd24faca2f89ac491b492ee824c145e154786ab",
+      "tests/runtime_log_enum_mutant_test.py": "448e160d5b78d28952ecd234cf1808b97982b81a8ac82788ce7d563dd7ce728a",
+      "tests/text_export_source_test.py": "ddeceeceb6816a78b729ca641a438fadcb217969f7f0d04d7b34a724c678619e"
+    },
+    "module": {
+      "android/test-host/build.gradle.kts": "3746f043db7e659dcf273294caeeba77cb857bfe59d9930470f0c3973ca72adf",
+      "android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.kt": "58d2f5aae006017ce48b51284e03537fb059a4e0b4c5472d37e63940bd1a8b0c",
+      "android/test-host/fixtures/java/org/llmasr/minimal/testhost/FixtureChecks.kt": "5b8402aa1edbf49800a6d8d08811c8054211040442fcfd58c4139edbe4bc9841",
+      "android/test-host/gradle.lockfile": "f52803fcc340682c8baf4fdf068e9056bd1dce4da7a471199111eb8a3723cd79",
+      "android/test-host/src/androidTest/AndroidManifest.xml": "d3be5afc63c496147d7ea22887b88f471c312039ba96982423c555f2402b6347",
+      "android/test-host/src/androidTest/java/org/llmasr/minimal/testhost/FakeDocumentsProvider.java": "5e4eeaa7b6860cfcc884952476b1fd19a376cff8a13320fbb0dd635d6a7a381a",
+      "android/test-host/src/androidTest/kotlin/org/llmasr/minimal/testhost/FixtureInstrumentationTest.kt": "056680aa2240b2f7fee1d243d422914e8848c03d7137dd2bf0cf24933cf34036",
+      "android/test-host/src/main/AndroidManifest.xml": "0ded82a2305a1a40be0b09b5f4fecd5734acd216f971de9235c786380494dccd",
+      "android/test-host/src/main/kotlin/org/llmasr/minimal/testhost/ImeHostActivity.kt": "e8bc98043ce0ba468d266c95922f04b6432203ffe3bae5b14246ab24a142a35d",
+      "android/test-host/src/test/kotlin/org/llmasr/minimal/testhost/FixtureContractTest.kt": "46989a1adddf70d9131f21e5fe0b56ef95f17e2f1c800c4d8f48d8740a38e259"
+    },
+    "native": {
+      "android/app/src/org/llmasr/minimal/AppGraph.kt": "751a4bbb6b40875c4ffeece389ee9840becbe9c5456aca8a5aa3fcbaee31b5a9",
+      "android/app/src/org/llmasr/minimal/AsrImeService.kt": "45ed9c9331e4af996cb1b8739ae7fcf1b06f4ba968c7ffc1edaac2b1c3708db8",
+      "android/app/src/org/llmasr/minimal/LogsActivity.kt": "ac1c0e08c0c9e84a8055f9a90be49bdd3959533b320f16665eece20f25d17c4f",
+      "android/app/src/org/llmasr/minimal/MainActivity.java": "88f24a66d9f571c9ab659d4a095c730b90adb8e9a73e89205fa8c0c2156adadc",
+      "android/app/src/org/llmasr/minimal/ModelManagementActivity.java": "c04da08c22c5530f87aa013af0beeceeb23c88dbac9fd650b4be5ba3a6e08a02",
+      "android/app/src/org/llmasr/minimal/asr/InferenceAdapter.kt": "d14c2eaf43e5d068863d5f8ddc431ef64864f598246119bb7b1e7cc0939ec13c",
+      "android/app/src/org/llmasr/minimal/asr/InferencePhase.kt": "16527ee674419379689306e4edb383e7de31ceb87fe2b0c6e52e9f3ac1c032e0",
+      "android/app/src/org/llmasr/minimal/asr/InferencePhaseListener.kt": "b459881f478e4034fbd986f983eda388e4226bda98772d7a4dda6a77b79d912d",
+      "android/app/src/org/llmasr/minimal/asr/JniNativeTranscription.java": "c1d5973768675de52a03792bba9f1fdc44993ad6f05e7d482d83c313dd7687e8",
+      "android/app/src/org/llmasr/minimal/asr/LoggingInferencePhaseListener.java": "24bc435dbfb6ceb86b3eaf58349a7eb5d688eb40c80a53658ef820631d9931f6",
+      "android/app/src/org/llmasr/minimal/asr/NativeResponse.kt": "bd2620ec96a6030d66b7ce103227fc82d5a60ba1611808807bb81a547177f38a",
+      "android/app/src/org/llmasr/minimal/asr/NativeTranscription.kt": "e04807b119e33eef12aeac16a6896644d6e2ad33992e96414c57feafaa896082",
+      "android/app/src/org/llmasr/minimal/audio/AsrText.kt": "c720692ffea1d69b88d5ddbe8233d72b86f90cc3068748bde7a2432f62f21d34",
+      "android/app/src/org/llmasr/minimal/audio/ForegroundRecorder.kt": "01d06c51bb6f97183446303f6a6fde421ed137271d5d1d14d0bb58e29aa887ce",
+      "android/app/src/org/llmasr/minimal/audio/PcmWave.kt": "ccf20aae11439ba259cc927168011634c15430cf865aa470d83710119e193620",
+      "android/app/src/org/llmasr/minimal/audio/RecordingControl.kt": "dfa9ac879776138aca236aeb2216582e37221fd79c5dc56485d77c2a33e690ac",
+      "android/app/src/org/llmasr/minimal/audio/WaveInput.java": "b46d023aa69cc8eb74d3e6dc1ac815f7c0e1417c82c4534ef7b622ffe5103c83",
+      "android/app/src/org/llmasr/minimal/diagnostics/LogExportController.kt": "a45d25e350f5c8f6385d87703e2d3e5f24fe5e91802bccf7e5c0137cdd59a3d2",
+      "android/app/src/org/llmasr/minimal/diagnostics/LogExportPage.kt": "5b19bed882f3a7c491d5791169d9e9ecd5086a1d6d468d24999722afbbc86ecb",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogClock.kt": "109268a07c22514885ba67ffef8635c7a7933af1807d9903fb17ec7a82426453",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogCodec.kt": "1a56ab0933882858c4fcf1af78652635ce846092614e54782c6c790ba5babf00",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEvent.java": "ca0eadef27b02602e0dc1b388b05a89a778be976aea487b582ab18869c23375c",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogEventKind.kt": "10712467665202aa6fd6b9deae4223f945051bd69b63d649c317bad00a477390",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogPersistence.java": "0be6031cefef8deb1ab90eb9970a56c7f27c286bfdb22899bce8f5410c66d58c",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSink.kt": "b24ecb6f21253bc2507b2090875a348c92ed74f467f71fb36e20eefcee3efe63",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogSource.kt": "f1221623245139dee2e25c8b8276e4c0ad80ede8c59e421b4ce01142cae806c3",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogStore.java": "9cdde653b37dc6e6fe3d610557ae166d095f4f3539688d9e677a74d4f26779cd",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogText.kt": "c1be51d92e2ce111f312d8ac64766c13e87b0054cafba91a5c754479297da31e",
+      "android/app/src/org/llmasr/minimal/diagnostics/RuntimeLogWorker.kt": "a3d4e89975d2872a29e3d57cf616b3dea9420bf836e0a0756595a4ce4872ac07",
+      "android/app/src/org/llmasr/minimal/ime/ImeBackend.kt": "7160ac06980bddf8cd3fadfe28f8878d14f223bcd9263b7ca38ecf7f5481bc8c",
+      "android/app/src/org/llmasr/minimal/ime/ImeController.kt": "7ea3b31f1d847947c956f92ea36329da4d6149553a79b703f67e78f336a919a7",
+      "android/app/src/org/llmasr/minimal/ime/ImeFieldPolicy.kt": "549770871e8613bf7fae3d6a112ff08c8cb8464ab7aae7e37d8e8d90d972a309",
+      "android/app/src/org/llmasr/minimal/ime/ImeSession.java": "897f2855fee72b66902acc351e344ba7001d774c83a923f489da798fe40a294d",
+      "android/app/src/org/llmasr/minimal/model/FileSafety.kt": "60cfe63f5316895a62abf9d6e8804ad8378d26e1923c2e775942a9b9ca4cc832",
+      "android/app/src/org/llmasr/minimal/model/ModelAccess.kt": "3ec23bde4a086d439ea5a5ca096de0738261cb91a97ec0383467d409bbf8e1be",
+      "android/app/src/org/llmasr/minimal/model/ModelEntry.kt": "080b61998ece277f6d1f3ac45b7fb430248c1f07f736b29a28f3f5c7818b926f",
+      "android/app/src/org/llmasr/minimal/model/ModelManifest.kt": "04e290cf7098128871eca84fe910a1d34f0797168707c452779bdc43b5bc0738",
+      "android/app/src/org/llmasr/minimal/model/ModelProviderBoundary.kt": "727a3ae180fa67b0fd2f04e71fc621d261dcbc90d56fbce9c9c7f795c8bd5814",
+      "android/app/src/org/llmasr/minimal/model/ModelReadiness.java": "985fe1c96b779e7079ac77205cea0daf4e3c19233c407ce16b05a27ec78834a7",
+      "android/app/src/org/llmasr/minimal/model/ModelReports.kt": "60d57569881c8c24530f3167979daea2643d4d63c2fd1f9ca4202094fc7e9d39",
+      "android/app/src/org/llmasr/minimal/model/ModelRepository.java": "4e842f6960d9568b01c8c79fee8f800791d9e32d53539abc4ead70641dd39b59",
+      "android/app/src/org/llmasr/minimal/model/ModelSource.kt": "7c7315b3e5f673204bb7413eaeb28879d836041ae50f22e32819b466c3c263d6",
+      "android/app/src/org/llmasr/minimal/model/SafModelSource.kt": "b7d6f8c23517544499731789649ba53313f0b5dddc9e182931cd9d590347cf44",
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementController.kt": "a037102a568ddec03c8dee7caf835574bc9fe369a66da5debfbf84b52a4a0c6d",
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementState.java": "f0af50bad07b0004763088be08509c23031669e08e88cf108d7dc42dc382018b",
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelOperationControl.java": "8f2e99d0ae960041cb94b615324c1ded4491a80ce60473bc1e2ecd44aa260d51",
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelPageSession.kt": "c846a95cde4a56d41c827f1b6f57a1bb497b7dd889b81c14543607c76de277a9",
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelPickerTickets.kt": "ae9c4a84ab080af5dfc5146fdc63ef4ddbe874f6376ca0f0aa225322fb196048",
+      "android/app/src/org/llmasr/minimal/modelmanagement/ModelUiText.kt": "7b6e77f534266504bc60e79a4d2d746a1558210f90cf785d07f013c1e1d144f0",
+      "android/app/src/org/llmasr/minimal/platform/ActivityWindow.kt": "8be5dd785d591929ec2d2a49526df191fc6b921e47932ae871afaea37a14bd49",
+      "android/app/src/org/llmasr/minimal/platform/OperationContext.kt": "e37eb8988a35f24c49932529ba45d3956a268e09f416cff4e51282ca1e1658e1",
+      "android/app/src/org/llmasr/minimal/task/RequestContext.kt": "160f70966971c8276a41107b4e8779244f247af17d352744777af085181d6d03",
+      "android/app/src/org/llmasr/minimal/task/RequestRunner.kt": "50be8c887bb762f422a551b0b856f6fc84de24bc3aa6390f488b70ee58ac62e4",
+      "android/app/src/org/llmasr/minimal/task/TaskCoordinator.kt": "9557fb0f244bd896b5d33e95e84e61cac25a66a242bf633102a7f05ccdd0ccd3",
+      "android/app/src/org/llmasr/minimal/task/TaskKind.kt": "46a4aaf966b39e674b8ebc2656ad4b4f91172cab1a95aae93ac09f500f075715",
+      "android/app/src/org/llmasr/minimal/transcription/AppReportWriter.java": "cfb660b72fde442ee29f3b91c5bddd2d1cf28e6dfa20a29df449952f591401db",
+      "android/app/src/org/llmasr/minimal/transcription/AppRequestPolicy.java": "6f908f83484a20131bb2d5c84c9ac7c1e3df4bc5f180f2c6ea5cc7d7df860920",
+      "android/app/src/org/llmasr/minimal/transcription/AppState.kt": "49c018c3e8e98fd3953bd3c26f85a1639a1346f553f97ebc46d55b1ef388910d",
+      "android/app/src/org/llmasr/minimal/transcription/AsrOperation.kt": "c7414d7e6e255f964b27add8113dd08d1961ab5ce418f741c7ae61c788e30f8b",
+      "android/app/src/org/llmasr/minimal/transcription/ResultFiles.kt": "cf39fd0d04143d1e3c8b8d87b6e62a7981e14cb79dc5f61df681fdea23b538dd",
+      "android/app/src/org/llmasr/minimal/transcription/ResultState.java": "b6da90abe514c1a8040eba8d3a9e2eb716d81370da4fa6b214267a200b730179",
+      "android/app/src/org/llmasr/minimal/transcription/TextExportController.kt": "5a417e410c5389edfe0140212bf57fcc5e6428607c218f0a8cc3dd24760704d2",
+      "android/app/src/org/llmasr/minimal/transcription/TextExportPage.kt": "bb42573394857d1b4a070c4d0e463697c821d2ad92a1bfc5b1fcfc1abb63afc6",
+      "flake.lock": "0ae8d7124e7a06626bd764744beac322a1f032eb6f4a0d223b18781ab0f16afc",
+      "flake.nix": "08015cbff0ab064b799f8a638a314fdee878042130b9f6ce7f8a30a273a2c50f",
+      "native/apk/asr_jni.cpp": "4eaca3d66b90c63954a65f69887fe94b1ea97ebdb474ecfda5b306ce9cc07946",
+      "native/cmake/finalize-mnn.cmake": "0a7bd60ebdd656f8856551af7111ceecfdac37c9c8d307b6d911bc7259a4b7ca",
+      "native/cmake/mnn-artifact.cmake": "380b331ac71b22830281e4104342bd65dde2e92c14d89cbd24cf63fb6282e2b2",
+      "native/source-lock.json": "b3b4bc3a7c2947163d80deebc8686aecccaf38efd74b2025fe9557bfb0ccc497",
+      "patches/mnn-asr-boundary-positions.patch": "bd643768d175ef9f2a46099bdcecc46216d8fdb9f1a0e6662dd6825ad827fe84",
+      "patches/mnn-p0.patch": "c0ea13850febb20ee8f4d01d4028461fd49daf4b8730a84de0f5e38876d7f363",
+      "patches/mnn-whisper-periodic-hann.patch": "b1642f6bc52372e1d800d763e47888c746e1a3e3575c75f11177f337f5acaa4f",
+      "patches/qwen-lazy-nagisa.patch": "c24bf1940bab19c2a89c34159f3900be0fdf9e7e502d89de4cba5936f045abe8",
+      "scripts/build-native-artifact.sh": "e25d2d1b61cfea051e5397568a4938ca73c41b0aceba7f6ee6a25f9fc7aced38",
+      "scripts/check-jni-symbols.py": "e75f21aef99a384bb663695e70df7cf8e5f294532761542885f680c8bb4fdfe7",
+      "scripts/compile-jni-object.sh": "d8096057e9e0a76e46f3771f3154de1151e657806d73440b8eef34bfd25357ed",
+      "scripts/compile-jvm-sources.sh": "097cf23ad7f0e0a5cd8ebcf4e5f87523d3505bc8f90d389d9434ad5b76131adf",
+      "scripts/link-native-artifact.py": "7f0e3515d9f248fe43eb4eaaa4bda17bc0a17450bf88af3cfc7d72183d3eb4af",
+      "scripts/prepare-native-sources.py": "ad1ac36fc25d0505ce808ee140827201b0f4e45235ffb6db9e977c9f84b069e1",
+      "scripts/verify-native-artifact.py": "f3931747fc4d956704c6bdab2881027f19f6160ed5c07fdf0c6bd2bfd5f57c04"
+    }
+  },
+  "formal_reports": {
+    "product_receipt": {
+      "path": "android/app/build/verification/debug/run-7aae0490294f4acaaabb00a36adfb523/result.json",
+      "mode": "0o644",
+      "bytes": 1681,
+      "inode": 18779759,
+      "mtime_ns": 1792825182213597052,
+      "sha256": "b107c648ecbe9024693919c8dc6112ac2c7a3722b54a2c16bf33e467417a469a"
+    },
+    "three_receipt": {
+      "path": "build/verification/android-test/run-0a98a8d459ef42c88a4dfe143a99b03f/receipt.json",
+      "mode": "0o644",
+      "bytes": 232391,
+      "inode": 18244896,
+      "mtime_ns": 1792823840547267322,
+      "sha256": "d4860cfeb2a092af58c5b939fadeb76894ff1077ffa7fd5c72ca8c2acb5bfa12"
+    },
+    "build_input_report": {
+      "path": "android/app/build/verification/debug/run-7aae0490294f4acaaabb00a36adfb523/build-input-sha256.json",
+      "mode": "0o644",
+      "bytes": 25653,
+      "inode": 18779758,
+      "mtime_ns": 1792825182145584177,
+      "sha256": "6d3c5b1c5458a3c780dec15225ee951c64eb5997c03d5d26cb9395973f07b5d8"
+    },
+    "native_verification": {
+      "path": "android/app/build/verification/debug/run-7aae0490294f4acaaabb00a36adfb523/native-verification.json",
+      "mode": "0o644",
+      "bytes": 12617,
+      "inode": 18779757,
+      "mtime_ns": 1792825182124135246,
+      "sha256": "8baafd17a2ae374ee7a2e42bedde9acc52acb5941c27278d11938161cae8ce5b"
+    }
+  },
+  "packages": {
+    "product": {
+      "file": {
+        "path": "android/app/build/outputs/apk/debug/app-debug.apk",
+        "mode": "0o644",
+        "bytes": 5282161,
+        "inode": 18227287,
+        "mtime_ns": 1792823825876337474,
+        "sha256": "38b4e2fb51d72d33b15ab1f7e71dd3f00851f463de4bf48118f586d130f8f968"
+      },
+      "class_count": 1350,
+      "kotlin_class_count": 1001,
+      "instrumentation_methods": [],
+      "certificate": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "metadata_sha256": "6a436665e72cca179545d50650d607f49ceaf965b7f3e76f74bdf68ff3586c8a"
+    },
+    "host": {
+      "file": {
+        "path": "android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+        "mode": "0o644",
+        "bytes": 2634048,
+        "inode": 18227540,
+        "mtime_ns": 1792823829943385349,
+        "sha256": "c44831b734b9c42be0ea61f0cf38a81a65685d2d75c9e7905ddfebc181cca3bc"
+      },
+      "class_count": 1253,
+      "kotlin_class_count": 1001,
+      "instrumentation_methods": [],
+      "certificate": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "metadata_sha256": "343379a880059c602d4011bfe4cdeaf01ab32648d9c6cd87e07cdf321b722a1a"
+    },
+    "test": {
+      "file": {
+        "path": "android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+        "mode": "0o644",
+        "bytes": 63942,
+        "inode": 18232159,
+        "mtime_ns": 1792823835625452194,
+        "sha256": "ea180917c0910c79bd8a1ffa7f32544aea82d39789ab580600e666bb50a1bda3"
+      },
+      "class_count": 46,
+      "kotlin_class_count": 0,
+      "instrumentation_methods": [
+        "testBadBytesAreSafe",
+        "testCleanupRetainsOwner",
+        "testEnginePayloadAndOrder",
+        "testInputConnectionAndManualInvalidation",
+        "testLateResultIsInvalidated",
+        "testProviderCancellationWaitsForQuery",
+        "testProviderCloseErrorIsPrivate",
+        "testProviderEnumerationClosesCursor",
+        "testProviderQueryErrorIsPrivate",
+        "testReadinessRejectsBeforeLoad",
+        "testReusedBackendQueuedCancellation",
+        "testSafImportCancellationWaitsForOpen",
+        "testSafImportOpenFailureThenRetryPreservesHistory",
+        "testSingleConfirmationAndPassword"
+      ],
+      "certificate": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "metadata_sha256": "d61475692d336c0ec6039fbf628d2643da9eb90a45d22f5e3e22c225dac60ab8"
+    }
+  },
+  "external_tools": {
+    "tools": [
+      {
+        "tool": "java",
+        "entry": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/bin/java",
+        "entry_mode": "0o555",
+        "entry_symlink": false,
+        "entry_link_text": null,
+        "resolved": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/lib/openjdk/bin/java",
+        "bytes": 16672,
+        "sha256": "b1ee79d941a1e822a48ed151dc4c603ec33eb96a225268fcbc15a838afa0e8aa",
+        "entry_capture_boundary": "preflight entry/resolved path recorded; symlink lstat/linktext recorded at post, not claimed launch-time entry-stat attestation"
+      },
+      {
+        "tool": "javac",
+        "entry": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/bin/javac",
+        "entry_mode": "0o555",
+        "entry_symlink": false,
+        "entry_link_text": null,
+        "resolved": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1/lib/openjdk/bin/javac",
+        "bytes": 16672,
+        "sha256": "7fcf568cd388ec6430220f70083c08b4591a8a046f2906ca10356503aaa5ed14",
+        "entry_capture_boundary": "preflight entry/resolved path recorded; symlink lstat/linktext recorded at post, not claimed launch-time entry-stat attestation"
+      },
+      {
+        "tool": "kotlinc",
+        "entry": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/bin/kotlinc",
+        "entry_mode": "0o555",
+        "entry_symlink": false,
+        "entry_link_text": null,
+        "resolved": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21/bin/kotlinc",
+        "bytes": 417,
+        "sha256": "aa3b6fe59694c1464416d8ab87a9d3ab1f79ea817c33c57d99ebef415b5940e5",
+        "entry_capture_boundary": "preflight entry/resolved path recorded; symlink lstat/linktext recorded at post, not claimed launch-time entry-stat attestation"
+      },
+      {
+        "tool": "cmake",
+        "entry": "/nix/store/c3bm9h7k398cmg00d4rss6hcxkl2zbl2-cmake-4.4.2/bin/cmake",
+        "entry_mode": "0o555",
+        "entry_symlink": false,
+        "entry_link_text": null,
+        "resolved": "/nix/store/c3bm9h7k398cmg00d4rss6hcxkl2zbl2-cmake-4.4.2/bin/cmake",
+        "bytes": 19231712,
+        "sha256": "25fef9dd619afd8a2cd352b7d24ad64e85b96e8aa3943f0a3810c036c7540965",
+        "entry_capture_boundary": "preflight entry/resolved path recorded; symlink lstat/linktext recorded at post, not claimed launch-time entry-stat attestation"
+      },
+      {
+        "tool": "ninja",
+        "entry": "/nix/store/r8a159fqvj0mpczq0dq8d3dwdd2rsz8c-ninja-1.13.2/bin/ninja",
+        "entry_mode": "0o555",
+        "entry_symlink": false,
+        "entry_link_text": null,
+        "resolved": "/nix/store/r8a159fqvj0mpczq0dq8d3dwdd2rsz8c-ninja-1.13.2/bin/ninja",
+        "bytes": 446880,
+        "sha256": "ca5d70f5c44a69e36619509dba24b0917c374cafc21173e390801f1235044bd9",
+        "entry_capture_boundary": "preflight entry/resolved path recorded; symlink lstat/linktext recorded at post, not claimed launch-time entry-stat attestation"
+      },
+      {
+        "tool": "python3",
+        "entry": "/nix/store/2i9phsc5kahwi37p1cibm48xg6ysv6ih-python3-3.14.7-env/bin/python3",
+        "entry_mode": "0o777",
+        "entry_symlink": true,
+        "entry_link_text": "python3.14",
+        "resolved": "/nix/store/2i9phsc5kahwi37p1cibm48xg6ysv6ih-python3-3.14.7-env/bin/python3.14",
+        "bytes": 16528,
+        "sha256": "f5cce9ecc914b0c2eee78056c1c816aa02ae4c73c0aaf958eb5e0bb9281f34ea",
+        "entry_capture_boundary": "preflight entry/resolved path recorded; symlink lstat/linktext recorded at post, not claimed launch-time entry-stat attestation"
+      },
+      {
+        "tool": "bash",
+        "entry": "/nix/store/svx59425zxp552p2b8gm11qj5r09b56i-bash-5.3p15/bin/bash",
+        "entry_mode": "0o555",
+        "entry_symlink": false,
+        "entry_link_text": null,
+        "resolved": "/nix/store/svx59425zxp552p2b8gm11qj5r09b56i-bash-5.3p15/bin/bash",
+        "bytes": 1112872,
+        "sha256": "0f2e8b62037cc1187fe7136e114892b7a180821e7f52bba2930e002293e566d2",
+        "entry_capture_boundary": "preflight entry/resolved path recorded; symlink lstat/linktext recorded at post, not claimed launch-time entry-stat attestation"
+      }
+    ],
+    "formal_tool_inputs_current_verified": {
+      "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/aapt2": "70cd2d97c18ea25fc3ad1e6bc2c7e2e86c7c9076cf2549b3609f304b182cc246",
+      "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/zipalign": "cab08208e28ebf26e37c91a1f9ef4a871c175c8dabd55c78b0074f4d3a47a03a",
+      "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/build-tools/35.0.0/lib/apksigner.jar": "00ef9948f843fe395d2440ae3ef41405b8040a6d5d46493bd1902ac0ee6deae7",
+      "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/platforms/android-35/optional/android.test.base.jar": "c9583729e5cd1695ba93f9aa8e83adeb621fa028e765520b53c6e23f92f25b96",
+      "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk/platforms/android-35/optional/android.test.runner.jar": "b0ed5e396b0d35cb02a6626f3c2a6c0e9d5f69ad1d189e19d426ffb65bfc580d"
+    },
+    "environment_fixed_before": {
+      "JAVA_HOME": "/nix/store/4dqvcqjnhj6n29r6sh5wwrz58540gbfn-openjdk-17.0.20.1+1",
+      "ANDROID_HOME": "/nix/store/425pl60rnjsr0lgs3ibcdijifvmgrxx5-androidsdk/libexec/android-sdk",
+      "ANDROID_NDK_ROOT": "/nix/store/nvmmpi6zg0qrz6hqxp33prhnbx3pm2jr-android-sdk-ndk-28.2.13676358/libexec/android-sdk/ndk/28.2.13676358",
+      "KOTLIN_HOME": "/nix/store/14zrzv4sawnpbx3b274m15459kjgvcj6-kotlin-2.0.21"
+    },
+    "private_model_audio_external_identity": "not independently read/hashed; existing formal checks tool claims only"
+  },
+  "JUnit": [
+    {
+      "role": "core",
+      "count": 34,
+      "methods": [
+        "kotlinJavaAbi",
+        "waveAndRecordingProtocol",
+        "recordingRaces",
+        "resultFiles",
+        "nativeResponseProtocol",
+        "modelRepository",
+        "privateModelRoot",
+        "partRecoveryProductionMutant",
+        "requestRunner",
+        "taskCoordinator",
+        "admissionOwnerBoundary",
+        "imeSessionPrivacy",
+        "modelReadiness",
+        "modelOperationControl",
+        "modelCancelCleanup",
+        "modelWhitelistDeletion",
+        "modelManagementController",
+        "modelPageHelpers",
+        "runtimeLogCore",
+        "runtimeLogErrorIdentity",
+        "logExportGenerations",
+        "textExport",
+        "textExportSafety",
+        "textExportFatalIdentity",
+        "modelNotifications",
+        "providerErrorAndStreamBoundary",
+        "reviewHistory",
+        "reviewTerminal",
+        "reviewWindow",
+        "reviewBoundary",
+        "reviewDeletion",
+        "reviewLiveDeletion",
+        "reviewPlanning",
+        "reviewPublication"
+      ],
+      "aggregate": {
+        "name": "CoreRegressionJUnitTest",
+        "tests": "34",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-10-24T07:05:12",
+        "hostname": "zhb-nixos",
+        "time": "6.045"
+      },
+      "file": {
+        "path": "core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml",
+        "mode": "0o644",
+        "bytes": 7246,
+        "inode": 19559257,
+        "mtime_ns": 1792825518184216730,
+        "sha256": "26994e973857a9f3a1c5cfdd1bc0355a1c0d781324fb002d26c90834b91385ae"
+      }
+    },
+    {
+      "role": "runtime",
+      "count": 1,
+      "methods": [
+        "inferenceAdapterAndJniConstruction"
+      ],
+      "aggregate": {
+        "name": "RuntimeRegressionJUnitTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-10-24T07:04:54",
+        "hostname": "zhb-nixos",
+        "time": "0.103"
+      },
+      "file": {
+        "path": "android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml",
+        "mode": "0o644",
+        "bytes": 1190,
+        "inode": 19165688,
+        "mtime_ns": 1792825495011350554,
+        "sha256": "51572b7da51262201b2afc6e2fc762472b827389d6827ae52df072943c04f182"
+      }
+    },
+    {
+      "role": "testhost",
+      "count": 7,
+      "methods": [
+        "badBytesAreSafe",
+        "cleanupRetainsOwner",
+        "enginePayloadAndOrder",
+        "lateResultIsInvalidated",
+        "readinessRejectsBeforeLoad",
+        "reusedBackendQueuedCancellation",
+        "singleConfirmationAndPassword"
+      ],
+      "aggregate": {
+        "name": "org.llmasr.minimal.testhost.FixtureContractTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-10-24T06:37:19",
+        "hostname": "zhb-nixos",
+        "time": "0.026"
+      },
+      "file": {
+        "path": "android/test-host/build/test-results/testDebugUnitTest/TEST-org.llmasr.minimal.testhost.FixtureContractTest.xml",
+        "mode": "0o644",
+        "bytes": 1154,
+        "inode": 18237128,
+        "mtime_ns": 1792823839694500032,
+        "sha256": "9af37948e6ee93bc9c35b18be9c382b4e602c321abcac0080a4e93327170c274"
+      }
+    }
+  ],
+  "instrumentation_methods": [
+    "testBadBytesAreSafe",
+    "testCleanupRetainsOwner",
+    "testEnginePayloadAndOrder",
+    "testInputConnectionAndManualInvalidation",
+    "testLateResultIsInvalidated",
+    "testProviderCancellationWaitsForQuery",
+    "testProviderCloseErrorIsPrivate",
+    "testProviderEnumerationClosesCursor",
+    "testProviderQueryErrorIsPrivate",
+    "testReadinessRejectsBeforeLoad",
+    "testReusedBackendQueuedCancellation",
+    "testSafImportCancellationWaitsForOpen",
+    "testSafImportOpenFailureThenRetryPreservesHistory",
+    "testSingleConfirmationAndPassword"
+  ],
+  "Kotlin_source_roles": {
+    "main": 1,
+    "unit": 3,
+    "androidTest": 3,
+    "Java": "Provider only"
+  },
+  "actual16_bytes_equal_accepted": true,
+  "host_formal_fromstart": true,
+  "T5_contract_counts": {
+    "testhost-ordinary": 9,
+    "testhost-optimized": 9,
+    "testhost-faults": 3
+  },
+  "fixture_phases": [
+    {
+      "name": "green-initial",
+      "exit": 0,
+      "xml": {
+        "methods": [
+          "badBytesAreSafe",
+          "cleanupRetainsOwner",
+          "enginePayloadAndOrder",
+          "lateResultIsInvalidated",
+          "readinessRejectsBeforeLoad",
+          "reusedBackendQueuedCancellation",
+          "singleConfirmationAndPassword"
+        ],
+        "tests": 7,
+        "failures": [],
+        "sha256": "0d036961ec016df81e266ae3833d5d0adcfb07144b3bf652e5a25bbb4d871761"
+      }
+    },
+    {
+      "name": "red-payload",
+      "exit": 1,
+      "xml": {
+        "methods": [
+          "badBytesAreSafe",
+          "cleanupRetainsOwner",
+          "enginePayloadAndOrder",
+          "lateResultIsInvalidated",
+          "readinessRejectsBeforeLoad",
+          "reusedBackendQueuedCancellation",
+          "singleConfirmationAndPassword"
+        ],
+        "tests": 7,
+        "failures": [
+          "enginePayloadAndOrder"
+        ],
+        "sha256": "423e0c531ede1fdfb371576a49536ec29d42bbcfc3282f552478fd3a66a3ee9f"
+      }
+    },
+    {
+      "name": "green-payload-restored",
+      "exit": 0,
+      "xml": {
+        "methods": [
+          "badBytesAreSafe",
+          "cleanupRetainsOwner",
+          "enginePayloadAndOrder",
+          "lateResultIsInvalidated",
+          "readinessRejectsBeforeLoad",
+          "reusedBackendQueuedCancellation",
+          "singleConfirmationAndPassword"
+        ],
+        "tests": 7,
+        "failures": [],
+        "sha256": "d39bd86fe42e8e680c16e9477148fc4463a26f6ff4ec722c0ab4a2ad4038c90b"
+      }
+    },
+    {
+      "name": "red-cleanup",
+      "exit": 1,
+      "xml": {
+        "methods": [
+          "badBytesAreSafe",
+          "cleanupRetainsOwner",
+          "enginePayloadAndOrder",
+          "lateResultIsInvalidated",
+          "readinessRejectsBeforeLoad",
+          "reusedBackendQueuedCancellation",
+          "singleConfirmationAndPassword"
+        ],
+        "tests": 7,
+        "failures": [
+          "cleanupRetainsOwner"
+        ],
+        "sha256": "43bec7c39f4f6ace2b7079f1734820ff5bc823cb3b2e52ac18ef5b979323b880"
+      }
+    },
+    {
+      "name": "green-final",
+      "exit": 0,
+      "xml": {
+        "methods": [
+          "badBytesAreSafe",
+          "cleanupRetainsOwner",
+          "enginePayloadAndOrder",
+          "lateResultIsInvalidated",
+          "readinessRejectsBeforeLoad",
+          "reusedBackendQueuedCancellation",
+          "singleConfirmationAndPassword"
+        ],
+        "tests": 7,
+        "failures": [],
+        "sha256": "2d71e23b94ac46789246097b913cc381656660c5ac74aaa9159a62439400d166"
+      }
+    }
+  ],
+  "Lint": {
+    "android/app": {
+      "before_counts": {
+        "Warning": 24
+      },
+      "after_counts": {
+        "Warning": 24
+      },
+      "multiset_exact_equal": true,
+      "added": [],
+      "removed": []
+    },
+    "android/asr-runtime": {
+      "before_counts": {
+        "Warning": 17
+      },
+      "after_counts": {
+        "Warning": 17
+      },
+      "multiset_exact_equal": true,
+      "added": [],
+      "removed": []
+    }
+  },
+  "Lint_NewApi": {
+    "run": "run-cygmmone",
+    "records": [
+      {
+        "phase": "green0",
+        "exit": 0,
+        "source_sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+        "xml_sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+        "log_sha256": "b1d56aa8ca9eaef0745c96593178139f085192072a86e8e62592497b139a5fbb"
+      },
+      {
+        "phase": "red",
+        "exit": 1,
+        "source_sha256": "7f0cfde58056dadfe1643c9b6e4331103c71044822d1a70032e591da06f96509",
+        "xml_sha256": "39bcba878d7daf6d1f4362708c7a173173013227646421910ad3f49488e77cc8",
+        "log_sha256": "4cda187970ac48b4ac44fcbad4c8c4902f89282fa7b3a64acbb5f99975f939c0"
+      },
+      {
+        "phase": "green1",
+        "exit": 0,
+        "source_sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+        "xml_sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+        "log_sha256": "c43ec3b7c566c003ddfa4a42e215cb1d6409eadabcc73788e2cd69b2656d0caf"
+      }
+    ],
+    "negative_records": [
+      {
+        "phase": "identity-artifact-negative",
+        "exit": 1,
+        "log_sha256": "c4caab6a2d0a7e603b8e2d08c3a577a402cf8910b84f3bdf74d5ba0f71c3df40"
+      },
+      {
+        "phase": "identity-edge-negative",
+        "exit": 1,
+        "log_sha256": "7220d1e31bf1283a6fdc6d1ad4a805907db96bf5421626a46a227eb2e1795323"
+      },
+      {
+        "phase": "classpath-missing-negative",
+        "exit": 1,
+        "log_sha256": "507207518a2a5944300f6dbc5594636dfd5af73b5ea8b041e5de633136fd8263"
+      },
+      {
+        "phase": "classpath-extra-negative",
+        "exit": 1,
+        "log_sha256": "dac69c59f92ba4e46453934877c1ac9321697d07215ea249d1fa1ae6452c186d"
+      },
+      {
+        "phase": "classpath-replacement-negative",
+        "exit": 1,
+        "log_sha256": "1744aa03acc2901a68422b23863a9c503626060e0e48e14909152a13d7fd1833"
+      },
+      {
+        "phase": "classpath-restore",
+        "exit": 0,
+        "log_sha256": "b92c4453e0d1b8f3a9b6160e38d58c42052eb3678db0dcc4e9b6d6dffd085ab1"
+      }
+    ],
+    "filecollection_negative_semantics": "Ordinary Gradle task invokes same production validator closure with real passed Configuration; marker restore is not a typed/default AGP Lint worker",
+    "device_verified": false,
+    "main_lint_executed": false
+  },
+  "checksum": {
+    "original": {
+      "exit": 0,
+      "log_sha256": "be05e270729bd504b484e19b4ed1c9a4bcd3f673877b993aca8bca1f3de60281"
+    },
+    "rejection": {
+      "exit": 1,
+      "log_sha256": "24597daf789ecd7fe7148b549177ea46c9bbaa687781107b5da6178b0e555614"
+    },
+    "restored": {
+      "exit": 0,
+      "log_sha256": "73a455f3c5ecf881d5cf349b04022609db1ba088b680eb39237be87a1a98a2aa"
+    }
+  },
+  "post_history": {
+    "original_attempt1_exit": 1,
+    "reason": "metadata drift",
+    "new_post_v2_exit": 0,
+    "new_partition_sha256": "445363d34c79ebd5bdd51c6873a3bfd6d358b51e560aaac61acfb3fdc1a3e7fc",
+    "no_engineering_rerun": true
+  },
+  "protection": {
+    "strict6962_same": true,
+    "current_actual_backups2009_same": true,
+    "native_objects578_statSHA_same": true,
+    "metadata9_partition": {
+      "strict_input4": 4,
+      "generated_sample3": "stat changes accepted, content UNKNOWN not read/copy/hashed independently",
+      "native_artifact2": "recreated stat accepted current modebytesSHA same actual backup"
+    },
+    "native200": "199 samebyte generated stat +1 exact ninja reorder/update; not append",
+    "lock6": "accepted exact journal state changes, inode all preserved",
+    "category_overlaps": "artifact2+native lock overlap native199; do not add counts as independent",
+    "no_related_background": true
+  },
+  "limitations": [
+    "No stage/commit/push or APK delivery authorization",
+    "Tests ran dirty frozen current content, not future commit object",
+    "Android runner/SAF/Binder/grant/systemIME/mic/JNI4K16K/device/model/private/remoteCI/release NOTRUN",
+    "fault5 actualTWR dynamic injection NOTRUN; static Code sufficient accepted for this narrow migration; fault6SAFdevice NOTRUN",
+    "Old Aactual binary drop-in Companion failure permanent; A-prime source nonAGP and Bactual interop separate prior evidence",
+    "Reflection/privateowner/Companion/staticfinal/helper synthetic precise differences accepted, not full classfile equality",
+    "Two extra POM not checksum trusted; bundledNOTICE/source/license/CVE/PGP/SBOM UNKNOWN; no new trust/download",
+    "cccc Kotlin/KTS unsupported, knots KTS zero, shell/embeddedJava blindspots and original compare2scopeUNKNOWN preserved",
+    "Host Lint not connected/executed; resolve identity not Lint execution",
+    "Public reports supplemental, excluded from product build input map; audio/model/key/session content not independently read/hashed by agent",
+    "Remaining maintenance22/physical29/production16Java not allJava0; AP5/M4/M5 not closed"
+  ]
+}

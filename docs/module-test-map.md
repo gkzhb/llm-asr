@@ -42,6 +42,29 @@ AssertionError1→恢复0，沿现 owned session/lease 清理；不是编译失�
 上下文隔离审查、必要正式 full 与安全本地提交，之后才可交付对应 APK。test-host 7 JVM、14 仪器方法与两个共享 fixture
 本批原样；Android runner/设备/麦克风/SAF/IME/Binder/JNI 运行均未在此切片验收。下文 M3 结果保历史，不沿用为本轮证据。
 
+## P10 / T5 test-host Kotlin 维护切片
+
+五个维护 Java 实现迁至同名 Kotlin：fixtures/java 下 FakePorts、FixtureChecks，src/test/kotlin 下
+FixtureContractTest，src/main/kotlin 下 ImeHostActivity，src/androidTest/kotlin 下 FixtureInstrumentationTest。
+FakeDocumentsProvider.java 原字节保留；不是 Kotlin 文件包 Java 字符串或隐藏旧实现。main/unit/androidTest
+精确 Kotlin owner 为 1/3/3；main/unit javac 预期 NO-SOURCE，但须核 fresh Kotlin task 和实际 class，
+AndroidTest javac 仍仅真实 Provider。KGP2.0.21/AGP8.6.1/JVM1.8/Werror 与正常单 module 锁固定。
+
+正式 host 接 `kotlin_testhost_migration_test.py` 的 source/self 普通及 -O、三生产 mutant 各九 routes
+普通/-O、原 Java 与 Kotlin 相同外部 consumer 的故障 probe；保留所有原命令和预算。
+独立 `android_test_fixture_test.py` 仍为原两个合法 fixture mutant、五阶段每600秒与真实七方法 XML，
+仅语言锚点和 fresh Kotlin / Java NO-SOURCE 检查相应更新。方法库存、Throws、fields、nullable 延迟读取、
+Java Throwable 成员 suppression 不因迁移删减。APK collector 强制五 Kotlin 加 Provider 非空，
+DEX private lambda 仅逐名/flags 精确例外，不放开任意 private/test 前缀或外 namespace。
+
+本批只授 targeted，实际结果及 NOTRUN 见 [P10状态](../reports/kotlin-testhost-p10/status.md)。
+原 SDK/Java源码互操作与静态形状证据可复用但非本轮重跑：共同迁移不保证任意旧 owner 二进制热替换；
+原 Aactual 的 Companion NoSuchFieldError 永久保留，A′source 与 Bactual 分层。允许的 Companion/static-final/
+private owner getter/匿名 lambda/Metadata 使反射/classfile 全集不同；不是生产包 API 的泛豁免。
+fault5 实际 fixture 内部 worker/cleanup 的 self/distinct close/Error/InterruptedException 注入未完成，
+fault6 SAF/Provider blocked IO、stop-before-delete 及 runner/Binder/grant/系统 IME 真实动态仍 NOTRUN。
+本阶段无 assemble/D8/签名/full/提交；旧三 APK 不冒当前切片交付。
+
 ## JUnit逐入口完整映射
 
 `core/src/test/kotlin/CoreRegressionJUnitTest.kt` 每@Test直接调用原main完整body；不反射、不吞异常、不只查退出码。JUnit4.13.2实际GradleTest执行，XML可核每个方法。原main保留，旧host全部再跑。timeout45000；单fork、512MiB，无并行跑PartRecovery固定工作路径。下列全部core34方法，runtime1方法，总35个；数量不是覆盖等价证明，原body/latch/异常身份/清理断言保持才是依据。

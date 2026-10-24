@@ -34,7 +34,7 @@ def fixture():
             root['children'].append(node('instrumentation', name='android.test.InstrumentationTestRunner',
                                          targetPackage=c.PACKAGES['host']))
         classes = {'product': ['Lorg/llmasr/minimal/MainActivity;'],
-                   'host': [c.PREFIX + 'ImeHostActivity;'],
+                   'host': [c.PREFIX + 'ImeHostActivity;', 'Lkotlin/jvm/internal/Intrinsics;', 'Lkotlin/Unit;'],
                    'test': [c.PREFIX + n + ';' for n in ['FixtureInstrumentationTest', 'FakeDocumentsProvider',
                                                         'FakePorts', 'FixtureChecks']]}[label]
         result[label] = {'manifest': root, 'classes': classes, 'methods': list(c.METHODS) if label == 'test' else [],
@@ -90,6 +90,19 @@ reject(lambda p: p['test']['classes'].append('Lorg/llmasr/minimal/MainActivity;'
 reject(lambda p: p['test']['methods'].pop(), 'method inventory')
 reject(lambda p: p['test']['methods'].append(c.METHODS[0]), 'method inventory')
 reject(lambda p: p['host'].update(certificates=['wrong']), 'certificate/v3')
+# The target host legitimately packages its existing core stdlib; instrumentation
+# must neither duplicate those runtime classes nor carry its own Kotlin runtime.
+role_realistic = fixture()
+c.require('Lkotlin/jvm/internal/Intrinsics;' in role_realistic['host']['classes']
+          and not any(name.startswith('Lkotlin/') for name in role_realistic['test']['classes']),
+          'role-realistic target runtime/instrumentation fixture')
+c.check_packages(role_realistic, 'approved')
+reject(lambda p: p['test']['classes'].append('Lkotlin/jvm/internal/Intrinsics;'),
+       'instrumentation Kotlin runtime duplicated/packaged')
+reject(lambda p: p['test']['classes'].append('Lkotlin/collections/UniqueRuntime;'),
+       'instrumentation Kotlin runtime duplicated/packaged')
+reject(lambda p: p['test']['classes'].append(c.PREFIX + 'ImeHostActivity;'), 'production class')
+reject(lambda p: p['test']['classes'].append('Lunknown/Unapproved;'), 'production class')
 
 # Exercise actual DEX parser with minimal legal class_def fixture and malformed/duplicate data.
 def dex():
@@ -186,6 +199,23 @@ for name in NEW_SAF_METHODS:
             c.require('JUnit3 method signature/code mismatch' in str(error), 'wrong SAF DEX shape rejection')
         else:
             raise ValueError('bad SAF JUnit3 method accepted: ' + name + ' ' + str(bad))
+
+# Exact KGP private lambda helpers are excluded, never arbitrary test-prefixed methods.
+for helper in c.PRIVATE_SUITE_LAMBDAS:
+    c.require(c.dex_suite_methods(suite_dex(names=[helper], flags=26)) == [], 'private lambda exclusion')
+    for flags in (1, 2, 9, 10, 25):
+        try:
+            c.dex_suite_methods(suite_dex(names=[helper], flags=flags))
+        except ValueError as error:
+            c.require('private Kotlin lambda signature/code mismatch' in str(error), 'wrong lambda refusal')
+        else:
+            raise ValueError('weakened private lambda accepted')
+try:
+    c.dex_suite_methods(suite_dex(names=['testUnknown$lambda$0'], flags=26))
+except ValueError as error:
+    c.require('JUnit3 method signature/code mismatch' in str(error), 'wrong unknown lambda refusal')
+else:
+    raise ValueError('arbitrary private test-prefix method accepted')
 
 # Real AGP single-variant metadata selection rejects stale extras and unsafe names.
 with tempfile.TemporaryDirectory(prefix='apk-selection-') as temp:

@@ -28,6 +28,21 @@ METHODS = sorted(['testEnginePayloadAndOrder', 'testReadinessRejectsBeforeLoad',
 JVM_METHODS = sorted(['enginePayloadAndOrder', 'readinessRejectsBeforeLoad', 'badBytesAreSafe',
                       'singleConfirmationAndPassword', 'lateResultIsInvalidated', 'cleanupRetainsOwner',
                       'reusedBackendQueuedCancellation'])
+# KGP 2.0.21 private static lambda helpers are not JUnit3 methods. Exact names,
+# private/static/final flags and nonempty concrete code are still checked below.
+PRIVATE_SUITE_LAMBDAS = {
+    'testProviderCancellationWaitsForQuery$lambda$0',
+    'testProviderCancellationWaitsForQuery$lambda$1',
+    'testSafImportCancellationWaitsForOpen$lambda$2',
+    'testInputConnectionAndManualInvalidation$lambda$8',
+    *('testInputConnectionAndManualInvalidation$lambda$8$lambda$' + str(i) for i in range(4, 8)),
+}
+T5_SOURCES = ('fixtures/java/org/llmasr/minimal/testhost/FakePorts.kt',
+              'fixtures/java/org/llmasr/minimal/testhost/FixtureChecks.kt',
+              'src/test/kotlin/org/llmasr/minimal/testhost/FixtureContractTest.kt',
+              'src/main/kotlin/org/llmasr/minimal/testhost/ImeHostActivity.kt',
+              'src/androidTest/kotlin/org/llmasr/minimal/testhost/FixtureInstrumentationTest.kt',
+              'src/androidTest/java/org/llmasr/minimal/testhost/FakeDocumentsProvider.java')
 PACKAGES = {'product': 'org.llmasr.minimal', 'host': 'org.llmasr.minimal.testhost',
             'test': 'org.llmasr.minimal.testhost.test'}
 
@@ -52,7 +67,14 @@ def module_inputs(root):
             require(not path.is_symlink(), 'module input symlink')
             if path.is_file():
                 paths.append(path)
-    require(any(p.suffix == '.java' for p in paths), 'module source inventory empty')
+    require(any(p.suffix in ('.java', '.kt') for p in paths), 'module source inventory empty')
+    for relative in T5_SOURCES:
+        source = base / relative
+        require(source.is_file() and not source.is_symlink() and source.stat().st_size > 0,
+                'required T5 module source missing/empty/symlink: ' + relative)
+        if source.suffix == '.kt':
+            old = base / relative.replace('/kotlin/', '/java/')
+            require(not old.with_suffix('.java').exists(), 'duplicate T5 Java/Kotlin owner: ' + relative)
     result = {}
     for path in sorted(paths):
         require(path.is_file() and not path.is_symlink(), 'module input missing/symlink: ' + str(path))
@@ -164,6 +186,10 @@ def dex_suite_methods(data):
                 require(index < len(methods), 'DEX encoded method index out of bounds')
                 owner, name, ret, argc = methods[index]
                 require(owner == SUITE, 'DEX method owner mismatch')
+                if name in PRIVATE_SUITE_LAMBDAS:
+                    require(flags == 26 and code % 4 == 0 and 0 < code <= len(data) - 16,
+                            'private Kotlin lambda signature/code mismatch')
+                    continue
                 if name.startswith('test'):
                     require(flags & 1 and not flags & (8 | 256 | 1024) and ret == 'V' and argc == 0
                             and code % 4 == 0 and 0 < code <= len(data) - 16, 'JUnit3 method signature/code mismatch')
@@ -198,6 +224,9 @@ def check_packages(packages, certificate):
         if label == 'product':
             require(not any(c.startswith(PREFIX) for c in classes), 'product fixture class leaked')
             continue  # Existing product identity/native/assets gate remains separate and unchanged.
+        if label == 'test':
+            require(not any(c.startswith('Lkotlin/') for c in classes),
+                    'instrumentation Kotlin runtime duplicated/packaged')
         require(not any(n.startswith(('assets/', 'lib/')) for n in p['entries']), 'test APK native/assets forbidden')
         require(not any(n['tag'].startswith('uses-permission') or n['tag'] == 'permission'
                         for n in root['children']), 'test APK permission forbidden')

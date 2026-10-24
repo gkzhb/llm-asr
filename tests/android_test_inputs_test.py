@@ -49,6 +49,7 @@ with tempfile.TemporaryDirectory(prefix='android-inputs-') as temp:
     collected = p.collect_build_inputs(root)
     c.require(all(k in collected for k in original), 'product collector omitted module')
     added = root / 'android/test-host/src/test/java/NewUntracked.java'
+    added.parent.mkdir(parents=True, exist_ok=True)
     added.write_text('new source\n')
     reject(lambda: c.check_inputs(root, original), 'SHA/inventory mismatch')
     c.require(str(added.relative_to(root)) in p.collect_build_inputs(root), 'product collector missed new file')
@@ -56,7 +57,7 @@ with tempfile.TemporaryDirectory(prefix='android-inputs-') as temp:
     added.write_text('bad trailing whitespace \n')
     reject(lambda: f.check_inventory(root), 'trailing whitespace')
     added.unlink()
-    key = 'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.java'
+    key = 'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.kt'
     path = root / key; old = path.read_bytes(); path.write_bytes(b'changed\n')
     reject(lambda: c.check_inputs(root, original), 'SHA/inventory mismatch')
     c.require(p.collect_build_inputs(root)[key] != collected[key], 'product collector SHA mutation missed')
@@ -70,6 +71,18 @@ with tempfile.TemporaryDirectory(prefix='android-inputs-') as temp:
         dest = root / relative; dest.parent.mkdir(parents=True, exist_ok=True); dest.write_text('ignored\n')
     c.check_inputs(root, original)
     c.require(p.collect_build_inputs(root) == collected, 'generated build/cache polluted product inventory')
+    # Every migrated owner and the retained provider are individually required.
+    for relative in c.T5_SOURCES:
+        path = root / 'android/test-host' / relative; data = path.read_bytes()
+        path.unlink()
+        reject(lambda: c.module_inputs(root), 'required T5 module source')
+        path.write_bytes(b'')
+        reject(lambda: c.module_inputs(root), 'required T5 module source')
+        path.write_bytes(data)
+    duplicate = root / 'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.java'
+    duplicate.write_text('duplicate owner\n')
+    reject(lambda: c.module_inputs(root), 'duplicate T5')
+    duplicate.unlink()
     # Missing required lock/config fails instead of silently shrinking the inventory.
     (root / 'android/test-host/gradle.lockfile').unlink()
     reject(lambda: c.module_inputs(root), 'missing/symlink')

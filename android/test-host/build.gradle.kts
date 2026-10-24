@@ -1,4 +1,11 @@
-plugins { id("com.android.application") }
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.security.MessageDigest
+
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+}
 
 android {
     namespace = "org.llmasr.minimal.testhost"
@@ -68,5 +75,43 @@ dependencies {
 tasks.configureEach {
     if (name.contains("Release")) {
         doFirst { error("Release test hosts are outside P1-B 2A") }
+    }
+}
+
+// Exact maintained Kotlin owners; shared fixtures belong only to test variants.
+val javafinalKotlinOwners = mapOf(
+    "main" to listOf("org/llmasr/minimal/testhost/ImeHostActivity.kt"),
+    "test" to listOf("org/llmasr/minimal/testhost/FixtureContractTest.kt",
+        "org/llmasr/minimal/testhost/FakePorts.kt", "org/llmasr/minimal/testhost/FixtureChecks.kt"),
+    "androidTest" to listOf("org/llmasr/minimal/testhost/FixtureInstrumentationTest.kt",
+        "org/llmasr/minimal/testhost/FakePorts.kt", "org/llmasr/minimal/testhost/FixtureChecks.kt"))
+kotlin.sourceSets.named("main") {
+    kotlin.setSrcDirs(listOf("src/main/kotlin"))
+    kotlin.include(javafinalKotlinOwners.getValue("main"))
+}
+kotlin.sourceSets.named("test") {
+    kotlin.setSrcDirs(listOf("src/test/kotlin", "fixtures/java"))
+    kotlin.include(javafinalKotlinOwners.getValue("test"))
+}
+kotlin.sourceSets.named("androidTest") {
+    kotlin.setSrcDirs(listOf("src/androidTest/kotlin", "fixtures/java"))
+    kotlin.include(javafinalKotlinOwners.getValue("androidTest"))
+}
+tasks.withType<KotlinCompile>().configureEach {
+    val rootsAndOwners = when (name) {
+        "compileDebugKotlin" -> listOf("src/main/kotlin" to javafinalKotlinOwners.getValue("main"))
+        "compileDebugUnitTestKotlin" -> listOf("src/test/kotlin" to javafinalKotlinOwners.getValue("test"),
+            "fixtures/java" to javafinalKotlinOwners.getValue("test"))
+        "compileDebugAndroidTestKotlin" -> listOf("src/androidTest/kotlin" to javafinalKotlinOwners.getValue("androidTest"),
+            "fixtures/java" to javafinalKotlinOwners.getValue("androidTest"))
+        else -> emptyList()
+    }
+    val allowed = rootsAndOwners.flatMap { (root, names) -> names.map { file("$root/$it").canonicalFile } }.toSet()
+    // Filter Kotlin ownership; the AndroidTest Java provider keeps its original root.
+    exclude { element -> element.file.extension == "kt" && element.file.canonicalFile !in allowed }
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
+        freeCompilerArgs.add("-Xjvm-default=all")
+        allWarningsAsErrors.set(true)
     }
 }

@@ -99,6 +99,16 @@ timeout 3000 python3 -O tests/kotlin_test_slice_test.py --contracts "$classes" -
 # Independent new nineteen-body contracts: five owners x green/red/restored; old budgets unchanged.
 timeout 5000 python3 -B tests/kotlin_test_slice_test.py --jvmnext-contracts "$classes" --evidence-dir "$slice_evidence/jvmnext-ordinary"
 timeout 5000 python3 -O tests/kotlin_test_slice_test.py --jvmnext-contracts "$classes" --evidence-dir "$slice_evidence/jvmnext-optimized"
+# T5 source and checker refusal contracts remain effective under ordinary and -O.
+timeout 30 python3 -B tests/kotlin_testhost_migration_test.py --source
+timeout 30 python3 -O tests/kotlin_testhost_migration_test.py --source
+timeout 30 python3 -B tests/kotlin_testhost_migration_test.py --self-test
+timeout 30 python3 -O tests/kotlin_testhost_migration_test.py --self-test
+# Three real production mutants x green/red/restored; old route budgets unchanged.
+timeout 3200 python3 -B tests/kotlin_testhost_migration_test.py --contracts "$classes" --evidence-dir "$slice_evidence/testhost-ordinary"
+timeout 3200 python3 -O tests/kotlin_testhost_migration_test.py --contracts "$classes" --evidence-dir "$slice_evidence/testhost-optimized"
+# Same external caller against original Java and maintained Kotlin; bounded real joins.
+timeout 2800 python3 -B tests/kotlin_testhost_migration_test.py --faults "$classes" --evidence-dir "$slice_evidence/testhost-faults"
 # Lifecycle faults call the real driver/wrapper; fake workers are not ABI evidence.
 timeout 180 python3 tests/runtime_log_enum_cleanup_test.py
 # Fresh isolated production enum copies: compile0 -> exact Java assertion1 -> restored0.

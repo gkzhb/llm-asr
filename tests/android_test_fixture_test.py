@@ -5,12 +5,14 @@ Copies only build definitions and Java/Kotlin sources; no signing keys, models,
 assets, audio, device access or existing class/build outputs. Cache is read-only
 with respect to dependency evidence: strict/offline, no lock/metadata write flags.
 """
+import argparse
 import hashlib
 import json
 import os
 from pathlib import Path
 import re
 import shutil
+import shlex
 import subprocess
 import tempfile
 import xml.etree.ElementTree as ET
@@ -103,18 +105,28 @@ def fixture_inputs(root):
 
 
 def main():
-    output = ROOT / '.work/p1b-build/2b'
-    output.mkdir(parents=True, exist_ok=True)
-    run = Path(tempfile.mkdtemp(prefix='behavior-', dir=output))
-    source = ROOT / 'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.java'
+    import mixed_compiler_lifecycle as life
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--evidence-dir', type=Path)
+    args = parser.parse_args()
+    if args.evidence_dir is None:
+        output = ROOT / '.work/p1b-build/2b'
+        output.mkdir(parents=True, exist_ok=True)
+        run = Path(tempfile.mkdtemp(prefix='behavior-', dir=output))
+    else:
+        run = args.evidence_dir.resolve()
+        run.mkdir(parents=True, exist_ok=False)
+    source = ROOT / 'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.kt'
     original = source.read_text()
     inputs = fixture_inputs(ROOT)
     receipt = {'driver_sha256': sha(Path(__file__)), 'pid': os.getpid(), 'runs': [],
                'android_runtime': 'not run', 'main_source_sha256': sha(source),
                'fixture_inputs': {p: sha(ROOT / p) for p in inputs}}
     # No existing/generated build outputs or private/large inputs enter the copy.
-    with tempfile.TemporaryDirectory(prefix='p1b-fixture-') as temporary:
-        work = Path(temporary)
+    # Retain the isolated tree and logs on failure; no deletion before owned exit.
+    work = run / 'isolated'
+    work.mkdir()
+    if work.is_dir():
         for relative in inputs:
             target = work / relative
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -125,9 +137,10 @@ def main():
         port = work / source.relative_to(ROOT)
         payload = original.replace('language English<asr_text>fixture sentence',
                                    'language English<asr_text>different legal sentence')
-        cleanup = original.replace('            cleanupEntered.countDown();',
-                                   '            cleanupCompleted = true;\n            cleanupEntered.countDown();')
-        if payload == original or cleanup == original:
+        cleanup_anchor = '            cleanupEntered.countDown()'
+        cleanup = original.replace(cleanup_anchor,
+                                   '            cleanupCompleted = true\n' + cleanup_anchor)
+        if original.count('language English<asr_text>fixture sentence') != 1 or original.count(cleanup_anchor) != 1:
             raise AssertionError('mutation target missing')
         phases = [('green-initial', original, None, None),
                   ('red-payload', payload, 'enginePayloadAndOrder', 'engine payload display'),
@@ -139,6 +152,7 @@ def main():
         tools = Path(env['ANDROID_HOME']) / 'build-tools/35.0.0'
         for name, content, red_method, diagnostic in phases:
             # Fresh classes/build per phase, not merely a rerun over stale outputs.
+            life.guard(work)
             for module in ['core', 'android/asr-runtime', 'android/test-host', 'android/app']:
                 shutil.rmtree(work / module / 'build', ignore_errors=True)
             port.write_text(content)
@@ -146,17 +160,39 @@ def main():
                        '--console=plain', '--max-workers=1', '--dependency-verification', 'strict',
                        '-Pandroid.aapt2FromMavenOverride=' + str(tools / 'aapt2')]
             log = run / (name + '.log')
-            with log.open('w') as stream:
-                result = subprocess.run(command, cwd=work, env=env, stdout=stream,
-                                        stderr=subprocess.STDOUT, timeout=600)
+            # The reused owner seals both streams and reaps descendants, including Gradle.
+            previous_home = os.environ.get('GRADLE_USER_HOME')
+            os.environ['GRADLE_USER_HOME'] = env['GRADLE_USER_HOME']
+            try:
+                result = life.run(['bash', '-c', 'cd ' + shlex.quote(str(work)) + ' && exec ' + shlex.join(command)], work, name, 600)
+            finally:
+                if previous_home is None:
+                    os.environ.pop('GRADLE_USER_HOME', None)
+                else:
+                    os.environ['GRADLE_USER_HOME'] = previous_home
+            log.write_bytes(result.stdout + result.stderr)
+            ledger = json.loads((work / (name + '.json')).read_text())
+            if not ledger.get('owned_exited') or not ledger.get('root_reaped') or ledger.get('timeout'):
+                raise AssertionError('fixture owned exit/timeout not behavior proof')
             text = log.read_text()
             if re.search(r'WARNING: [DR]8|malformed kotlin.Metadata|Unexpected rewriting', text):
                 raise AssertionError('DEX diagnostic requires review')
             if (result.returncode == 0) != (red_method is None):
                 raise AssertionError('unexpected Gradle status: ' + name)
+            for task in ['compileDebugUnitTestKotlin', 'compileDebugKotlin']:
+                if not re.search(r'^> Task :test-host:' + task + r'$', text, re.M):
+                    raise AssertionError('fresh Kotlin compilation not proved: ' + task)
             for task in ['compileDebugUnitTestJavaWithJavac', 'compileDebugJavaWithJavac']:
-                if ':test-host:' + task not in text or re.search(':test-host:' + task + r' (FAILED|NO-SOURCE|UP-TO-DATE|FROM-CACHE)', text):
-                    raise AssertionError('fresh Java compilation not proved: ' + task)
+                if not re.search(r'^> Task :test-host:' + task + r' NO-SOURCE$', text, re.M):
+                    raise AssertionError('expected fresh Java NO-SOURCE not proved: ' + task)
+            for variant, owners in [('debug', ['ImeHostActivity']),
+                                    ('debugUnitTest', ['FixtureContractTest', 'FakePorts', 'FixtureChecks'])]:
+                classes = work / 'android/test-host/build/tmp/kotlin-classes' / variant / 'org/llmasr/minimal/testhost'
+                for owner in owners:
+                    if not (classes / (owner + '.class')).is_file():
+                        raise AssertionError('fresh Kotlin class missing: ' + variant + '/' + owner)
+            if list((work / 'android/test-host/build/intermediates/javac').rglob('*.class')):
+                raise AssertionError('unexpected Java class emission in main/unit fixture')
             xml = work / ('android/test-host/build/test-results/testDebugUnitTest/TEST-' + CLASS + '.xml')
             check = xml_result(xml, red_method, diagnostic)
             saved = run / (name + '.xml'); shutil.copyfile(xml, saved)

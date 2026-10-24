@@ -91,13 +91,15 @@ INVENTORY = (
     'android/test-host/build.gradle.kts',
     'android/test-host/gradle.lockfile',
     'android/test-host/src/main/AndroidManifest.xml',
-    'android/test-host/src/main/java/org/llmasr/minimal/testhost/ImeHostActivity.java',
+    'android/test-host/src/main/kotlin/org/llmasr/minimal/testhost/ImeHostActivity.kt',
     'android/test-host/src/androidTest/AndroidManifest.xml',
-    'android/test-host/src/androidTest/java/org/llmasr/minimal/testhost/FixtureInstrumentationTest.java',
+    'android/test-host/src/androidTest/kotlin/org/llmasr/minimal/testhost/FixtureInstrumentationTest.kt',
     'android/test-host/src/androidTest/java/org/llmasr/minimal/testhost/FakeDocumentsProvider.java',
-    'android/test-host/src/test/java/org/llmasr/minimal/testhost/FixtureContractTest.java',
-    'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.java',
-    'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FixtureChecks.java',
+    'android/test-host/src/test/kotlin/org/llmasr/minimal/testhost/FixtureContractTest.kt',
+    'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FakePorts.kt',
+    'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FixtureChecks.kt',
+    'tests/kotlin_testhost_migration_test.py',
+    'reports/kotlin-testhost-p10/status.md',
 )
 
 

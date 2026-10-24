@@ -16,6 +16,28 @@ bash scripts/nix-env.sh apk --cache-only bash scripts/verify-local.sh android-te
 
 纯`tests/android_test_apk_test.py`普通/-O调用同checker策略和DEX解析，有限坏runner/target/权限/export/backup/library/native/assets/class/method及产品泄漏拒绝；它们是parsed-report/DEX fixture，不是签名APK变异或设备运行。`tests/android_test_inputs_test.py`在临时tree真实新增未跟踪源、变更/遗漏/SHA错/格式错、缺lock及build/cache排除，调用相同module/product/format collector，非源码grep。新module maintained全库存动态扫描src/fixtures+build.gradle.kts/lock，排除生成build/cache。
 
+### P10 test-host Kotlin targeted（不等于三包/设备验收）
+
+本批五维护实现真实迁为 Kotlin、Java Provider 保留，精确 main1/unit3/androidTest3 源归属；
+KGP2.0.21/AGP8.6.1/Gradle8.7/JDK17/SDK35/JVM1.8/Werror/单worker/严格离线保持。
+仅 test-host 正常锁采纳已审隔离候选，不在 verify 写锁/metadata，不导入 prepare 临时任务/probe guard。
+新增维护 source/self guard 普通/-O、三真实生产 mutant 普通/-O 和原 Java/Kotlin 外部同 caller 故障入口
+接正式 host，原全部 commands/timeouts 原样保留。fixture 五阶段仍各600秒、exact 七方法 XML；
+fresh main/unit Kotlin task 与新 class 替代旧 Java 实际 emission 门槛，Java NO-SOURCE 必须明确核实。
+
+APK checker 同时保 source 五 Kotlin+Provider 非空、namespace/DEX唯一 owner/14个public concrete `()V`、
+runner/签名/无权限nativeassets。目标 host 可合法携带既有 core 依赖的 Kotlin stdlib；instrumentation
+不得重复打包 Kotlin runtime 或目标 host class，不新增 runtime 依赖、不按旧包类数量硬编码。逐名 private static final lambda 仅
+编译器附属候选，parsed DEX 合成测试不等真实 D8 包验收。本阶段禁止主 assemble/D8/sign/full；
+旧三 APK/metadata/formal receipts 保留，不视为迁后对应产物。fresh 接受后才另授唯一 full 与安全提交。
+
+当批 source/self/故障/真实 mutant/host/fast35+host7/graph/format 的 pass/fail/NOTRUN 分列
+[P10状态](../reports/kotlin-testhost-p10/status.md)，不是沿用上述历史full。fault5 actual fixture-path 的
+primary-self/distinct-close/Error/interrupt 未有合法确定性 seam，辅助静态/手译不冒动态；fault6
+SAF/provider blocked IO/stop-before-delete 与 Android runner/Binder/grant/系统IME设备仍 NOTRUN。
+两缓存额外 POM 未授信，工具 bundled NOTICE/source/archive、legal/CVE/PGP/SBOM 未知仍保留，
+无 runtime 新依赖或下载授权。
+
 ### N1：依赖prepare安全边界
 
 **旧ignored历史主树`deactivateDependencyLocking + --write-locks`路径已废弃，禁止重放；它曾删除root旧锁，不能作为推荐入口。** 历史日志/init只为事故审计保留。正常verify入口始终拒绝所有写锁/metadata/init/任意属性覆盖。2B不重做prepare、无新依赖/下载或锁变更。

@@ -614,7 +614,148 @@ public final class KotlinMigrationTest {
         controller.requestCancel(null);
         System.out.println("PASS next Controller Java ABI/nullable wiring");
     }
+    private static void k2jRecordingShape() throws Exception {
+        Class<?> type = RecordingControl.class;
+        require(type.getModifiers() == (Modifier.PUBLIC | Modifier.FINAL)
+            && type.getSuperclass() == Object.class && type.getInterfaces().length == 0,
+            "K2J RecordingControl final class ABI");
+        require(type.getDeclaredConstructors().length == 1
+            && type.getDeclaredConstructor().getModifiers() == Modifier.PUBLIC,
+            "K2J RecordingControl constructor ABI");
+        String[] names = {"start", "stop", "cancel", "captureReleased", "tryCommitInference",
+            "stopped", "cancelled", "released", "committed"};
+        require(type.getDeclaredMethods().length == names.length, "K2J RecordingControl method inventory");
+        for (String name : names) {
+            java.lang.reflect.Method method = type.getDeclaredMethod(name,
+                name.equals("start") ? new Class<?>[]{Runnable.class} : new Class<?>[0]);
+            require(Modifier.isSynchronized(method.getModifiers()), "K2J RecordingControl synchronized ABI: " + name);
+            require(method.getModifiers() == (Modifier.PUBLIC | Modifier.FINAL | Modifier.SYNCHRONIZED)
+                && method.getReturnType() == (name.equals("stop") || name.equals("captureReleased") ? void.class : boolean.class)
+                && method.getExceptionTypes().length == 0, "K2J RecordingControl method ABI: " + name);
+        }
+        require(type.getDeclaredFields().length == 5, "K2J RecordingControl state inventory");
+        for (String name : new String[]{"stopped", "cancelled", "started", "released", "committed"}) {
+            java.lang.reflect.Field field = type.getDeclaredField(name);
+            require(field.getModifiers() == Modifier.PRIVATE && field.getType() == boolean.class,
+                "K2J RecordingControl ordinary private state: " + name);
+        }
+    }
+    private static void k2jBackendFailure() {
+        for (Throwable sentinel : new Throwable[]{new AssertionError("synthetic-backend"),
+                new IllegalStateException("synthetic-backend")}) {
+            sentinel.addSuppressed(new IllegalArgumentException("synthetic-suppressed"));
+            RecordingControl control = new RecordingControl();
+            Throwable observed = batchFailure(() -> control.start(() -> {
+                require(Thread.holdsLock(control), "K2J backend must hold receiver monitor");
+                if (sentinel instanceof Error) throw (Error) sentinel;
+                throw (RuntimeException) sentinel;
+            }));
+            require(observed == sentinel && observed.getSuppressed().length == 1,
+                "K2J backend Throwable identity");
+            require(control.start(() -> {}), "K2J backend failure must permit retry");
+        }
+        RecordingControl eligible = new RecordingControl();
+        Throwable npe = batchFailure(() -> eligible.start(null));
+        require(npe != null && npe.getClass() == NullPointerException.class && npe.getCause() == null
+            && npe.getSuppressed().length == 0, "K2J eligible null exact Throwable shape");
+        System.out.println("K2J_NULL message=" + (npe.getMessage() == null ? "<null>" :
+            java.util.Base64.getEncoder().encodeToString(npe.getMessage().getBytes(StandardCharsets.UTF_8)))
+            + " cause=null suppressed=0");
+        require(eligible.start(() -> {}), "K2J null failure must permit retry");
+    }
+    private static void k2jRecordingStates() {
+        RecordingControl cancelled = new RecordingControl();
+        require(cancelled.start(() -> {}), "K2J cancelled fixture start");
+        require(cancelled.cancel() && cancelled.cancel(), "K2J repeated cancellation accepted");
+        cancelled.captureReleased();
+        require(!cancelled.tryCommitInference(), "K2J cancelled capture must never commit");
+        require(cancelled.stopped() && cancelled.cancelled() && cancelled.released() && !cancelled.committed()
+            && !cancelled.start(null), "K2J cancellation state/nullable short circuit");
+        RecordingControl control = new RecordingControl();
+        require(!control.stopped() && !control.cancelled() && !control.released() && !control.committed()
+            && !control.tryCommitInference(), "K2J initial recording state");
+        final boolean[] monitor = {false};
+        require(control.start(() -> { monitor[0] = Thread.holdsLock(control); }), "K2J first start");
+        require(monitor[0] && !control.start(null) && !control.tryCommitInference(), "K2J started before release");
+        control.stop();
+        require(control.stopped() && !control.released() && !control.cancelled(), "K2J stop is not release/cancel");
+        control.captureReleased(); control.captureReleased();
+        require(control.tryCommitInference() && !control.tryCommitInference() && !control.cancel(),
+            "K2J commit exactly once and rejects late cancel");
+        control.stop();
+        require(control.committed() && control.stopped() && control.released() && !control.cancelled(),
+            "K2J committed terminal state");
+        for (int mode = 0; mode < 3; mode++) {
+            RecordingControl rejected = new RecordingControl();
+            if (mode == 0) rejected.stop(); else if (mode == 1) rejected.cancel(); else rejected.captureReleased();
+            require(!rejected.start(null) && !rejected.tryCommitInference(), "K2J rejected null never dereferenced");
+        }
+        RecordingControl reentrant = new RecordingControl();
+        require(reentrant.start(() -> { reentrant.cancel(); reentrant.captureReleased(); }),
+            "K2J reentrant start retains callback result order");
+        require(reentrant.cancelled() && reentrant.stopped() && reentrant.released()
+            && !reentrant.tryCommitInference(), "K2J reentrant cancellation wins commit");
+        RecordingControl nested = new RecordingControl();
+        final boolean[] nestedAccepted = {false};
+        require(nested.start(() -> { nestedAccepted[0] = nested.start(() -> {}); }), "K2J nested outer start");
+        require(nestedAccepted[0] && !nested.start(null), "K2J started assignment follows reentrant backend");
+    }
+    private static void k2jRequestContext() throws Exception {
+        Class<?> type = RequestContext.class;
+        require(type.getModifiers() == (Modifier.PUBLIC | Modifier.FINAL) && type.getSuperclass() == Object.class
+            && type.getInterfaces().length == 0 && type.getDeclaredMethods().length == 0
+            && type.getDeclaredConstructors().length == 1
+            && type.getDeclaredConstructor(String.class, TaskKind.class).getModifiers() == Modifier.PUBLIC,
+            "K2J RequestContext constructor/no-accessor ABI");
+        String[] names = {"requestId", "kind", "cleanedTemporary", "inferenceReported", "inputWav"};
+        Class<?>[] kinds = {String.class, TaskKind.class, int.class, boolean.class, java.io.File.class};
+        require(type.getDeclaredFields().length == 5, "K2J RequestContext field inventory");
+        for (int i = 0; i < names.length; i++) {
+            java.lang.reflect.Field field = type.getDeclaredField(names[i]);
+            require(field.getType() == kinds[i] && field.getModifiers() == (Modifier.PUBLIC | (i < 2 ? Modifier.FINAL : 0)),
+                "K2J RequestContext direct field ABI: " + names[i]);
+        }
+        String id = new String("synthetic-id");
+        for (RequestContext context : new RequestContext[]{new RequestContext(null, null), new RequestContext(id, TaskKind.INFERENCE)}) {
+            require(context.cleanedTemporary == 0 && !context.inferenceReported && context.inputWav == null,
+                "K2J RequestContext zero defaults");
+            require(context.requestId == (context.kind == null ? null : id), "K2J RequestContext identity/nullable constructor");
+            java.io.File wav = new java.io.File("synthetic-not-opened.wav");
+            context.cleanedTemporary = -7; context.inferenceReported = true; context.inputWav = wav;
+            require(context.cleanedTemporary == -7 && context.inferenceReported && context.inputWav == wav,
+                "K2J RequestContext direct mutable field identity");
+            context.inputWav = null;
+            require(context.inputWav == null, "K2J RequestContext nullable reassignment");
+        }
+    }
+    private static void k2jOwners() throws Exception {
+        String expected = System.getProperty("k2j.owner.dir");
+        require(expected != null, "K2J loaded owner directory required");
+        Path root = java.nio.file.Paths.get(expected).toRealPath();
+        for (Class<?> type : new Class<?>[]{RecordingControl.class, RequestContext.class, KotlinMigrationTest.class}) {
+            Path origin = java.nio.file.Paths.get(type.getProtectionDomain().getCodeSource().getLocation().toURI()).toRealPath();
+            require(origin.equals(root), "K2J loaded owner must shadow dependency: " + type.getName());
+            String relative = type.getName().replace('.', '/') + ".class";
+            byte[] disk = Files.readAllBytes(root.resolve(relative));
+            byte[] loaded;
+            try (java.io.InputStream input = type.getResourceAsStream("/" + relative)) {
+                ByteArrayOutputStream output = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096]; int count;
+                while ((count = input.read(buffer)) != -1) output.write(buffer, 0, count);
+                loaded = output.toByteArray();
+            }
+            require(Arrays.equals(disk, loaded), "K2J loaded owner bytes: " + type.getName());
+            System.out.println("K2J_OWNER " + type.getName() + " " + origin + " "
+                + java.util.Base64.getEncoder().encodeToString(java.security.MessageDigest.getInstance("SHA-256").digest(loaded)));
+        }
+    }
+    private static void k2jContracts() throws Exception {
+        if (System.getProperty("k2j.owner.dir") != null) k2jOwners();
+        k2jRecordingShape(); k2jBackendFailure(); k2jRecordingStates(); k2jRequestContext();
+        System.out.println("PASS K2J selected production ABI/null/monitor/state/identity");
+    }
     public static void main(String[] args) throws Exception {
+        k2jContracts();
         nextControllerAbi();
         runtimeLogEnums();
         runtimeLogPorts();

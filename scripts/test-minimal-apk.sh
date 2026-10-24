@@ -88,6 +88,10 @@ bash scripts/compile-jvm-sources.sh "$classes" "" "${sources[@]}" \
   tests/ModelProviderBoundaryTest.kt
 run() { timeout 45 java -cp "$classes:$KOTLIN_HOME/lib/kotlin-stdlib.jar" "$@"; }
 run KotlinMigrationTest
+# Selected reverse-direction production contracts, same fresh canonical host dependency.
+k2j_evidence=$(mktemp -d "$root/.work/build/kotlin-to-java-XXXXXX")
+timeout 4200 python3 -B tests/kotlin_to_java_contract_test.py --contracts "$classes" --evidence-dir "$k2j_evidence/ordinary"
+timeout 4200 python3 -O tests/kotlin_to_java_contract_test.py --contracts "$classes" --evidence-dir "$k2j_evidence/optimized"
 # The same checker rejects malformed discovery/source fixtures in both Python modes.
 timeout 30 python3 -B tests/kotlin_test_slice_test.py --source
 timeout 30 python3 -B tests/kotlin_test_slice_test.py --self-test

@@ -100,6 +100,12 @@ INVENTORY = (
     'android/test-host/fixtures/java/org/llmasr/minimal/testhost/FixtureChecks.kt',
     'tests/kotlin_testhost_migration_test.py',
     'reports/kotlin-testhost-p10/status.md',
+    'android/app/src/org/llmasr/minimal/audio/RecordingControl.java',
+    'android/app/src/org/llmasr/minimal/task/RequestContext.java',
+    'tests/KotlinMigrationTest.java',
+    'tests/kotlin_to_java_contract_test.py',
+    'tests/gradle_inputs_test.py',
+    'reports/kotlin-to-java-p1/status.md',
 )
 
 

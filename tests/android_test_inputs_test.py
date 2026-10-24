@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Actual shared collectors on temporary trees: additions, mutation, omissions, format."""
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -83,6 +84,39 @@ with tempfile.TemporaryDirectory(prefix='android-inputs-') as temp:
     duplicate.write_text('duplicate owner\n')
     reject(lambda: c.module_inputs(root), 'duplicate T5')
     duplicate.unlink()
+    # Reciprocal production migration: the real collector follows exact new pins,
+    # not Git tracking or stale Kotlin source paths. No model/audio bytes copied.
+    pins_path = root / 'gradle/baseline-inputs.json'
+    pins_original = pins_path.read_bytes()
+    pins = json.loads(pins_original)
+    for owner in ('audio/RecordingControl', 'task/RequestContext'):
+        java_key = 'android/app/src/org/llmasr/minimal/' + owner + '.java'
+        kotlin_key = java_key[:-5] + '.kt'
+        java_path = root / java_key
+        java_original = java_path.read_bytes()
+        java_path.unlink()
+        kotlin_path = root / kotlin_key
+        kotlin_path.write_text('// synthetic original Kotlin owner\n')
+        pins['files'].pop(java_key)
+        pins['files'][kotlin_key] = hashlib.sha256(kotlin_path.read_bytes()).hexdigest()
+        pins_path.write_text(json.dumps(pins))
+        before = p.collect_build_inputs(root)
+        c.require(kotlin_key in before and java_key not in before, 'reciprocal old owner inventory')
+        kotlin_path.unlink()
+        pins['files'].pop(kotlin_key)
+        java_path.write_text('// synthetic untracked Java replacement\n')
+        expected_sha = hashlib.sha256(java_path.read_bytes()).hexdigest()
+        pins['files'][java_key] = expected_sha
+        pins_path.write_text(json.dumps(pins))
+        after = p.collect_build_inputs(root)
+        c.require(java_key in after and kotlin_key not in after and after[java_key] == expected_sha,
+                  'reciprocal selected Java owner/SHA missing')
+        c.require(set(after) == (set(before) - {kotlin_key}) | {java_key}, 'reciprocal exact source inventory')
+        c.require(all(after[k] == before[k] for k in set(before) & set(after)
+                      if k != 'gradle/baseline-inputs.json'), 'reciprocal unrelated input drift')
+        java_path.write_bytes(java_original)
+    pins_path.write_bytes(pins_original)
+    c.require(p.collect_build_inputs(root) == collected, 'reciprocal input restoration')
     # Missing required lock/config fails instead of silently shrinking the inventory.
     (root / 'android/test-host/gradle.lockfile').unlink()
     reject(lambda: c.module_inputs(root), 'missing/symlink')

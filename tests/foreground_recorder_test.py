@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run real capture + real Kotlin gate/PCM with fake Android media; NOT microphone acceptance."""
+"""Run real capture + real gate/PCM with fake Android media; NOT microphone acceptance."""
 import os
 from pathlib import Path
 import subprocess
@@ -85,7 +85,11 @@ def compile_capture(root, source):
         raise AssertionError('missing/duplicate capture source')
     production = root / actual[0].name
     production.write_text(source)
-    paths += [production, BASE / 'RecordingControl.kt', BASE / 'PcmWave.kt', BASE / 'WaveInput.java']
+    gate = [BASE / ('RecordingControl' + ext) for ext in ('.java', '.kt')
+            if (BASE / ('RecordingControl' + ext)).is_file()]
+    if len(gate) != 1:
+        raise AssertionError('missing/duplicate RecordingControl source')
+    paths += [production, gate[0], BASE / 'PcmWave.kt', BASE / 'WaveInput.java']
     classes = root / 'classes'
     result = subprocess.run(['bash', str(ROOT / 'scripts/compile-jvm-sources.sh'), str(classes), '',
                              *map(str, paths)], capture_output=True, text=True, timeout=150)

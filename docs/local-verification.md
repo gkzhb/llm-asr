@@ -167,3 +167,21 @@ C1证据更正：旧batch复杂度compare.json0字节、无独立exit/stderr，�
 前述targeted/未full文字为当时历史。本轮R1 fresh同sol上下文隔离定点CLOSED经父接受后，唯一cache-only strict/offline统一full真实exit0：174 actions全部executed，原35+新7 JVM零failure/error/skip，14仪器方法仅编译/全DEX；当次209build/10module80native/current/三包与独立产品receipt绑定。生产app/runtime Lint Error/Fatal0，warnings分类defer，host Lint未执行（identity resolve不是执行）；fixture五阶段0/1/0/1/0、真实NewApi及checksum目标拒绝恢复、原host/ABI/mutants/module/JNI/native/签名权限资产gate均实际执行。详细新[full报告](../reports/android-test-m5-saf-open/full.md)与[状态](../reports/android-test-m5-saf-open/status.md)，旧P1A/P1B与targeted/R1报告字节不回写。
 
 578 MNN对象缓存保持，仅JNI复编/增量链接，非全native clean或hermetic。新增SAF行为Android red/green、14方法runner发现/执行/sentinel、系统SAF/Binder/grant/真实生命周期、JNI-device/4K16K/mic/private/模型计算下载/远端CI/release/R8均not run；同sol fresh为上下文隔离非跨家族。当前未安全本地提交，不宣称本轮APK交付或整个M5关闭；父消费封口后另派reviewagent清单安全审及限定本地提交。
+
+
+## Kotlin→Java 首批：RecordingControl 与 RequestContext（llm-asr-2a7）
+
+本批方向与旧 Java→Kotlin 历史批次相反，不回退历史、不移除 Kotlin 工具链/stdlib/Gradle DSL。仅两个生产 owner 从 Kotlin 改为 Java；生产总数仍63，45Kt+18Java，不代表全部迁移完成。当前状态见 [首批报告](../reports/kotlin-to-java-p1/status.md)。
+
+迁移前必须用同一增强 `tests/KotlinMigrationTest.java` 对原 Kotlin fresh compile0/run0，并冻结 caller SHA；迁移后保持九个 public final synchronized receiver 方法、原 start/null/Throwable/state 顺序以及 RequestContext 直接字段/nullable/构造 ABI。原基线实测 eligible null 为 NPE/null message/null cause/0suppressed；Java 显式保留，语言来源的 Metadata/debug 差异不扩大为可达 API 差异。
+
+新增 `tests/kotlin_to_java_contract_test.py --baseline --evidence-dir NEW_DIR` 仅用于迁移前；正式 host 在当前 fresh classes 上接入 `--contracts CP --evidence-dir NEW_DIR` ordinary/-O 两次，每次4200秒，四个生产 mutant 各 green/compile0+精确 named assertion1/restored0（共12route）。复用现有 owned 生命周期与依赖 lease，未确认退出保留输入。其余原 host 命令、预算、JNI/native/签名/权限/完整 full gate 不变。
+
+`gradle/baseline-inputs.json` 仅交换两源 path/SHA；staging 测试真实拒绝 Java omission/drift 与旧 Kotlin 复活 duplicate；共享 collector 增加 Kotlin→Java 的 reciprocal exact inventory/SHA fixture。捕获测试仅将 RecordingControl 依赖改为唯一 Java/Kotlin owner，仍执行原12fake-media阶段，不等同麦克风设备验收。复杂度仅在获准独立有限源码副本中逐fileadd并建立真实分析snapshot HEAD，不动主index；新增Java/driver必须纳入，语言覆盖变化保留FAIL-UNKNOWN与人工映射。
+
+本 targeted 阶段不执行 full/主assemble/D8/sign、不覆写三APK/正式receipt、不提交产品或报告APK可验证。后续须 fresh上下文隔离审查、单次完整验证、输入身份绑定及两阶段安全本地提交。Android runner/设备/native模型运行保持not run。
+
+
+### 首批 driver 恢复安全续接边界
+
+`tests/kotlin_to_java_contract_test.py` 对每个 child 先记录全新 ledger 路径，恢复 mutant 前同时核共享 source/dependency guard 与全部本次 attempted ledger 的 `owned_exited is True` / `root_reaped is True`。缺记录、坏 JSON 或未确认退出保留 mutant/source/tree/lease、拒绝重用；原异常对象继续传播并附恢复拒绝说明。已确认退出的工程错误可以安全恢复，但不算目标 red。普通/-O 故障证据由独占 ignored harness 调用实际 suite，控制 fake compile/Java 输出及 bounded real synthetic child，未知 record 在真实 child 已退出后注入；不冒真实失控编译器证明。其正常 fake 路线输出也不作真实产品 mutant 证据，真实四 mutant 双模式另有编译/owner/precise-red/restore记录。外层监督不重复占有内层 dependency lease，不绕 guard。旧失败/raw、原 host 已正常删除的 classpath 及另授同源窄重建均独立记录，不回填历史receipt或重跑成功整链。

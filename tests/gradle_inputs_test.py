@@ -82,6 +82,38 @@ class InputTests(unittest.TestCase):
             module.stage(self.root, self.root / 'rejected', self.native)
         self.assertFalse((self.root / 'rejected').exists())
 
+    def test_selected_java_omission_rejected_before_output(self):
+        for owner in ('audio/RecordingControl', 'task/RequestContext'):
+            path = self.root / ('android/app/src/org/llmasr/minimal/' + owner + '.java')
+            original = path.read_bytes()
+            path.unlink()
+            output = self.root / 'missing-selected-output'
+            with self.assertRaisesRegex(ValueError, 'Frozen product inventory mismatch'):
+                module.stage(self.root, output, self.native)
+            self.assertFalse(output.exists())
+            path.write_bytes(original)
+
+    def test_selected_java_drift_rejected_before_output(self):
+        for owner in ('audio/RecordingControl', 'task/RequestContext'):
+            path = self.root / ('android/app/src/org/llmasr/minimal/' + owner + '.java')
+            original = path.read_bytes()
+            path.write_bytes(original + b'// synthetic drift\n')
+            output = self.root / 'drift-selected-output'
+            with self.assertRaisesRegex(ValueError, 'Frozen product input mismatch'):
+                module.stage(self.root, output, self.native)
+            self.assertFalse(output.exists())
+            path.write_bytes(original)
+
+    def test_resurrected_kotlin_owner_rejected_before_output(self):
+        for owner in ('audio/RecordingControl', 'task/RequestContext'):
+            duplicate = self.root / ('android/app/src/org/llmasr/minimal/' + owner + '.kt')
+            duplicate.write_text('// synthetic duplicate old owner\n')
+            output = self.root / 'duplicate-selected-output'
+            with self.assertRaisesRegex(ValueError, 'Frozen product inventory mismatch'):
+                module.stage(self.root, output, self.native)
+            self.assertFalse(output.exists())
+            duplicate.unlink()
+
     def test_added_asset_rejected(self):
         (self.root / 'android/app/assets/extra.txt').write_text('fixture')
         with self.assertRaisesRegex(ValueError, 'inventory mismatch'):

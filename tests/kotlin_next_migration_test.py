@@ -52,21 +52,36 @@ public java.io.File getCacheDir(){return dir;} public ContentResolver getContent
 public android.content.res.AssetManager getAssets(){return new android.content.res.AssetManager();}
 public android.content.res.Resources getResources(){return new android.content.res.Resources();}
 public static final String INPUT_METHOD_SERVICE="ime"; public Object getSystemService(String n){return new android.view.inputmethod.InputMethodManager();}
-public int checkSelfPermission(String permission){return 0;} public void startActivity(Intent intent){} }
+public int permission; public int checkSelfPermission(String name){return permission;} public void startActivity(Intent intent){} }
 ''',
     'android/view/ContextThemeWrapper.java': 'package android.view; public class ContextThemeWrapper extends android.content.Context {public ContextThemeWrapper(android.content.Context c,int t){}}',
     'android/view/inputmethod/EditorInfo.java': 'package android.view.inputmethod; public class EditorInfo {public String packageName="fixture",fieldName="field";public int fieldId=1,inputType=1,imeOptions=0;}',
     'android/view/inputmethod/InputConnection.java': 'package android.view.inputmethod; public interface InputConnection {boolean commitText(CharSequence text,int n);}',
-    'android/view/inputmethod/InputMethodManager.java': 'package android.view.inputmethod; public class InputMethodManager {public void showInputMethodPicker(){}}',
+    'android/view/inputmethod/InputMethodManager.java': '''package android.view.inputmethod; public class InputMethodManager {
+public int calls;public RuntimeException failure;public Runnable event=()->{};
+public void showInputMethodPicker(){calls++;event.run();if(failure!=null)throw failure;}}
+''',
+    'android/widget/Toast.java': '''package android.widget; public class Toast {
+public static final int LENGTH_SHORT=0;public static String text="";public static int shows;
+public static Toast makeText(android.content.Context c,CharSequence t,int duration){text=t.toString();return new Toast();}
+public void show(){shows++;}}
+''',
     'android/inputmethodservice/InputMethodService.java': '''package android.inputmethodservice;
 public class InputMethodService extends android.content.Context {
 public void onCreate(){} public boolean onEvaluateFullscreenMode(){return false;}
 public android.view.View onCreateInputView(){return null;} public void onStartInput(android.view.inputmethod.EditorInfo i,boolean r){}
 public void onStartInputView(android.view.inputmethod.EditorInfo i,boolean r){} public void onWindowShown(){}
 public void onFinishInputView(boolean f){} public void onFinishInput(){} public void onWindowHidden(){}
-public void onUnbindInput(){} public void onDestroy(){} public void requestHideSelf(int f){}
-public android.view.inputmethod.EditorInfo getCurrentInputEditorInfo(){return new android.view.inputmethod.EditorInfo();}
-public android.view.inputmethod.InputConnection getCurrentInputConnection(){return null;} public boolean isInputViewShown(){return true;}}
+public void onUnbindInput(){} public void onDestroy(){}
+public int hides,previousCalls;public boolean previousResult=true,shown=true,hideChangesShown;
+public RuntimeException hideFailure,previousFailure,serviceFailure;public boolean noManager;
+public Runnable event=()->{};public final android.view.inputmethod.InputMethodManager manager=new android.view.inputmethod.InputMethodManager();
+public android.view.inputmethod.EditorInfo info=new android.view.inputmethod.EditorInfo();public android.view.inputmethod.InputConnection connection;
+public void requestHideSelf(int f){hides++;event.run();if(hideFailure!=null)throw hideFailure;if(hideChangesShown)shown=false;}
+public final boolean switchToPreviousInputMethod(){previousCalls++;event.run();if(previousFailure!=null)throw previousFailure;return previousResult;}
+public Object getSystemService(String n){if(serviceFailure!=null)throw serviceFailure;return noManager?null:manager;}
+public android.view.inputmethod.EditorInfo getCurrentInputEditorInfo(){return info;}
+public android.view.inputmethod.InputConnection getCurrentInputConnection(){return connection;} public boolean isInputViewShown(){return shown;}}
 ''',
     'android/widget/ArrayAdapter.java': 'package android.widget; public class ArrayAdapter<T> {public ArrayAdapter(android.content.Context c,int id,T[] values){}}',
     'android/widget/Spinner.java': 'package android.widget; public class Spinner extends android.view.View {public Spinner(android.content.Context c){} public void setAdapter(ArrayAdapter<?> a){} public Object getSelectedItem(){return "Chinese";}public void setEnabled(boolean b){}}',
@@ -141,15 +156,18 @@ public android.content.Context getContext(){return new android.content.Context()
 public boolean post(Runnable r){return true;}
 ''')
     result['android/widget/TextView.java'] = '''package android.widget; public class TextView extends android.view.View {
-public TextView(android.content.Context c){}public void setText(CharSequence s){}public void setTextSize(float n){}public void setTextColor(int n){}public void setTextIsSelectable(boolean v){} }
+private String text="";public TextView(android.content.Context c){}public void setText(CharSequence s){text=s.toString();}public CharSequence getText(){return text;}public void setTextSize(float n){}public void setTextColor(int n){}public void setTextIsSelectable(boolean v){} }
 '''
     result['android/widget/Button.java'] = '''package android.widget; public class Button extends TextView {
 public Button(android.content.Context c){super(c);}public void setAllCaps(boolean v){}public void setMinHeight(int v){}
-public void setMinWidth(int v){}public void setMinimumWidth(int v){}public void setOnClickListener(android.view.View.OnClickListener l){}public void setEnabled(boolean b){} }
+private android.view.View.OnClickListener listener;private boolean enabled=true;
+public void setMinWidth(int v){}public void setMinimumWidth(int v){}public void setOnClickListener(android.view.View.OnClickListener l){listener=l;}public void setEnabled(boolean b){enabled=b;}
+public boolean isEnabled(){return enabled;}public boolean performClick(){if(!enabled)return false;listener.onClick(this);return true;} }
 '''
     result['android/widget/LinearLayout.java'] = '''package android.widget; public class LinearLayout extends android.view.View {
-public static final int VERTICAL=1;public LinearLayout(android.content.Context c){}public void setOrientation(int n){}
-public void addView(android.view.View v){}public void addView(android.view.View v,LayoutParams p){}
+public static final int VERTICAL=1;public final java.util.List<android.view.View> children=new java.util.ArrayList<>();
+public LinearLayout(android.content.Context c){}public void setOrientation(int n){}
+public void addView(android.view.View v){children.add(v);}public void addView(android.view.View v,LayoutParams p){children.add(v);}
 public static class LayoutParams {public LayoutParams(int w,int h){}public LayoutParams(int w,int h,float f){}} }
 '''
     result['android/widget/ScrollView.java'] = '''package android.widget;public class ScrollView extends android.view.View {
@@ -334,16 +352,106 @@ def compat_suite(directory):
     print('PASS maintained production self/distinct/close compatibility and four nullable SDK receivers ' + str(directory), flush=True)
 
 
+def ime_return_suite(directory):
+    """Independent bounded IME slice: green + four exact reds/restores = 9 compiles/runs."""
+    directory.mkdir(parents=True, exist_ok=False)
+    sources = prepare(directory)
+    (directory / 'inputs.json').write_text(json.dumps([identity(p) for p in sources], indent=2) + '\n')
+    stdlib = Path(os.environ['KOTLIN_HOME']) / 'lib/kotlin-stdlib.jar'
+    require(stdlib.is_file(), 'fixed stdlib missing')
+    attempted = []
+
+    def execute(argv, label, timeout):
+        # Register before invoking the runner, including launch/observer failures.
+        attempted.append(directory / (label + '.json'))
+        (directory / 'attempted.json').write_text(json.dumps([str(p) for p in attempted], indent=2) + '\n')
+        return owned.execute(argv, directory, label, timeout)
+
+    def quiescent():
+        for path in attempted:
+            try:
+                record = json.loads(path.read_text())
+            except (OSError, ValueError):
+                return False
+            if record.get('owned_exited') is not True or record.get('root_reaped') is not True:
+                return False
+        return True
+
+    def compile_run(label, mode='ime-return', diagnostic=None):
+        classes = directory / ('classes-' + label)
+        require(not classes.exists(), 'fresh IME class output required')
+        compiled = execute(['bash', str(ROOT / 'scripts/compile-jvm-sources.sh'), str(classes), '',
+                            *map(str, sources)], label + '-compile', 270)
+        require(compiled.returncode == 0, 'IME compilation failure NOT target red ' + label + '\n' + compiled.stderr.decode())
+        result = execute(['java', '-cp', str(classes) + ':' + str(stdlib), 'NextAppContractTest', mode],
+                         label + '-run', 45)
+        if diagnostic is None:
+            require(result.returncode == 0 and b'PASS next real app/controller host contracts' in result.stdout,
+                    'IME green failed ' + label + '\n' + result.stderr.decode())
+        else:
+            require(result.returncode == 1 and ('java.lang.AssertionError: ' + diagnostic).encode() in result.stderr,
+                    'IME not exact behavioral red ' + label + '\n' + result.stderr.decode())
+
+    mutations = [
+        ('AsrImeService', 'ime-fallback', 'if (!accepted) showKeyboardPicker()', 'if (false && !accepted) showKeyboardPicker()',
+         'previous failure must launch picker once'),
+        ('AsrImeService', 'ime-invalidation', 'controller!!.leaveForExternalUi({ requestHideSelf(0) }, launch)',
+         'run { requestHideSelf(0); launch.run() }', 'external switch must invalidate before platform request'),
+        ('ImeController', 'ime-hide',
+         'try { hide!!.run() } catch (ignored: RuntimeException) { /* Best-effort hide must not suppress the explicit action. */ }',
+         'hide!!.run()', 'hide failure must not suppress external attempt'),
+        ('AsrImeService', 'ime-restart', 'cancel!!.setEnabled(alive && controller != null)', 'cancel!!.setEnabled(allowed)',
+         'visible failed switch must allow manual fresh restart'),
+    ]
+    primary = None
+    try:
+        compile_run('ime-green')
+        for name, mode, before, after, diagnostic in mutations:
+            targets = [p for p in sources if p.stem == name and p.suffix == '.kt']
+            require(len(targets) == 1, 'IME unique production owner ' + name)
+            target = targets[0]; original = target.read_bytes(); text = original.decode()
+            require(text.count(before) == 1, 'IME mutant unique anchor ' + mode)
+            try:
+                target.write_text(text.replace(before, after, 1))
+                compile_run(mode + '-red', mode, diagnostic)
+            finally:
+                # Missing/corrupt/unknown records are never evidence of exited readers.
+                if quiescent():
+                    target.write_bytes(original)
+            require(target.read_bytes() == original, 'IME restoration refused or failed ' + mode)
+            compile_run(mode + '-restored', mode)
+            print('PASS IME production mutant compile0/exact assertion1/restored0 ' + mode, flush=True)
+        require(quiescent(), 'IME owned exit unconfirmed; retain exact inputs')
+        (directory / 'result.json').write_text(json.dumps({'pass': True, 'ime_return_only': True,
+            'driver': identity(Path(__file__)), 'caller': identity(ROOT / 'tests/fixtures/kotlin-next/NextAppContractTest.java'),
+            'compiles': 9, 'runs': 9, 'compile_timeout': 270, 'run_timeout': 45, 'not_android': True}, indent=2) + '\n')
+        print('PASS independent IME return production evidence ' + str(directory), flush=True)
+    except BaseException as failure:
+        primary = failure
+        raise
+    finally:
+        # Keep raw evidence and preserve the primary failure even if its ledger is unknown.
+        try:
+            owned.cleanup_workspace(directory, probe=quiescent, remove=False)
+        except BaseException as cleanup_failure:
+            if primary is None:
+                raise
+            primary.add_note('cleanup refused; retained ' + str(directory) + ': ' + repr(cleanup_failure))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument('--green-only', action='store_true')
     modes.add_argument('--compat-only', action='store_true')
+    modes.add_argument('--ime-return-only', action='store_true')
     args = parser.parse_args()
-    parent = ROOT / '.work/ap5next-r1-fix/contracts'
+    parent = ROOT / ('.work/ime-build/contracts' if args.ime_return_only else '.work/ap5next-r1-fix/contracts')
     parent.mkdir(parents=True, exist_ok=True)
     directory = Path(tempfile.mkdtemp(prefix='run-', dir=parent)) / 'evidence'
-    if args.compat_only:
+    if args.ime_return_only:
+        ime_return_suite(directory)
+    elif args.compat_only:
         compat_suite(directory)
     else:
         suite(directory, args.green_only)

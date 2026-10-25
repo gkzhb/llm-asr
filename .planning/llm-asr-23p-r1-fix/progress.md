@@ -1,0 +1,9 @@
+# R1 Progress
+
+Admission complete. Solewriter originallive session, noBG initially. Olddriver copy and candidate-before captured; mainHEAD/indexsame. About to minimaldriver fix/harness ordinary-O180s budgets then realnormal regression, no previoussuccess route replay.
+
+Minimal new-suite exit change: primary=None, exceptBaseException retains sameobject+bare raise, finallycleanup BaseException adds fixedcleanup refusal note with primary else raise. Strict attempted/quiescent/removeFalse unchanged. Sameharness actualsuite monkeypatch onlyprepare/ownedexecute plus isolatedcleanupfailure,10cases/mode oldred/newgreen, then real4mutants ordinary-O and format. BGb2bea6ab9 started with independent log/exit capture; no olddefaultcompatSDKfast replay. Products/other8 freeze unchanged.
+
+b2bea6ab9 realcompleted0 consumed: eacholdmodeharness1 exactcontract diagnostic with6actual replacedprimary cases; eachnewmode10syntheticcases0 sameobjects/notes/inputretained and confirmedrestore/no-primaryfail. Realnormalordinary-O both9compile9run fourexactred/restores pass,36childrenownedrootclosed. Format0; statusappendchecked100maintained/diff0.43ownedcommand records closedstreams verified. One7source temp snapshot60fc412 (mainindex/refunchanged), b39216a9b focusedcollect/compare underway; no oldsuccess expensive chain replay.
+
+b39216a9b completed0 actual notification consumed immediately; collectcompare0/twoownedrootclosed, samebinaries/scope. Newdriver exception safety complexitygrowth cccc10/7→14/10,knots14/11→20/16 nesting2 manually disposed with newfaultcoverage, no scoregaming. Finalstatusmaintained100diffcheck0;223build/10module onlydriverbuilddelta;other8frozen/protected27same/mainindexempty/noBG. OlddefaultcompatSDKfast not rerun. r1handoff currentidentity sealing for focusedreview, no selfR1CLOSED/full/commit.

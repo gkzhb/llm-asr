@@ -53,6 +53,67 @@ class ImeSessionTest {
     companion object {
         private var checks = 0
         private fun check(value: Boolean, label: String) { checks++; if (!value) throw AssertionError(label) }
+        private fun externalExitRetainsOwner() {
+            for (stage in arrayOf("capture", "native", "cleanup", "late-failure")) {
+                val entered = CountDownLatch(1); val release = CountDownLatch(1)
+                val failure = AtomicReference<Throwable>(); val worker = AtomicReference<Thread>()
+                val activeControl = AtomicReference<RecordingControl>(); val events = ArrayList<String>()
+                val owner = TaskCoordinator(Executor { task ->
+                    val thread = Thread { try { task.run() } catch (t: Throwable) { failure.set(t) } }
+                    worker.set(thread); thread.start()
+                })
+                fun block() {
+                    entered.countDown()
+                    if (!release.await(5, TimeUnit.SECONDS)) throw AssertionError("external exit worker deadline")
+                }
+                val backend = object : ImeController.Backend {
+                    override fun capture(control: RecordingControl?, progress: ImeController.Progress?): ByteArray {
+                        activeControl.set(control)
+                        control!!.start {}; try { if (stage == "capture") block() }
+                        finally { control.captureReleased() }; return byteArrayOf(1)
+                    }
+                    override fun transcribe(request: RequestContext?, wav: ByteArray?, language: String?): String {
+                        if (stage == "native" || stage == "late-failure") block()
+                        if (stage == "late-failure") throw IOException("synthetic late failure")
+                        return "late preview"
+                    }
+                    override fun cleanup(request: RequestContext?) { if (stage == "cleanup") block() }
+                }
+                val c = ImeController(owner, backend, {}); val old = c.begin(1, 0, "old")
+                try {
+                    check(c.start(old, "Chinese"), "external exit admitted " + stage)
+                    check(entered.await(5, TimeUnit.SECONDS), "external exit entered " + stage)
+                    var invalidAtHide = false; var cancelledAtHide = false
+                    c.leaveForExternalUi({
+                        invalidAtHide = !old!!.valid() && old.preview().isEmpty()
+                        cancelledAtHide = activeControl.get().cancelled(); events.add("hide")
+                        throw IllegalStateException("hide sentinel")
+                    }, { events.add("launch"); throw SecurityException("launch sentinel") })
+                    check(invalidAtHide, "external exit invalidates before hide " + stage)
+                    check(cancelledAtHide == (stage == "capture"), "cancel gate preserves committed native " + stage)
+                    check(events == listOf("hide", "launch"), "hide failure must not suppress external attempt")
+                    val fresh = c.begin(1, 0, "fresh"); val initialStatus = fresh!!.status()
+                    check(owner.isBusy() && c.ownsTask() && !c.start(fresh, "Chinese") && !owner.submit {},
+                        "external exit retains real owner through " + stage)
+                    release.countDown(); worker.get().join(5000)
+                    check(!worker.get().isAlive && failure.get() == null, "actual external worker terminal " + stage)
+                    check(!owner.isBusy() && !c.ownsTask(), "actual completion alone frees owner " + stage)
+                    check(!old!!.valid() && old.preview().isEmpty() && fresh.preview().isEmpty() && fresh.status() == initialStatus,
+                        "late success/failure/cleanup cannot revive preview " + stage)
+                } finally {
+                    release.countDown(); worker.get()?.join(5000)
+                    check(worker.get()?.isAlive != true, "external exit finally joins actual worker " + stage)
+                }
+            }
+            val queued = Fixture(); val order = ArrayList<String>()
+            check(queued.c.start(queued.s, "Chinese"), "external queued admitted")
+            queued.c.leaveForExternalUi({ order.add("hide"); throw IllegalStateException() }, { order.add("launch") })
+            check(queued.owner.isBusy() && queued.c.ownsTask(), "queued external exit retains owner until actual worker")
+            queued.queue.run()
+            check(queued.backend.captures == 0 && queued.backend.inference == 0 && queued.backend.cleanup == 1 && !queued.owner.isBusy(),
+                "queued external cancellation prevents capture/native and cleans")
+            check(order == listOf("hide", "launch"), "queued hide failure still launches")
+        }
         @Suppress("UNUSED_PARAMETER")
         @JvmStatic @Throws(Exception::class)
         fun main(args: Array<out String?>?) {
@@ -144,6 +205,7 @@ class ImeSessionTest {
             check(cc.start(cs, "Chinese"), "cleanup task admitted"); check(cleaning.await(5, TimeUnit.SECONDS), "cleanup reached")
             check(co.isBusy() && !co.submit {}, "blocked cleanup retains exclusive owner")
             releaseCleanup.countDown(); co.awaitFree(); check(!co.isBusy(), "cleanup completion releases owner")
+            externalExitRetainsOwner()
             println("PASS " + checks + " IME production controller checks (not Android hardware/InputConnection tests)")
         }
     }

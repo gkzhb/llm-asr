@@ -1,0 +1,11 @@
+# Progress / llm-asr-23p ship safety stage1
+
+2026-10-25: Restored AGENTS/delivery/code-review, parent supervision three plans and exact safety-review authorization; queried read-only bd context/show and Git main/base/status/diff/index. Task in_progress/p1-steward/no dependency. Created only own exclusive three plans, no claim/Beads/index/product changes.
+
+Consumed original fresh review REQUEST_CHANGES soleR1 and fresh R1CLOSED report/handoff/verification, all31 pre-existing authorized planning files in full, 12 maintained candidates in full and complete tracked diff. Consumed full handoff/report/full-inputs/raw full stdout/actual formal terminal/receipt signature/permissions/native/JUnit/Lint and targeted negative summaries. No old hotspot re-review or metrics/test/build rerun.
+
+Read-only audit.py standard-library inspection exit0:46candidate regular/modebytesSHA/raw-Gitblob, formatting/secrets0, links valid; original12/31 frozen identities unchanged. Current223build10module80native=sourcefreeze=twoactualformalreceipts=actual3APKs;42JUnit0failureerrorSkip, App24/runtime17Lintwarnings0ErrorFatal;50ownedroot/streams and220 raw evidence files match. Original excluded preserved by presence/ownership only; unrelated content not read/modified. Mainindex byteSHA unchanged98213576e184bcab8b9652478519d5b92951089681546b381995abf9c6fa6c2d.
+
+Herdr point inspection parentwY:p1idle/originalime-buildwY:p55idle/reviewerwY:p58working; only these same-repo agents, no model product writer. /proc point inspection no related engineering workers and all4 formal recorded PIDs absent. No reviewer BG/pane created or controlled. This is point-in-time runtime evidence, not an invented old terminal notification.
+
+Final stage1 disposition PASS/no blockers. Finalizing own three plans now, then capture their exact hashes into46path allowlist and produce safety-review.md/commit-plan.md/handoff.md under ignored.work/ime-ship-review. Own plans remain frozen after this write; subsequent audit only reads them. Existing historical pending/outerUNKNOWN documents untouched. No stagecommit/testbuild/download/device or second-level delegation. Parent must consume and separately authorize stage2; no APK delivery claim. Supplemental-only plans require no repeated full.

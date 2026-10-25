@@ -65,22 +65,39 @@ class AsrImeService : InputMethodService() {
         val row = LinearLayout(ui); root.addView(row)
         record = button(row, "录音", this::startRecording)
         stop = button(row, "停止") { if (controller != null) controller!!.stop(); render() }
-        cancel = button(row, "丢弃") { renewSession(); render() }
+        cancel = button(row, "丢弃 / 重新开始", this::restartSession)
         commit = button(row, "确认输入", this::commitPreview)
         val tools = LinearLayout(ui); root.addView(tools)
         button(tools, "设置 / 授权") { leaveForExternalUi { startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) } }
         button(tools, "模型管理") { leaveForExternalUi { startActivity(Intent(this, ModelManagementActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) } }
-        button(tools, "切换键盘") { leaveForExternalUi {
-            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
-            if (imm != null) imm.showInputMethodPicker()
-        } }
+        val keyboards = LinearLayout(ui); root.addView(keyboards)
+        button(keyboards, "返回上一输入法") { leaveForExternalUi(this::returnToPreviousInputMethod) }
+        button(keyboards, "切换键盘") { leaveForExternalUi(this::showKeyboardPicker) }
         render(); return root
     }
     private fun leaveForExternalUi(launch: Runnable) {
         visible = false; session = null
         if (controller != null) controller!!.leaveForExternalUi({ requestHideSelf(0) }, launch)
-        else { requestHideSelf(0); try { launch.run() } catch (ignored: RuntimeException) {} }
+        else {
+            try { requestHideSelf(0) } catch (ignored: RuntimeException) { /* Best-effort hide; still attempt the user action. */ }
+            try { launch.run() } catch (ignored: RuntimeException) {}
+        }
         render()
+    }
+    private fun returnToPreviousInputMethod() {
+        val accepted = try { switchToPreviousInputMethod() } catch (ignored: RuntimeException) { false }
+        if (!accepted) showKeyboardPicker()
+    }
+    private fun showKeyboardPicker() {
+        try {
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+            if (imm != null) { imm.showInputMethodPicker(); return }
+        } catch (ignored: RuntimeException) { /* Do not expose platform/editor exception details. */ }
+        Toast.makeText(this, "暂时无法切换，请使用系统输入法选择入口。", Toast.LENGTH_SHORT).show()
+    }
+    private fun restartSession() {
+        if (!alive || controller == null || !isInputViewShown || currentInputEditorInfo == null) return
+        visible = true; renewSession(); render()
     }
     private fun button(row: LinearLayout, label: String, action: Runnable): Button {
         val b = Button(row.context); b.setText(label); b.setAllCaps(false); b.setTextSize(12f)
@@ -137,7 +154,7 @@ class AsrImeService : InputMethodService() {
         preview!!.setText(if (allowed) session!!.preview() else "")
         record!!.setEnabled(allowed && permitted() && !busy)
         stop!!.setEnabled(allowed && controller!!.capturing())
-        cancel!!.setEnabled(allowed)
+        cancel!!.setEnabled(alive && controller != null)
         commit!!.setEnabled(allowed && !busy && session!!.preview().isNotEmpty())
         language!!.setEnabled(!busy)
     }

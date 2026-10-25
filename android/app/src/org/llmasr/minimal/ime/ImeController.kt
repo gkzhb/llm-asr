@@ -40,8 +40,8 @@ class ImeController(private val coordinator: TaskCoordinator?, private val backe
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun leaveForExternalUi(hide: Runnable?, launch: Runnable?) {
         invalidate()
-        hide!!.run()
-        try { launch!!.run() } catch (ignored: RuntimeException) { /* Remain hidden. */ }
+        try { hide!!.run() } catch (ignored: RuntimeException) { /* Best-effort hide must not suppress the explicit action. */ }
+        try { launch!!.run() } catch (ignored: RuntimeException) { /* Keep the old session invalid. */ }
     }
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun busy(): Boolean = coordinator!!.isBusy()

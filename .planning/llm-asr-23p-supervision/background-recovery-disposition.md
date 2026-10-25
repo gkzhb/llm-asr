@@ -1,0 +1,10 @@
+# 用户询问状态后的单次后台异常恢复
+
+父p1-steward，2026-10-25，main7a3aa53/indexempty，bd23p/zcm均in_progress owner不改。用户明确要求状态并继续，允许一次runtime/registry/PID检查而非等待轮询。Herdr同仓仅父，没有ime-build活pane。精确registry .pi/tasks/01a16ee2-43cc-72c8-b5d6-6a63df860fd5-1953808/b6a902c08.json 仍running/pid1954137/notifytriggertrue；实际ps该pid及树不存在。output停START ime-ordinary，但commands-v3/ime-ordinary.json exit0/owned_exited/root_reapedtrue，stdout四mutantscompile0/exactassertion1/restored0；controller-sanity.json0/ownedroottrue、stdout221checks通过。commands-v3 attempted只有sanity/ordinary，cleanup.json已落，无optimized/default/compat/SDK/fast/graph/format结果。不能虚构outer真实terminal通知/退出码，不当整个链完成。
+
+## 接续授权
+原唯一ime-build恢复，先一次精确核原chain registry/PID-start/所有attempted ledger与cleanup的实际结构，查明可解释的中断/输出写入异常（不读会话正文，不无界平台debug）；保旧registry/output/raw/failedtwo历史，不改成completed或填假exit。若仍未知outer原因如实UNKNOWN，内层owned0可独立采纳但不伪整链成功。确认无相关活compiler/test/Gradle后只续未执行路线，新ignoredwrapper与新证据域，禁止重跑已成功controller sanity和ordinary四mutants。必须保原owned监督/输入lease、unknown退出拒恢复删除，不因外wrapper缺通知绕过安全。
+
+继续原预算optimized3000/default3900/compat2700/SDK300/fast1800/graph300/format300；原授权有限fixture修正额度与stop条件不变，不扩大产品scope。wrapper如因stdout继承closed pipe退出，改为实际独立证据捕获并保写失败而不丢结果，不能仅管道末exit0称通过。父只授权必要ignored监督恢复，不改共享runner凑绿。基本targeted通过后才一次current-final有限快照/复杂度采集和精确输入保护封口。普通mode旧源码SHA须核与当前变化相符，若只有未运行路线前的wrapper补救不重跑普通；不能沿旧输入漂移结果冒当前。
+
+不full/assemble/sign/新APKreceipt覆盖/stagecommit/设备micprivate/model/download/push，不另开writer；最后交真实完整targeted handoff或精确blocker，不普通final只说等待。若bg终态自动回报丢失且已有完整子终态，按本次异常一次恢复封口，不持续poll或等待不存在通知。此文为原链恢复不是新功能授权。

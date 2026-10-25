@@ -1,0 +1,9 @@
+# 用户要求继续：现存idle会话原地接续
+
+父2026-10-25单次核runtime：ime-build原session26f90bc3…现存Herdr wY:p55 idle（autoExit:false），无第二writer。main7a3aa53/indexempty，23p/zcm状态保持。bb6d3bffe登记running而日志明确KeyboardInterrupt adapter received signal15；commands-v4 ime-optimized exit-2/reasonKeyboardInterrupt、owned_exited/root_reapedtrue，cleanup确认，attempted只有optimized，退出文件缺失，相关旧wrapper/compiler已无。外层可靠退出码未知，不能写整个链通过，SIGTERM来源尚未证明；此前反复resume可能影响监督但不作为已证因果。
+
+不要再resume/替换当前live会话；通过Herdr agent prompt直接提交续接任务给wY:p55。原writer先落盘v4中断记录，核子ledger与部分optimize证据。已完整成功的ordinary/sanity保留不重跑；optimized若完整证据不足，则全新独占route目录仅重启这一被信号中断未通过路线，未确认退出的树不恢复/删除，保留原部分产物。优化模式内若部分routes已通过可保历史，但不把未完成整路标pass。
+
+继续原剩余default/compat/SDK/fast/graph/format及最后复杂度/输入保护封口，预算与原scope不变。当前会话保持存活供bg自动terminal；不主动退出进程、不触发subagent_done当仍有活后台，turn结束可以等待通知。避免重复命令/重复会话/轮询；若不得不checkpoint，明确唯一任务与已落文件，父不再resume。所有真实terminal到达即消费并完成最终handoff，不再停留旧第二失败plan。
+
+父只协调，不工程测试。无full/assemble/sign/APKreceipt覆盖/提交/设备下载micprivate/model新授权；原fixture最小修正额度/stop条件保留。安全/生产缺陷或真实新blocker仍报告。最终targeted完成才freshreview→唯一full→两阶段本地提交，模型产品writer后置。

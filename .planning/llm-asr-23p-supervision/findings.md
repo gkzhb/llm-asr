@@ -1,0 +1,3 @@
+# Findings / llm-asr-23p
+
+任务已查重并创建in_progress/p1-steward，无blocks；Git7a3aa53空tracked-index/Herdr同仓仅父。用户希望fcitx5输入后往返，不授修改默认输入法或设备访问。建议核InputMethodService.switchToPreviousInputMethod系统历史与showInputMethodPicker降级，真实当前SDK和Service代码由只读leaf定位。原IME picker已有invalidate/cancel/hide策略，不重复引入曾修的取消/重选自身死会话缺陷；不能无证承诺必回fcitx5。

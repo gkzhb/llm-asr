@@ -106,6 +106,7 @@ INVENTORY = (
     'tests/kotlin_to_java_contract_test.py',
     'tests/gradle_inputs_test.py',
     'reports/kotlin-to-java-p1/status.md',
+    'reports/ime-return-23p/status.md',
 )
 
 

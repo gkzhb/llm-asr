@@ -134,7 +134,7 @@ class AsrImeService : InputMethodService() {
         return alive && visible && session != null && session!!.valid() && info != null && session!!.fieldKey!!.equals(key(info)) && !ImeFieldPolicy.isSensitive(info.inputType, info.imeOptions)
     }
     private fun startRecording() {
-        if (!eligible() || !isInputViewShown || !permitted()) { render(); return }
+        if (!eligible() || !isInputViewShown || !permitted() || graph?.readiness()?.snapshot()?.ready() != true) { render(); return }
         controller!!.start(session, language!!.selectedItem.toString()); render()
     }
     private fun commitPreview() {
@@ -148,11 +148,13 @@ class AsrImeService : InputMethodService() {
     private fun render() {
         if (status == null) return
         val allowed = eligible(); val busy = controller != null && controller!!.busy()
+        val modelReady = graph?.readiness()?.snapshot()?.ready() == true
         status!!.setText(if (controller == null) setupError else if (!allowed) "当前会话不可用或为敏感输入框。"
             else if (!permitted()) "请点击设置 / 授权，在主App授予麦克风权限。"
-            else if (busy && !controller!!.ownsTask()) "正在等待应用或上一会话处理完成……" else session!!.status())
+            else if (busy && !controller!!.ownsTask()) "正在等待应用或上一会话处理完成……"
+            else if (!modelReady) "模型未准备，请打开模型管理完整校验或快速恢复已校验证明。" else session!!.status())
         preview!!.setText(if (allowed) session!!.preview() else "")
-        record!!.setEnabled(allowed && permitted() && !busy)
+        record!!.setEnabled(allowed && permitted() && !busy && modelReady)
         stop!!.setEnabled(allowed && controller!!.capturing())
         cancel!!.setEnabled(alive && controller != null)
         commit!!.setEnabled(allowed && !busy && session!!.preview().isNotEmpty())

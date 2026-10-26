@@ -1,0 +1,7 @@
+# ModelPrivateRootTest 精确scope补充
+
+父p1-steward接受resident-build准入scope请求；base f7d1d79/indexempty，Herdrresident-build wY:p5A为唯一working产品writer。父已全文读tests/ModelPrivateRootTest.kt；当前源码5处forAppFiles调用（含loop展开多实例，非固定7调用点），包括构造noIO/可信父别名/非法model-final-part/symlink/dangling/file根测试。数量仅当前事实，不做门槛。
+
+追加允许修改唯一文件 tests/ModelPrivateRootTest.kt：适配forAppFiles显式四参guard签名；可在本测试内加入必要小型显式guard fixture/工厂并更新controller构造接线以调用同一受管校验协议。保原private alias inspect/import/reuse/fullverify/delete、可信父延迟解析、构造无mkdir/无canonicalIO、model/final/part/dangling symlink拒绝、外部字节不变与安全清理断言。noIO构造场景guard及supplier必须lazy，构造不能调用持久IO；测试策略可显式命名synthetic/transient且不得生产Graph选用/不得为测试保留生产三参noop旁路。操作正例需要就用真实小fixture持久guard/同proof接线，不以空guard假称持久撤销已覆盖。
+
+本补充将40有限候选扩大为41（两报告另列），不授其他路径/API权限变更，不重做调查/不改原安全语义或删负例。不为机械兼容保三参production noop；测试caller更新按工程需要可执行既有canonical host/fast实际入口，结果纳本批targeted与新candidate SHA。原implementation授权全部预算/分层/退出/不full提交设备下载边界保持。父唯一Beadswriter，不二级委派。

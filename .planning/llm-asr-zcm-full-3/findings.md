@@ -1,0 +1,3 @@
+# Full3 findings
+
+Readfull3/original/repairedauthorities,parent3plans,T5freshhandoff. MainHEAD/index/bdembeddedowner/runtime restored. Source52freeze currentverifiedinprepare; T5pins/oracle/admissionnowfreshaccepted butfullrequirednotassumed. Existingexactprepare/runner reuseonlynewdomain/candidate/attemptcount. Currentall3APKexistbackupnewly, old1168+777historiesimmutable. All原resources/gates unchanged; no thirdpermissionbeyondoneattempt/fullsuccess后必须安全提交才交APK.

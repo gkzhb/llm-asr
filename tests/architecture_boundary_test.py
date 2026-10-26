@@ -17,7 +17,8 @@ PACKAGE_MAP = {
     'RecordingControl': 'audio', 'ForegroundRecorder': 'audio',
     'ModelEntry': 'model', 'ModelManifest': 'model', 'ModelReports': 'model',
     'ModelSource': 'model', 'ModelRepository': 'model', 'ModelReadiness': 'model',
-    'ModelAccess': 'model', 'ModelProviderBoundary': 'model', 'SafModelSource': 'model',
+    'ModelAccess': 'model', 'ModelVerification': 'model', 'AndroidModelVerificationIo': 'model',
+    'ModelProviderBoundary': 'model', 'SafModelSource': 'model',
     'FileSafety': 'model',
     'NativeResponse': 'asr', 'NativeTranscription': 'asr', 'JniNativeTranscription': 'asr',
     'InferenceAdapter': 'asr', 'InferencePhase': 'asr', 'InferencePhaseListener': 'asr',
@@ -57,7 +58,7 @@ def references(source):
 def check_model(source):
     forbidden = references(source) & {'ModelManagementState', 'ModelManagementActivity', 'ModelManagementController', 'AppGraph'}
     assert not forbidden, 'model core references presentation/wiring: ' + str(forbidden)
-for name in ['ModelReports', 'ModelRepository', 'ModelReadiness', 'ModelAccess', 'ModelManifest', 'ModelEntry', 'ModelSource']:
+for name in ['ModelReports', 'ModelRepository', 'ModelReadiness', 'ModelAccess', 'ModelVerification', 'ModelManifest', 'ModelEntry', 'ModelSource']:
     check_model(path_of(name).read_text())
 check_model('/* ModelManagementState */ String text="https://x/ModelManagementState";')
 for bad in ['ModelManagementState state;', 'org.llmasr.minimal.ModelManagementState.Snapshot s;',
@@ -134,7 +135,7 @@ ASSEMBLY = [
     ('() -> System.loadLibrary("qwen_asr_jni"), new JniNativeTranscription()', '{ System.loadLibrary("qwen_asr_jni") }, JniNativeTranscription()'),
     ('inference, new AppReportWriter(opCtx)', 'inference, AppReportWriter(opCtx)'),
     ('logStore, logWorker, inference)', 'logStore, logWorker, inference)'),
-    ('new ImeBackend(context, modelRepository, inference)', 'ImeBackend(context, modelRepository, inference)'),
+    ('new ImeBackend(context, modelRepository, inference, modelAccess)', 'ImeBackend(context, modelRepository, inference, modelAccess!!)'),
 ]
 def check_assembly(source, kotlin):
     require_adapter_contract(adapter_constructions(source) == 1, 'graph must construct exactly one inference adapter')

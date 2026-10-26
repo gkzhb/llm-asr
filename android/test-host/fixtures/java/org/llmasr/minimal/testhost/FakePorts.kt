@@ -84,6 +84,17 @@ class FakePorts private constructor() {
     }
     class Backend : ImeController.Backend {
         @JvmField val samples: ByteArray = byteArrayOf(1, 2, 3)
+        @JvmField val order: MutableList<String> = ArrayList()
+        @JvmField var admissions: Int = 0
+        @JvmField var rejectModel: Boolean = false
+        private var admitted: Boolean = false
+        @Throws(IOException::class)
+        override fun requireModelReady() {
+            admissions++; order.add("ready")
+            FixtureChecks.require(!admitted, "fresh memory admission per request")
+            if (rejectModel) throw IOException("synthetic model admission rejection")
+            admitted = true
+        }
         @JvmField var captures: Int = 0
         @JvmField var inferences: Int = 0
         @JvmField var cleanups: Int = 0
@@ -95,6 +106,8 @@ class FakePorts private constructor() {
         @JvmField val cleanupRelease = CountDownLatch(1)
         @JvmField @Volatile var cleanupCompleted: Boolean = false
         override fun capture(control: RecordingControl?, progress: ImeController.Progress?): ByteArray? {
+            FixtureChecks.require(admitted, "model admission must precede capture")
+            admitted = false; order.add("capture")
             captures++; this.control = control
             try {
                 FixtureChecks.require(control!!.start {}, "capture admitted by real gate")
@@ -103,7 +116,7 @@ class FakePorts private constructor() {
             } finally { control!!.captureReleased() }
         }
         override fun transcribe(request: RequestContext?, wav: ByteArray?, language: String?): String? {
-            inferences++; this.request = request
+            order.add("inference"); inferences++; this.request = request
             FixtureChecks.require(request!!.kind == TaskKind.INFERENCE && wav === samples &&
                 "English" == language, "backend arguments")
             FixtureChecks.require(control!!.released() && control!!.committed(), "release before inference")
@@ -111,7 +124,7 @@ class FakePorts private constructor() {
             return TEXT
         }
         override fun cleanup(request: RequestContext?) {
-            cleanups++
+            admitted = false; order.add("cleanup"); cleanups++
             FixtureChecks.require(this.request == null || this.request === request, "same request cleanup")
             cleanupEntered.countDown()
             if (blockCleanup) await(cleanupRelease, "cleanup release")

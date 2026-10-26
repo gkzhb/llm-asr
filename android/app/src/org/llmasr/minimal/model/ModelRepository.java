@@ -43,6 +43,14 @@ import java.util.Set;
  */
 public class ModelRepository {
     public interface SpaceProvider { long usableBytes(); }
+    /** Mandatory pre-write boundary for each new public mutation transaction. */
+    public interface MutationScope extends AutoCloseable { @Override void close() throws IOException; }
+    public interface MutationGuard {
+        void beforeMutation() throws IOException;
+        default MutationScope beginMutation() throws IOException { return () -> { }; }
+    }
+    // Legacy pure-file fixtures have no cross-process authority. Android must use forAppFiles with a guard.
+    private static final MutationGuard TRANSIENT_FIXTURE = () -> { };
     public interface Progress {
         void update(Stage stage, String file, int fileIndex, int fileCount,
                     long fileDone, long fileTotal,
@@ -92,6 +100,7 @@ public class ModelRepository {
     private final File appFilesDir;
     private boolean appRootResolved;
     private final SpaceProvider space;
+    private final MutationGuard mutationGuard;
 
     public ModelRepository(ModelManifest manifest, File modelDir, SpaceProvider space) throws IOException {
         this(manifest, modelDir, space, true);
@@ -104,14 +113,19 @@ public class ModelRepository {
         return new ModelRepository(manifest, modelDir, space, false);
     }
     private ModelRepository(ModelManifest manifest, File modelDir, SpaceProvider space, boolean inspectRoot) throws IOException {
-        this(manifest, modelDir, space, inspectRoot, null);
+        this(manifest, modelDir, space, inspectRoot, null, TRANSIENT_FIXTURE);
     }
-    private ModelRepository(ModelManifest manifest, File modelDir, SpaceProvider space, boolean inspectRoot, File appFilesDir) throws IOException {
+    public ModelRepository(ModelManifest manifest, File modelDir, SpaceProvider space, MutationGuard guard) throws IOException {
+        this(manifest, modelDir, space, true, null, guard);
+    }
+    private ModelRepository(ModelManifest manifest, File modelDir, SpaceProvider space, boolean inspectRoot, File appFilesDir, MutationGuard guard) throws IOException {
         if (manifest == null) throw new IOException("manifest required");
         if (space == null) throw new IOException("space provider required");
         if (modelDir == null) throw new IOException("modelDir required");
+        if (guard == null) throw new IOException("mutation guard required");
         this.manifest = manifest;
         this.space = space;
+        this.mutationGuard = guard;
         if (inspectRoot) {
             RootStatus root = checkRoot(modelDir);
             if (root != RootStatus.ROOT_OK && root != RootStatus.ROOT_MISSING) throw new IOException("非法 model 根目录");
@@ -123,9 +137,14 @@ public class ModelRepository {
     /** Only for Context.getFilesDir(), not user/provider-selected directories.
      * Resolve Android's trusted parent aliases on first worker IO. Do NOT
      * canonicalize the model leaf: it and all managed files remain untrusted. */
-    public static ModelRepository forAppFiles(ModelManifest manifest, File filesDir, SpaceProvider space) throws IOException {
+    public static ModelRepository forAppFiles(ModelManifest manifest, File filesDir, SpaceProvider space, MutationGuard guard) throws IOException {
         if (filesDir == null) throw new IOException("filesDir required");
-        return new ModelRepository(manifest, new File(filesDir, "model"), space, false, filesDir);
+        if (!(guard instanceof ModelVerification)) throw new IOException("persistent verification required");
+        return new ModelRepository(manifest, new File(filesDir, "model"), space, false, filesDir, guard);
+    }
+
+    public ModelVerification verification() {
+        return mutationGuard instanceof ModelVerification ? (ModelVerification) mutationGuard : null;
     }
 
     private synchronized RootStatus checkedRoot() throws IOException {
@@ -169,10 +188,16 @@ public class ModelRepository {
      * directory is never recursively scanned, and the action is fail-closed.
      */
     public void reclaimOrphanedParts() throws IOException {
+        try (MutationScope scope = mutationGuard.beginMutation()) { reclaimPartsScoped(); }
+    }
+    private void reclaimPartsScoped() throws IOException {
+        List<File> parts = new ArrayList<>();
         for (ModelEntry e : manifest.entries()) {
             File part = safe(e.partName());
-            if (part.exists()) deleteManaged(part);
+            if (part.exists()) parts.add(part);
         }
+        if (!parts.isEmpty()) mutationGuard.beforeMutation();
+        for (File part : parts) deleteManaged(part);
     }
 
     /** Lightweight inspect: per-file existence + size match, plus orphan
@@ -340,6 +365,9 @@ public class ModelRepository {
     }
 
     public void importFrom(ModelSource source, Progress progress, CancelGate cancel) throws IOException {
+        try (MutationScope scope = mutationGuard.beginMutation()) { importScoped(source, progress, cancel, scope); }
+    }
+    private void importScoped(ModelSource source, Progress progress, CancelGate cancel, MutationScope scope) throws IOException {
         if (source == null) throw new IOException("source required");
         final CancelGate gate = cancel == null ? NEVER_CANCEL : cancel;
         checkpoint(gate);
@@ -372,8 +400,11 @@ public class ModelRepository {
                     emit(progress, Stage.CHECKING_EXISTING, e.file(), idx, 0, e.bytes(), base, stageTotal, 0);
                     valid = hex(sha256WithProgress(f, gate, e.bytes(), n ->
                         emit(progress, Stage.CHECKING_EXISTING, e.file(), idx, n, e.bytes(), base + n, stageTotal, 0))).equals(e.sha256());
-                    if (!valid) gate.invalidExisting(e.file());
+                    if (!valid) { mutationGuard.beforeMutation(); gate.invalidExisting(e.file()); }
                     checked += e.bytes();
+                } else if (f.exists()) {
+                    mutationGuard.beforeMutation();
+                    gate.invalidExisting(e.file());
                 }
             }
             reuse.put(e, valid);
@@ -394,6 +425,7 @@ public class ModelRepository {
         if (root == RootStatus.ROOT_OK) for (ModelEntry e : manifest.entries()) parts |= safe(e.partName()).exists();
         if (totalCopy > 0 || parts) {
             checkpoint(gate);
+            mutationGuard.beforeMutation();
             gate.beforeMutation();
             ModelManifest.requireSafeRoot(modelDir);
             for (ModelEntry e : manifest.entries()) { checkpoint(gate); reclaimEntryPart(e); }
@@ -419,6 +451,9 @@ public class ModelRepository {
             stageDone += entry.bytes(); index++;
         }
         checkpoint(gate);
+        // All asset streams/publication/failure cleanup have truly finished. Only
+        // now may this import enter its own final full verification/proof phase.
+        scope.close();
         verifyAll(progress, gate);
         checkpoint(gate);
     }
@@ -507,6 +542,9 @@ public class ModelRepository {
     public DeleteReport deleteAll() throws IOException { return deleteAll(null); }
 
     public DeleteReport deleteAll(Progress progress) throws IOException {
+        try (MutationScope scope = mutationGuard.beginMutation()) { return deleteScoped(progress); }
+    }
+    private DeleteReport deleteScoped(Progress progress) throws IOException {
         RootStatus root = checkedRoot();
         if (root == RootStatus.ROOT_MISSING) {
             return new DeleteReport(0, Collections.emptyList(), 0L, Collections.emptyList(), true, true);
@@ -525,6 +563,8 @@ public class ModelRepository {
                 if (f.exists()) plan.add(f);
             }
         }
+        // Also revoke before deleting an empty root. A failed revoke must not touch assets.
+        mutationGuard.beforeMutation();
         long freed = 0;
         int processed = 0;
         if (progress != null) progress.update(Stage.DELETING, null, 0, plan.size(), 0, 0, 0, plan.size(), 0);

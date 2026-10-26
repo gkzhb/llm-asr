@@ -1,0 +1,11 @@
+# Progress
+
+2026-10-25：恢复授权/父三plan与Beads/runtime（原writer done、两review working）。建立独占三plan。独立标准库审计45candidate/18seal/103有限inputs/28protected全部同；142owned记录及stdout/stderr/exit/真实退出全同。原/新core协议逐行读，review不运行工程命令。
+
+已核old源四文件字节等初审freeze，CORE-R1旧compile0/exactAssertionError1/current0，CORE-R2旧compile0/exactAssertionError1/current0；canonical scoped/listeners/workers与finalCOMMITTED8stage/lateepoch corefault普通-O各1compile+4JVM真实0。model四mutants普通-O各9compile/11JVM exactred1/restored0，同当前输入；139currenthost源清单核同，2同名Activity为显式fakes未冒main。复杂度223→224同CLIbinaries/raw/SHA/source inventory同，compare2 scopeUNKNOWN（delta空不是JSON），保留人工映射。
+
+语义判断：R1 scoped实际lifetime与R2锁外notify可闭；COMMITTED可见而双失败的恢复政策在批准brief已明确允许完整终态连续性资格，非新产品变更。E1尚有精确授权的真实barrier空缺：只有lateepoch在finalledger open，未驱动directmutation等锁后二次invalidate/并发restore在finalledger或succeed等待顺序。最终报告保留CORE-E1-remaining/P2覆盖blocking，R1/R2 CLOSED；不边审边改。
+
+审计辅助错误：早期audit括号SyntaxError、输入说明string按list处理TypeError已修；复杂度delta空文件JSONDecodeError后改按compare.exit/stderr/scope人工核；一次可选不存在路径rg退出2，不作为工程测试失败。全程无BG/产品写/Beads写/index操作。
+
+正式输出review.md/verification.json/handoff.md已落盘；首尾45candidate/18seal/103inputs/28protected逐字节同，HEAD/index不变。review SHA8304c473…a714，verification SHA7032cfc2…3633。自身noBG、全部输出仅授权两目录；未运行actualGradleApp/full/APK/device。父下一步接受并另授原writer补剩余E1真实反向barrier，不提前full。

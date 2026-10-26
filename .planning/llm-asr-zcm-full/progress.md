@@ -1,0 +1,9 @@
+# Formal full progress
+
+2026-10-25 fullauth/parentplans/E1CLOSEDhandoff read; mainf7d1d79/indexempty,bdembeddedowner/runtimerestored. No formalengineeringstarted yet. Product45freeze willbeverified; ownnewplans/work only. Existingprecisegeneratedfreshreference read, no nativecacheclean/dependencydownload/stagecommit.
+
+Preparationb64ffa742 rawsuccess dynamicbuild227/module10/native82/tool9 freeze;1168known generated/artifact/report files backed and byte/modeverified before22precisefreshrootscleared. Nativeobjects/cache/vendor untouched; originalold28identitiesbackup includesformalhistoricalreports; noformalattemptyet waitingdurableprepterminal. Resourcesverified gradle1536MiB/singleworker/Kotlininprocess, noSDKdownload. Fullrunner singleattemptguard+ownedprelaunch72000envelope prepared, no additionaltargetedreplay.
+
+Preparationb64ffa742 durablecompleted0consumed; launched soleformal b14f54fea via explicitbashrunner once. Exactargv nixcacheonly verify-gradle offline rerun-tasks, ownedformal72000outer/internalbudgetsunchanged. Sourcefreeze remains; nootherengineeringparallel/inputwrites. Awaitautomaticterminal, firstfailstop/no retry.
+
+FIRSTFAILSTOP: b14f54fea durablefailed1consumed. formalownedexit1/rootreapedtrue/ownedexitedtrue/rawSHAchecked; 101Gradleactions. :test-host:compileDebugAndroidTestKotlin failsFakePorts.kt85BackendmissingabstractrequireModelReady; out-of-scope actualfixturecaller notmutantred. No edits/retry/download/gaterelaxation.45freeze/227build10module82nativeunchanged;1168backupfilesallverified, partialunacceptedApp/hostAPK generated/noinstrumentation/no3packagereceipt. NoBG/HEADf7d1d79/indexempty. Allowedstatusappend+newfull/fullinputs failurefacts written; failurehandoff/seal stop,parentexactscope/nextauthorizationneeded.

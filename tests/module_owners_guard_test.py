@@ -99,6 +99,24 @@ class OwnersTests(unittest.TestCase):
             finally:
                 destination.unlink()
 
+    def test_missing_new_verification_owner(self):
+        (self.root / 'core/build/classes/kotlin/main' / PREFIX / 'model/ModelVerification.class').unlink()
+        with self.assertRaisesRegex(AssertionError, 'missing'):
+            check(self.root)
+
+    def test_android_proof_wrong_core_owner(self):
+        original = self.root / RUNTIME_KOTLIN / PREFIX / 'model/AndroidModelVerificationIo.class'
+        target = self.root / 'core/build/classes/kotlin/main' / PREFIX / 'model/AndroidModelVerificationIo.class'
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(original, target)
+        with self.assertRaisesRegex(AssertionError, 'owner|extra|platform|duplicate'):
+            check(self.root)
+
+    def test_missing_android_proof_owner(self):
+        (self.root / RUNTIME_KOTLIN / PREFIX / 'model/AndroidModelVerificationIo.class').unlink()
+        with self.assertRaisesRegex(AssertionError, 'missing'):
+            check(self.root)
+
     def test_runtime_extra_top_owner(self):
         target = self.root / RUNTIME_KOTLIN / PREFIX / 'Unexpected.class'
         target.parent.mkdir(parents=True, exist_ok=True)

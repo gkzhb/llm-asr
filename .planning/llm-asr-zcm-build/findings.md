@@ -1,0 +1,16 @@
+# Findings / resident-build
+
+- AGENTS/delivery/review/dependencies/planning skills, parent three plans/implementation authorization, all proposal/verification/handoff/40path list fully read. bd context embedded llm_asr; zcm in_progress parent-owned. Memory asynchronous terminal evidence read.
+- Entry HEAD f7d1d79, empty tracked/index diff; existing excluded untracked planning/lock/two docs untouched. Herdr only parent done, prior IME writer idle, resident-build working in this repository. No review writer.
+- ModelRepository currently defaults transient construction and forAppFiles has no guard. Existing gate.beforeMutation is controller-only; direct import/delete/reclaim need durable mandatory hook.
+- Current ModelAccess hashes lazily; Controller commits readiness under control monitor and lacks persistence. Need reserve proof commit then IO then short token commit. Progress may begin token during final verify; proof identity must start before hash.
+- Found unlisted caller tests/ModelPrivateRootTest.kt using forAppFiles; parent granted exact supplement (41 total). Explicit guard adapted; no production no-op overload.
+- SDK-fast2 real SDK compile0/currenthost0/module boundary0/runtimeJUnit1pass; coreJUnit33/34pass, sole failure PartRecoveryTest finite fresh dependency source list omitted new ModelVerification. Parent asked exact extra path tests/PartRecoveryTest.java list-only, not edit until granted. Compile failure is tooling red, not intended mutant red; original PartRecovery mutation/behavior gate retained.
+- Parent authorization deliberately excludes native residency. Existing reset insufficient; no vendor reinvestigation.
+
+- Core protocol sanity2 actual compile0/JVM0 includes helper/page scenarios. Asynchronous notification delivery delayed: exact b754e76d9 registry once confirmed completed exit0 after disk terminal existed; no duplicate engineering run. First real wiring sanity compile failed due nullable private Graph access passed to mandatory backend access; minimal !! fix applied, no test gate weakened. Raw .work/resident-build/wiring-sanity-1/compile.stderr retained.
+- Architecture actual checker passed; avoided new model->modelmanagement coupling by narrow ModelVerification.CommitGate implemented in controller. Android supplier still lazy. Need recompile final current token/gate changes; old sanity not used as final-current evidence.
+- Protection snapshot captured 28 existing APK/metadata/formal receipts before any Gradle/SDK work; none touched by host-only sanity.
+
+- Parent targeted-module-owner supplement expressly permits finite realSDK8appSources/currentGradlecore-runtime compile only, unmodified physical finite checker ROOT and allguards ordinary/-O, preserving complete mixed output/class mappings. Not actual Gradle app compile/AGP/D8; these remain full-phase NOTRUN. Script updated accordingly and execution serial after final fast.
+- Original next/defaultcompat completed before IME fixture failed because UI newly requires Graph readiness while old synthetic Backend fixture had no Graph. Added explicit synthetic snapshot plus real Graph worker shutdown; no product admission bypass, old field/return/mutant assertions retained. Runtime original suite still pending.

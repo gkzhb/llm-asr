@@ -1,4 +1,16 @@
-# 0.5 模型管理实施验收记录
+# 模型管理验证边界
+
+## llm-asr-zcm：持久校验 A（targeted 已运行，未 full/提交）
+
+本批将旧懒 SHA 改为前置完整校验与 noBackup 证明。首次已有模型需在管理页明确执行“完整 SHA 校验”；导入成功同样建立证明。正常进程启动复用 MAINTENANCE worker 自动快速恢复有效证明，文件 hash=0/native=0；管理页“快速恢复已校验证明（不做 SHA）”只重试轻恢复，无证明/失效绝不自动全量 SHA。VERIFY 按钮始终完整 SHA。
+
+App sample/WAV/录音与 IME 采集前在共享 owner worker 实际准入，adapter 内最后复验；UI 只读内存快照。请求不恢复、不 hash、不预加载。模型仍每请求 native create/load/free，**非模型驻留，也非 warm 性能验收**。
+
+证明绑定固定策略/manifest、noBackup 安装锚点、generation、模型根和固定文件 no-follow 身份。受管写先撤内存 READY 并耐久写 DIRTY，再允许资产变更；receipt 后 COMMITTED 是持久提交点。取消在终态预留前赢则不得留下可恢复证明，预留后取消输但 owner 仍等真实 IO/close/finalizer 结束。未知或 sync/rename/dirsync 失败拒绝，不以 best-effort 授 READY。仅保存 model/receipt 的普通备份不能自证；丢失锚点须重新完整校验。
+
+大小/mtime/ctime/dev/inode 只检查受管连续性，不承诺检测 root/同 UID 任意篡改或连 anchor 整体克隆；不承诺物理安全擦除。JVM 小文件/fsync 故障注入不等于 Android Os/noBackup 或设备断电耐久验收。当前 targeted 状态见 `reports/model-verification-zcm/status.md`；fresh 审查、full/APK、设备、模型推理/质量/PSS/热测均须各自新证据。旧下方报告与包身份仅历史，不作本批产物。
+
+## 历史：0.5 模型管理实施验收记录
 
 状态：**实现、完整构建和独立源码复核完成，可供用户手动设备验收**；未执行真实设备测试。规格见[模型管理规划](model-management-plan.md)，总计划Phase16。未commit/push或访问设备。
 

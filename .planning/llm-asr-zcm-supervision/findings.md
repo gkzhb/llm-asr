@@ -1,0 +1,24 @@
+# Findings / llm-asr-zcm
+
+- Git main7a3aa53 tracked/index clean；旧2a7三plan确认首批已本地提交与两persistent真stopped/noBG。当前Herdr同仓仅父working，无重叠writer；不凭ap5旧notes误重启语言迁移。
+- bd context embedded llm_asr/project6c8fcd38；zcm新建in_progress/p1-steward无blocks。旧z1w仍blocked于msj/tc3/ujz，工程产品能力独立切片不虚称性能质量验收，不移除旧依赖。
+- 用户明确本轮产品优先：模型校验与驻留复用，及fcitx5往返快捷体验。msj记录本轮决定；VAD/API/下载候选未选定不解锁。
+- 已读delivery/code-review/planning/herdr skills与local-verification；父只协调/leaf开发构建，sol高思考/fresh同模型上下文隔离审、非跨家族。
+- 旧路线P3投影已DEFER/REJECT，不复做无价值接口；当前JNI仍每次create/load/析构，跨进程receipt/resident待实现。技术可行性以新leaf读当前源与锁定MNN源码为准。
+- 已读memory asr-quality-evidence/build-tiny-mirror/sherpa-provider-verification-boundaries；独立golden、严格frontend与设备边界保留。权限仅本地功能开发，不沿根历史设备地址授权。
+- fcitx5入语音后的返回优先系统上一IME API及选择器降级，不能保证厂商历史一定为fcitx5；不硬编码其他App/改设置/自动提交。
+- resident-plan输出A/B/C三批，A持久证明/显式准备/请求0hash仍每次native加载，37路径跨受管写/取消提交/实际App与IME准入；仅设计待新基线复核，不直接授37路径大批写。有效proof的跨进程准备轻检不hash，但仍需用户显式准备；该额外交互需在新基线实施前评估是否可在有界worker自动安全恢复而不隐式全量hash，不机械照搬设计。
+- 父独立44基线源与7vendor小文本bytesSHA全同，真实llm.cpp860 reset仅token/history/计数/延迟KV移除，不清generate_str/os/GenerationParams/Omni私有音频tensor；Omni无reset override。B需设计最小真实reset seam/锁定源码编译和实际请求隔离证据，禁止static unique_ptr+reset冒安全resident。
+- 9项seal tracked drift均在父IME实施授权内，实际为ime-build在执行；resident-plan停写正确，不重派/中断IME、不回退、不并行模型writer。A后续从IME提交新base窄重核。
+- C/z1w原质量/设备blocks保留；TTL60秒/trim策略为未批准建议，不默认启用、不承诺性能。模型计算/设备仍未授权。
+- 平台定点fresh回审resident-review-4父已全文消费/接受PLATFORM-R1/R2 CLOSED，真实rawFD单owner close-before-rename及worker未知退出保目录闭合。父独立45candidate/18seal/output SHA同；核心三项尚待正式回报，持续freeze不full。hostfake/静态分支/finiteowner及复杂度UNKNOWN边界保留，未Android故障实测或当前APK交付。
+- 核心定点review-3父全文消费并接受CORE-R1/R2 CLOSED；CORE-E1八stage/rollback/lateepoch已充分但反向publication先持disk、directmutation及restore后等待再放行的真实Controller矩阵未跑，为明确P2覆盖阻塞而非新生产race。e1-publication-authorization只授原writer既有canonical corefault测试补例/有限报告，不授生产seam或昂贵链重跑，补后仅E1fresh审。
+- E1补证只改两测试两报告，真实publication持disk后delete/restore锁等待、写前durableDIRTY与guard拒绝及线程终态；普通O1compile4JVM均0。父核45新candidate/10owned/20stream同，生产65/module7/protected28不变；combined仅实观markerfirst，合法restorefirst为测试允许不是已观测。唯一review-5 fresh仅审剩余E1，不自CLOSED。
+- review-5正式CORE-E1remaining CLOSED/noBG父已全文消费并接受；独立45candidate/11seal/outputSHA同，全部5finding闭合。afterRename到succeed/current仍持同disk，因此真实先publication后waiters的窄矩阵满足，combined仅markerfirst实观边界保留。full-authorization另授原writer单次正式cache-only/strict/offline全门槛，源码测试不改，AGP/D8/三包输入绑定后仍两阶段安全提交，不提前交APK。
+- 首次formal full真实失败于共享testhost FakePorts.Backend缺新增requireModelReady；该fixture此前不在45候选中。101actions/ownedexit1/root退出/47候选seal核同，非模型协议bug或有效mutantred。两partial APK无三包验收不交付。仅授两memoryfixture显式准入/拒绝顺序回归与原7JUnit/真实仪器编译窄链，生产不改；freshfixture审后新full另授，旧失败保持。
+- fixture显式内存admission一次消费/cleanup清grant、真实Controller拒绝beforecapture及retry/queuedcancel扩入既有7sharedchecks；实际instrumentationcompile0/7hostJUnit0/48actions。49candidate/3delta/生产65不变，父核输出封口同，唯一review-6 fixturefresh后full另授，未runner/设备或APK交付。
+- fixturefresh review-6无阻塞父接受，49freeze同。Queue断言只证明start之后的taskbody，不是设备offmain；14仪器方法编译库存不等runner。第二正式attempt明确另授原writer单次完整cacheonlystrictfull，失败历史保留/newfull-repaired文本，完整成功再安全提交。
+- 第二full真实verifyHost T5旧fixture源码pin拒绝，父全文核后发现FAULT_CALLER原directcapture无grant及BASE Java缺新abstract亦须窄适配，不能盲调SHA后重复full。只授T5script/status同步、保semantics/原路由与预算、历史oracle最小接口桥明确非原字节；回归fresh后另授第三full。三包子gate通过仍非完整交付，51freeze/14seal保留。
+- T5同步正式完成/noBG，父52candidate/13seal/50owned100stream核同；原Java仅新增接口桥且原/后SHA转换明确，currentfixture不改。普通O各9routes/fault3route真实compile0目标红绿，机械doublelease旧失败不冒行为red。唯一review-7 fresh定点同步，不自通过或提前第三full。
+- review-7无阻塞父接受/outputSHA与52freeze同，full-3-authorization明确第三正式attempt单次，全部门槛资源不变/旧失败保留，新full-final文本分域。当前仍需实际完整成功+安全本地提交，不把三包子gate或审查green冒交付。
+- full3已真实0/184actions/42JUnit0与完整门槛通过，父独立54candidate/30seal/227+10+82+9inputs/335owned670streams/3APK maps无漂移，接受工程PASS。原两失败保持、native仍loadfree、设备NOTRUN。stage1 safetyreview仅54+本批18planning目录文本+新3plan，freeze后另授权stagecommit，不提前交付。

@@ -180,11 +180,153 @@ class ModelManagementControllerTest {
                 else -> throw IllegalArgumentException("unknown logging case")
             }
         }
+        private fun persistentControllerFaults() {
+            for (stage in listOf("open", "write", "flush", "close", "fsync", "rename", "dirsync")) {
+                ModelAndroidHelpersTest.PersistentFixture().use { f ->
+                    f.install(); val q = Queue(); val owner = TaskCoordinator(q); val control = ModelOperationControl(); val state = ModelManagementState()
+                    val c = ModelManagementController(owner, f.repo, f.ready, control, state)
+                    f.io.beforeWrite = { name -> if (name == "receipt") f.io.fail = stage }
+                    check(c.startVerify()); q.run(); check(!owner.isBusy() && !control.isBusy && !f.ready.isReady)
+                    check(state.current().phase == ModelManagementState.Phase.FAILED)
+                    f.io.fail = null; f.io.beforeWrite = null
+                    try { check(!ModelVerification(f.manifest, ModelReadiness(), f.io).restoreFast(f.repo)) } catch (expected: IOException) { }
+                }
+            }
+        }
+        private fun waitForPublicationLock(thread: Thread, method: String) {
+            val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(2)
+            while (System.nanoTime() < deadline) {
+                val waiting = thread.state == Thread.State.WAITING
+                val actualCall = thread.stackTrace.any { it.className == "org.llmasr.minimal.model.ModelVerification" && it.methodName == method }
+                if (waiting && actualCall) return
+                if (!thread.isAlive) throw AssertionError("publication waiter exited before lock: $method")
+                Thread.yield()
+            }
+            throw AssertionError("actual publication disk wait not observed: $method")
+        }
+        private fun publicationWaiters(mode: String) {
+            ModelAndroidHelpersTest.PersistentFixture().use { f ->
+                f.install()
+                val events = Collections.synchronizedList(ArrayList<String>())
+                val q=Queue(); val owner=TaskCoordinator(q); val control=ModelOperationControl(); val state=ModelManagementState()
+                val c=ModelManagementController(owner,f.repo,f.ready,control,state)
+                val publication=CountDownLatch(1); val publishRelease=CountDownLatch(1)
+                val assetEntered=CountDownLatch(1); val assetRelease=CountDownLatch(1)
+                val controllerError=AtomicReference<Throwable>(); val mutationError=AtomicReference<Throwable>(); val restoreError=AtomicReference<Throwable>()
+                val mutationStarted=CountDownLatch(1); val restoreStarted=CountDownLatch(1); val restoreDone=CountDownLatch(1)
+                val restoreAccepted=AtomicBoolean(); val dirtyDurable=AtomicBoolean(); val assetWritten=AtomicBoolean()
+                val publicationEpoch=AtomicLong(-1)
+                f.io.atStage={name,kind,_,stage ->
+                    if (name=="ledger" && kind==3 && stage=="afterRename") {
+                        events.add("COMMITTED-visible-before-succeed"); publicationEpoch.set(f.ready.epoch()); publication.countDown()
+                        if (!publishRelease.await(5,TimeUnit.SECONDS)) throw IOException("publication barrier timeout")
+                        events.add("publication-released")
+                    }
+                    if (name=="ledger" && kind==1 && stage=="afterSync" && publication.count==0L) {
+                        dirtyDurable.set(true); events.add("waiting-mutator-DIRTY-durable")
+                    }
+                }
+                val direct=object:ModelRepository(f.manifest,f.model.toFile(),{Long.MAX_VALUE},f.proof) {
+                    override fun deleteManaged(file:File?) {
+                        events.add("first-asset-write-boundary"); assetEntered.countDown()
+                        if (!assetRelease.await(5,TimeUnit.SECONDS)) throw IOException("asset barrier timeout")
+                        super.deleteManaged(file); assetWritten.set(true); events.add("asset-deleted")
+                    }
+                }
+                var mutationThread:Thread?=null; var restoreThread:Thread?=null
+                check(c.startVerify())
+                val controllerThread=f.worker { try { q.run() } catch(t:Throwable) { controllerError.set(t) } finally { events.add("controller-true-exit") } }
+                try {
+                    check(publication.await(2,TimeUnit.SECONDS))
+                    check(owner.isBusy()&&control.isBusy&&!control.peekActive().isSucceeded)
+                    if (mode!="restore") {
+                        mutationThread=f.worker { mutationStarted.countDown(); events.add("direct-delete-invoked-after-publication"); try { direct.deleteAll() } catch(t:Throwable) { mutationError.set(t) } finally { events.add("mutator-true-exit") } }
+                        check(mutationStarted.await(1,TimeUnit.SECONDS)); waitForPublicationLock(mutationThread!!,"beginMutation")
+                        events.add("mutator-confirmed-disk-wait")
+                    }
+                    if (mode!="delete") {
+                        restoreThread=f.worker { restoreStarted.countDown(); events.add("restore-invoked-after-publication"); try { restoreAccepted.set(f.proof.restoreFast(f.repo)); events.add("restore-return-"+restoreAccepted.get()) } catch(expected:IOException) { events.add("restore-refused") } catch(t:Throwable) { restoreError.set(t) } finally { restoreDone.countDown(); events.add("restore-true-exit") } }
+                        check(restoreStarted.await(1,TimeUnit.SECONDS)); waitForPublicationLock(restoreThread!!,"restoreFast")
+                        events.add("restore-confirmed-disk-wait")
+                    }
+                    check(owner.isBusy()&&control.isBusy&&!control.peekActive().isSucceeded)
+                    check(assetEntered.count==1L&&!assetWritten.get()&&Files.exists(f.model.resolve("a")))
+                    if (restoreThread!=null) check(restoreDone.count==1L)
+                    events.add("external-pre-release-owner-busy-no-asset-no-restore-return")
+                    publishRelease.countDown()
+                    if (mutationThread!=null) {
+                        check(assetEntered.await(3,TimeUnit.SECONDS))
+                        check(dirtyDurable.get() && !assetWritten.get() && Files.exists(f.model.resolve("a")))
+                        val ledger=f.io.read("ledger",16384)!!
+                        check(java.nio.ByteBuffer.wrap(ledger,4,4).int==1)
+                        check(f.ready.epoch()>publicationEpoch.get()&&!f.ready.isReady)
+                        var usable=false;try { f.access.requireReady(); usable=true } catch(expected:IOException) { }
+                        check(!usable)
+                        events.add("external-DIRTY-before-asset-current-invalid-guard-refused")
+                    }
+                } finally {
+                    publishRelease.countDown(); assetRelease.countDown()
+                    controllerThread.join(6000); mutationThread?.join(6000); restoreThread?.join(6000)
+                }
+                check(!controllerThread.isAlive&&mutationThread?.isAlive!=true&&restoreThread?.isAlive!=true)
+                check(controllerError.get()==null&&mutationError.get()==null&&restoreError.get()==null)
+                check(!owner.isBusy()&&!control.isBusy)
+                check(state.current().phase==ModelManagementState.Phase.SUCCEEDED||state.current().phase==ModelManagementState.Phase.FAILED)
+                if (mode=="restore") {
+                    check(restoreAccepted.get()&&f.ready.isReady); f.access.requireReady(); check(!assetWritten.get())
+                } else {
+                    check(assetWritten.get()&&!Files.exists(f.model.resolve("a"))&&!f.ready.isReady)
+                    var usable=false;try { f.access.requireReady(); usable=true } catch(expected:IOException) { };check(!usable)
+                }
+                events.add("external-all-real-workers-exited-owner-control-free")
+                println("PASS reverse publication $mode events="+synchronized(events){ArrayList(events)}+" restoreAccepted="+restoreAccepted.get()+" controller="+state.current().phase)
+            }
+        }
+        private fun committedFaults() {
+            for (mode in listOf("delete","restore","combined")) publicationWaiters(mode)
+            for (stage in listOf("open","write","flush","close","fsync","rename","dirsync","afterRename")) {
+                ModelAndroidHelpersTest.PersistentFixture().use { f ->
+                    f.install(); val q=Queue();val owner=TaskCoordinator(q);val control=ModelOperationControl();val state=ModelManagementState()
+                    val c=ModelManagementController(owner,f.repo,f.ready,control,state)
+                    val primary=IOException("committed-$stage"); val secondary=IOException("rollback-$stage")
+                    f.io.faults.add(ModelAndroidHelpersTest.TestIo.Fault("ledger",3,1,stage,primary))
+                    f.io.faults.add(ModelAndroidHelpersTest.TestIo.Fault("ledger",1,2,"open",secondary))
+                    val entered=CountDownLatch(1);val release=CountDownLatch(1);val workerError=AtomicReference<Throwable>()
+                    f.io.atStage={name,kind,occurrence,point -> if(name=="ledger"&&kind==1&&occurrence==2&&point=="open") { entered.countDown();if(!release.await(3,TimeUnit.SECONDS))throw IOException("rollback timeout") } }
+                    check(c.startVerify())
+                    val thread=f.worker { try { q.run() }catch(failure:Throwable){workerError.set(failure)} }
+                    try {
+                        check(entered.await(2,TimeUnit.SECONDS)); check(owner.isBusy()&&control.isBusy&&!f.ready.isReady)
+                        check(!control.requestCancel(control.peekActive().id));check(!c.startVerify())
+                    }finally{release.countDown();thread.join(4000)}
+                    check(!thread.isAlive&&workerError.get()==null&&!owner.isBusy()&&!control.isBusy)
+                    check(state.current().phase==ModelManagementState.Phase.FAILED&&!f.ready.isReady)
+                    check(primary.suppressed.size==1&&primary.suppressed[0]===secondary)
+                    f.io.faults.clear();f.io.atStage=null
+                    // If the final ledger rename became visible despite sync failure and
+                    // rollback also failed, next-process qualification is intentionally
+                    // limited to complete COMMITTED continuity; current process never READY.
+                    var restored=false;try{restored=ModelVerification(f.manifest,ModelReadiness(),f.io).restoreFast(f.repo)}catch(expected:IOException){}
+                    check(restored==(stage=="dirsync"||stage=="afterRename"))
+                }
+            }
+            ModelAndroidHelpersTest.PersistentFixture().use { f ->
+                f.install();val q=Queue();val owner=TaskCoordinator(q);val control=ModelOperationControl();val state=ModelManagementState()
+                val c=ModelManagementController(owner,f.repo,f.ready,control,state);val entered=CountDownLatch(1);val release=CountDownLatch(1);val error=AtomicReference<Throwable>()
+                f.io.atStage={name,kind,_,point ->if(name=="ledger"&&kind==3&&point=="open"){entered.countDown();if(!release.await(3,TimeUnit.SECONDS))throw IOException("late epoch timeout")}}
+                check(c.startVerify());val thread=f.worker{try{q.run()}catch(t:Throwable){error.set(t)}}
+                try{check(entered.await(2,TimeUnit.SECONDS));f.ready.invalidate();check(owner.isBusy()&&!f.ready.isReady)}finally{release.countDown();thread.join(4000)}
+                check(!thread.isAlive&&error.get()==null&&state.current().phase==ModelManagementState.Phase.FAILED&&!f.ready.isReady)
+            }
+        }
         private fun loggingAll() { for (n in arrayOf("logging-rejection-import", "logging-rejection-verify", "logging-rejection-delete", "logging-abnormal", "logging-terminal-observer", "logging-admission-observer", "logging-protection")) logging(n) }
         @JvmStatic @Throws(Exception::class)
         fun main(args: Array<out String?>?) {
-            if (args!!.size > 0) { logging(args[0]); println("PASS maintenance logging case " + args[0] + ": " + checks + " checks"); return }
+            if (args!!.size > 0 && args[0]=="corefault") { committedFaults(); println("PASS final COMMITTED/controller owner/rollback/lateepoch faults");return }
+            if (args.size > 0) { logging(args[0]); println("PASS maintenance logging case " + args[0] + ": " + checks + " checks"); return }
             loggingAll()
+            persistentControllerFaults()
+            committedFaults()
             run {
                 val f = Fixture(); val c = f.controller(); val old = AtomicInteger(); val fresh = AtomicInteger()
                 val oldListener = ModelManagementState.Listener { old.incrementAndGet() }; val newListener = ModelManagementState.Listener { fresh.incrementAndGet() }

@@ -30,6 +30,29 @@ SELECTED = ('modelmanagement/ModelManagementController', 'AppGraph', 'transcript
             'AsrImeService', 'LogsActivity', 'platform/ActivityWindow')
 APP_BASE = ROOT / 'android/app/src/org/llmasr/minimal'
 STUBS = {
+    'android/system/ErrnoException.java': 'package android.system; public class ErrnoException extends Exception {public final int errno;public ErrnoException(String name,int code){super(name);errno=code;}}',
+    'android/system/StructTimespec.java': 'package android.system; public class StructTimespec {public long tv_sec,tv_nsec;public StructTimespec(long s,long n){tv_sec=s;tv_nsec=n;}}',
+    'android/system/StructStat.java': 'package android.system; public class StructStat {public long st_dev,st_ino,st_size;public int st_mode;public StructTimespec st_mtim,st_ctim;}',
+    'android/system/OsConstants.java': 'package android.system; public class OsConstants {public static final int ENOENT=2,O_RDONLY=0,O_WRONLY=1,O_CREAT=64,O_EXCL=128,O_NOFOLLOW=131072,O_DIRECTORY=65536;public static boolean S_ISDIR(int m){return (m&0170000)==0040000;}public static boolean S_ISREG(int m){return (m&0170000)==0100000;}}',
+    'android/system/Os.java': '''package android.system; public class Os {
+private static final java.util.Map<java.io.FileDescriptor,java.io.Closeable> handles=new java.util.IdentityHashMap<>();
+private static final java.util.Map<java.io.FileDescriptor,String> paths=new java.util.IdentityHashMap<>();
+public static StructStat fstat(java.io.FileDescriptor fd)throws ErrnoException{return lstat(paths.get(fd));}
+public static StructStat lstat(String path)throws ErrnoException {
+ try {java.util.Map<String,Object>a=java.nio.file.Files.readAttributes(java.nio.file.Paths.get(path),"unix:dev,ino,mode,size,lastModifiedTime,ctime",java.nio.file.LinkOption.NOFOLLOW_LINKS);StructStat s=new StructStat();s.st_dev=((Number)a.get("dev")).longValue();s.st_ino=((Number)a.get("ino")).longValue();s.st_mode=((Number)a.get("mode")).intValue();s.st_size=((Number)a.get("size")).longValue();s.st_mtim=time((java.nio.file.attribute.FileTime)a.get("lastModifiedTime"));s.st_ctim=time((java.nio.file.attribute.FileTime)a.get("ctime"));return s;}
+ catch(java.nio.file.NoSuchFileException e){throw new ErrnoException("lstat",2);}catch(java.io.IOException e){throw new ErrnoException("lstat",5);}}
+private static StructTimespec time(java.nio.file.attribute.FileTime f){java.time.Instant i=f.toInstant();return new StructTimespec(i.getEpochSecond(),i.getNano());}
+public static java.io.FileDescriptor open(String path,int flags,int mode)throws ErrnoException {
+ try {if(java.nio.file.Files.isDirectory(java.nio.file.Paths.get(path))){java.io.FileDescriptor fd=new java.io.FileDescriptor();handles.put(fd,java.nio.channels.FileChannel.open(java.nio.file.Paths.get(path),java.nio.file.StandardOpenOption.READ));paths.put(fd,path);return fd;}
+ if((flags&OsConstants.O_WRONLY)!=0){if((flags&OsConstants.O_EXCL)!=0)java.nio.file.Files.createFile(java.nio.file.Paths.get(path));java.io.FileOutputStream o=new java.io.FileOutputStream(path);handles.put(o.getFD(),o);return o.getFD();}
+ java.io.FileInputStream i=new java.io.FileInputStream(path);handles.put(i.getFD(),i);return i.getFD();}catch(java.io.IOException e){throw new ErrnoException("open",5);}}
+public static void fsync(java.io.FileDescriptor fd)throws ErrnoException {try{java.io.Closeable c=handles.get(fd);if(c instanceof java.nio.channels.FileChannel)((java.nio.channels.FileChannel)c).force(true);else fd.sync();}catch(java.io.IOException e){throw new ErrnoException("fsync",5);}}
+public static int read(java.io.FileDescriptor fd,byte[] b,int off,int len)throws ErrnoException {try{int n=((java.io.FileInputStream)handles.get(fd)).read(b,off,len);return n<0?0:n;}catch(java.io.IOException e){throw new ErrnoException("read",5);}}
+public static int write(java.io.FileDescriptor fd,byte[] b,int off,int len)throws ErrnoException {try{((java.io.FileOutputStream)handles.get(fd)).write(b,off,len);return len;}catch(java.io.IOException e){throw new ErrnoException("write",5);}}
+public static void close(java.io.FileDescriptor fd)throws ErrnoException {try{handles.remove(fd).close();paths.remove(fd);}catch(java.io.IOException e){throw new ErrnoException("close",5);}}
+public static void rename(String a,String b)throws ErrnoException {try{java.nio.file.Files.move(java.nio.file.Paths.get(a),java.nio.file.Paths.get(b),java.nio.file.StandardCopyOption.ATOMIC_MOVE,java.nio.file.StandardCopyOption.REPLACE_EXISTING);}catch(java.io.IOException e){throw new ErrnoException("rename",5);}}
+public static void remove(String p)throws ErrnoException {try{java.nio.file.Files.delete(java.nio.file.Paths.get(p));}catch(java.io.IOException e){throw new ErrnoException("unlink",5);}}
+}''',
     'android/Manifest.java': 'package android; public final class Manifest { public static class permission {public static final String RECORD_AUDIO="mic";} }',
     'android/R.java': 'package android; public final class R {public static class style {public static final int Theme_Material_Light_NoActionBar=1;} public static class layout {public static final int simple_spinner_dropdown_item=1;} }',
     'android/content/pm/PackageManager.java': 'package android.content.pm; public class PackageManager {public static final int PERMISSION_GRANTED=0;}',
@@ -48,6 +71,7 @@ calls++;seen=u;order+="open;";if(fail)throw SENTINEL;return stream!=null?stream:
     'android/content/Context.java': '''package android.content; public class Context {
 private java.io.File dir; public Context(){this(new java.io.File("unused-next-context"));} public Context(java.io.File f){dir=f;}
 public Context getApplicationContext(){return this;} public java.io.File getFilesDir(){return dir;}
+public java.io.File getNoBackupFilesDir(){return dir;}
 public java.io.File getCacheDir(){return dir;} public ContentResolver getContentResolver(){ContentResolver.order+="receiver;";return new ContentResolver();}
 public android.content.res.AssetManager getAssets(){return new android.content.res.AssetManager();}
 public android.content.res.Resources getResources(){return new android.content.res.Resources();}
@@ -95,8 +119,8 @@ public long getLong(String n)throws JSONException{return 0;}}
     'org/llmasr/minimal/MainActivity.java': 'package org.llmasr.minimal; public class MainActivity {}',
     'org/llmasr/minimal/ModelManagementActivity.java': 'package org.llmasr.minimal; public class ModelManagementActivity {}',
     'org/llmasr/minimal/audio/ForegroundRecorder.java': '''package org.llmasr.minimal.audio; public class ForegroundRecorder {
-public interface Progress{void update(double s);} public static byte[] capture(RecordingControl c,Progress p)throws java.io.IOException {
-c.start(()->{});c.stop();c.captureReleased();PcmWave wave=new PcmWave();wave.append(new short[PcmWave.MIN_SAMPLES],PcmWave.MIN_SAMPLES);return wave.finish();}}
+public static int calls;public interface Progress{void update(double s);} public static byte[] capture(RecordingControl c,Progress p)throws java.io.IOException {
+calls++;c.start(()->{});c.stop();c.captureReleased();PcmWave wave=new PcmWave();wave.append(new short[PcmWave.MIN_SAMPLES],PcmWave.MIN_SAMPLES);return wave.finish();}}
 ''',
     'org/llmasr/minimal/transcription/AppReportWriter.java': '''package org.llmasr.minimal.transcription;
 import org.llmasr.minimal.task.RequestContext; import org.llmasr.minimal.asr.NativeResponse;
@@ -183,7 +207,7 @@ def prepare(directory):
     body, = re.findall(r'^host_classes=\(\n(.*?)^\)', (ROOT / 'scripts/test-minimal-apk.sh').read_text(), re.M | re.S)
     production = [source(name.replace('.', '/')) for name in body.split()]
     production += [source(name) for name in SELECTED if source(name) not in production]
-    production += [source('platform/OperationContext'), source('ime/ImeBackend')]
+    production += [source('platform/OperationContext'), source('ime/ImeBackend'), source('model/AndroidModelVerificationIo')]
     for path in production:
         target = directory / 'production' / path.relative_to(ROOT)
         target.parent.mkdir(parents=True, exist_ok=True)

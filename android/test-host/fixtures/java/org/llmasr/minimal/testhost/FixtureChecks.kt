@@ -33,6 +33,18 @@ class FixtureChecks private constructor() {
             try { run(f); throw AssertionError("readiness accepted") }
             catch (expected: IOException) { require("synthetic readiness rejection" == expected.message, "readiness identity") }
             require(f.loads == 0 && f.nativeCalls == 0 && f.order == Arrays.asList("ready"), "readiness zero load/native")
+            val queue = FakePorts.Queue(); val backend = FakePorts.Backend(); backend.rejectModel = true
+            val owner = TaskCoordinator(queue); val controller = ImeController(owner, backend) {}
+            val session = controller.begin(1, 0, "admission")
+            require(controller.start(session, "English") && owner.isBusy() && backend.admissions == 0, "admission stays on queued worker")
+            queue.drain()
+            require(backend.admissions == 1 && backend.captures == 0 && backend.inferences == 0 && backend.cleanups == 1, "rejected model before capture/inference, cleanup once")
+            require(backend.order == Arrays.asList("ready", "cleanup") && !owner.isBusy() && !controller.ownsTask(), "rejected admission cleanup releases actual owner")
+            require(session!!.preview().isEmpty() && session.status().contains("synthetic model admission rejection"), "rejection has no preview and fixed fixture failure")
+            backend.rejectModel = false
+            require(controller.start(session, "English"), "retry after model preparation admitted"); queue.drain()
+            require(backend.admissions == 2 && backend.captures == 1 && backend.inferences == 1 && backend.cleanups == 2, "retry performs fresh admission and one capture/inference")
+            require(backend.order == Arrays.asList("ready", "cleanup", "ready", "capture", "inference", "cleanup") && !owner.isBusy() && FakePorts.TEXT == session.preview(), "retry order and true final owner release")
         }
         @JvmStatic @Throws(Exception::class)
         fun badBytesAreSafe() {
@@ -55,7 +67,8 @@ class FixtureChecks private constructor() {
             require(c.commit(s, "first", 1, 0) { text -> require(FakePorts.TEXT == text, "commit payload"); commits.incrementAndGet(); true }, "first confirmation")
             require(!c.commit(s, "first", 1, 0) { commits.incrementAndGet(); true } && commits.get() == 1, "single confirmation only")
             require(c.begin(0x81, 0, "password") == null, "password begin refused")
-            require(b.captures == 1 && b.inferences == 1 && b.cleanups == 1 && !owner.isBusy() && b.control!!.released(), "memory-only backend complete")
+            require(b.admissions == 1 && b.captures == 1 && b.inferences == 1 && b.cleanups == 1 && !owner.isBusy() && b.control!!.released(), "memory-only backend complete")
+            require(b.order == Arrays.asList("ready", "capture", "inference", "cleanup"), "actual controller admission before capture/inference")
         }
         @JvmStatic fun lateResultIsInvalidated() {
             val queue = FakePorts.Queue(); val b = FakePorts.Backend()
@@ -80,11 +93,12 @@ class FixtureChecks private constructor() {
             c.invalidate(); val next = c.begin(1, 0, "second")
             require(owner.isBusy() && !c.start(next, "English"), "queued cancel retains owner")
             queue.drain()
-            require(b.captures == 1 && b.inferences == 1 && b.cleanups == 2 && !owner.isBusy() && !c.ownsTask(), "queued cancel cleans without capture or inference")
+            require(b.admissions == 1 && b.captures == 1 && b.inferences == 1 && b.cleanups == 2 && !owner.isBusy() && !c.ownsTask(), "queued cancel cleans without new model admission, capture or inference")
+            require(b.order == Arrays.asList("ready", "capture", "inference", "cleanup", "cleanup"), "queued cancel does not consume stale admission")
             require(!first!!.valid() && first.preview().isEmpty() && next!!.preview().isEmpty(), "queued cancel leaves no late preview")
             require(!c.commit(first, "first", 1, 0) { true }, "queued cancel cannot commit old session")
             require(c.start(next, "English"), "reuse subsequent request admitted"); queue.drain()
-            require(b.captures == 2 && b.inferences == 2 && b.cleanups == 3 && !owner.isBusy() && FakePorts.TEXT == next!!.preview(), "reuse subsequent request completes")
+            require(b.admissions == 2 && b.captures == 2 && b.inferences == 2 && b.cleanups == 3 && !owner.isBusy() && FakePorts.TEXT == next!!.preview(), "reuse subsequent request completes with fresh admission")
         }
         @JvmStatic @Throws(Exception::class)
         @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")

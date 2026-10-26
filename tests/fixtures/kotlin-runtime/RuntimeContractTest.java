@@ -118,9 +118,11 @@ public final class RuntimeContractTest {
         }
     }
     static void backend() throws Exception {
-        ImeBackend empty = new ImeBackend(null, null, null);
+        ImeBackend empty = new ImeBackend(null, null, null, new org.llmasr.minimal.model.ModelAccess(null, null));
         RecordingControl control = new RecordingControl(); AudioRecord.reset("success", control);
         Throwable actual = null;
+        try { empty.requireModelReady(); throw new AssertionError("unprepared backend admission accepted"); } catch (IOException expected) { }
+        check(AudioRecord.made == 0 && AudioRecord.starts == 0, "IME model admission before AudioRecord");
         try { empty.capture(control, null); } catch (Throwable failure) { actual = failure; }
         check(actual instanceof NullPointerException && AudioRecord.made == 0 && AudioRecord.starts == 0 && !control.released(), "IME null progress must fail before capture");
         Path directory = Files.createTempDirectory("runtime-backend-");
@@ -135,7 +137,7 @@ public final class RuntimeContractTest {
             ModelRepository repository = ModelRepository.forWorker(manifest, directory.resolve("model").toFile(), () -> Long.MAX_VALUE);
             InferenceAdapter inference = new InferenceAdapter(null, () -> {}, () -> {},
                 (config, wav, language, cache, listener) -> "1 2 3\n<asr_text>runtime".getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            ImeBackend backend = new ImeBackend(context, repository, inference);
+            ImeBackend backend = new ImeBackend(context, repository, inference, new org.llmasr.minimal.model.ModelAccess(repository, new org.llmasr.minimal.model.ModelReadiness()));
             PcmWave pcm = new PcmWave(); pcm.append(new short[PcmWave.MIN_SAMPLES], PcmWave.MIN_SAMPLES);
             RequestContext request = new RequestContext("runtime-id", TaskKind.INFERENCE);
             check(backend.transcribe(request, pcm.finish(), "Chinese").equals("runtime") && request.inputWav.isFile(), "IME actual WAV/inference adapter");
@@ -171,7 +173,7 @@ public final class RuntimeContractTest {
                     public ContentResolver contentResolver() { return null; }
                 };
                 Throwable actual = null;
-                try { new ImeBackend(context, null, null).transcribe(null, wav, null); } catch (Throwable failure) { actual = failure; }
+                try { new ImeBackend(context, null, null, new org.llmasr.minimal.model.ModelAccess(null, null)).transcribe(null, wav, null); } catch (Throwable failure) { actual = failure; }
                 check(files[0] == 1, "IME null request must evaluate filesDir first");
                 check(injected == null ? actual instanceof NullPointerException : actual == injected, "IME null request getter Throwable identity");
                 check(cache[0] == 0, "IME null request never reaches inference arguments");
@@ -206,7 +208,7 @@ public final class RuntimeContractTest {
                     public InputStream openAsset(String name) { return null; }
                     public ContentResolver contentResolver() { return null; }
                 };
-                ImeBackend backend = new ImeBackend(context, repository, null); Throwable actual = null;
+                ImeBackend backend = new ImeBackend(context, repository, null, new org.llmasr.minimal.model.ModelAccess(repository, new org.llmasr.minimal.model.ModelReadiness())); Throwable actual = null;
                 try { backend.transcribe(request, wav, null); } catch (Throwable failure) { actual = failure; }
                 check(models[0] == 1, "IME null inference must evaluate arguments first");
                 check(files[0] == 1 && caches[0] == (mode < 2 ? 0 : 1), "IME argument getter counts");

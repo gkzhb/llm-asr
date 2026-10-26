@@ -31,14 +31,17 @@ if __name__ == '__main__':
     parser.add_argument('--classpath', required=True)
     args = parser.parse_args()
     probe(args.classpath, 'org.llmasr.minimal.task.TaskKind kind;', None, args.module + ' -> core positive')
+    probe(args.classpath, 'org.llmasr.minimal.model.ModelVerification proof;', None, args.module + ' -> pure verification positive')
     if args.module == 'core':
         for reference, diagnostic in [
             ('android.content.Context', 'package android.content does not exist'),
             ('org.json.JSONObject', 'package org.json does not exist'),
             ('org.llmasr.minimal.asr.JniNativeTranscription', 'JniNativeTranscription'),
-            ('org.llmasr.minimal.AppGraph', 'AppGraph')]:
+            ('org.llmasr.minimal.AppGraph', 'AppGraph'),
+            ('org.llmasr.minimal.model.AndroidModelVerificationIo', 'AndroidModelVerificationIo')]:
             probe(args.classpath, reference + ' forbidden;', diagnostic, 'core !-> ' + reference)
     else:
         probe(args.classpath, 'org.llmasr.minimal.asr.JniNativeTranscription bridge; android.content.Context context;',
               None, 'runtime -> JNI/Android positive')
+        probe(args.classpath, 'org.llmasr.minimal.model.AndroidModelVerificationIo io;', None, 'runtime owns Android proof IO')
         probe(args.classpath, 'org.llmasr.minimal.AppGraph forbidden;', 'AppGraph', 'runtime !-> app')

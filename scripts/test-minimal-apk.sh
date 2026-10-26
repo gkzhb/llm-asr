@@ -30,7 +30,7 @@ host_classes=(
   transcription.ResultFiles
   audio.RecordingControl audio.WaveInput audio.AsrText audio.PcmWave
   ime.ImeFieldPolicy ime.ImeSession ime.ImeController
-  model.ModelReadiness
+  model.ModelReadiness model.ModelVerification
   modelmanagement.ModelOperationControl modelmanagement.ModelManagementState modelmanagement.ModelManagementController
   model.ModelAccess modelmanagement.ModelPickerTickets modelmanagement.ModelPageSession modelmanagement.ModelUiText
   model.ModelProviderBoundary
@@ -125,6 +125,17 @@ timeout 3900 python3 -B tests/kotlin_next_migration_test.py
 timeout 2700 python3 -B tests/kotlin_next_migration_test.py --compat-only
 # Independent IME slice: 9 fresh compile/run routes; legacy budgets above unchanged.
 timeout 3000 python3 -B tests/kotlin_next_migration_test.py --ime-return-only
+# Independent verification: each mode <=9 mixed compile(180s), <=20 JVM(30s), unchanged legacy gates.
+verification_evidence=$(mktemp -d .work/model-verification-contracts-XXXXXX)
+timeout 2400 python3 -B tests/model_verification_contract_test.py --contracts "$classes" --evidence-dir "$verification_evidence/ordinary"
+timeout 2400 python3 -O tests/model_verification_contract_test.py --contracts "$classes" --evidence-dir "$verification_evidence/optimized"
+# Actual Android journal method/FD host contracts, independent fixed budgets (not Android probe).
+android_proof_evidence=$(mktemp -d .work/android-proof-io-XXXXXX)
+timeout 420 python3 -B tests/android_model_verification_io_test.py --contracts "$classes" --evidence-dir "$android_proof_evidence/ordinary"
+timeout 420 python3 -O tests/android_model_verification_io_test.py --contracts "$classes" --evidence-dir "$android_proof_evidence/optimized"
+# Added core faults stay in existing compiled production helpers; no old suite timeout changes.
+timeout 600 python3 -B tests/model_verification_contract_test.py --corefault --contracts "$classes" --evidence-dir "$verification_evidence/corefault-ordinary"
+timeout 600 python3 -O tests/model_verification_contract_test.py --corefault --contracts "$classes" --evidence-dir "$verification_evidence/corefault-optimized"
 # Fifteen mixed compile routes (30 compiler commands) + fifteen Java runs + owned teardown < 7200s.
 timeout 7200 python3 -B tests/kotlin_runtime_migration_test.py
 run MinimalApkTest bench/audio/zh-original.wav

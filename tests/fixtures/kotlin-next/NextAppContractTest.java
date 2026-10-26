@@ -50,6 +50,55 @@ public final class NextAppContractTest {
             delete(root);
         }
     }
+    static ModelAccess preparedAccess(Path root) throws Exception {
+        Path models=Files.createDirectories(root.resolve("prepared-model"));Files.write(models.resolve("a"),new byte[]{1,2,3});
+        Path journal=Files.createDirectories(root.resolve("prepared-proof"));
+        ModelManifest manifest=new ModelManifest(Arrays.asList(new ModelEntry("a",3,"039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81")));
+        ModelReadiness ready=new ModelReadiness();
+        ModelVerification.Io io=new ModelVerification.Io(){
+            public boolean exists(File f){return Files.exists(f.toPath(),LinkOption.NOFOLLOW_LINKS);}
+            public String identity(File f,boolean directory)throws IOException{return new java.util.TreeMap<>(Files.readAttributes(f.toPath(),"unix:dev,ino,mode,size,lastModifiedTime,ctime",LinkOption.NOFOLLOW_LINKS)).toString();}
+            public byte[] read(String name,int limit)throws IOException{
+                Path p=journal.resolve(name);if(!Files.exists(p))return null;
+                try(InputStream in=Files.newInputStream(p)){ByteArrayOutputStream out=new ByteArrayOutputStream();for(int b;(b=in.read())!=-1;){if(out.size()==limit)throw new IOException("limit");out.write(b);}return out.toByteArray();}
+            }
+            public void write(String name,byte[] bytes)throws IOException{
+                Path temp=journal.resolve(name+".tmp");try(FileOutputStream out=new FileOutputStream(temp.toFile())){out.write(bytes);out.getFD().sync();}
+                Files.move(temp,journal.resolve(name),StandardCopyOption.ATOMIC_MOVE,StandardCopyOption.REPLACE_EXISTING);
+                try(java.nio.channels.FileChannel channel=java.nio.channels.FileChannel.open(journal,StandardOpenOption.READ)){channel.force(true);}
+            }
+        };
+        ModelVerification verification=new ModelVerification(manifest,ready,io);ModelRepository repo=new ModelRepository(manifest,models.toFile(),()->Long.MAX_VALUE,verification);
+        org.llmasr.minimal.modelmanagement.ModelOperationControl control=new org.llmasr.minimal.modelmanagement.ModelOperationControl();
+        org.llmasr.minimal.modelmanagement.ModelOperationControl.Operation op=control.tryBegin(org.llmasr.minimal.modelmanagement.ModelOperationControl.Kind.VERIFY);
+        ModelVerification.Token token=verification.begin(repo);repo.verifyAll();check(verification.commit(repo,token,new ModelVerification.CommitGate(){public boolean reserve(ModelReadiness.VerifyToken t){return control.tryReserveProofCommit(op,ready,t);}public boolean succeed(ModelReadiness.VerifyToken t){return control.trySucceed(op,ready,t);}}),"synthetic actual proof");control.complete(op,true);
+        return new ModelAccess(repo,ready);
+    }
+    static void preInputAdmission() throws Exception {
+        Path root=Files.createTempDirectory("preinput-model-");
+        final int[] inputs={0};final int[] bridges={0};List<Runnable> jobs=new ArrayList<>();
+        try {
+            OperationContext context=new OperationContext(){public File filesDir(){return root.toFile();}public File cacheDir(){return root.toFile();}
+                public InputStream openAsset(String name){inputs[0]++;return null;}
+                public android.content.ContentResolver contentResolver(){inputs[0]++;return new android.content.ContentResolver();}};
+            TaskCoordinator owner=new TaskCoordinator(jobs::add);AppState state=new AppState();
+            ModelManifest manifest=new ModelManifest(Arrays.asList(new ModelEntry("a",3,"039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81")));
+            ModelRepository repo=ModelRepository.forWorker(manifest,root.resolve("model").toFile(),()->Long.MAX_VALUE);
+            ModelAccess unprepared=new ModelAccess(repo,new ModelReadiness());
+            InferenceAdapter inference=new InferenceAdapter(null,unprepared::requireReady,()->{bridges[0]++;},(c,w,l,t,p)->{bridges[0]++;return null;});
+            AppReportWriter reports=new AppReportWriter(context);
+            AsrOperation ops=new AsrOperation(context,owner,repo,state,new TextExportController<android.net.Uri>(u->null,Runnable::run),inference,reports,unprepared);
+            android.content.ContentResolver.calls=0;org.llmasr.minimal.audio.ForegroundRecorder.calls=0;
+            check(ops.startSample("Chinese")&&owner.isBusy()&&inputs[0]==0,"sample admitted no UI IO");jobs.remove(0).run();
+            check(ops.startWave(new android.net.Uri(),"Chinese"),"wave admitted");jobs.remove(0).run();
+            check(ops.startRecording("Chinese"),"record admitted");jobs.remove(0).run();
+            check(inputs[0]==0&&android.content.ContentResolver.calls==0&&org.llmasr.minimal.audio.ForegroundRecorder.calls==0&&bridges[0]==0,"unprepared app must reject before asset/provider/capture/native");
+            org.llmasr.minimal.ime.ImeBackend backend=new org.llmasr.minimal.ime.ImeBackend(context,repo,inference,unprepared);
+            ImeController ime=new ImeController(owner,backend,()->{});ImeSession session=ime.begin(1,0,"editor");
+            check(ime.start(session,"Chinese"),"IME admitted");jobs.remove(0).run();
+            check(org.llmasr.minimal.audio.ForegroundRecorder.calls==0&&bridges[0]==0&&!owner.isBusy(),"unprepared real IME backend capture0 and owner finalized");
+        } finally {check(jobs.isEmpty(),"preinput worker final exit");delete(root);}
+    }
     static void operation() throws Exception {
         Path root = Files.createTempDirectory("next-operation-");
         try {
@@ -69,7 +118,7 @@ public final class NextAppContractTest {
                 (c,w,l,t,listener) -> "1 2 3\n<asr_text>synthetic".getBytes(java.nio.charset.StandardCharsets.UTF_8));
             AppReportWriter reports = new AppReportWriter(context);
             AsrOperation operation = new AsrOperation(context, coordinator, repository, state,
-                new TextExportController<android.net.Uri>(target -> new ByteArrayOutputStream(), Runnable::run), inference, reports);
+                new TextExportController<android.net.Uri>(target -> new ByteArrayOutputStream(), Runnable::run), inference, reports, preparedAccess(root));
             reports.failSuccess = true;
             check(operation.startSample("Chinese"), "real operation admitted");
             check(!reports.reportedAtSuccess, "success report must precede inferenceReported");
@@ -86,6 +135,7 @@ public final class NextAppContractTest {
     static void service() throws Exception {
         TaskCoordinator owner = new TaskCoordinator(Runnable::run);
         ImeController.Backend backend = new ImeController.Backend() {
+            public void requireModelReady() { /* Explicit synthetic prepared policy. */ }
             public byte[] capture(RecordingControl control, ImeController.Progress progress) {
                 control.start(() -> {}); control.stop(); control.captureReleased(); return new byte[]{1};
             }
@@ -111,6 +161,7 @@ public final class NextAppContractTest {
         final TaskCoordinator owner = new TaskCoordinator(Runnable::run);
         int captures, writes; final List<String> events = new ArrayList<>();
         final ImeController controller = new ImeController(owner, new ImeController.Backend() {
+            public void requireModelReady() { /* Explicit synthetic prepared policy. */ }
             public byte[] capture(RecordingControl c, ImeController.Progress p) {
                 captures++; c.start(() -> {}); c.stop(); c.captureReleased(); return new byte[]{1};
             }
@@ -120,7 +171,12 @@ public final class NextAppContractTest {
         final AsrImeService service = new AsrImeService();
         final android.widget.LinearLayout root;
         final ImeSession original;
+        final Path graphRoot = Files.createTempDirectory("ime-ui-readiness-fixture-");
+        final AppGraph graph;
         ImeFixture() throws Exception {
+            AppGraph.install(new android.content.Context(graphRoot.toFile())); graph=AppGraph.get(); graph.coordinator().awaitFree();
+            // Explicit synthetic prepared UI snapshot; synthetic Backend above is independently declared ready.
+            graph.readiness().markVerified(graph.readiness().beginVerify()); set(service,"graph",graph);
             android.widget.Toast.shows=0; android.widget.Toast.text="";
             set(service,"controller",controller);set(service,"alive",true);
             service.connection=(text,n)->{writes++;return true;};
@@ -139,7 +195,13 @@ public final class NextAppContractTest {
             check(!controller.commit(original,"fixture:1:field:1:0",1,0,text->{writes++;return true;})&&writes==0,
                 "external switch never commits old preview");
         }
-        public void close() {service.onDestroy();android.os.Handler.pending.clear();check(!owner.isBusy(),"IME fixture actual owner exit");}
+        public void close() throws Exception {
+            service.onDestroy();android.os.Handler.pending.clear();check(!owner.isBusy(),"IME fixture actual owner exit");
+            graph.coordinator().awaitFree(); graph.runtimeLogWorker().close();
+            java.util.concurrent.ExecutorService executor=(java.util.concurrent.ExecutorService)field(graph.runtimeLogWorker(),"executor");
+            executor.shutdown();check(executor.awaitTermination(5,java.util.concurrent.TimeUnit.SECONDS),"IME graph IO finalized");
+            Field singleton=AppGraph.class.getDeclaredField("INSTANCE");singleton.setAccessible(true);singleton.set(null,null);delete(graphRoot);
+        }
     }
     static android.widget.Button findButton(android.widget.LinearLayout root,String label) {
         for(android.view.View child:root.children) {
@@ -308,7 +370,7 @@ public final class NextAppContractTest {
             OperationContext ctx=new OperationContext(){public File filesDir(){return dir.toFile();}public File cacheDir(){return dir.toFile();}public InputStream openAsset(String n){return input;}public android.content.ContentResolver contentResolver(){return new android.content.ContentResolver();}};
             ModelManifest manifest=new ModelManifest(Arrays.asList(new ModelEntry("a",0,String.join("",Collections.nCopies(64,"0")))));ModelRepository repo=ModelRepository.forWorker(manifest,dir.resolve("model").toFile(),()->Long.MAX_VALUE);
             AppReportWriter reports=new AppReportWriter(ctx);InferenceAdapter infer=new InferenceAdapter(null,()->{},()->{},(c,w,l,t,listener)->"1 2 3\n<asr_text>compat".getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            AsrOperation op=new AsrOperation(ctx,owner,repo,new AppState(),new TextExportController<android.net.Uri>(u->new ByteArrayOutputStream(),Runnable::run),infer,reports);
+            AsrOperation op=new AsrOperation(ctx,owner,repo,new AppState(),new TextExportController<android.net.Uri>(u->new ByteArrayOutputStream(),Runnable::run),infer,reports,preparedAccess(dir));
             android.content.ContentResolver.stream=input;
             try {check(wave?op.startWave(new android.net.Uri(),null):op.startSample(null),"stream request admitted");check(input.closes==0&&owner.isBusy(),"stream IO deferred to worker");jobs.remove(0).run();
                 failureContract(reports.cause,primary,closing,wave?"Wave":"Sample");check(input.closes==1,"Operation stream close once");
@@ -333,7 +395,7 @@ public final class NextAppContractTest {
     static void waveNullable()throws Exception {
         Path dir=Files.createTempDirectory("compat-null-wave-");List<Runnable> jobs=new ArrayList<>();TaskCoordinator owner=new TaskCoordinator(jobs::add);
         OperationContext ctx=new OperationContext(){public File filesDir(){return dir.toFile();}public File cacheDir(){return dir.toFile();}public InputStream openAsset(String n){return null;}public android.content.ContentResolver contentResolver(){android.content.ContentResolver.order+="receiver;";return new android.content.ContentResolver();}};
-        AppReportWriter reports=new AppReportWriter(ctx);AsrOperation op=new AsrOperation(ctx,owner,null,new AppState(),new TextExportController<android.net.Uri>(u->null,Runnable::run),null,reports);
+        AppReportWriter reports=new AppReportWriter(ctx);AsrOperation op=new AsrOperation(ctx,owner,null,new AppState(),new TextExportController<android.net.Uri>(u->null,Runnable::run),null,reports,preparedAccess(dir));
         try {receiverReset();check(op.startWave(null,null)&&owner.isBusy()&&android.content.ContentResolver.calls==0,"nullable wave no IO before queued worker");jobs.remove(0).run();
             check(android.content.ContentResolver.calls==1&&android.content.ContentResolver.seen==null,"Wave null must reach receiver");check(reports.cause==android.content.ContentResolver.SENTINEL&&android.content.ContentResolver.order.equals("receiver;open;"),"Wave platform sentinel/receiver order");check(!owner.isBusy()&&jobs.isEmpty(),"nullable wave actual owner finalized");
         } finally {android.content.ContentResolver.fail=false;check(!owner.isBusy()&&jobs.isEmpty(),"nullable worker exit before deletion");delete(dir);}
@@ -368,6 +430,7 @@ public final class NextAppContractTest {
         if (mode.equals("all") || mode.equals("notification")) controller(true);
         if (mode.equals("all") || mode.equals("graph")) graph();
         if (mode.equals("all") || mode.equals("operation")) operation();
+        if (mode.equals("all") || mode.equals("preinput")) preInputAdmission();
         if (mode.equals("all") || mode.equals("service")) service();
         System.out.println("PASS next real app/controller host contracts " + mode + " " + checks + " checks (NOT Android runtime)");
     }

@@ -101,7 +101,13 @@ class ModelReviewFixTest {
         }
         private fun boundary() {
             for (mode in 0 until 3) for (cached in booleanArrayOf(false, true)) {
-                val f = ModelManagementControllerTest.Fixture(); f.install(); if (cached) f.ready()
+                val f = ModelManagementControllerTest.Fixture(); f.install()
+                val proofDir = Files.createTempDirectory("review-proof-")
+                val proof = ModelVerification(f.manifest, f.readiness, ModelAndroidHelpersTest.TestIo(proofDir))
+                f.repo = ModelRepository(f.manifest, f.dir, { 123456789 }, proof)
+                val c = f.controller(); check(c.startVerify(), "boundary full verify"); f.queue.run()
+                check(f.readiness.isReady, "boundary persistent proof prepared")
+                if (!cached) { f.readiness.invalidate(); check(ModelAccess(f.repo, f.readiness).restoreFast(), "cold fast restore") }
                 val part = File(f.dir, "a.part"); val external = File.createTempFile("model-review-target", ".bin"); Files.write(external.toPath(), byteArrayOf(8))
                 if (mode == 0) Files.createSymbolicLink(part.toPath(), external.toPath()) else if (mode == 1) part.mkdir() else Files.write(part.toPath(), byteArrayOf(6))
                 val nativeContinuation = AtomicBoolean(); val failure = AtomicReference<Throwable>()
@@ -109,7 +115,7 @@ class ModelReviewFixTest {
                 if (mode < 2) {
                     check(!nativeContinuation.get() && failure.get() != null, "unsafe part prevents lazy/native continuation including cached READY")
                     check(f.readiness.state() == ModelReadiness.State.INVALID, "unsafe part INVALID")
-                } else check(nativeContinuation.get() && f.readiness.isReady && part.isFile, "safe orphan retained without blocking readiness")
+                } else check(!nativeContinuation.get() && !f.readiness.isReady && part.isFile, "safe orphan retained but blocks readiness")
                 check(Files.readAllBytes(external.toPath())[0] == 8.toByte(), "external target untouched")
             }
         }

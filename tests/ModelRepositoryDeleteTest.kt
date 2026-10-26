@@ -21,6 +21,15 @@ class ModelRepositoryDeleteTest {
         private fun entry(name: String, data: ByteArray): ModelEntry = ModelEntry(name, data.size.toLong(), sha256(data))
         @JvmStatic @Throws(Exception::class) @Suppress("UNUSED_PARAMETER")
         fun main(args: Array<String>?) {
+            ModelAndroidHelpersTest.PersistentFixture().use { f ->
+                f.install(); f.verify(); f.io.fail = "open"
+                try { f.repo.deleteAll(); throw AssertionError("revoke failure accepted") } catch (expected: IOException) { }
+                check(Files.readAllBytes(f.model.resolve("a")).contentEquals(byteArrayOf(1, 2, 3)))
+                f.io.fail = null; f.verify(); f.repo.deleteAll(); check(!f.ready.isReady && !Files.exists(f.model.resolve("a")))
+                Files.createDirectories(f.model); f.install(); f.verify(); f.io.fail = "open"
+                try { f.repo.deleteAll(); throw AssertionError("second transaction reused revoke") } catch (expected: IOException) { }
+                check(Files.exists(f.model.resolve("a")))
+            }
             run {
                 val dir = freshDir("del-d1-"); val a = bytes(64); val b = bytes(64)
                 val r = ModelRepository(ModelManifest(Arrays.asList(entry("a.bin", a), entry("b.bin", b))), dir) { 0 }

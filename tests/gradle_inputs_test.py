@@ -114,6 +114,27 @@ class InputTests(unittest.TestCase):
             self.assertFalse(output.exists())
             duplicate.unlink()
 
+    def test_verification_owners_missing_drift_duplicate(self):
+        for owner in ('ModelVerification', 'AndroidModelVerificationIo'):
+            path = self.root / ('android/app/src/org/llmasr/minimal/model/' + owner + '.kt')
+            original = path.read_bytes()
+            output = self.root / ('reject-' + owner)
+            path.unlink()
+            with self.assertRaisesRegex(ValueError, 'Frozen product inventory mismatch'):
+                module.stage(self.root, output, self.native)
+            self.assertFalse(output.exists())
+            path.write_bytes(original + b'// synthetic drift\n')
+            with self.assertRaisesRegex(ValueError, 'Frozen product input mismatch'):
+                module.stage(self.root, output, self.native)
+            self.assertFalse(output.exists())
+            path.write_bytes(original)
+            duplicate = path.with_suffix('.java')
+            duplicate.write_text('// synthetic duplicate owner\n')
+            with self.assertRaisesRegex(ValueError, 'Frozen product inventory mismatch'):
+                module.stage(self.root, output, self.native)
+            self.assertFalse(output.exists())
+            duplicate.unlink()
+
     def test_added_asset_rejected(self):
         (self.root / 'android/app/assets/extra.txt').write_text('fixture')
         with self.assertRaisesRegex(ValueError, 'inventory mismatch'):

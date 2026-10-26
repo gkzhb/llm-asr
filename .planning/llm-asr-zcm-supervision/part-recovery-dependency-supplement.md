@@ -1,0 +1,7 @@
+# PartRecovery 有限fresh编译依赖补充
+
+父p1-steward/mainf7d1d79/indexempty；resident-build唯一working writer。收到leaf进展及scope请求后，父已读tests/PartRecoveryTest.java runOwnedRecovery依赖列表，核sdk-fast-2/raw.log具体ModelVerification cannotfindsymbol/partRecoveryProductionMutant失败；这不是生产行为mutant目标红，不冒fast通过。
+
+仅追加允许tests/PartRecoveryTest.java依赖名字字符串数组加入model/ModelVerification，沿原实际Java/Kotlin唯一源查找和freshcompile路径，不改变其他方法/marker变异锚点/预算/阈值/输入guard/lease/中断清理/线程跨JVM锁/primary异常契约。ModelRepository真实新增必需类型应编入其独占fresh依赖集合，不读旧classes蒙混。不得compile错误当存储预算red，不增加noop guard或其他生产旁路。
+
+41→42精确允许路径（两报告另列）。记录旧sdk-fast1 API错误和fast2依赖错误raw历史，等待当前真实terminal/ownedroot退出确认后方可改该文件并新域窄复跑PartRecovery与必要fast；不并行改正在被编译/运行的输入。四个已成功新modelmutants和真实SDK/相关host成功证据若源码未变保留不重跑，快照/sourcecollector映射需解释唯一测试delta。相关canonicalhost/fast继续保原门槛，若本依赖又确需其他源先给真实诊断不撒网扩大。原implementation全部安全/资源/full后授边界保持，不二级委派/写Beads/stagecommit。

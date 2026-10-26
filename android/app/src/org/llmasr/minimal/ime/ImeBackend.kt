@@ -9,12 +9,15 @@ import org.llmasr.minimal.audio.RecordingControl
 import org.llmasr.minimal.audio.WaveInput
 import org.llmasr.minimal.diagnostics.RuntimeLogSource
 import org.llmasr.minimal.model.ModelRepository
+import org.llmasr.minimal.model.ModelAccess
 import org.llmasr.minimal.platform.OperationContext
 import org.llmasr.minimal.task.RequestContext
 
 /** Application-context-only adapter; no Service, View, report or text store. */
 class ImeBackend(private val context: OperationContext?, private val modelRepository: ModelRepository?,
-                 private val inference: InferenceAdapter?) : ImeController.Backend {
+                 private val inference: InferenceAdapter?, private val modelAccess: ModelAccess) : ImeController.Backend {
+    @Throws(IOException::class)
+    override fun requireModelReady() { modelAccess.requireReady() }
     @Throws(IOException::class)
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     override open fun capture(control: RecordingControl?, progress: ImeController.Progress?): ByteArray? {

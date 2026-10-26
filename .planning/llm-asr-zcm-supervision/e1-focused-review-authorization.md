@@ -1,0 +1,13 @@
+# CORE-E1 remaining 唯一fresh定点回审
+
+父p1-steward/session01a16ecc-7157-76a9-8065-dbcf8e84589a唯一Beadswriter，原writer resident-build正式handoff/noBG/停写，Herdridle无产品并写。main f7d1d795f591299a3aa70194537652ad33691275/indexempty。父全文消费e1handoff/terminalseal/三plan/delta/raw/testgrowth并实读ControllerpublicationWaiters。独立45candidate、11seal、65production+7module+5supplemental+28protected、10ownedrecordexitroot与20stdoutstderr内外SHA同。只4delta（两测试两报告），生产无变化，旧28包非当前交付。原7fixBG与本bb7a55b5f真实终态保留，非agentidle冒验收。
+
+当前candidate bf9fb79a0c0a6b120eab0c4e875639abadd302ad4e7f22031c3018cd11af3816；e1handoff f743122edd89bd31c31ac94067952f342793944a7fa0d0dc4af038395070f29d；seal33c60d1320b6a2da5eb0e389f77cdacf0199f1a96c5d26bd95b7b5917fc5a31c。此前CORE-R1/R2、PLATFORM-R1/R2父已接受CLOSED，不重开；CORE-E1remaining仅覆盖，未确认新生产race。
+
+派唯一新fresh resident-review-5，newapi/gpt-6.1-sol/high/fork:false，同模型上下文隔离非跨家族。仅.planning/llm-asr-zcm-e1-review三plan及.work/resident-e1-review/可写；45产品候选只读冻结，无工程测试/编译/checker/复杂度/build/设备下载模型/Beads写/stagecommitpush/二级委派。可Git和stdlib读SHA/JSON/现raw，不能执行产品。
+
+先AGENTS/delivery/reviewskill/父三plan、本auth和e1-publication-authorization、上一核心报告.work/resident-fix-review-core/review.md的E1remaining与新e1完整证据。审新publicationWaiters三场景与TestIoafterSync：真实Controller经owner/control，kind3 afterRename持实际disk未write返回/succeed，registered directpublicdelete与独立proof.restoreFast真实WAITING+生产方法stack探针、等待后再失效与DIRTY先asset/requireReady拒绝、restore完整commit后合法序列化、combined允许非公平锁合法先后；不把仅start线程当到场，不把日志label当actualthread终态。核callbacks外断言、error传出、barrierfinally/join实际退出/未知保目录与primary，无吞断言/活输入清理；原8stage/rollback/lateepoch同JVM兼容、普通O真实各1compile4JVM/原600、classpath生产优先与输入当前字节、10record20stream真实退出。
+
+重点范围：补证是否真正满足此前反向等待缺口，单afterRename位点是否足覆已批准succeed邻接承诺；不凭未逐点穷举所有窗口制造无新增证据全域hardening。测试只观察到combined marker先/restore拒绝，不能称两顺序都运行；restoreonly合法成功/独立delete等待后撤销须足以解释余下承诺。若断言不足具体给path/trigger/最小补例，不推测新生产bug。复杂度本轮不授权重跑，old224不是新测试字节；只人工审测试增长与有限预算。无变化生产热点不用重审，发现具体连带风险照报。
+
+首尾45candidate/11seal及HEADindex同（旧fix18seal中两报告/两测试按授权变更是历史freeze，不要求与当前全相同），确认65production/7module/28protected无漂移。输出review.md逐CORE-E1remaining CLOSED或具体blocking；verification.json独立核查/首尾/notrun/现旧证据层级；handoff.md输出SHA/noBG，正式停写。原四项关闭不靠writer补证自签，本review只该项。父接受CLOSED后另授唯一full/三包绑定及两阶段提交；当前actualGradleApp/AGP/D8/full/currentAPK/device/nativeBresident均NOTRUN，不提供旧APK交付承诺。

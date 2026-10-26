@@ -6,13 +6,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 APP = {'AppGraph', 'AsrImeService', 'MainActivity', 'LogsActivity',
        'ModelManagementActivity', 'ActivityWindow', 'AsrOperation', 'AppReportWriter'}
-RUNTIME = {'JniNativeTranscription', 'ForegroundRecorder', 'SafModelSource', 'OperationContext', 'ImeBackend'}
+RUNTIME = {'JniNativeTranscription', 'ForegroundRecorder', 'SafModelSource', 'AndroidModelVerificationIo', 'OperationContext', 'ImeBackend'}
 
 
 def check(root=ROOT):
     baseline = json.loads((root / 'gradle/baseline-inputs.json').read_text())
     sources = [Path(p) for p in baseline['files'] if p.endswith(('.java', '.kt'))]
-    if len(sources) != 63 or len({p.stem for p in sources}) != 63:
+    if len(sources) != 65 or len({p.stem for p in sources}) != 65:
         raise AssertionError('production source inventory changed: review module ownership')
     expected = {'app': set(), 'asr-runtime': set(), 'core': set()}
     for path in sources:

@@ -17,6 +17,8 @@ import org.llmasr.minimal.diagnostics.RuntimeLogWorker
 import org.llmasr.minimal.ime.ImeBackend
 import org.llmasr.minimal.ime.ImeController
 import org.llmasr.minimal.model.ModelAccess
+import org.llmasr.minimal.model.ModelVerification
+import org.llmasr.minimal.model.AndroidModelVerificationIo
 import org.llmasr.minimal.model.ModelEntry
 import org.llmasr.minimal.model.ModelManifest
 import org.llmasr.minimal.model.ModelReadiness
@@ -46,7 +48,7 @@ class AppGraph private constructor(private val context: OperationContext?, priva
     private val imeBackend: ImeBackend
     private val logExports: LogExportController<android.net.Uri>
     init {
-        imeBackend = ImeBackend(context, modelRepository, inference)
+        imeBackend = ImeBackend(context, modelRepository, inference, modelAccess!!)
         logExports = LogExportController { target -> context!!.contentResolver()!!.openOutputStream(unchanged<android.net.Uri>(target), "wt") }
         modelManagement = ModelManagementController(coordinator, modelRepository, readiness, modelControl, modelState, runtimeLogStore)
     }
@@ -87,14 +89,16 @@ class AppGraph private constructor(private val context: OperationContext?, priva
                 val coordinator = TaskCoordinator()
                 val textExport = TextExportController<android.net.Uri> { target -> opCtx.contentResolver()!!.openOutputStream(unchanged<android.net.Uri>(target), "wt") }
                 val space = ModelRepository.SpaceProvider { opCtx.filesDir()!!.usableSpace }
-                val repository = ModelRepository.forAppFiles(manifest, opCtx.filesDir(), space)
+                val app = appContext.applicationContext
+                val verification = ModelVerification(manifest, readiness, AndroidModelVerificationIo { app.noBackupFilesDir })
+                val repository = ModelRepository.forAppFiles(manifest, opCtx.filesDir(), space, verification)
                 val access = ModelAccess(repository, readiness)
                 val logStore = RuntimeLogStore()
                 val logPersistence = RuntimeLogPersistence(opCtx.filesDir())
                 val logFailure = RuntimeLogPersistence.FailureSink { reason -> logStore.append(RuntimeLogEventKind.LOG_PERSISTENCE_FAILED, RuntimeLogSource.SHARED, null, reason) }
                 val logWorker = RuntimeLogWorker(logStore, logPersistence, logFailure)
                 val inference = InferenceAdapter(logStore, access::requireReady, { System.loadLibrary("qwen_asr_jni") }, JniNativeTranscription())
-                val ops = AsrOperation(opCtx, coordinator, repository, state, textExport, inference, AppReportWriter(opCtx))
+                val ops = AsrOperation(opCtx, coordinator, repository, state, textExport, inference, AppReportWriter(opCtx), access)
                 val built = AppGraph(opCtx, coordinator, repository, state, textExport, ops, readiness, access, logStore, logWorker, inference)
                 built.asrOperation!!.startupOnce()
                 logStore.append(RuntimeLogEventKind.APP_STARTUP, RuntimeLogSource.SHARED, null, "ok")

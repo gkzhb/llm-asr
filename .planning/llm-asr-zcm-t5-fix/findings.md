@@ -1,0 +1,3 @@
+# T5 findings
+
+Read fullauth/parent3plans/T5entire393lines.51candidateSHAexact/mainHEADindex/bdembeddedowner/runtime restored. TwoauditedfixtureSHA verified current; other3owners/provider/lockpinsunchanged. Existingretainedcurrent-hostCP is actualproduction/finiteAndroidfakes compile usedforcorefulltargeted, itsproduction sourceidentityknown; T5onlycore/runtime productionneeded, platformfakesnotusedforAndroidclaims. No needcanonicalrebuild. OldBASEBackendclassuniqueanchor permits singlepurememorycompatmethod only; preserveGitrawseparateoriginal/adaptedSHA+patch and labeladapted historical oracle. Currentcaptureone-usegrant requires directprepared/null/fatal/stopped allrequirefirst; transcribe faultoriginalcountershape unchanged. No productiondefaultnoop.

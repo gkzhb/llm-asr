@@ -14,13 +14,14 @@ public final class ModelOperationControl {
         public final String id = UUID.randomUUID().toString();
         public final Kind kind;
         public final long startedAt = System.currentTimeMillis();
-        private volatile boolean cancelRequested, publishReserved, terminated, succeeded;
+        private volatile boolean cancelRequested, publishReserved, proofCommitReserved, terminated, succeeded;
         Operation(Kind kind) { this.kind = kind; }
         public String id() { return id; }
         public Kind kind() { return kind; }
         public long startedAt() { return startedAt; }
         public boolean isCancelRequested() { return cancelRequested; }
         public boolean isPublishReserved() { return publishReserved; }
+        public boolean isProofCommitReserved() { return proofCommitReserved; }
         public boolean isTerminated() { return terminated; }
         public boolean isSucceeded() { return succeeded; }
     }
@@ -33,7 +34,7 @@ public final class ModelOperationControl {
     /** false means stale, non-cancellable, or success already committed. */
     public synchronized boolean requestCancel(String id) {
         Operation op = active;
-        if (op == null || !op.id.equals(id) || op.terminated || op.succeeded
+        if (op == null || !op.id.equals(id) || op.terminated || op.succeeded || op.proofCommitReserved
                 || op.kind == Kind.DELETE || op.kind == Kind.INSPECT) return false;
         op.cancelRequested = true;
         return true;
@@ -42,6 +43,14 @@ public final class ModelOperationControl {
     public synchronized boolean tryReservePublish(Operation op) {
         if (op == null || active != op || op.terminated || op.succeeded || op.cancelRequested) return false;
         op.publishReserved = true;
+        return true;
+    }
+    /** Reserves final proof publication, not a file rename or success/owner release.
+     * Once reserved cancel has lost; slow durable IO runs after this monitor exits. */
+    public synchronized boolean tryReserveProofCommit(Operation op, ModelReadiness readiness, ModelReadiness.VerifyToken token) {
+        if (op == null || active != op || op.terminated || op.cancelRequested || op.proofCommitReserved
+                || !readiness.accepts(token)) return false;
+        op.proofCommitReserved = true;
         return true;
     }
     /** No IO or listener callbacks here. Null token is for inspect/delete only. */

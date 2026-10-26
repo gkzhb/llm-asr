@@ -1,0 +1,12 @@
+# Targeted当前模块owner编译路径补充
+
+父p1-steward/basef7d1d79/indexempty，唯一resident-build现有targeted host链b35e68421顺序执行，本补充不启动第二构建链。父已读当前module_owners_test.check/全部guardfixture与root/appGradle真实依赖：app compile经preBuild强依prepareInputs/native，当前不授该链。
+
+批准仅在新独占.work/resident-build/module-owner-current有限副本执行实际owner编译与checker：真实固定SDK android.jar+当前实际core/runtime编译输出为classpath，root appSources精确8真实源使用既有compile-jvm-sources.sh编译独立app roots；不把旧主app classes当当前，不造Android/platform stub或复制旧app输出。编译输入逐path/sourceSHA、classpath顺序/依赖目录modebytesSHA/工具argv与真实exit记清，必须SDK真实类，无fixture替代。
+实际core/runtime输出可复制到有限副本checker预期目录，但先核来源为本轮成功fast/current源的编译输出（含新proof两类），不能仅按mtime认新。生成路径映射到app Java/Kotlin两个roots时以真实compiler输出归属为准，不复制同class两份、不按期望owner过滤/删掉extra后凑green；若既有mixedcompiler混合单root，应保存完整原root，并如实映射唯一物理class集合、明确这不是AGP原生双目录布局证明。空的合法Java/Kotlin声明目录可建立，但不能靠空目录掩盖缺top-level class。
+
+有限root放当前baseline、module_owners_test.py和guard模块原字节副本，使真实check及guardfixtures的ROOT默认都指该副本，不临时弱化checker/跳过guard/默认读主树旧输出。对新proof缺失/duplicate/runtime误入core/App额外owner等所有现有fixtures实际普通/-O执行，记录结果/输入SHA和每negative对应诊断；不能只直接调用check而guard却读主树。canonical源码文件/主Gradle输出不改，不-x/禁任务/改rootmoduleGradle或加新依赖。全部host/SDK/fast已存在工程串行，收当前链真实terminal后再进行该阶段，运行中不覆盖源/classpath输入。
+
+该结果只称“真实SDK与当前依赖下的targeted app类发射+实际模块ownerchecker/guard证据”，不是actual Gradle :app:compileDebugKotlin、AGP task接线、D8/签名/产物证明。actual Gradle app task与完整3APK owner/package gate均NOT RUN，后置父接受fresh审后的正式full必须真实执行，不能用本替代。若该替代无法不绕门槛地完成，就标targeted owner证据不足留full，不偷偷使用旧app green。
+
+仅追加ignored验证路径，不增加生产/test源码修改授权、预算或full/prepare/native权限；compiled子命令保既有owned监督lease/预登记/未知退出保留/primary不覆盖，成功终态封口纳当前targetedhandoff。原所有禁区/未测层级保持，不需重复调查。

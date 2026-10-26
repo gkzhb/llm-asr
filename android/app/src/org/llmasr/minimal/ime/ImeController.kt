@@ -12,6 +12,7 @@ import org.llmasr.minimal.task.TaskKind
 /** Private voice IME transaction. Worker results retain editor and request identity. */
 class ImeController(private val coordinator: TaskCoordinator?, private val backend: Backend?, private val changed: Runnable?) {
     interface Backend {
+        @Throws(IOException::class) fun requireModelReady()
         @Throws(IOException::class) fun capture(control: RecordingControl?, progress: Progress?): ByteArray?
         @Throws(Exception::class) fun transcribe(request: RequestContext?, wav: ByteArray?, language: String?): String?
         @Throws(IOException::class) fun cleanup(request: RequestContext?)
@@ -75,10 +76,11 @@ class ImeController(private val coordinator: TaskCoordinator?, private val backe
         val runner = RequestRunner(coordinator, { 0 }, policy, { request -> cleanupBackend.cleanup(request) })
         return runner.submit(TaskKind.INFERENCE, { ctx ->
             if (control.cancelled()) throw CancellationException()
+            backend!!.requireModelReady()
             status(session, rev, "正在录音，停止后转写……")
             val wav = backend!!.capture(control) { seconds -> status(session, rev, String.format(Locale.ROOT, "录音 %.1f / 30 秒", seconds)) }
             if (!control.tryCommitInference()) throw CancellationException()
-            status(session, rev, "校验模型 / 加载 / 转写中，请稍候……")
+            status(session, rev, "加载模型 / 转写中，请稍候……")
             val text = backend.transcribe(ctx, wav, language)
             synchronized(this@ImeController) {
                 if (live(session, rev)) {

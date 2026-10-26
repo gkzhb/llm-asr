@@ -13,6 +13,7 @@ import org.llmasr.minimal.audio.RecordingControl
 import org.llmasr.minimal.audio.WaveInput
 import org.llmasr.minimal.diagnostics.RuntimeLogSource
 import org.llmasr.minimal.model.ModelRepository
+import org.llmasr.minimal.model.ModelAccess
 import org.llmasr.minimal.platform.OperationContext
 import org.llmasr.minimal.task.RequestContext
 import org.llmasr.minimal.task.RequestRunner
@@ -23,7 +24,7 @@ import org.llmasr.minimal.task.TaskKind
 class AsrOperation(private val context: OperationContext?, private val coordinator: TaskCoordinator?,
     private val modelRepository: ModelRepository?, private val appState: AppState?,
     private val textExport: TextExportController<Uri>?, private val inference: InferenceAdapter?,
-    private val reports: AppReportWriter?) {
+    private val reports: AppReportWriter?, private val modelAccess: ModelAccess) {
     // Preserve Java null forwarding to this SDK parameter, not a general non-null conversion.
     @Suppress("UNCHECKED_CAST") private fun <T> unchanged(value: Any?): T = value as T
     private val runner = RequestRunner(coordinator, { ResultFiles.cleanTemporary(context!!.filesDir()) },
@@ -36,6 +37,7 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun cancelRecording() { val r = recording; if (r != null) r.cancel() }
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun startSample(language: String?): Boolean = runner.submit(TaskKind.INFERENCE, { ctx ->
+        modelAccess.requireReady()
         val input = context!!.openAsset("sample.wav")
         var primary: Throwable? = null
         try {
@@ -54,6 +56,7 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
     })
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun startWave(uri: Uri?, language: String?): Boolean = runner.submit(TaskKind.INFERENCE, { ctx ->
+        modelAccess.requireReady()
         val cr = context!!.contentResolver()
         val input = cr!!.openInputStream(unchanged<Uri>(uri))
         var primary: Throwable? = null
@@ -77,6 +80,7 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
         return runner.submit(TaskKind.INFERENCE, { ctx ->
             val wav: ByteArray
             try {
+                modelAccess.requireReady()
                 wav = ForegroundRecorder.capture(control) { seconds -> appState!!.setLastStatus(String.format(Locale.ROOT,
                     "正在录音 %.1f / 30.0 秒 · 停止后转写，离开界面会取消", seconds)) }
                 if (!control.tryCommitInference()) throw CancellationException("已取消录音，音频已丢弃")
@@ -99,7 +103,12 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
         appState.setLastStatus("已更新当前文本；编辑仅保留在内存，请导出保存。原始推理报告未改写。")
     })
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
-    open fun startupOnce(): Boolean = runner.submit(TaskKind.MAINTENANCE, { ctx -> appState!!.setLastStatus(ResultFiles.startupStatus(ctx.cleanedTemporary)) })
+    open fun startupOnce(): Boolean = runner.submit(TaskKind.MAINTENANCE, { ctx ->
+        val restored = try { modelAccess.restoreFast() } catch (unavailable: IOException) { false }
+        appState!!.setLastStatus(ResultFiles.startupStatus(ctx.cleanedTemporary) + if (restored)
+            "\n已快速恢复校验证明（未做 SHA）；每请求加载并释放模型，非驻留。"
+            else "\n模型尚未准备，请到模型管理完整校验；已有证明可快速恢复。")
+    })
     @Throws(IOException::class)
     private fun transcribeFromStream(ctx: RequestContext, input: InputStream, language: String?, source: String) {
         val wav = File(context!!.filesDir(), "input-" + ctx.requestId + ".wav")

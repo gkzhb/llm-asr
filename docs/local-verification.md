@@ -2,6 +2,17 @@
 
 任务 `llm-asr-76d.5`，P1-A 本地护栏切片。**当前 B3b 完整工程验证通过，待安全本地提交，尚非 APK 交付或 M4 关闭**；当前证据见 [full 报告](../reports/local-verify-p1/full.md) 与 [状态](../reports/local-verify-p1/status.md)。下文 B2/三修复/权限修复的 not-run/blocked 描述均为各自历史检查点，不代表本次 full 未执行。命令是未来 CI-ready 的同源入口；**未选择远端 provider，未创建远端 workflow、触发 CI 或上传产物**。当前 runtime 静态录音权限契约补全以 [权限修复状态](../reports/local-verify-p1/permission-fix.md) 及 `.work/p1-permission-fix/` 为准；三处生产 Lint 修复的历史 blocked 检查点见 [窄修复状态](../reports/local-verify-p1/lint-fix.md) 及 `.work/p1-lint-fix/handoff.md`（当时 runtime library 静态权限声明尚缺，不能当作补全后的 current 身份）；旧 B2 执行结果见 [B2 状态](../reports/local-verify-p1/b2.md)、`.work/p1-b2/final-handoff.md` 及 `.planning/llm-asr-76d.5/`；`.work/p1-build/handoff.md`、`.work/p1-repair/batch-a-handoff.md` 和 `.work/p1-b2/handoff.md` 均为历史检查点，不能拿旧 M3 报告或旧 A freeze 当 B2 当前通过。
 
+## llm-asr-zcm 模型证明 targeted
+
+`tests/model_verification_contract_test.py` 是独立生产负例入口，不导入 next/runtime 大 suite：
+
+```bash
+timeout 2400 python3 -B tests/model_verification_contract_test.py --contracts "$classes" --evidence-dir "$evidence/ordinary"
+timeout 2400 python3 -O tests/model_verification_contract_test.py --contracts "$classes" --evidence-dir "$evidence/optimized"
+```
+
+`classes` 为当批 canonical host mixed compiler 输出，使用既有 owned-session/dependency lease。每模式最多9次有限 mixed compile（各180秒）、20个 JVM（各30秒、`-Xmx256m`）；原 next/defaultcompat/IME3000/runtime7200/host/full 预算不变。四 mutant 必须真实生产编译0→精确 AssertionError1→原字节恢复重编/run0：缺 proof 偷 READY、写后撤销、取消赢家残留可恢复 proof、请求 lazy hash。真实小文件/独立 JVM、故障与取消矩阵只证明 JVM 协议，不证明 Android Os 耐久、真实 native 驻留或设备输入。当前结果及 not run 分层见 [模型证明状态](../reports/model-verification-zcm/status.md)。后续 fresh 审查、full/三包/签名、安全本地提交仍各自后置，旧 APK 不是本批产品。
+
 ## P1-B 2B 测试工程层（非设备验收）
 
 任务`llm-asr-76d.6`新增`android-test-build`层；2A/B1已接受，2B fresh上下文隔离审查NO BLOCKING已由父接受（非跨家族独立审查）。最终唯一cache-only strict offline full已真实通过，仍未安全本地提交，不据此交付APK/关闭M5；当前结果见[full报告](../reports/android-test-p1/full.md)及[状态](../reports/android-test-p1/status.md)。Android runner/SAF/Binder/grant/InputConnection及生产Service系统生命周期均not run；SDK deprecated标准runner仅编译候选，不自造runner。

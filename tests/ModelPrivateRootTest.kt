@@ -31,12 +31,15 @@ class ModelPrivateRootTest {
                 val alias = base.resolve("data"); Files.createSymbolicLink(alias, base.resolve("user/0"))
                 val files = alias.resolve("app/files").toFile()
                 val manifest = ModelManifest(Collections.singletonList(ModelRepositoryTest.entry("a.bin", byteArrayOf(1, 2, 3))))
-                val repo = ModelRepository.forAppFiles(manifest, files) { Long.MAX_VALUE }
+                val ready = ModelReadiness()
+                val syntheticIo = ModelAndroidHelpersTest.TestIo(base.resolve("synthetic-noBackup"))
+                val proof = ModelVerification(manifest, ready, syntheticIo)
+                val repo = ModelRepository.forAppFiles(manifest, files, { Long.MAX_VALUE }, proof)
                 check(!Files.exists(real.resolve("model")), "bootstrap does not mkdir")
                 check(repo.inspect(ModelRepository.NEVER_CANCEL).installedBytes == 0L, "alias inspect succeeds")
                 check(!Files.exists(real.resolve("model")), "inspect does not mkdir")
                 val source = ModelRepositoryTest.FakeSource(); source.store["a.bin"] = byteArrayOf(1, 2, 3)
-                val ready = ModelReadiness(); val state = ModelManagementState()
+                val state = ModelManagementState()
                 val owner = TaskCoordinator { it.run() }
                 val controller = ModelManagementController(owner, repo, ready, ModelOperationControl(), state)
                 check(controller.startImport(source), "import admitted")
@@ -59,7 +62,7 @@ class ModelPrivateRootTest {
                     if (leaf != "model") Files.createDirectories(model)
                     val link = if (leaf == "model") model else model.resolve(leaf)
                     Files.createSymbolicLink(link, if (leaf == "model") outside else outside.resolve("a.bin"))
-                    val unsafe = ModelRepository.forAppFiles(manifest, files) { Long.MAX_VALUE }
+                    val unsafe = ModelRepository.forAppFiles(manifest, files, { Long.MAX_VALUE }, proof)
                     expectRejected { unsafe.inspect(ModelRepository.NEVER_CANCEL) }
                     expectRejected { unsafe.importFrom(source, null) }
                     expectRejected { unsafe.verifyAll() }
@@ -68,13 +71,19 @@ class ModelPrivateRootTest {
                     Files.delete(link); if (leaf != "model") Files.delete(model)
                 }
                 Files.createSymbolicLink(real.resolve("model"), base.resolve("absent"))
-                expectRejected { ModelRepository.forAppFiles(manifest, files) { 0 }.inspect(ModelRepository.NEVER_CANCEL) }
+                expectRejected { ModelRepository.forAppFiles(manifest, files, { 0 }, proof).inspect(ModelRepository.NEVER_CANCEL) }
                 Files.delete(real.resolve("model")); Files.write(real.resolve("model"), byteArrayOf(7))
-                expectRejected { ModelRepository.forAppFiles(manifest, files) { 0 }.importFrom(source, null) }
+                expectRejected { ModelRepository.forAppFiles(manifest, files, { 0 }, proof).importFrom(source, null) }
                 Files.delete(real.resolve("model"))
                 expectRejected { ModelRepository(manifest, File(files, "model")) { 0 } }
                 val noIo = object : File(files.path) { override fun getCanonicalFile(): File { throw AssertionError("bootstrap IO") } }
-                ModelRepository.forAppFiles(manifest, noIo) { 0 }
+                val lazyIo = object : ModelVerification.Io {
+                    override fun identity(file: File, directory: Boolean): String = throw AssertionError("guard bootstrap IO")
+                    override fun exists(file: File): Boolean = throw AssertionError("guard bootstrap IO")
+                    override fun read(name: String, limit: Int): ByteArray? = throw AssertionError("guard bootstrap IO")
+                    override fun write(name: String, bytes: ByteArray) { throw AssertionError("guard bootstrap IO") }
+                }
+                ModelRepository.forAppFiles(manifest, noIo, { 0 }, ModelVerification(manifest, ModelReadiness(), lazyIo))
                 println("PASS private-root alias import/inspect/verify/reuse/delete and symlink safety (host filesystem only)")
             } finally {
                 val paths = Files.walk(base); var primary: Throwable? = null

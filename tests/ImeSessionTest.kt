@@ -21,6 +21,8 @@ class ImeSessionTest {
         var control: RecordingControl? = null; var request: RequestContext? = null
         var duringCapture = Runnable {}; var duringInference = Runnable {}; var duringCleanup = Runnable {}
         var audio = byteArrayOf(1, 2, 3)
+        var modelReady = true; var admissions = 0
+        override fun requireModelReady() { admissions++; if (!modelReady) throw IOException("model not prepared") }
         override fun capture(control: RecordingControl?, progress: ImeController.Progress?): ByteArray {
             captures++; this.control = control
             try {
@@ -67,6 +69,7 @@ class ImeSessionTest {
                     if (!release.await(5, TimeUnit.SECONDS)) throw AssertionError("external exit worker deadline")
                 }
                 val backend = object : ImeController.Backend {
+                    override fun requireModelReady() { /* Explicit synthetic prepared fixture. */ }
                     override fun capture(control: RecordingControl?, progress: ImeController.Progress?): ByteArray {
                         activeControl.set(control)
                         control!!.start {}; try { if (stage == "capture") block() }
@@ -152,6 +155,8 @@ class ImeSessionTest {
             late.complete(); check(late.s!!.preview().isEmpty() && !late.s!!.valid(), "late result discarded"); check(!late.owner.isBusy(), "native completion frees owner")
             val busy = Fixture(); busy.owner.submit {}; check(!busy.c.start(busy.s, "Chinese") && busy.backend.captures == 0, "App owner excludes IME"); busy.queue.run()
             check(busy.c.start(busy.s, "Chinese"), "IME gets owner"); check(!busy.owner.submit { throw AssertionError() }, "IME excludes App"); busy.queue.run()
+            val unprepared = Fixture(); unprepared.backend.modelReady = false; unprepared.complete()
+            check(unprepared.backend.admissions == 1 && unprepared.backend.captures == 0 && unprepared.backend.inference == 0 && unprepared.backend.cleanup == 1, "unprepared IME denied before capture with real cleanup")
             val failed = Fixture(); failed.backend.fail = true; failed.complete()
             check(failed.backend.cleanup == 1 && failed.backend.inference == 0 && failed.s!!.preview().isEmpty(), "capture failure cleanup no result")
             check(failed.s!!.status().contains("失败") && !failed.owner.isBusy(), "failure status owner release")

@@ -11,6 +11,11 @@ class ModelReadinessTest {
         @JvmStatic @Throws(Exception::class)
         fun main(args: Array<out String?>?) {
             run {
+                val r = ModelReadiness(); val old = r.beginVerify("old-generation")
+                r.invalidate(); val current = r.beginVerify("new-generation")
+                check(!r.accepts(old)); check(!r.commitVerified(old)); check(r.accepts(current)); check(r.commitVerified(current))
+            }
+            run {
                 val r = ModelReadiness(); val s = r.snapshot()
                 check(s.state == ModelReadiness.State.UNKNOWN); check(s.epoch == 0L); check(!s.ready()); check(!r.isReady)
             }

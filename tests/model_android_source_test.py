@@ -32,7 +32,8 @@ PACKAGE_MAP = {
     'RecordingControl': 'audio', 'ForegroundRecorder': 'audio',
     'ModelEntry': 'model', 'ModelManifest': 'model', 'ModelReports': 'model',
     'ModelSource': 'model', 'ModelRepository': 'model', 'ModelReadiness': 'model',
-    'ModelAccess': 'model', 'ModelProviderBoundary': 'model', 'SafModelSource': 'model',
+    'ModelAccess': 'model', 'ModelVerification': 'model', 'AndroidModelVerificationIo': 'model',
+    'ModelProviderBoundary': 'model', 'SafModelSource': 'model',
     'FileSafety': 'model',
     'NativeResponse': 'asr', 'NativeTranscription': 'asr', 'JniNativeTranscription': 'asr',
     'InferenceAdapter': 'asr', 'InferencePhase': 'asr', 'InferencePhaseListener': 'asr',
@@ -71,7 +72,14 @@ assert 'RuntimeLogStore' in graph
 assert 'runtimeLogStore' in graph
 assert 'RuntimeLogPersistence' in graph
 assert 'RuntimeLogWorker' in graph
-assert 'ModelRepository.forAppFiles(manifest, opCtx.filesDir(), space)' in graph
+assert 'ModelRepository.forAppFiles(manifest, opCtx.filesDir(), space, verification)' in graph
+assert 'AndroidModelVerificationIo { app.noBackupFilesDir }' in graph
+assert 'ModelVerification(manifest, readiness,' in graph
+assert 'startRestore()' in java('ModelManagementController')
+assert '快速恢复已校验证明（不做 SHA）' in java('ModelManagementActivity')
+assert java('AsrOperation').count('modelAccess.requireReady()') == 3
+assert 'backend!!.requireModelReady()' in java('ImeController')
+assert 'repo.verifyAll' not in java('ModelAccess')
 assert 'access::requireReady' in graph
 assert ('JniNativeTranscription()' if graph_kotlin else 'new JniNativeTranscription()') in graph
 assert 'TaskKind.MODEL_OPERATION' not in java('AsrOperation')

@@ -75,15 +75,43 @@ class InferenceAdapterTest {
                     override fun verifyAll(progress: Progress?, gate: CancelGate?) { shaRuns.incrementAndGet(); super.verifyAll(progress, gate) }
                     override fun validateManagedBoundary(gate: CancelGate?) { boundaries.incrementAndGet(); super.validateManagedBoundary(gate) }
                 }
-                Files.write(root.resolve("model.bin"), data); val readiness = ModelReadiness(); val access = ModelAccess(repo, readiness); val f = Fixture(); f.ready = InferenceAdapter.Readiness { access.requireReady() }
+                Files.write(root.resolve("model.bin"), data); val readiness = ModelReadiness()
+                val journal = Files.createDirectory(root.resolve("proof"))
+                val io = object : ModelVerification.Io {
+                    override fun exists(file: File): Boolean = Files.exists(file.toPath(), LinkOption.NOFOLLOW_LINKS)
+                    override fun identity(file: File, directory: Boolean): String = Files.readAttributes(file.toPath(), "unix:dev,ino,mode,size,lastModifiedTime,ctime", LinkOption.NOFOLLOW_LINKS).toSortedMap().toString()
+                    override fun read(name: String, limit: Int): ByteArray? {
+                        val p = journal.resolve(name); if (!Files.exists(p)) return null
+                        Files.newInputStream(p).use { input -> val out = ByteArrayOutputStream(); while (true) { val b = input.read(); if (b < 0) return out.toByteArray(); if (out.size() == limit) throw IOException("limit"); out.write(b) } }
+                    }
+                    override fun write(name: String, bytes: ByteArray) {
+                        val temp = journal.resolve("$name.tmp")
+                        FileOutputStream(temp.toFile()).use { out -> out.write(bytes); out.fd.sync() }
+                        Files.move(temp, journal.resolve(name), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
+                        java.nio.channels.FileChannel.open(journal, StandardOpenOption.READ).use { it.force(true) }
+                    }
+                }
+                val proof = ModelVerification(manifest, readiness, io)
+                val managed = object : ModelRepository(manifest, root.toFile(), { Long.MAX_VALUE }, proof) {
+                    override fun verifyAll(progress: Progress?, gate: CancelGate?) { shaRuns.incrementAndGet(); super.verifyAll(progress, gate) }
+                }
+                val access = ModelAccess(managed, readiness); val f = Fixture(); f.ready = InferenceAdapter.Readiness { access.requireReady() }
+                try { f.run(); throw AssertionError("missing proof reaches native") } catch (expected: IOException) { }
+                check(shaRuns.get() == 0 && f.calls == 0, "missing proof never hashes or loads")
+                val control = org.llmasr.minimal.modelmanagement.ModelOperationControl(); val op = control.tryBegin(org.llmasr.minimal.modelmanagement.ModelOperationControl.Kind.VERIFY)
+                val token = proof.begin(managed); managed.verifyAll(null, ModelRepository.NEVER_CANCEL)
+                check(proof.commit(managed, token, object : ModelVerification.CommitGate {
+                    override fun reserve(t: ModelReadiness.VerifyToken): Boolean = control.tryReserveProofCommit(op, readiness, t)
+                    override fun succeed(t: ModelReadiness.VerifyToken): Boolean = control.trySucceed(op, readiness, t)
+                }), "explicit full verify"); control.complete(op, true)
                 payload(f.run()); payload(f.run(RuntimeLogSource.IME, UUID.randomUUID().toString()))
-                check(readiness.isReady && shaRuns.get() == 1 && boundaries.get() >= 2, "real cold SHA then cached access")
+                check(readiness.isReady && shaRuns.get() == 1, "explicit SHA then request zero hash")
                 check(count(f.store, MODEL_ACCESS_COMPLETED) == 2L && count(f.store, MODEL_LOAD_COMPLETED) == 2L, "cached readiness still has real per-request memory load")
                 check(count(f.store, MODEL_VERIFY_COMPLETED) == 0L, "cached access never claims a SHA-only completion")
                 readiness.invalidate(); Files.write(root.resolve("model.bin"), byteArrayOf(9, 9, 9))
                 try { f.run(); throw AssertionError("bad SHA accepted") } catch (expected: IOException) {}
-                check(shaRuns.get() == 2 && f.calls == 2 && !readiness.isReady, "verify failure never reaches native")
-                check(count(f.store, MODEL_ACCESS_FAILED) == 1L && count(f.store, REQUEST_FAILURE) == 1L, "verify failures logged")
+                check(shaRuns.get() == 1 && f.calls == 2 && !readiness.isReady, "proof failure never hashes or reaches native")
+                check(count(f.store, MODEL_ACCESS_FAILED) == 2L && count(f.store, REQUEST_FAILURE) == 2L, "proof failures logged")
             } finally { deleteTree(root) }
         }
         private fun failureIdentity() {
@@ -288,7 +316,7 @@ class InferenceAdapterTest {
         fun main(args: Array<out String?>?) {
             group("App/IME validated result, task IDs, phase timestamps and monotonic durations", ::successAndTime)
             group("one shared adapter, lazy JNI construction and per-request APP/IME listeners", ::sharedInstance)
-            group("real ModelAccess cold SHA/cached readiness and verify failure", ::realReadiness)
+            group("real ModelAccess explicit SHA/proof readiness and request rejection", ::realReadiness)
             group("readiness/library/native IOException RuntimeException LinkageError VM error identity", ::failureIdentity)
             group("null and malformed native protocol never request success", ::resultFailures)
             group("load/inference failure boundaries", ::phaseFailures)

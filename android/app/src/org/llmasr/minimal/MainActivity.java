@@ -224,10 +224,9 @@ public final class MainActivity extends Activity {
         if(checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)!=android.content.pm.PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO},MIC_PERMISSION); return;
         }
-        ModelReadiness.State ready = graph.readiness().state();
-        if(ready == ModelReadiness.State.NOT_INSTALLED || ready == ModelReadiness.State.INCOMPLETE || ready == ModelReadiness.State.INVALID) {
-            graph.appState().setLastStatus("模型不可用，请打开模型管理检查或修复导入。"); return;
-        } // UNKNOWN/UNVERIFIED complete models are lazily SHA-verified under the inference owner.
+        if(!graph.readiness().snapshot().ready()) {
+            graph.appState().setLastStatus("模型未准备，请打开模型管理完整校验或快速恢复已校验证明。"); return;
+        } // Worker admission rechecks the shared proof before microphone access.
         graph.asrOperation().startRecording(language.getSelectedItem().toString());
     }
 

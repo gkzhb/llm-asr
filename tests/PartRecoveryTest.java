@@ -159,7 +159,7 @@ public final class PartRecoveryTest {
         List<String> command = new ArrayList<>(Arrays.asList("bash", "scripts/compile-jvm-sources.sh",
             classes.getPath(), "", target.toString(), driverPath.toString()));
         for (String name : new String[]{"model/ModelEntry", "model/ModelManifest", "model/ModelSource",
-                "model/FileSafety", "model/ModelReports", "modelmanagement/ModelManagementState", "model/ModelReadiness"}) {
+                "model/FileSafety", "model/ModelReports", "modelmanagement/ModelManagementState", "model/ModelReadiness", "model/ModelVerification"}) {
             Path base = Paths.get("android/app/src/org/llmasr/minimal/" + name);
             Path java = Paths.get(base + ".java"), kotlin = Paths.get(base + ".kt");
             if (Files.isRegularFile(java) == Files.isRegularFile(kotlin))

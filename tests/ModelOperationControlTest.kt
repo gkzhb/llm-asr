@@ -71,6 +71,16 @@ class ModelOperationControlTest {
                 c.complete(op, true); check(!c.tryReservePublish(op))
                 op = c.tryBegin(ModelOperationControl.Kind.DELETE); check(!c.requestCancel(op.id)); c.complete(op, true)
             }
+            run {
+                val c = ModelOperationControl(); val r = ModelReadiness()
+                var op = c.tryBegin(ModelOperationControl.Kind.VERIFY); var t = r.beginVerify("g1")
+                check(c.requestCancel(op.id)); check(!c.tryReserveProofCommit(op, r, t)); c.complete(op, false)
+                op = c.tryBegin(ModelOperationControl.Kind.VERIFY); t = r.beginVerify("g2")
+                check(c.tryReserveProofCommit(op, r, t)); check(op.isProofCommitReserved && !op.isSucceeded && c.isBusy)
+                check(!c.requestCancel(op.id) && !op.isCancelRequested); check(c.trySucceed(op, r, t)); c.complete(op, true)
+                op = c.tryBegin(ModelOperationControl.Kind.VERIFY); t = r.beginVerify("g3"); r.invalidate()
+                check(!c.tryReserveProofCommit(op, r, t)); c.complete(op, false)
+            }
             println("PASS $checks model operation control checks (cancel/publish/terminal arbitration)")
         }
     }

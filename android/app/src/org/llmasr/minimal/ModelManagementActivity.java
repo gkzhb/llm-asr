@@ -45,7 +45,7 @@ public final class ModelManagementActivity extends Activity {
     private final ActivityWindow.BackRegistration windowBack = new ActivityWindow.BackRegistration(this, this::onBackPressed);
     private ModelPageSession<Uri> page;
     private TextView readiness, storage, task, files, busy;
-    private Button choose, verify, delete, cancel;
+    private Button choose, verify, restore, delete, cancel;
     private volatile boolean visible;
     private boolean inspectNeeded, receiverRegistered;
     private final UiRefresh invalidation = new UiRefresh(this);
@@ -86,6 +86,11 @@ public final class ModelManagementActivity extends Activity {
         text(root,"逻辑文件字节不是物理磁盘分配；可用存储不是 RAM。删除释放量仅为估计。\n云文件提供方可能联网获取模型，优先选择专用本地目录；本应用无网络权限。",15);
         busy = text(root,"",16);
         choose = button(root,"选择模型目录 / 修复导入（重试需重新选择）",this::chooseDirectory);
+        restore = button(root,"快速恢复已校验证明（不做 SHA）", () -> {
+            if (!graph.modelManagement().startRestore()) rejected();
+            invalidation.onChange();
+        });
+        text(root,"正常启动会在后台快速恢复有效证明；无证明或失效时不会自动做 SHA。首次已有模型请完整校验。校验证明不代表模型驻留；每次转写仍加载并释放。",15);
         verify = button(root,"完整 SHA 校验 / 重新校验", () -> {
             if (graph.modelManagement().startVerify()) page.adoptStarted(); else rejected();
             invalidation.onChange();
@@ -192,7 +197,7 @@ public final class ModelManagementActivity extends Activity {
         files.setText(detail);
         boolean any = false, completeFile = false;
         for (ModelReports.FileDetail f : s.files) { any |= f.present || f.partExists; completeFile |= f.present && f.sizeMatch; }
-        choose.setEnabled(!ownerBusy); verify.setEnabled(!ownerBusy && completeFile); delete.setEnabled(!ownerBusy && any);
+        choose.setEnabled(!ownerBusy); verify.setEnabled(!ownerBusy && completeFile); restore.setEnabled(!ownerBusy); delete.setEnabled(!ownerBusy && any);
         cancel.setVisibility(page.ownsActive() && s.operationKind != ModelManagementState.OperationKind.DELETE ? View.VISIBLE : View.GONE);
         cancel.setEnabled(page.cancellable());
         if (page.ownsActive() && ownerBusy && unlocked()) getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

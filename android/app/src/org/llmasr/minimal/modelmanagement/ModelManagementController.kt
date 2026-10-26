@@ -11,6 +11,8 @@ import org.llmasr.minimal.model.ModelReadiness
 import org.llmasr.minimal.model.ModelReports
 import org.llmasr.minimal.model.ModelRepository
 import org.llmasr.minimal.model.ModelSource
+import org.llmasr.minimal.model.ModelVerification
+import org.llmasr.minimal.model.ModelAccess
 import org.llmasr.minimal.task.RequestRunner
 import org.llmasr.minimal.task.TaskCoordinator
 import org.llmasr.minimal.task.TaskKind
@@ -41,6 +43,8 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun refreshInspect() { submit(ModelOperationControl.Kind.INSPECT, null, -1) }
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
+    open fun startRestore(): Boolean = submit(ModelOperationControl.Kind.INSPECT, null, -1, true)
+    @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun state(): ModelManagementState = state
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun readiness(): ModelReadiness = readiness
@@ -58,10 +62,10 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
         }
         state.notifyListeners()
     }
-    private fun submit(kind: ModelOperationControl.Kind, source: ModelSource?, confirmEpoch: Long): Boolean {
+    private fun submit(kind: ModelOperationControl.Kind, source: ModelSource?, confirmEpoch: Long, restore: Boolean = false): Boolean {
         val ref = AtomicReference<ModelOperationControl.Operation>()
         try {
-            return runner.submit(TaskKind.MAINTENANCE, { run(ref.get(), source, confirmEpoch) }, {
+            return runner.submit(TaskKind.MAINTENANCE, { run(ref.get(), source, confirmEpoch, restore) }, {
                 if (kind == ModelOperationControl.Kind.DELETE && readiness.epoch() != confirmEpoch)
                     throw IllegalStateException("模型已变化，请重新确认")
                 val op = control.tryBegin(kind) ?: throw IllegalStateException("模型任务仍在收尾")
@@ -70,8 +74,10 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
             }, { finish(ref.get()) })
         } catch (rejected: IllegalStateException) { return false }
     }
-    private fun run(op: ModelOperationControl.Operation?, source: ModelSource?, confirmEpoch: Long) {
+    private fun run(op: ModelOperationControl.Operation?, source: ModelSource?, confirmEpoch: Long, restore: Boolean) {
         val token = arrayOfNulls<ModelReadiness.VerifyToken>(1)
+        var proofToken: ModelVerification.Token? = null
+        val verification = repository.verification()
         val gate = object : ModelRepository.CancelGate {
             override fun cancelled(): Boolean = control.isCancelled(op)
             override fun reservePublish(): Boolean = control.tryReservePublish(op)
@@ -81,7 +87,10 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
         val progress = object : ModelRepository.Progress {
             override fun update(stage: ModelRepository.Stage?, file: String?, index: Int, count: Int,
                 done: Long, total: Long, sd: Long, st: Long, reused: Long) {
-                if (stage == ModelRepository.Stage.FINAL_VERIFY && token[0] == null) token[0] = readiness.beginVerify()
+                if (stage == ModelRepository.Stage.FINAL_VERIFY && token[0] == null && proofToken == null) {
+                    if (verification == null) token[0] = readiness.beginVerify()
+                    else proofToken = verification.begin(repository)
+                }
                 if (token[0] == null || token[0]!!.epoch() == readiness.epoch())
                     progress(op, stage, file, index, count, done, total, sd, st, reused)
             }
@@ -99,9 +108,10 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
                 deletion = repository.deleteAll(progress)
             } else if (op.kind == ModelOperationControl.Kind.IMPORT) repository.importFrom(source, progress, gate)
             else if (op.kind == ModelOperationControl.Kind.VERIFY) {
-                token[0] = readiness.beginVerify()
+                if (verification == null) token[0] = readiness.beginVerify()
+                else proofToken = verification.begin(repository)
                 repository.verifyAll(progress, gate)
-            }
+            } else if (restore) ModelAccess(repository, readiness).restoreFast()
         } catch (e: Exception) { failure = e }
         catch (e: LinkageError) { failure = e }
         if (failure != null) {
@@ -124,10 +134,19 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
             }
         }
         if (failure == null && (deletion == null || deletion.failed.isEmpty())) {
-            success = control.trySucceed(op, readiness, token[0])
-            if (!success && !control.isCancelled(op)) failure = IOException("模型校验 epoch 已过期")
+            try {
+                success = if (proofToken != null) verification!!.commit(repository, proofToken!!, object : ModelVerification.CommitGate {
+                    override fun reserve(token: ModelReadiness.VerifyToken): Boolean = control.tryReserveProofCommit(op, readiness, token)
+                    override fun succeed(token: ModelReadiness.VerifyToken): Boolean = control.trySucceed(op, readiness, token)
+                }) else control.trySucceed(op, readiness, token[0])
+                if (!success && !control.isCancelled(op)) failure = IOException("模型校验 epoch 已过期")
+            } catch (e: Exception) { failure = e }
+            catch (e: LinkageError) { failure = e }
         }
-        if (!success) readiness.finishUnverified(token[0])
+        if (!success) {
+            readiness.finishUnverified(token[0])
+            if (proofToken != null) readiness.finishUnverified(proofToken!!.epoch)
+        }
         terminal(op, report, deletion, success, failure)
         readiness.notifyChange()
     }

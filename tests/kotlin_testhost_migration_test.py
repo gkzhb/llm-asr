@@ -2,7 +2,8 @@
 """T5 exact source/ownership guards and real fixture host contracts.
 
 Host JVM behavior only; no Android runner/Binder/provider or signed APK claim.
-The original Java oracle is recovered from its fixed Git object, never .work.
+The Java oracle is recovered from a fixed Git object; an explicitly recorded
+memory-only interface bridge adapts it to the new admission method, not old algorithms.
 """
 import argparse
 import hashlib
@@ -17,8 +18,8 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE = '843dc146e1a38db6a184980fe46f60a254081e10'
 PACKAGE = 'org/llmasr/minimal/testhost/'
 OWNERS = {
-    'FakePorts': ('fixtures/java/', '58d2f5aae006017ce48b51284e03537fb059a4e0b4c5472d37e63940bd1a8b0c'),
-    'FixtureChecks': ('fixtures/java/', '5b8402aa1edbf49800a6d8d08811c8054211040442fcfd58c4139edbe4bc9841'),
+    'FakePorts': ('fixtures/java/', '089898c434c859b2810869315bbb73d948e7df71b51174a7dc10248b156d44ca'),
+    'FixtureChecks': ('fixtures/java/', '01fdd2d448bfbbf7a0e3d5eeeebbb9d4a4386c6873ed98f737e714c04d799e22'),
     'FixtureContractTest': ('src/test/kotlin/', '46989a1adddf70d9131f21e5fe0b56ef95f17e2f1c800c4d8f48d8740a38e259'),
     'ImeHostActivity': ('src/main/kotlin/', 'e8bc98043ce0ba468d266c95922f04b6432203ffe3bae5b14246ab24a142a35d'),
     'FixtureInstrumentationTest': ('src/androidTest/kotlin/', '056680aa2240b2f7fee1d243d422914e8848c03d7137dd2bf0cf24933cf34036'),
@@ -54,6 +55,22 @@ def semantic_check(texts):
             'T5 capture stores before dereference')
     require(ports.index('inferences++; this.request = request') < ports.index('request!!.kind'),
             'T5 transcribe stores before dereference')
+    for token in ('override fun requireModelReady()', 'admissions++; order.add("ready")',
+                  'if (rejectModel) throw IOException("synthetic model admission rejection")',
+                  'FixtureChecks.require(admitted, "model admission must precede capture")',
+                  'admitted = false; order.add("capture")', 'admitted = false; order.add("cleanup")'):
+        require(token in ports, 'T5 model admission semantic contract: ' + token)
+    require(ports.index('admitted = true') < ports.index('override fun capture')
+            and ports.index('admitted = false; order.add("capture")') < ports.index('captures++; this.control = control'),
+            'T5 admission grant before capture and consumed before capture counter')
+    for token in ('backend.admissions == 1 && backend.captures == 0 && backend.inferences == 0 && backend.cleanups == 1',
+                  'Arrays.asList("ready", "cleanup") && !owner.isBusy() && !controller.ownsTask()',
+                  'backend.rejectModel = false', 'backend.admissions == 2 && backend.captures == 1',
+                  'b.admissions == 1 && b.captures == 1 && b.inferences == 1 && b.cleanups == 2',
+                  '"ready", "capture", "inference", "cleanup", "cleanup"'):
+        require(token in checks, 'T5 admission rejection/retry/queued-cancel semantic contract: ' + token)
+    require(checks.index('backend.rejectModel = true') < checks.index('controller.start(session, "English")')
+            < checks.index('backend.rejectModel = false'), 'T5 rejection before explicit prepared retry')
     require('(primary as java.lang.Throwable).addSuppressed(closing)' in checks
             and '.use {' not in checks, 'T5 Java member TWR suppression')
     require('public override fun onCreate(state: Bundle?)' in texts['ImeHostActivity'], 'T5 Activity public nullable override')
@@ -130,6 +147,11 @@ def self_test():
     for name, old, new, diagnostic in (
             ('FakePorts', 'captures++; this.control = control', 'control!!; captures++', 'semantic contract'),
             ('FakePorts', 'thread!!.join(6000)', 'thread!!.join(1)', 'semantic contract'),
+            ('FakePorts', 'if (rejectModel) throw IOException("synthetic model admission rejection")', 'if (false) throw IOException("synthetic model admission rejection")', 'model admission semantic contract'),
+            ('FakePorts', 'admitted = false; order.add("capture")', 'order.add("capture")', 'model admission semantic contract'),
+            ('FakePorts', 'admitted = false; order.add("cleanup")', 'order.add("cleanup")', 'model admission semantic contract'),
+            ('FixtureChecks', 'backend.admissions == 1 && backend.captures == 0', 'backend.admissions == 1 && backend.captures >= 0', 'rejection/retry/queued-cancel'),
+            ('FixtureChecks', 'backend.rejectModel = false', 'backend.rejectModel = true', 'rejection/retry/queued-cancel'),
             ('FakePorts', '@JvmField @Volatile', '@JvmField', 'semantic contract'),
             ('FixtureChecks', '(primary as java.lang.Throwable).addSuppressed(closing)', 'primary.addSuppressed(closing)', 'member TWR'),
             ('ImeHostActivity', 'public override', 'protected override', 'Activity public'),
@@ -265,19 +287,23 @@ public class T5Faults {
  static void simple(Throwable t,Class<?> k,String label) {check(t.getClass()==k && t.getCause()==null && t.getSuppressed().length==0,label);}
  static void await(CountDownLatch l) throws Exception {check(l.await(3,TimeUnit.SECONDS),"fault latch");}
  static RequestContext request() {return new RequestContext("fault",TaskKind.INFERENCE);}
- static RecordingControl prepared(FakePorts.Backend b) { RecordingControl c=new RecordingControl(); b.capture(c,x->{});check(c.tryCommitInference(),"real commit gate");return c; }
+ static RecordingControl prepared(FakePorts.Backend b) throws Throwable { RecordingControl c=new RecordingControl(); b.requireModelReady(); b.capture(c,x->{});check(c.tryCommitInference(),"real commit gate");return c; }
  static Thread worker(FakePorts.Worker w)throws Exception {java.lang.reflect.Field f=w.getClass().getDeclaredField("thread");f.setAccessible(true);return (Thread)f.get(w);}
  static void capture() throws Throwable {
   FakePorts.Backend b=new FakePorts.Backend();
+  b.requireModelReady();
   simple(thrown(()->b.capture(null,x->{})),NullPointerException.class,"capture null control shape");
   check(b.captures==1 && b.control==null,"capture stores before first null read");
   RecordingControl c=new RecordingControl();
+  b.requireModelReady();
   simple(thrown(()->b.capture(c,null)),NullPointerException.class,"capture null progress shape");
   check(b.captures==2 && b.control==c && c.released(),"capture finally release after progress null");
   RecordingControl d=new RecordingControl();Error sentinel=new LinkageError("external progress");
+  b.requireModelReady();
   Throwable t=thrown(()->b.capture(d,x->{throw sentinel;}));
   check(t==sentinel && d.released() && b.control==d,"progress exact Throwable identity/finally");
   RecordingControl stopped=new RecordingControl();stopped.stop();
+  b.requireModelReady();
   Throwable rejected=thrown(()->b.capture(stopped,x->{throw new AssertionError("progress must not run");}));
   check(rejected.getClass()==AssertionError.class && "capture admitted by real gate".equals(rejected.getMessage()) && stopped.released(),"first start refusal order");
  }
@@ -336,15 +362,29 @@ def faults(classpath, evidence):
     stdlib = Path(os.environ['KOTLIN_HOME']) / 'lib/kotlin-stdlib.jar'
     caller = evidence / 'T5Faults.java'; caller.write_text(FAULT_CALLER)
     original = evidence / 'original'; original.mkdir()
+    adapted = evidence / 'adapted-historical'; adapted.mkdir()
+    oracle_records = []
     for name in ('FakePorts', 'FixtureChecks'):
         relative = 'android/test-host/fixtures/java/' + PACKAGE + name + '.java'
         result = subprocess.run(['git', 'show', BASE + ':' + relative], cwd=ROOT, capture_output=True, timeout=15)
         require(result.returncode == 0, 'T5 fixed original Git oracle unavailable')
         (original / (name + '.java')).write_bytes(result.stdout)
+        data = result.stdout
+        before = '    public static final class Backend implements ImeController.Backend {'
+        bridge = '\n        /** Interface-only memory compatibility bridge; no old algorithm is changed. */\n        @Override public void requireModelReady() { }'
+        if name == 'FakePorts':
+            text = data.decode(); require(text.count(before) == 1, 'T5 adapted historical interface unique anchor')
+            data = text.replace(before, before + bridge, 1).encode()
+        target = adapted / (name + '.java'); target.write_bytes(data)
+        oracle_records.append({'base': BASE, 'git_path': relative, 'original_sha256': hashlib.sha256(result.stdout).hexdigest(),
+                               'original_bytes': len(result.stdout), 'adapted_sha256': sha(target), 'adapted_bytes': len(data),
+                               'transformation': {'anchor': before, 'insert': bridge} if name == 'FakePorts' else None,
+                               'scope': 'adapted historical Java oracle: new interface only, old capture/transcribe/cleanup/worker algorithms unchanged'})
+    (evidence / 'historical-oracle.json').write_text(json.dumps(oracle_records, indent=2) + '\n')
     records = []
     for route in ('original-java', 'candidate-kotlin', 'early-null-bad'):
         work = evidence / route; work.mkdir(); classes = work / 'classes'
-        sources = [original / (n + '.java') for n in ('FakePorts', 'FixtureChecks')] if route == 'original-java' else [ROOT / paths()[n] for n in ('FakePorts', 'FixtureChecks')]
+        sources = [adapted / (n + '.java') for n in ('FakePorts', 'FixtureChecks')] if route == 'original-java' else [ROOT / paths()[n] for n in ('FakePorts', 'FixtureChecks')]
         if route == 'early-null-bad':
             p = work / 'FakePorts.kt'; data = sources[0].read_text(); anchor = 'captures++; this.control = control'
             require(data.count(anchor) == 1, 'T5 nullable bad unique anchor')
@@ -359,7 +399,7 @@ def faults(classpath, evidence):
                     'T5 compilable early-null exact red missing\n' + output)
         else:
             require(ran.returncode == 0 and 'PASS T5 faults1-4 external' in output, 'T5 same-caller faults failed: ' + route + '\n' + output)
-        records.append({'route': route, 'sources': {str(p): sha(p) for p in sources}, 'caller_sha256': sha(caller),
+        records.append({'route': route, 'oracle_policy': 'adapted historical Java interface bridge' if route == 'original-java' else 'current audited Kotlin fixture', 'sources': {str(p): sha(p) for p in sources}, 'caller_sha256': sha(caller),
                         'compile_exit': compiled.returncode, 'run_exit': ran.returncode,
                         'stdout': ran.stdout.decode(errors='replace'), 'stderr': ran.stderr.decode(errors='replace')})
         (evidence / 'routes.json').write_text(json.dumps(records, indent=2) + '\n')

@@ -1,0 +1,3 @@
+# Repaired full findings
+
+Readnewrepairedfull+originalfullauthority,parent3plans,fixturefreshhandoffNOBLOCKING. Git/bdembedded/owner/runtime restored mainf7d1d79/indexempty. Originalfailurefull1/raw/1168backup+fixtureproof preserved; newseparatefull2domain. Canreuseexactreviewedprepare/ownedrunnermechanism withcurrent49candidatefixturepath/source collector; not reuseoldfreeze. PartialAPKcurrentonly2, original28historicalbackupsinoldfullimmutable. Need backup currentavailableold28paths only (instrumentationabsentexpected), allhistoricalreceiptsleaveunchanged. No newsourceedits; Queue deferredtaskbody/notAndroidoffmain boundary retained.

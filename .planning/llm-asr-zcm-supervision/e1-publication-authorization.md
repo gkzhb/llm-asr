@@ -1,0 +1,21 @@
+# CORE-E1 remaining：反向publication barrier补证授权
+
+## 父处置与准入
+父p1-steward/session01a16ecc-7157-76a9-8065-dbcf8e84589a已全文消费resident-review-3 review/verification/handoff和三plan，实读current ModelVerification commit/beforeMutation/beginMutation/restore及ControllerTest committedFaults。接受CORE-R1/R2 CLOSED，CORE-E1部分关闭、remaining P2 coverage BLOCKING；未据此确认新生产race。平台两项此前父已接受CLOSED，不重开。visibleCOMMITTED+dirsync失败+rollback失败后完整连续性合格可恢复是批准brief原政策，不改为任意失败READY。
+
+main f7d1d795f591299a3aa70194537652ad33691275/index空；父bd context/show确认embedded llm_asr/owner p1-steward无新blocks，Herdr原persistent resident-build done停写/两review正式noBG。原45candidate fee0bbfa62bf2b486b025836cb2a6716bf24878855a3f37a6b62c04b50f75459核同；corehandoff2476241298d9e0680628c286f4715302f4062499a34c10e2255c96b6db97e4d2/review8304c473…a714/verification7032cfc2…3633独立同。现解除下面最小测试写域冻结，原resident-build仍唯一产品writer/父唯一Beadswriter。
+
+## 有限结果与允许文件
+仅补真实Controller final-ledger/succeed publication先持disk、direct mutator/restore后等待的反向顺序证据，结果可审且普通/-O同源。新独占.planning/llm-asr-zcm-e1三plan/.work/resident-e1/。可写：tests/ModelManagementControllerTest.kt；tests/ModelAndroidHelpersTest.kt仅现TestIo barrier/fixture必要窄辅助；tests/model_verification_contract_test.py仅复用现corefault入口的必要选例/输入账本，不延预算/添新框架。reports/model-verification-zcm/{status.md,targeted-inputs.json}仅精确追加本次补证/边界及更新有限测试输入身份；不得覆盖旧review/fix/candidate/raw封口。其余45候选与生产源全部保持，尤其AndroidIO/ModelVerification/Readiness/Repository/Control/Controller不授写。若只有增加production seam才能准确命中所需边界，先给精确理由/文件/最小signature请求，不擅加；优先现TestIo atStage kind3 afterRename/dirsync/写返回前barrier覆盖真实succeed邻接窗口。
+
+## 具体最小验收
+1 真实Controller startVerify经实际RequestRunner/TaskCoordinator/Control执行，finalCOMMITTED ledger已进入/可见而未返回succeed时以有界latch停住。启动且通过同fixture注册实际非daemon direct public delete（也可现其他public mutator，但必须真实asset变更）与独立proof.restoreFast线程。至少分别明确两种竞争者确实在publication后入场并被disk序列化；可分小场景确定顺序，再加同场景竞争并允许合法两种线性化，不能把非公平锁先后当确定契约。
+2 放行前外线程验证真实owner/control busy、不得提前asset写/restore返回，线程真已到锁等待而不是仅start/未调度。用有界同步/必要Thread锁等待状态探针与实际IO事件证明，不sleep碰时序，不把join超时当完成。所有worker异常AtomicReference传出、断言在回调外。
+3 放行publication后核：mutator取得scope后、首次asset写前耐久DIRTY已确认，current与readiness等待后二次失效及guard无usableproof；restore只可在完整commit前后合法序列化，活动marker/asset写期间不得授usableproof。不要求瞬时state字段永远不READY来代替requireReady实际语义。若要观察已发布proof随后被等待者撤销，可借现Io stage与assetdelete hook，在真实边界暂停并从外线程验证；不假造Controller成功/gate/control替身。Controller可能因直接变更在终态inspect期失败或成功后失效，应解释并断言允许的实际顺序，不强改生产以凑成功。
+4 释放所有barrier、每线程有限join且检查真正退出，再清理；未知退出保目录/primary，与刚关闭PLATFORM-R2保持同一fixtureregistry。无daemon/无kill框架/不延timeout。合成文件沿既有几bytes，不模型/设备。
+5 canonical现corefault正式入口须包括新增矩阵，不只有ignored临时driver。普通/-O各沿1compile180/最多12JVM30/outer600，优先仍1compile4JVM（原Controller corefault内追加）。允许这条小链重跑原8stage以证现同JVM兼容；不重跑四mutants、SDK65/fast/nextcompatIME/finiteowner/native/全复杂度/full等成功昂贵链。必要有限语法/maintainedtext检查可复用现cache-only，执行前owned/lease/输入预登记保持。新增仅测试行为，不强造旧red或称生产bugred；不得删断言/故障旧证据/改原门槛。
+
+## 证据/终态与停止
+输入清单区分65生产/7module/新增测试supplemental，本次完整candidate仍45但测试/两报告变更SHA另新manifest，逐路径delta只在上述文件；原生产及旧28APK/receipt字节全同。出命令/stream/ownedexit/rootreaped账本、有限事件顺序证据、每场景外部断言结果与实际线程退出/noBG、handoff/terminalseal。复杂度本次无需再全snapshot：保224旧范围及production SHA全同，测试增长人工逐函数解释，不把旧全snapshot说成测试新字节。普通范围实现错误有界自修；超scope/三条有效不同路径无解/未知退出/需生产改/预算变化停报父。全部真实终态后正式handoff停写，父只对E1remaining另派fresh上下文隔离定点审；不重新平台/核心全域。
+
+无full/actualGradleApp/AGP/D8/nativeprepare/新APK覆盖/sign/stagecommitpush/下载设备micprivate模型权。full须E1remaining CLOSED父接受后另授，原Breset和C设备质量门槛保持。

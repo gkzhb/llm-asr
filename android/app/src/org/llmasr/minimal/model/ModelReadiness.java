@@ -41,7 +41,8 @@ public final class ModelReadiness {
     public static final class VerifyToken {
         final long epoch;
         final State previous;
-        VerifyToken(long epoch, State previous) { this.epoch = epoch; this.previous = previous; }
+        final String generation;
+        VerifyToken(long epoch, State previous, String generation) { this.epoch = epoch; this.previous = previous; this.generation = generation; }
         public long epoch() { return epoch; }
     }
 
@@ -86,11 +87,15 @@ public final class ModelReadiness {
     }
 
     /** Explicit verification revokes the old proof before hashing. */
-    public synchronized VerifyToken beginVerify() {
+    public synchronized VerifyToken beginVerify() { return beginVerify(null); }
+    public synchronized VerifyToken beginVerify(String generation) {
         State previous = state;
         verifiedEpoch = -1;
         state = State.VERIFYING;
-        return pending = new VerifyToken(epoch, previous);
+        return pending = new VerifyToken(epoch, previous, generation);
+    }
+    public synchronized boolean accepts(VerifyToken token) {
+        return token != null && pending == token && token.epoch == epoch;
     }
 
     public synchronized void finishUnverified(VerifyToken token) {
@@ -102,7 +107,7 @@ public final class ModelReadiness {
 
     /** Size inspection never manufactures SHA evidence. */
     public synchronized void inspect(ModelRepository.InspectReport report) {
-        boolean any = report.orphanPartBytes > 0, complete = true;
+        boolean any = report.orphanPartBytes > 0, complete = report.orphanPartBytes == 0;
         for (ModelReports.FileDetail f : report.files) {
             any |= f.present || f.partExists;
             complete &= f.sizeMatch;
@@ -119,27 +124,17 @@ public final class ModelReadiness {
     /** Bump epoch, mark UNKNOWN. Call when a model change begins (import,
      *  delete, inspect-found-incomplete) so any previous verified status
      *  no longer claims the new epoch. */
-    public void invalidate() {
-        synchronized (this) {
-        epoch++;
-        pending = null;
-        verifiedEpoch = -1;
-        state = State.UNKNOWN;
-        }
-        notifyChange();
+    public synchronized void invalidateState() {
+        epoch++; pending = null; verifiedEpoch = -1; state = State.UNKNOWN;
     }
+    public void invalidate() { invalidateState(); notifyChange(); }
 
     /** Mark current epoch as INVALID. Bumps epoch so a fresh inspect/import
      *  starts from a clean slate. */
-    public void markInvalid() {
-        synchronized (this) {
-        epoch++;
-        pending = null;
-        verifiedEpoch = -1;
-        state = State.INVALID;
-        }
-        notifyChange();
+    public synchronized void markInvalidState() {
+        epoch++; pending = null; verifiedEpoch = -1; state = State.INVALID;
     }
+    public void markInvalid() { markInvalidState(); notifyChange(); }
 
     public void addListener(Listener l) {
         if (l == null) return;

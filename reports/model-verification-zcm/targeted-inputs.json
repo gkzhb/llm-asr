@@ -1,0 +1,388 @@
+{
+  "schema": 1,
+  "task": "llm-asr-zcm",
+  "base": "f7d1d795f591299a3aa70194537652ad33691275",
+  "scope": "42 allowed source/test/build/doc paths + status + this report; this file excluded from its own SHA to avoid cycle",
+  "files": [
+    {
+      "path": "android/app/src/org/llmasr/minimal/AppGraph.kt",
+      "mode": "0o644",
+      "bytes": 9371,
+      "sha256": "bc89c278a8fc774c8df624fce6011b00374fb4b1ea2566bf9c709ec69381e8c8"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/AsrImeService.kt",
+      "mode": "0o644",
+      "bytes": 10710,
+      "sha256": "1eae1a9d42a11cc8947af3ae0e7e42979ad0a386e1a136d6efb9f6226157940c"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/MainActivity.java",
+      "mode": "0o644",
+      "bytes": 18634,
+      "sha256": "b822e669a5fbc135355707153253b1c93bac0801f74a56fbb03a7d7c8756f9bc"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ModelManagementActivity.java",
+      "mode": "0o644",
+      "bytes": 18237,
+      "sha256": "00221b6748430325cab597621a48b34170611660ce6722303fc101254569caab"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ime/ImeBackend.kt",
+      "mode": "0o644",
+      "bytes": 3020,
+      "sha256": "e8612a763f676d98b0a2156d1fcc313d02002a8e2dab664f0824ac7fc4cc3553"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ime/ImeController.kt",
+      "mode": "0o644",
+      "bytes": 6804,
+      "sha256": "22321c482351bc9b3d04e70b9c463d82ec857427e629cc475d8770489548a8e8"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/AndroidModelVerificationIo.kt",
+      "mode": "0o644",
+      "bytes": 6067,
+      "sha256": "f2960bed2a3f75d4101ece93dd4ae945f116b252c58168d4379cc20d8584c69d"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelAccess.kt",
+      "mode": "0o644",
+      "bytes": 1017,
+      "sha256": "22c9d0aa2f7971347e9ae2c9820be662d8769d604943d62888b5a9d8e65865e5"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelReadiness.java",
+      "mode": "0o644",
+      "bytes": 6864,
+      "sha256": "848f72a7b3eefca67c4d1c2d4f0f3a7808933a0f8bb3945de97e7854f6552424"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelRepository.java",
+      "mode": "0o644",
+      "bytes": 34179,
+      "sha256": "f94a9b934e99fb7beea67a2e15344a27464b491bd3cb45a0c1ac72f710946bfb"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelVerification.kt",
+      "mode": "0o644",
+      "bytes": 11527,
+      "sha256": "a8f9978340094622aa9c4ba9255706f6e86dd2743246afb0f321b2cfd7889f6c"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementController.kt",
+      "mode": "0o644",
+      "bytes": 19155,
+      "sha256": "e7cb3133d38f879878132511fdb5036f10d62c05c8035b02ff9b28188801749c"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/modelmanagement/ModelOperationControl.java",
+      "mode": "0o644",
+      "bytes": 3925,
+      "sha256": "3c886533e85f818b0ac090afc9ead9b2755ba5cde0d015ad841805a7db547cde"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/transcription/AsrOperation.kt",
+      "mode": "0o644",
+      "bytes": 8088,
+      "sha256": "76ecdce9fe2bcd16da51035f239a140ee0dcbeeb2a25d74cf8cfd8a5c745ea93"
+    },
+    {
+      "path": "build.gradle.kts",
+      "mode": "0o644",
+      "bytes": 9409,
+      "sha256": "aca9bf45db1652509095d9fc100f9edfe60da2f92fc20e790f7a7aa549216bbf"
+    },
+    {
+      "path": "docs/local-verification.md",
+      "mode": "0o644",
+      "bytes": 38336,
+      "sha256": "55354b5791928e66b0e099920bdf85c69594d67178775510f0d94cd3ef89ec33"
+    },
+    {
+      "path": "docs/model-management-validation.md",
+      "mode": "0o644",
+      "bytes": 7423,
+      "sha256": "29e92d9edacfb3ef1f825a1b2fa9f2948ef0a733e982669488db6316850c5412"
+    },
+    {
+      "path": "docs/voice-ime.md",
+      "mode": "0o644",
+      "bytes": 7580,
+      "sha256": "87543f1e892d23af5e7c08fbc0fb34d612f9989177d4955d32195b9f2e2d3155"
+    },
+    {
+      "path": "gradle/baseline-inputs.json",
+      "mode": "0o644",
+      "bytes": 12643,
+      "sha256": "8286ba73c1f4a58b0b2fb794a40d95e17d6bd1bc5b085a7ba6f593bce9c60a73"
+    },
+    {
+      "path": "reports/model-verification-zcm/status.md",
+      "mode": "0o644",
+      "bytes": 9088,
+      "sha256": "65f8327f5ff8586f71fdef924dc282b07dbd0409535345d24a070ca2cd0a9e3c"
+    },
+    {
+      "path": "scripts/check-maintained-text.py",
+      "mode": "0o644",
+      "bytes": 6997,
+      "sha256": "3bd2c54ecaa01f88f7ef04af532406997bef5d8d3a65830a54f2eb14fe62b494"
+    },
+    {
+      "path": "scripts/test-minimal-apk.sh",
+      "mode": "0o755",
+      "bytes": 10904,
+      "sha256": "1230ec30c7e72fb868d702c4400c4e2c26d6cf6a2fc0e9d847226b02e968f875"
+    },
+    {
+      "path": "tests/ImeSessionTest.kt",
+      "mode": "0o644",
+      "bytes": 17564,
+      "sha256": "fd9c360d93c97eb1981fdcbb8ec6795e5aad27da5e754654a93b3748985b90f6"
+    },
+    {
+      "path": "tests/InferenceAdapterTest.kt",
+      "mode": "0o644",
+      "bytes": 36402,
+      "sha256": "4c6a718ea8745bfa7a57b2a60196f0bf2bf313c32c0823d3a871abfb7e7a8c0b"
+    },
+    {
+      "path": "tests/ModelAndroidHelpersTest.kt",
+      "mode": "0o644",
+      "bytes": 25188,
+      "sha256": "8000cf5f946cb90729d287d5dd08232144974501abdc038093f2c01e6fe32ac0"
+    },
+    {
+      "path": "tests/ModelManagementControllerTest.kt",
+      "mode": "0o644",
+      "bytes": 38318,
+      "sha256": "1a6ff54c1b9d12492c1717ecc92c1359aed3f5c428a1e1f2a44a01103357bb24"
+    },
+    {
+      "path": "tests/ModelOperationControlTest.kt",
+      "mode": "0o644",
+      "bytes": 5446,
+      "sha256": "062ddf79faf0196442377b6343c6ba9cfbcea33330839712a7f55847b6076e82"
+    },
+    {
+      "path": "tests/ModelPrivateRootTest.kt",
+      "mode": "0o644",
+      "bytes": 7221,
+      "sha256": "4631421782f25f0d94381ae099067bf2b4f582e32aab60b4cb36d755aaf14d16"
+    },
+    {
+      "path": "tests/ModelReadinessTest.kt",
+      "mode": "0o644",
+      "bytes": 5793,
+      "sha256": "752ac272ca41c4749e340c772ca436a259c0f6497d7a931f5d80206ebccab68e"
+    },
+    {
+      "path": "tests/ModelRepositoryCancelTest.kt",
+      "mode": "0o644",
+      "bytes": 11996,
+      "sha256": "5efe90f7bd331ddd406d6c2889ff20ba0214144ae92286560579787811c042d3"
+    },
+    {
+      "path": "tests/ModelRepositoryDeleteTest.kt",
+      "mode": "0o644",
+      "bytes": 7076,
+      "sha256": "b960dfea64fdf223027ba40d6a8c7807a1c2ebf23509e572e8825d21ba42ec9a"
+    },
+    {
+      "path": "tests/ModelReviewFixTest.kt",
+      "mode": "0o644",
+      "bytes": 17901,
+      "sha256": "fbcde3fea4cb6131cb37c1dd2dfa638f9aabbd2de7e8c5859645aa2e82a7decf"
+    },
+    {
+      "path": "tests/PartRecoveryTest.java",
+      "mode": "0o644",
+      "bytes": 19445,
+      "sha256": "ec67520f1de4d5efe5bf908e3b75498f319d7b71dd10aebe40cd2f4b7c7088e0"
+    },
+    {
+      "path": "tests/architecture_boundary_test.py",
+      "mode": "0o644",
+      "bytes": 14871,
+      "sha256": "b594ab42507ad277f8f2700490e3f9729b628492ddc0084aadd566a31207839a"
+    },
+    {
+      "path": "tests/fixtures/kotlin-next/NextAppContractTest.java",
+      "mode": "0o644",
+      "bytes": 39627,
+      "sha256": "9e14e50817a83c2f6451bfa8ad0c58e5a1e0c4512bb0332e4fc6b5dbc665ac04"
+    },
+    {
+      "path": "tests/fixtures/kotlin-runtime/RuntimeContractTest.java",
+      "mode": "0o644",
+      "bytes": 17998,
+      "sha256": "d004cfcb41e447d82129544dc1f3f7453e2254c1c4a19c09e94065bb883ea083"
+    },
+    {
+      "path": "tests/gradle_inputs_test.py",
+      "mode": "0o644",
+      "bytes": 9899,
+      "sha256": "8d429074b569734682bf95941f5216eec02baa283f7334d6c88d5b22228fab00"
+    },
+    {
+      "path": "tests/kotlin_next_migration_test.py",
+      "mode": "0o644",
+      "bytes": 37339,
+      "sha256": "f6e301053c095d79eaa27030a1212a73613af2cb3a48a6e2c7c6eea8b6e892c2"
+    },
+    {
+      "path": "tests/model_android_source_test.py",
+      "mode": "0o644",
+      "bytes": 11356,
+      "sha256": "6be48757a30516d0183f0ea9f628a42834ac2f31473f22858b282b2eca4b7d08"
+    },
+    {
+      "path": "tests/model_verification_contract_test.py",
+      "mode": "0o644",
+      "bytes": 10234,
+      "sha256": "09c64997b8f01ccca839439818e2a73f3b36d7d5acc26f1e228ce9b20c423ef9"
+    },
+    {
+      "path": "tests/module_boundary_test.py",
+      "mode": "0o644",
+      "bytes": 2887,
+      "sha256": "a702b56a0e34c4fb28aba3890f23edc6d5e30f3d3c8e4a2c1158672a0ebc571f"
+    },
+    {
+      "path": "tests/module_owners_guard_test.py",
+      "mode": "0o644",
+      "bytes": 6519,
+      "sha256": "0811d3b03700494be70a6f2e0139b9d0820f11cf5fd197d60f44608766a4112a"
+    },
+    {
+      "path": "tests/module_owners_test.py",
+      "mode": "0o644",
+      "bytes": 3940,
+      "sha256": "8353ee285be6a83c27a8990157bcb98aca1bbfa53d830668ee085724dd2807d2"
+    },
+    {
+      "path": "tests/android_model_verification_io_test.py",
+      "mode": "0o644",
+      "bytes": 10090,
+      "sha256": "f92b9d5fc4055dddfc2d5d154f18119808d6a8aacdb0580bb4075e56895da874"
+    }
+  ],
+  "evidence": {
+    "task": "llm-asr-zcm",
+    "base": "f7d1d795f591299a3aa70194537652ad33691275",
+    "final_command": {
+      "task": "bb6d1d75d",
+      "exit": 0,
+      "raw": ".work/resident-build/final-all/raw.log",
+      "nested_raw": ".work/resident-build/final-targeted/raw.log"
+    },
+    "sdk": "65 current sources (47 Kotlin, 18 Java), JVM8/SDK35 compile only",
+    "fast": {
+      "core_junit": 34,
+      "runtime_junit": 1,
+      "all_passed": true,
+      "actions_executed": 27,
+      "log": ".work/verify-local/fast-WLSEOh/build.log"
+    },
+    "graph": {
+      "tasks": 38,
+      "dry_run_only": true,
+      "no_heavy_families": true,
+      "log": ".work/verify-local/graph-fast-BIpKqD/build.log"
+    },
+    "verification_mutants_each_mode": {
+      "modes": [
+        "ordinary",
+        "optimized"
+      ],
+      "mixed_compiles": 9,
+      "jvm_executions": 11,
+      "exact_assertion_red_then_restored": [
+        "missing",
+        "revoke",
+        "cancel",
+        "request"
+      ]
+    },
+    "crash_boundaries": [
+      "dirty",
+      "part",
+      "finalhash",
+      "candidate"
+    ],
+    "crash_result": "isolated synthetic writer halt23; independent JVM reader rejects with exit0; no device/power-loss claim",
+    "targeted_module_owner": {
+      "app": 8,
+      "runtime": 6,
+      "core": 51,
+      "guard_tests_each_mode": 15,
+      "real_sdk_and_current_gradle_dependencies": true,
+      "actual_gradle_app_task": false,
+      "raw": ".work/resident-build/module-owner.log"
+    },
+    "legacy_host": {
+      "next_5_mutants": "pass",
+      "defaultcompat_4_mutants_and_exception_identity": "pass",
+      "ime_4_mutants": "pass",
+      "runtime_7_mutants": "pass",
+      "original_budgets_unchanged": true
+    },
+    "staging_tests": 13,
+    "protected_existing_apk_receipt_metadata": 28,
+    "not_run": [
+      "formal full",
+      "actual Gradle app compile/AGP app wiring",
+      "D8/sign/assemble/three-package checks",
+      "fresh review",
+      "main checkout stage/commit",
+      "Android runner",
+      "device/microphone/private files",
+      "model inference/quality/PSS/thermal",
+      "native residency/reset"
+    ],
+    "complexity": "before220/current223 finite sources; cccc1.8.3/knots1.18.0 same binary/flags, both exit0; scope compare2 FAIL-UNKNOWN manually reconciled added3/no removals; writer hotspot disposition not fresh review"
+  },
+  "current_product_sha_domain": "all65 production source paths verified against gradle/baseline-inputs.json; .work/resident-build/input-domains.json",
+  "native": "unchanged; native build not run",
+  "apk": "28 previous APK/metadata/formal receipts preserved; no current APK",
+  "review": "not run; writer complexity disposition only",
+  "main_git_commit": "not authorized/not performed",
+  "terminal": "final targeted bb6d1d75d exit0 and complexity b71453712 exit0 consumed; no active related background commands",
+  "fix_status": "concentrated5findings engineering complete; all commands terminal noBG; fresh focused review pending",
+  "fix_evidence": ".work/resident-fix/",
+  "fix_source_files": [
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelVerification.kt",
+      "bytes": 11527,
+      "sha256": "a8f9978340094622aa9c4ba9255706f6e86dd2743246afb0f321b2cfd7889f6c"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelRepository.java",
+      "bytes": 34179,
+      "sha256": "f94a9b934e99fb7beea67a2e15344a27464b491bd3cb45a0c1ac72f710946bfb"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelReadiness.java",
+      "bytes": 6864,
+      "sha256": "848f72a7b3eefca67c4d1c2d4f0f3a7808933a0f8bb3945de97e7854f6552424"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/AndroidModelVerificationIo.kt",
+      "bytes": 6067,
+      "sha256": "f2960bed2a3f75d4101ece93dd4ae945f116b252c58168d4379cc20d8584c69d"
+    }
+  ],
+  "e1_remaining_evidence": {
+    "status": "ordinary/-O current corefault compile0/4JVM0 each; bb7a55b5f durable completed exit0 consumed; noBG",
+    "scope": "tests only; production65/module7/old28 unchanged",
+    "scenarios": [
+      "delete",
+      "restore",
+      "combined"
+    ],
+    "event_log": ".work/resident-e1/raw.log",
+    "not_run": "no expensive successfulchain rerun/full/productionedit/commit/device"
+  }
+}

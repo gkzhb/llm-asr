@@ -1,0 +1,3 @@
+# E1 findings
+
+Full auth/parent3plans/corefreshreview+verification+handoff read. E1remaining onlycoverageP2, notnewproductionrace; R1/R2/platformCLOSED unchanged. Need publicationfirst inverse to existing mutationfirst. TestIo afterRename kind3 callback runs in actualcommitdisk before succeed, enough seam. NonfairReentrantLock order notcontract; separatecases pluscombined permit restore success beforemarker or failclosed during/afterdelete. Confirm threads WAITING with stack containing realbeginMutation/restoreFast, no sleeps. Fixtureworkersregistered, barriersfinallyrelease/joinactual beforeclose. Production notwritten.

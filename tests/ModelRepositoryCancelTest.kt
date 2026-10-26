@@ -92,6 +92,20 @@ class ModelRepositoryCancelTest {
         @Suppress("UNUSED_PARAMETER")
         @JvmStatic @Throws(Exception::class)
         fun main(args: Array<out String?>?) {
+            ModelAndroidHelpersTest.PersistentFixture().use { f ->
+                f.install(); f.verify(); Files.write(f.model.resolve("a.part"), byteArrayOf(8))
+                f.io.fail = "open"
+                try { f.repo.reclaimOrphanedParts(); throw AssertionError("unguarded direct reclaim") } catch (expected: IOException) { }
+                check(Files.readAllBytes(f.model.resolve("a.part")).contentEquals(byteArrayOf(8)))
+                f.io.fail = null; f.repo.reclaimOrphanedParts(); check(!Files.exists(f.model.resolve("a.part")))
+                f.verify(); f.io.fail = "open"; Files.write(f.model.resolve("a"), byteArrayOf(9, 9, 9))
+                try { f.repo.importFrom(Source(byteArrayOf(1, 2, 3), "a"), null); throw AssertionError("unguarded direct import") } catch (expected: IOException) { }
+                check(Files.readAllBytes(f.model.resolve("a")).contentEquals(byteArrayOf(9, 9, 9)))
+                check(!Files.exists(f.model.resolve("a.part")))
+                f.io.fail = null; f.install(); f.verify(); Files.write(f.model.resolve("a"), byteArrayOf(9))
+                try { f.repo.importFrom(Source(byteArrayOf(1, 2, 3)), null); throw AssertionError("invalid size and missing source accepted") } catch (expected: IOException) { }
+                check(!f.ready.isReady)
+            }
             val b = bytes(64)
             run {
                 val d = dir(); val r = ModelRepository(manifest(b, "a"), d, { Long.MAX_VALUE }); val c = Control(); c.cancel(); val src = Source(b, "a")

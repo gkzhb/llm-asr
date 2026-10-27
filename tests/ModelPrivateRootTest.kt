@@ -33,7 +33,7 @@ class ModelPrivateRootTest {
                 val manifest = ModelManifest(Collections.singletonList(ModelRepositoryTest.entry("a.bin", byteArrayOf(1, 2, 3))))
                 val ready = ModelReadiness()
                 val syntheticIo = ModelAndroidHelpersTest.TestIo(base.resolve("synthetic-noBackup"))
-                val proof = ModelVerification(manifest, ready, syntheticIo)
+                val proof = ModelVerification(manifest, ready, syntheticIo, ModelAndroidHelpersTest.MemoryGuard())
                 val repo = ModelRepository.forAppFiles(manifest, files, { Long.MAX_VALUE }, proof)
                 check(!Files.exists(real.resolve("model")), "bootstrap does not mkdir")
                 check(repo.inspect(ModelRepository.NEVER_CANCEL).installedBytes == 0L, "alias inspect succeeds")
@@ -83,7 +83,7 @@ class ModelPrivateRootTest {
                     override fun read(name: String, limit: Int): ByteArray? = throw AssertionError("guard bootstrap IO")
                     override fun write(name: String, bytes: ByteArray) { throw AssertionError("guard bootstrap IO") }
                 }
-                ModelRepository.forAppFiles(manifest, noIo, { 0 }, ModelVerification(manifest, ModelReadiness(), lazyIo))
+                ModelRepository.forAppFiles(manifest, noIo, { 0 }, ModelVerification(manifest, ModelReadiness(), lazyIo, ModelAndroidHelpersTest.MemoryGuard()))
                 println("PASS private-root alias import/inspect/verify/reuse/delete and symlink safety (host filesystem only)")
             } finally {
                 val paths = Files.walk(base); var primary: Throwable? = null

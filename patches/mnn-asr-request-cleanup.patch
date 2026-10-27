@@ -1,0 +1,236 @@
+--- a/transformers/llm/engine/include/llm/llm.hpp
++++ b/transformers/llm/engine/include/llm/llm.hpp
+@@ -170,6 +170,8 @@
+     std::vector<Express::VARP> getOutputs() const;
+     int getOutputIndex(const std::string& name) const;
+     void reset();
++    // Request boundary only; false/exception requires caller eviction.
++    virtual bool clearRequestState();
+     void tuning(TuneType type, std::vector<int> candidates);
+     virtual std::vector<Express::VARP> forwardRaw(Express::VARP hiddenState, Express::VARP mask, Express::VARP inputPos, Express::VARPS extraArgs = {});
+     Express::VARP forward(const std::vector<int>& input_ids, bool is_prefill = true);
+@@ -224,6 +226,9 @@
+                              const std::string& ref_audio = "");
+
+ protected:
++    friend struct RequestCleanupProbe;
++    bool clearRequestStateFields();
++    bool supportsRequestCleanup() const;
+     void setChatTemplate();
+     void initRuntime();
+     void setRuntimeHint(std::shared_ptr<Express::Executor::RuntimeManager> &rtg, bool mllm = false);
+--- a/transformers/llm/engine/src/llm.cpp
++++ b/transformers/llm/engine/src/llm.cpp
+@@ -855,6 +855,98 @@
+     }
+     auto token_id = mSampler->sample(logits);
+     return token_id;
++}
++
++bool Llm::supportsRequestCleanup() const {
++    return mConfig && mConfig->backend_type() == "cpu" && mConfig->thread_num() == 2 &&
++        !mAsync && !mConfig->config_.value("async", true) &&
++        mConfig->sampler_type() == "greedy" && mConfig->max_new_tokens() == 128 &&
++        !mConfig->reuse_kv() && !mConfig->prompt_cache() &&
++        mConfig->speculative_type().empty() && !mInSpec && mBlockSize == 0 && mValidBlockSize.empty() &&
++        !mPrefixCacheMode && !mConfig->kvcache_mmap() && !mConfig->has_ple() &&
++        !mConfig->has_talker() && !mConfig->has_deepstack() && !mConfig->is_visual() &&
++        mConfig->is_audio() && mConfig->audio_type() == "qwen3_asr";
++}
++
++bool Llm::clearRequestStateFields() {
++    // Same production helper is observable on an unloaded synthetic instance;
++    // this helper alone never establishes loaded/reusable readiness.
++    mContext->os = nullptr;
++    Express::ExecutorScope scope(mExecutor);
++    bool success = true;
++    // Module::onForward owns normal resize/rebinding. At this synchronous
++    // request boundary outputs have already been consumed; retain sessions,
++    // execution caches and workspace rather than rewriting backend descriptors.
++    {
++        std::lock_guard<std::mutex> lock(mContext->mutex);
++        mContext->history_tokens.clear();
++        mContext->output_tokens.clear();
++        mContext->generate_str.clear();
++        mContext->end_with.clear();
++        mContext->log_buffer.clear();
++    }
++    mContext->prompt_len = mContext->gen_seq_len = mContext->all_seq_len = 0;
++    mContext->current_token = -1;
++    mContext->vision_us = mContext->audio_us = mContext->prefill_us = mContext->decode_us = 0;
++    mContext->sample_us = mContext->ttfa_us = 0;
++    mContext->pixels_mp = mContext->audio_input_s = 0.0f;
++    mGenerateParam->input_ids.clear();
++    mGenerateParam->input_embeds = nullptr;
++    mGenerateParam->outputs.clear();
++    mGenerateParam->validLogitStart = mGenerateParam->validLogitSize = 0;
++    mGenerateParam->max_new_tokens = 0;
++    mGenerateParam->timeout_ms = mConfig->timeout_ms();
++    inputsEmbeds = attentionMask = positionIds = nullptr;
++    mPleInput = mTextEmbedsForPle = nullptr;
++    mCachedPromptText.clear();
++    for (auto var : mPositionIdsVarVec) {
++        const auto info = var->getInfo();
++        auto ptr = var->writeMap<int>();
++        if (!info || !ptr || info->type.code != halide_type_int || info->type.bits != 32) {
++            success = false;
++            continue;
++        }
++        std::fill(ptr, ptr + info->size, 0);
++    }
++    for (auto var : mAttentionMaskVarVec) {
++        const auto info = var->getInfo();
++        auto ptr = var->writeMap<float>();
++        if (!info || !ptr || info->type.code != halide_type_float || info->type.bits != 32) {
++            success = false;
++            continue;
++        }
++        std::fill(ptr, ptr + info->size, 0.0f);
++    }
++    // Preserve physical previous length: CPUAttention clears the manager at
++    // the next onExecute before adding only the next request's KV.
++    mMeta->remove = mMeta->previous;
++    mMeta->add = 0;
++    mMeta->reserve = nullptr;
++    mMeta->n_reserve = 0;
++    mMeta->reserveHost.clear();
++    mMeta->spec_block = 0;
++    mMeta->file_operation = KVMeta::NoChange;
++    mMeta->file_name.clear();
++    mMeta->file_flag = KVMeta::NoChange;
++    mMeta->seqlen_in_disk = mMeta->layer_index = 0;
++    mPrefixCacheMode = mIsPrefixFileExist = false;
++    mPrefixCacheFileName.clear();
++    mCallIndex = mPrefixLength = 0;
++    if (mTokenizer) mTokenizer->clearRequestCache();
++    mConfig->config_["asr_language"] = "";
++    setChatTemplate();
++    return success;
++}
++
++bool Llm::clearRequestState() {
++    mContext->os = nullptr;
++    if (!supportsRequestCleanup() || mContext->status != LlmStatus::NORMAL_FINISHED ||
++        !mModule || !mRuntimeManager || !mTokenizer || !mGenerationStrategy) {
++        return false;
++    }
++    if (!clearRequestStateFields()) return false;
++    mContext->status = LlmStatus::RUNNING;
++    return true;
+ }
+
+ void Llm::reset() {
+--- a/transformers/llm/engine/src/omni.hpp
++++ b/transformers/llm/engine/src/omni.hpp
+@@ -188,6 +188,7 @@
+         mAudioModule.reset();
+     }
+     virtual bool load() override;
++    virtual bool clearRequestState() override;
+     virtual std::vector<Express::VARP> forwardRaw(Express::VARP hiddenState, Express::VARP mask, Express::VARP inputPos,
+                                                   Express::VARPS extraArgs = {}) override;
+     virtual std::vector<int> tokenizer_encode(const std::string& query) override;
+@@ -212,6 +213,8 @@
+     std::vector<int> qwenVideoProcess(const std::vector<VARP>& frames, const std::vector<float>& timestamps);
+
+ private:
++    friend struct RequestCleanupProbe;
++    bool clearOmniRequestFields();
+     bool initProcessorRuntime();
+     int mVisionHeight = 448, mVisionWidth = 448, mVisionStart = 151857, mVisionEnd = 151858, mVisionPad = 151859,
+         mAudioPad = 151646, mAudioStart = -1, mAudioEnd = -1, mVideoPad = -1;
+--- a/transformers/llm/engine/src/omni.cpp
++++ b/transformers/llm/engine/src/omni.cpp
+@@ -478,6 +478,33 @@
+         mAudioStart = config->config_.value("audio_start", mAudioStart);
+         mAudioEnd = config->config_.value("audio_end", mAudioEnd);
+     }
++}
++
++bool Omni::clearOmniRequestFields() {
++    mContext->os = nullptr;
++    Express::ExecutorScope scope(mExecutor);
++    bool success = true;
++    mExtraArgs.clear();
++    mVisionEmbeddings.clear();
++    mAudioEmbeddings.clear();
++    mDeepStackEmbeddings.clear();
++    mPositionIds.clear();
++    mVisionPositionIdsCache = mVisionAttentionMaskCache = mVisionWindowAttentionMaskCache = nullptr;
++    mVisionIdxTensorCache = mVisionWeightTensorCache = mVisionWindowIndexCache = nullptr;
++    mVisionNum = 0;
++    mThinkerElapsedUs = 0;
++    mIsEmbedding = false;
++    mVisionSizeOverridden = false;
++    return success;
++}
++
++bool Omni::clearRequestState() {
++    mContext->os = nullptr;
++    if (mTalker || mVisionModule || mIsEmbedding || !supportsRequestCleanup() ||
++        !mAudioModule || !mProcessorRuntimeManager) return false;
++    const bool omniClean = clearOmniRequestFields();
++    const bool baseClean = Llm::clearRequestState();
++    return omniClean && baseClean;
+ }
+
+ bool Omni::load() {
+--- a/transformers/llm/engine/src/tokenizer/tokenizer.hpp
++++ b/transformers/llm/engine/src/tokenizer/tokenizer.hpp
+@@ -155,6 +155,7 @@
+     std::vector<int> encode(const std::string& str, bool with_post_processor = true);
+     PostProcessorInfo post_process(std::vector<int>& ids) const { return apply_post_processor(ids); }
+     virtual std::string decode(int id) = 0;
++    virtual void clearRequestCache() {}
+     virtual std::string decode(const std::vector<int>& ids);
+     // chat template
+     std::string apply_chat_template(const ChatMessages& messages, bool add_generation_prompt = true) const;
+@@ -311,6 +312,7 @@
+     virtual std::vector<int> tokenize(const std::string& text) const = 0;
+     virtual std::string id_to_token(int id) const = 0;
+     virtual size_t vocab_size() const = 0;
++    virtual void clearRequestCache() {}
+ };
+
+ class TokenDecoder {
+@@ -326,10 +328,12 @@
+     virtual std::string decode(int id) override;
+     virtual std::string decode(const std::vector<int>& ids) override;
+     bool load_vocab_binary(std::ifstream& file);
+-protected:
+-    virtual bool load_vocab(std::ifstream& file) override;
+-    virtual void encode(const std::string& str, std::vector<int>& ids) override;
+-private:
++    virtual void clearRequestCache() override;
++protected:
++    virtual bool load_vocab(std::ifstream& file) override;
++    virtual void encode(const std::string& str, std::vector<int>& ids) override;
++private:
++    friend struct RequestCleanupProbe;
+     std::unique_ptr<Normalizer> normalizer_;
+     std::unique_ptr<PreTokenizer> pre_tokenizer_;
+     std::unique_ptr<TokenizerModel> model_;
+--- a/transformers/llm/engine/src/tokenizer/tokenizer.cpp
++++ b/transformers/llm/engine/src/tokenizer/tokenizer.cpp
+@@ -1539,6 +1539,11 @@
+     std::vector<std::pair<uint64_t, int>> sorted_merges_;
+     mutable std::unordered_map<std::string, std::vector<int>> cache_;
+
++    void clearRequestCache() override {
++        decltype(cache_) empty;
++        cache_.swap(empty);
++    }
++
+     int find_merge(uint64_t key) const {
+         auto it = std::lower_bound(sorted_merges_.begin(), sorted_merges_.end(), key,
+             [](const std::pair<uint64_t, int>& p, uint64_t k) { return p.first < k; });
+@@ -1965,6 +1970,9 @@
+
+ PipelineTokenizer::PipelineTokenizer() = default;
+ PipelineTokenizer::~PipelineTokenizer() = default;
++void PipelineTokenizer::clearRequestCache() {
++    if (model_) model_->clearRequestCache();
++}
+
+ void PipelineTokenizer::encode(const std::string& str, std::vector<int>& ids) {
+     if (str.empty()) return;

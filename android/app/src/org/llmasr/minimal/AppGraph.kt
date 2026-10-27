@@ -1,6 +1,8 @@
 package org.llmasr.minimal
 
 import android.content.Context
+import android.content.ComponentCallbacks2
+import android.content.res.Configuration
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.util.ArrayList
@@ -8,6 +10,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.llmasr.minimal.asr.InferenceAdapter
 import org.llmasr.minimal.asr.JniNativeTranscription
+import org.llmasr.minimal.asr.LoggingInferencePhaseListener
 import org.llmasr.minimal.diagnostics.LogExportController
 import org.llmasr.minimal.diagnostics.RuntimeLogEventKind
 import org.llmasr.minimal.diagnostics.RuntimeLogPersistence
@@ -17,6 +20,7 @@ import org.llmasr.minimal.diagnostics.RuntimeLogWorker
 import org.llmasr.minimal.ime.ImeBackend
 import org.llmasr.minimal.ime.ImeController
 import org.llmasr.minimal.model.ModelAccess
+import org.llmasr.minimal.model.ModelResidency
 import org.llmasr.minimal.model.ModelVerification
 import org.llmasr.minimal.model.AndroidModelVerificationIo
 import org.llmasr.minimal.model.ModelEntry
@@ -90,16 +94,39 @@ class AppGraph private constructor(private val context: OperationContext?, priva
                 val textExport = TextExportController<android.net.Uri> { target -> opCtx.contentResolver()!!.openOutputStream(unchanged<android.net.Uri>(target), "wt") }
                 val space = ModelRepository.SpaceProvider { opCtx.filesDir()!!.usableSpace }
                 val app = appContext.applicationContext
-                val verification = ModelVerification(manifest, readiness, AndroidModelVerificationIo { app.noBackupFilesDir })
-                val repository = ModelRepository.forAppFiles(manifest, opCtx.filesDir(), space, verification)
-                val access = ModelAccess(repository, readiness)
                 val logStore = RuntimeLogStore()
+                val bridge = JniNativeTranscription()
+                var nativeLibraryLoaded = false // accessed only by the shared worker
+                val resident = ModelResidency(object : ModelResidency.Native {
+                    override fun prepare(config: String, cache: String): Double {
+                        System.loadLibrary("qwen_asr_jni")
+                        nativeLibraryLoaded = true
+                        val phases = LoggingInferencePhaseListener.prepareListener(logStore)
+                        try { return bridge.prepare(config, cache, phases).also { phases.finished(true) } }
+                        catch (failure: Throwable) { phases.finished(false); throw failure }
+                    }
+                    override fun release() { if (nativeLibraryLoaded) bridge.release() }
+                }, { Thread.currentThread().name == "asr-task-worker" })
+                val verification = ModelVerification(manifest, readiness, AndroidModelVerificationIo { app.noBackupFilesDir }, resident)
+                val repository = ModelRepository.forAppFiles(manifest, opCtx.filesDir(), space, verification)
+                val access = ModelAccess(repository, readiness, resident)
                 val logPersistence = RuntimeLogPersistence(opCtx.filesDir())
                 val logFailure = RuntimeLogPersistence.FailureSink { reason -> logStore.append(RuntimeLogEventKind.LOG_PERSISTENCE_FAILED, RuntimeLogSource.SHARED, null, reason) }
                 val logWorker = RuntimeLogWorker(logStore, logPersistence, logFailure)
-                val inference = InferenceAdapter(logStore, access::requireReady, { System.loadLibrary("qwen_asr_jni") }, JniNativeTranscription())
+                val inference = InferenceAdapter(logStore, access::requireResidentReady, null, bridge, object : InferenceAdapter.Session {
+                    override fun enter(): Any = access.enterRequest()
+                    override fun finish(token: Any, success: Boolean) { access.finishRequest(token, success) }
+                })
                 val ops = AsrOperation(opCtx, coordinator, repository, state, textExport, inference, AppReportWriter(opCtx), access)
                 val built = AppGraph(opCtx, coordinator, repository, state, textExport, ops, readiness, access, logStore, logWorker, inference)
+                app.registerComponentCallbacks(object : ComponentCallbacks2 {
+                    override fun onConfigurationChanged(configuration: Configuration) {}
+                    override fun onLowMemory() { ops.startRelease() }
+                    override fun onTrimMemory(level: Int) {
+                        // UI_HIDDEN(20) is not memory pressure and must not unload.
+                        if (level == 5 || level == 10 || level == 15 || level == 40 || level == 60 || level == 80) ops.startRelease()
+                    }
+                })
                 built.asrOperation!!.startupOnce()
                 logStore.append(RuntimeLogEventKind.APP_STARTUP, RuntimeLogSource.SHARED, null, "ok")
                 logStore.append(RuntimeLogEventKind.APP_READY, RuntimeLogSource.SHARED, null, "ok")

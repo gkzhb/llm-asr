@@ -51,6 +51,9 @@ public final class NextAppContractTest {
         }
     }
     static ModelAccess preparedAccess(Path root) throws Exception {
+        return preparedAccess(root,new ModelResidency.Native(){public double prepare(String c,String cache){return 0;}public void release(){}});
+    }
+    static ModelAccess preparedAccess(Path root,ModelResidency.Native nativeControl) throws Exception {
         Path models=Files.createDirectories(root.resolve("prepared-model"));Files.write(models.resolve("a"),new byte[]{1,2,3});
         Path journal=Files.createDirectories(root.resolve("prepared-proof"));
         ModelManifest manifest=new ModelManifest(Arrays.asList(new ModelEntry("a",3,"039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81")));
@@ -68,11 +71,12 @@ public final class NextAppContractTest {
                 try(java.nio.channels.FileChannel channel=java.nio.channels.FileChannel.open(journal,StandardOpenOption.READ)){channel.force(true);}
             }
         };
-        ModelVerification verification=new ModelVerification(manifest,ready,io);ModelRepository repo=new ModelRepository(manifest,models.toFile(),()->Long.MAX_VALUE,verification);
+        ModelVerification verification=new ModelVerification(manifest,ready,io,new ModelVerification.MaintenanceGuard(){public ModelVerification.MaintenanceLease acquire(){return ()->{};}public void invalidate(){}});ModelRepository repo=new ModelRepository(manifest,models.toFile(),()->Long.MAX_VALUE,verification);
         org.llmasr.minimal.modelmanagement.ModelOperationControl control=new org.llmasr.minimal.modelmanagement.ModelOperationControl();
         org.llmasr.minimal.modelmanagement.ModelOperationControl.Operation op=control.tryBegin(org.llmasr.minimal.modelmanagement.ModelOperationControl.Kind.VERIFY);
         ModelVerification.Token token=verification.begin(repo);repo.verifyAll();check(verification.commit(repo,token,new ModelVerification.CommitGate(){public boolean reserve(ModelReadiness.VerifyToken t){return control.tryReserveProofCommit(op,ready,t);}public boolean succeed(ModelReadiness.VerifyToken t){return control.trySucceed(op,ready,t);}}),"synthetic actual proof");control.complete(op,true);
-        return new ModelAccess(repo,ready);
+        ModelResidency resident=new ModelResidency(nativeControl,()->true);
+        ModelAccess access=new ModelAccess(repo,ready,resident);access.prepare("synthetic-config","synthetic-cache");return access;
     }
     static void preInputAdmission() throws Exception {
         Path root=Files.createTempDirectory("preinput-model-");
@@ -131,6 +135,32 @@ public final class NextAppContractTest {
             check(operation.clearResults() && state.lastText().isEmpty(), "clear uses actual result facade");
             check(state.resultState().currentRevision() != old.revision && !coordinator.isBusy(), "clear revision/owner");
         } finally { delete(root); }
+    }
+    static void residentOwnerRelease() throws Exception {
+        Path root=Files.createTempDirectory("resident-owner-");List<Runnable> jobs=new ArrayList<>();int[] unload={0};
+        try {
+            ModelAccess access=preparedAccess(root,new ModelResidency.Native(){public double prepare(String c,String t){return 0;}public void release(){unload[0]++;}});
+            PcmWave pcm=new PcmWave();pcm.append(new short[PcmWave.MIN_SAMPLES],PcmWave.MIN_SAMPLES);byte[] sample=pcm.finish();
+            OperationContext context=new OperationContext(){public File filesDir(){return root.toFile();}public File cacheDir(){return root.toFile();}public InputStream openAsset(String n){return new ByteArrayInputStream(sample);}public android.content.ContentResolver contentResolver(){return new android.content.ContentResolver();}};
+            ModelManifest manifest=new ModelManifest(Arrays.asList(new ModelEntry("a",0,String.join("",Collections.nCopies(64,"0")))));ModelRepository repo=ModelRepository.forWorker(manifest,root.resolve("unused").toFile(),()->Long.MAX_VALUE);
+            TaskCoordinator owner=new TaskCoordinator(jobs::add);AppState state=new AppState();AsrOperation[] ops={null};
+            InferenceAdapter adapter=new InferenceAdapter(null,access::requireResidentReady,()->{throw new AssertionError("warm request library");},(c,w,l,t,p)->{
+                check(owner.isBusy(),"native owner busy");ops[0].startRelease();ops[0].startRelease();
+                check(unload[0]==0&&jobs.isEmpty(),"busy release cannot unload or queue before actual owner finish");
+                try{access.requireResidentReady();throw new AssertionError("pending request admission");}catch(IOException expected){}
+                p.onPhase(3);p.onPhase(4);return "0 1 2\npublic".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+            },new InferenceAdapter.Session(){public Object enter()throws IOException{return access.enterRequest();}public void finish(Object token,boolean ok)throws Exception{access.finishRequest(token,ok);}});
+            AppReportWriter reports=new AppReportWriter(context);
+            ops[0]=new AsrOperation(context,owner,repo,state,new TextExportController<android.net.Uri>(u->null,Runnable::run),adapter,reports,access);
+            check(ops[0].startSample("auto")&&jobs.size()==1,"owner inference admitted");jobs.remove(0).run();
+            check(unload[0]==0&&jobs.size()==1&&owner.isBusy(),"owner true exit queues exactly one maintenance release");
+            check(reports.lastContext.inputWav!=null&&!reports.lastContext.inputWav.exists(),"request cleanup before native unload");jobs.remove(0).run();
+            check(unload[0]==1&&!owner.isBusy()&&!access.residentSnapshot().getPendingRelease(),"pending native unload after runner cleanup once");
+            TaskCoordinator rejected=new TaskCoordinator(r->{throw new java.util.concurrent.RejectedExecutionException("controlled");});
+            AsrOperation failOps=new AsrOperation(context,rejected,repo,state,new TextExportController<android.net.Uri>(u->null,Runnable::run),adapter,reports,access);
+            failOps.startRelease();check(!rejected.isBusy()&&access.residentSnapshot().getPendingRelease(),"rejected maintenance leaves admission closed no spin");
+            failOps.startRelease();check(!rejected.isBusy()&&access.residentSnapshot().getPendingRelease(),"explicit rejected retry bounded");
+        } finally {check(jobs.isEmpty(),"resident owner worker exited before remove");delete(root);}
     }
     static void service() throws Exception {
         TaskCoordinator owner = new TaskCoordinator(Runnable::run);
@@ -431,6 +461,7 @@ public final class NextAppContractTest {
         if (mode.equals("all") || mode.equals("graph")) graph();
         if (mode.equals("all") || mode.equals("operation")) operation();
         if (mode.equals("all") || mode.equals("preinput")) preInputAdmission();
+        if (mode.equals("all") || mode.equals("resident-owner")) residentOwnerRelease();
         if (mode.equals("all") || mode.equals("service")) service();
         System.out.println("PASS next real app/controller host contracts " + mode + " " + checks + " checks (NOT Android runtime)");
     }

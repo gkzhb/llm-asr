@@ -1,0 +1,106 @@
+{
+  "task": "llm-asr-zcm/B first formal full",
+  "base": "8b71b56b8927031be938d188bacafe0b530a4b8a",
+  "status": "FAILED_FIRST_REQUIRED_GATE_NO_APK_DELIVERY",
+  "formal_attempt": 1,
+  "full_exit": 1,
+  "failed_task": ":verifyHost",
+  "diagnostic": "T5 unique real production mutant anchor: asr/InferenceAdapter.kt",
+  "valid_behavior_red": false,
+  "no_auto_retry_or_source_fix": true,
+  "evidence_root": ".work/residentb-full",
+  "formal_record_sha256": "c2fab190c59a4e608246be1731a4a118549fc415afd84962df91d3d539220871",
+  "full_stdout_sha256": "125a62a29c10942bb998023e2622fcc7c298945c1f3d39c6a518c64fc92637fb",
+  "full_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "launch_freeze_sha256": "e4734c76223eb2fb7d6c1cf850af34c1c559cb85775ee4e9172e31585e4238f6",
+  "post_audit_sha256": "e7561d3cdc948b6ac2bdbabac0dfd14fe85069968b1a22026c424ad7512839d0",
+  "terminal_ledger_sha256": "ee13777ddd1711f36f1fd14f9d94b7120e6b168ffefae43807b0839855e0152c",
+  "current_build_count": 238,
+  "current_module_count": 10,
+  "current_native_count": 84,
+  "external_tool_count": 11,
+  "launch_current_maps_same": true,
+  "backup_verified_files": 2136,
+  "immutable_protected": 686,
+  "AGP_native_sha256": "4ee0b300caa099a7ef0358fdf42901b9f963d5e2be8fb8e330fb5cad55394481",
+  "AGP_native_receipt": {
+    "path": "android/app/build/native-debug/artifact/verification.json",
+    "bytes": 13151,
+    "sha256": "71800ae1550153fad9a2c89ff83849dfbac8a471fc764683f51e8ed397cce5be"
+  },
+  "partial_APKs_NOT_delivery": [
+    {
+      "label": "product",
+      "path": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "bytes": 5352541,
+      "sha256": "cdf9ed7d86a1e52c11ce9d998f3d47b73265bdd0ba9773f6eebb830ecac0f49f",
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "NOT_delivery": true
+    },
+    {
+      "label": "host",
+      "path": "android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+      "bytes": 2685540,
+      "sha256": "ee978b23ad5993c2d2055f49ca424a4522800c73fb249941a0c792fdfadc98cd",
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "NOT_delivery": true
+    },
+    {
+      "label": "test",
+      "path": "android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+      "bytes": 66382,
+      "sha256": "4757d34d7d6ca604ecb335fb02431fe32849a3d0fc4ca1793f1c17d0d6e674d8",
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "NOT_delivery": true
+    }
+  ],
+  "partial_three_APK_receipt": {
+    "path": "build/verification/android-test/run-64f83f7b08b34e7e89453821f15e87e3/receipt.json",
+    "bytes": 248071,
+    "sha256": "30e685121bc817afe4873fd20616dfa0b60b425350058fa4260183e13cbc0539"
+  },
+  "junit": [
+    {
+      "path": "core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml",
+      "exists": false,
+      "data": null
+    },
+    {
+      "path": "android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml",
+      "exists": false,
+      "data": null
+    },
+    {
+      "path": "android/test-host/build/test-results/testDebugUnitTest/TEST-org.llmasr.minimal.testhost.FixtureContractTest.xml",
+      "exists": true,
+      "data": {
+        "name": "org.llmasr.minimal.testhost.FixtureContractTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-10-26T18:54:24",
+        "hostname": "zhb-nixos",
+        "time": "0.034"
+      }
+    }
+  ],
+  "Lint_NOTRUN": true,
+  "independent_product_final_receipt_NOTRUN": true,
+  "supplemental_after_terminal": [
+    "reports/model-residency-zcm/status.md",
+    "reports/model-residency-zcm/full.md",
+    "reports/model-residency-zcm/full-inputs.json"
+  ],
+  "noBG": true,
+  "actual_ASR_Android_runner_device_quality_performance_PSS_ASan": "NOTRUN"
+}

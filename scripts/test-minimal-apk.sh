@@ -30,7 +30,7 @@ host_classes=(
   transcription.ResultFiles
   audio.RecordingControl audio.WaveInput audio.AsrText audio.PcmWave
   ime.ImeFieldPolicy ime.ImeSession ime.ImeController
-  model.ModelReadiness model.ModelVerification
+  model.ModelReadiness model.ModelVerification model.ModelResidency
   modelmanagement.ModelOperationControl modelmanagement.ModelManagementState modelmanagement.ModelManagementController
   model.ModelAccess modelmanagement.ModelPickerTickets modelmanagement.ModelPageSession modelmanagement.ModelUiText
   model.ModelProviderBoundary

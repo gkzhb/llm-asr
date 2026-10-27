@@ -45,7 +45,7 @@ public final class ModelManagementActivity extends Activity {
     private final ActivityWindow.BackRegistration windowBack = new ActivityWindow.BackRegistration(this, this::onBackPressed);
     private ModelPageSession<Uri> page;
     private TextView readiness, storage, task, files, busy;
-    private Button choose, verify, restore, delete, cancel;
+    private Button choose, verify, restore, delete, cancel, prepare, release;
     private volatile boolean visible;
     private boolean inspectNeeded, receiverRegistered;
     private final UiRefresh invalidation = new UiRefresh(this);
@@ -90,7 +90,14 @@ public final class ModelManagementActivity extends Activity {
             if (!graph.modelManagement().startRestore()) rejected();
             invalidation.onChange();
         });
-        text(root,"正常启动会在后台快速恢复有效证明；无证明或失效时不会自动做 SHA。首次已有模型请完整校验。校验证明不代表模型驻留；每次转写仍加载并释放。",15);
+        text(root,"正常启动仅恢复文件证明，不加载内存模型。完整校验或恢复后，请显式准备；App 与输入法共用同一内存实例。释放忙时等待真实任务收尾。",15);
+        prepare = button(root,"显式准备模型（加载到内存）", () -> {
+            if (!graph.asrOperation().startPrepare()) rejected();
+            invalidation.onChange();
+        });
+        release = button(root,"释放内存模型（忙时延后）", () -> {
+            graph.asrOperation().startRelease(); invalidation.onChange();
+        });
         verify = button(root,"完整 SHA 校验 / 重新校验", () -> {
             if (graph.modelManagement().startVerify()) page.adoptStarted(); else rejected();
             invalidation.onChange();
@@ -177,7 +184,10 @@ public final class ModelManagementActivity extends Activity {
         }
         ModelManagementState.Snapshot s = graph.modelManagement().state().current();
         ModelReadiness.Snapshot r = graph.readiness().snapshot();
-        readiness.setText("模型："+ModelUiText.readiness(r.state)+"\nepoch "+r.epoch);
+        org.llmasr.minimal.model.ModelResidency.Snapshot loaded = graph.modelAccess().residentSnapshot();
+        readiness.setText("文件："+ModelUiText.readiness(r.state)+"\nepoch "+r.epoch
+            +"\n内存："+(loaded == null ? "未绑定" : loaded.getState().name())
+            +(loaded != null && loaded.getPendingRelease() ? " · 等待释放" : ""));
         long expected = 0; for (ModelEntry e : graph.modelRepository().manifest().entries()) expected += e.bytes();
         storage.setText("预期模型："+ModelUiText.bytes(expected)+"\n内部正式文件："+ModelUiText.bytes(s.installedBytes)
             +"\n临时残片："+ModelUiText.bytes(s.orphanPartBytes)+"\n可用存储（最近检查）："+ModelUiText.bytes(s.availableBytes)
@@ -198,6 +208,8 @@ public final class ModelManagementActivity extends Activity {
         boolean any = false, completeFile = false;
         for (ModelReports.FileDetail f : s.files) { any |= f.present || f.partExists; completeFile |= f.present && f.sizeMatch; }
         choose.setEnabled(!ownerBusy); verify.setEnabled(!ownerBusy && completeFile); restore.setEnabled(!ownerBusy); delete.setEnabled(!ownerBusy && any);
+        prepare.setEnabled(!ownerBusy && r.ready());
+        release.setEnabled(true);
         cancel.setVisibility(page.ownsActive() && s.operationKind != ModelManagementState.OperationKind.DELETE ? View.VISIBLE : View.GONE);
         cancel.setEnabled(page.cancellable());
         if (page.ownsActive() && ownerBusy && unlocked()) getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

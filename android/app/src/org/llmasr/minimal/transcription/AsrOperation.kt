@@ -31,13 +31,40 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
         AppRequestPolicy(reports, StateImpl()), { ctx ->
             if (ctx.inputWav != null && ctx.inputWav!!.exists() && !ctx.inputWav!!.delete()) throw IOException("无法删除请求临时WAV")
         })
+    private val releaseDispatch = java.util.concurrent.atomic.AtomicBoolean()
+    init { coordinator!!.addListener { dispatchRelease() } }
+    private fun dispatchRelease() {
+        if (modelAccess.residentSnapshot()?.pendingRelease != true || coordinator!!.isBusy() || !releaseDispatch.compareAndSet(false, true)) return
+        try {
+            val completed = java.util.concurrent.atomic.AtomicBoolean()
+            val accepted = runner.submit(TaskKind.MAINTENANCE, { modelAccess.release(); completed.set(true) }, {}, {
+                if (completed.get()) releaseDispatch.set(false)
+            })
+            if (!accepted) releaseDispatch.set(false)
+        } catch (failure: RuntimeException) {
+            // Do not spin synchronous rejection/reentrant coordinator listeners.
+            // Pending stays closed; a later explicit release permits one retry.
+        }
+    }
+    @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
+    open fun startRelease(): Boolean {
+        if (!coordinator!!.isBusy()) releaseDispatch.set(false)
+        modelAccess.requestRelease()
+        dispatchRelease()
+        return true
+    }
+    @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
+    open fun startPrepare(): Boolean = runner.submit(TaskKind.MAINTENANCE, {
+        val load = modelAccess.prepare(File(modelRepository!!.modelDir(), "config.json").absolutePath, context!!.cacheDir()!!.absolutePath)
+        appState!!.setLastStatus(String.format(Locale.ROOT, "模型已显式准备 · 加载 %.2fs；App / 输入法共用内存实例。", load))
+    })
     @Volatile private var recording: RecordingControl? = null
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun recording(): RecordingControl? = recording
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun textExport(): TextExportController<Uri>? = textExport
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun cancelRecording() { val r = recording; if (r != null) r.cancel() }
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun startSample(language: String?): Boolean = runner.submit(TaskKind.INFERENCE, { ctx ->
-        modelAccess.requireReady()
+        modelAccess.requireResidentReady()
         val input = context!!.openAsset("sample.wav")
         var primary: Throwable? = null
         try {
@@ -56,7 +83,7 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
     })
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun startWave(uri: Uri?, language: String?): Boolean = runner.submit(TaskKind.INFERENCE, { ctx ->
-        modelAccess.requireReady()
+        modelAccess.requireResidentReady()
         val cr = context!!.contentResolver()
         val input = cr!!.openInputStream(unchanged<Uri>(uri))
         var primary: Throwable? = null
@@ -80,7 +107,7 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
         return runner.submit(TaskKind.INFERENCE, { ctx ->
             val wav: ByteArray
             try {
-                modelAccess.requireReady()
+                modelAccess.requireResidentReady()
                 wav = ForegroundRecorder.capture(control) { seconds -> appState!!.setLastStatus(String.format(Locale.ROOT,
                     "正在录音 %.1f / 30.0 秒 · 停止后转写，离开界面会取消", seconds)) }
                 if (!control.tryCommitInference()) throw CancellationException("已取消录音，音频已丢弃")
@@ -106,7 +133,7 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
     open fun startupOnce(): Boolean = runner.submit(TaskKind.MAINTENANCE, { ctx ->
         val restored = try { modelAccess.restoreFast() } catch (unavailable: IOException) { false }
         appState!!.setLastStatus(ResultFiles.startupStatus(ctx.cleanedTemporary) + if (restored)
-            "\n已快速恢复校验证明（未做 SHA）；每请求加载并释放模型，非驻留。"
+            "\n已快速恢复校验证明（未做 SHA）；仍需到模型管理显式准备内存模型。"
             else "\n模型尚未准备，请到模型管理完整校验；已有证明可快速恢复。")
     })
     @Throws(IOException::class)
@@ -118,14 +145,14 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
     }
     @Throws(IOException::class)
     private fun runInference(ctx: RequestContext, wav: File, seconds: Double, language: String?, source: String) {
-        appState!!.setLastStatus("模型加载 / 转写中（CPU，首次可能需要数十秒）……")
+        appState!!.setLastStatus("使用已准备模型转写中（CPU）……")
         val r = inference!!.transcribe(RuntimeLogSource.APP, ctx.requestId,
             File(modelRepository!!.modelDir(), "config.json").absolutePath, wav.absolutePath, language, context!!.cacheDir()!!.absolutePath)
         reports!!.writeSuccess(ctx, r, wav, seconds, language, source)
         ctx.inferenceReported = true
         appState.setLastText(r.display)
         appState.setLastStatus(String.format(Locale.ROOT,
-            "完成 · 加载 %.2fs / 推理 %.2fs / RTF %.3f\n每请求释放模型；非 warm 测试。", r.loadSeconds, r.inferenceSeconds, r.inferenceSeconds / seconds))
+            "完成 · 加载 %.2fs / 推理 %.2fs / RTF %.3f\n复用已准备模型；未作设备性能验收。", r.loadSeconds, r.inferenceSeconds, r.inferenceSeconds / seconds))
     }
     private inner class StateImpl : AppRequestPolicy.State {
         override fun lastText(): String? = appState!!.lastText()

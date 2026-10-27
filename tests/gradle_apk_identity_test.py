@@ -10,6 +10,7 @@ import tempfile
 import unittest
 import zipfile
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
@@ -38,6 +39,35 @@ class IdentityTests(unittest.TestCase):
         else:
             for name in ['signature.txt', 'manifest-tree.txt']:
                 shutil.copyfile(ROOT / 'reports/apk' / name, self.report / name)
+
+    def test_real_verify_uses_only_current_prepared_root(self):
+        # Observe the actual verify() native boundary. Stop there deliberately:
+        # this fixture is not native execution or a substitute for real ELF gates.
+        class StopAfterNativeBoundary(Exception):
+            pass
+        called = []
+        def intercept(build, prepared):
+            called.append((build, prepared))
+            if prepared != ROOT / '.work/native-session-reuse/sources':
+                raise AssertionError('APK verifier selected stale/override prepared root')
+            raise StopAfterNativeBoundary()
+        original_loader = importlib.util.spec_from_file_location
+        def loader(name, location, *args, **kwargs):
+            spec = original_loader(name, location, *args, **kwargs)
+            if name == 'native_verify':
+                original_exec = spec.loader.exec_module
+                def execute(loaded):
+                    original_exec(loaded)
+                    loaded.verify = intercept
+                spec.loader.exec_module = execute
+            return spec
+        build = self.report / 'native-build'
+        with patch.object(importlib.util, 'spec_from_file_location', side_effect=loader), \
+             patch.object(module.subprocess, 'run') as module_owner:
+            with self.assertRaises(StopAfterNativeBoundary):
+                module.verify(self.report / 'apk', self.report / 'reports', build)
+            module_owner.assert_called_once_with(['python3', str(ROOT / 'tests/module_owners_test.py')], check=True)
+        self.assertEqual(called, [(build.absolute(), ROOT / '.work/native-session-reuse/sources')])
 
     def test_positive_existing_apk(self):
         module.check_identity(self.apk, self.baseline, self.report)

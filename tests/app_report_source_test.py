@@ -59,5 +59,9 @@ if __name__ == '__main__':
                      ('Java_org_llmasr_minimal_JniNativeTranscription_',
                       'Java_org_llmasr_minimal_MainActivity_')):
         canonical = canonical.replace(src, dst)
-    assert digest(canonical) == baseline, 'native JNI body changed beyond package prefix'
-    print('PASS frozen pre-R3 report bodies + 8 negative fixtures; native source identical except JNI class symbol prefix (not runtime)')
+    # B intentionally replaces per-request load/free with explicit prepare and
+    # default-evict warm calls; preserve exact reviewed current pin, not old-body equivalence.
+    assert digest(canonical) == baseline, 'current explained residency JNI source pin differs'
+    assert 'EvictUnlessCommitted guard' in cpp and 'resident->clearRequestState()' in cpp
+    assert 'prepareNative' in cpp and 'releaseNative' in cpp and 'result << 0.0' in cpp
+    print('PASS frozen pre-R3 report bodies + 8 negatives; explained current residency JNI source pin (not runtime)')

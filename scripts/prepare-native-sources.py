@@ -15,7 +15,8 @@ ARCHIVES = {
     'mnn': ('mnn.tar.gz', '4bfeaff68193a58f097d1d549a9b31f5ef588ba796c9768990e0afd0b439c59d'),
     'kleidiai': ('kleidiai-v1.16.0.tar.gz', '57b0a95c559ec6a4b1460bc742af600bfb6cdff8dc39154b376c25347d7b0891'),
 }
-PATCHES = ['mnn-p0.patch', 'mnn-whisper-periodic-hann.patch', 'mnn-asr-boundary-positions.patch']
+PATCHES = ['mnn-p0.patch', 'mnn-whisper-periodic-hann.patch', 'mnn-asr-boundary-positions.patch',
+           'mnn-asr-request-cleanup.patch']
 
 
 def sha(path):
@@ -85,6 +86,17 @@ def extract(archive, output):
                     target.write(block)
 
 
+def read_source_lock():
+    return json.loads((ROOT / 'native/source-lock.json').read_text())
+
+
+def validate_patch_lock():
+    expected = {p: sha(ROOT / 'patches' / p) for p in PATCHES}
+    if read_source_lock()['patches'] != expected:
+        raise ValueError('Patch lock mismatch')
+    return expected
+
+
 def validate(output):
     safe_path(output)
     safe_path(output / 'sources.json')
@@ -95,7 +107,8 @@ def validate(output):
     expected = {name: value[1] for name, value in ARCHIVES.items()}
     if report['archives'] != expected:
         raise ValueError('Archive lock mismatch')
-    if report['patches'] != {p: sha(ROOT / 'patches' / p) for p in PATCHES}:
+    expected_patches = validate_patch_lock()
+    if report['patches'] != expected_patches:
         raise ValueError('Patch lock mismatch')
     for name in ARCHIVES:
         if inventory(output / name) != report['trees'][name]:
@@ -118,6 +131,7 @@ def prepare_locked(cache, output):
     safe_path(output)
     if output.exists():
         return validate(output)
+    validate_patch_lock()
     for name, (filename, expected) in ARCHIVES.items():
         path = cache / filename
         safe_path(path)

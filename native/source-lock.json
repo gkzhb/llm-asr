@@ -8,10 +8,11 @@
   "patches": {
     "mnn-p0.patch": "c0ea13850febb20ee8f4d01d4028461fd49daf4b8730a84de0f5e38876d7f363",
     "mnn-whisper-periodic-hann.patch": "b1642f6bc52372e1d800d763e47888c746e1a3e3575c75f11177f337f5acaa4f",
-    "mnn-asr-boundary-positions.patch": "bd643768d175ef9f2a46099bdcecc46216d8fdb9f1a0e6662dd6825ad827fe84"
+    "mnn-asr-boundary-positions.patch": "bd643768d175ef9f2a46099bdcecc46216d8fdb9f1a0e6662dd6825ad827fe84",
+    "mnn-asr-request-cleanup.patch": "466ab7d52007e4d26b9791f60f13087fdde12793edcf5641694e2f8c1ac51f62"
   },
   "tree_sha256": {
-    "mnn": "9542da8d9cd3e0076aa53f35072a3df28206b9f355712b572778d5b4820b9d82",
+    "mnn": "cdf16da6e5bd5c66095ac9796d385e58267c3dc6b37f5548f37dc15c68069626",
     "kleidiai": "deecf616e3a980d84bc27d501d86978d6878ec835ae5c79a8b6589c73dcfb05e"
   }
 }

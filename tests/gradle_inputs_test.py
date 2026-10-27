@@ -115,7 +115,7 @@ class InputTests(unittest.TestCase):
             duplicate.unlink()
 
     def test_verification_owners_missing_drift_duplicate(self):
-        for owner in ('ModelVerification', 'AndroidModelVerificationIo'):
+        for owner in ('ModelVerification', 'ModelResidency', 'AndroidModelVerificationIo'):
             path = self.root / ('android/app/src/org/llmasr/minimal/model/' + owner + '.kt')
             original = path.read_bytes()
             output = self.root / ('reject-' + owner)

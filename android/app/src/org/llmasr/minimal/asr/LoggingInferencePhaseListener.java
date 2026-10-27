@@ -58,6 +58,54 @@ public final class LoggingInferencePhaseListener implements InferencePhaseListen
         stage = Stage.WAIT_LOAD;
         emit(RuntimeLogEventKind.MODEL_ACCESS_COMPLETED, "ok", duration);
     }
+    /** Warm request: readiness was checked, but no model load happened here. */
+    synchronized void residentReady() {
+        if (stage != Stage.WAIT_LOAD) { invalidate(); return; }
+        stage = Stage.LOADED;
+    }
+    /** Independent prepare telemetry: no REQUEST_SUCCESS can be emitted. */
+    public interface PrepareListener extends InferencePhaseListener { void finished(boolean success); }
+    public static PrepareListener prepareListener(RuntimeLogStore store) {
+        return new PrepareListener() {
+            private final Thread owner = Thread.currentThread();
+            private final String prepareId = java.util.UUID.randomUUID().toString();
+            private int stage;
+            private long start, duration;
+            private boolean closed, publishing;
+            private void stop() { closed = true; }
+            private boolean ownerCall() {
+                if (closed) return false;
+                if (Thread.currentThread() != owner || publishing) { stop(); return false; }
+                return true;
+            }
+            @Override public synchronized void finished(boolean success) {
+                if (!ownerCall()) return;
+                // Close before any clock/store callback. Phase2 merely records
+                // native completion; only finished(true) publishes completion.
+                closed = true;
+                if (stage == 0 || (success && stage != 2)) return;
+                try {
+                    store.append(success ? RuntimeLogEventKind.MODEL_LOAD_COMPLETED : RuntimeLogEventKind.MODEL_LOAD_FAILED,
+                        RuntimeLogSource.SHARED, prepareId, success ? "ok" : "load-failed", success ? duration : -1);
+                } catch (Throwable ignored) { /* terminal already closed: never retry */ }
+            }
+            @Override public synchronized void onPhase(int code) {
+                if (!ownerCall()) return;
+                try {
+                    if (stage == 0 && code == InferencePhase.MODEL_LOAD_STARTED.code) {
+                        stage = 1; publishing = true;
+                        start = store.clock().monotonicNanos();
+                        if (closed) return;
+                        if (!store.append(RuntimeLogEventKind.MODEL_LOAD_STARTED, RuntimeLogSource.SHARED, prepareId, "ok", -1)) stop();
+                    } else if (stage == 1 && code == InferencePhase.MODEL_LOAD_COMPLETED.code) {
+                        stage = 2; publishing = true;
+                        duration = Math.max(0, store.clock().monotonicNanos()-start);
+                    } else stop();
+                } catch (Throwable ignored) { stop(); }
+                finally { publishing = false; }
+            }
+        };
+    }
     private void invalidate() {
         if (invalid) return;
         invalid = true;

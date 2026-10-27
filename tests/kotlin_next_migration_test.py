@@ -68,9 +68,11 @@ calls++;seen=u;order+="open;";if(fail)throw SENTINEL;return new java.io.ByteArra
 public java.io.InputStream openInputStream(@org.jetbrains.annotations.NotNull android.net.Uri u)throws java.io.IOException{
 calls++;seen=u;order+="open;";if(fail)throw SENTINEL;return stream!=null?stream:new java.io.ByteArrayInputStream(new byte[0]);}}
 ''',
+    'android/content/ComponentCallbacks2.java': 'package android.content; public interface ComponentCallbacks2 {void onConfigurationChanged(android.content.res.Configuration c);void onLowMemory();void onTrimMemory(int level);}',
+    'android/content/res/Configuration.java': 'package android.content.res; public class Configuration {}',
     'android/content/Context.java': '''package android.content; public class Context {
 private java.io.File dir; public Context(){this(new java.io.File("unused-next-context"));} public Context(java.io.File f){dir=f;}
-public Context getApplicationContext(){return this;} public java.io.File getFilesDir(){return dir;}
+public void registerComponentCallbacks(ComponentCallbacks2 c){} public Context getApplicationContext(){return this;} public java.io.File getFilesDir(){return dir;}
 public java.io.File getNoBackupFilesDir(){return dir;}
 public java.io.File getCacheDir(){return dir;} public ContentResolver getContentResolver(){ContentResolver.order+="receiver;";return new ContentResolver();}
 public android.content.res.AssetManager getAssets(){return new android.content.res.AssetManager();}

@@ -1,11 +1,17 @@
 # 运行日志（0.6）
 
+## llm-asr-zcm B：显式准备与单进程复用（targeted工程，尚不交包）
+
+文件校验证明与内存loaded分开：启动只轻恢复proof，模型管理页显式prepare/release；prepare在共享worker加载一次，同有效generation幂等，App/IME共用唯一resident。未prepare在asset/provider/capture之前拒绝，adapter末次复核；请求无load fallback，warm返回load_s=0且阶段仅3/4。prepare独立UUID的1/2事件，不生成REQUEST_SUCCESS。busy release立即关新准入，原native/cleanup/RequestRunner真退出后由既有worker卸载；release失败保EVICTING/pending，UI_HIDDEN20/页面离开/IME切换不卸载，无TTL或新线程。proof第四参maintenance lease覆盖current/generation/真实Repository写事务，先unload完成再DIRTY/资产首写，期间prepare拒绝。
+
+本轮状态及证据见[模型驻留targeted](../reports/model-residency-zcm/status.md)。真实production状态/adapter/proof/repo/owner及可编译mutants、actual JNIbridge受控port只证明工程控制流；SDK/JNI对象编译不等Android执行。官方正常Session/Module复用设计已由用户明确授权实施，Module深清撤回而保留六成员请求语义；旧U1全私有状态枚举要求改为输入输出有效寿命/下次正确重绑定及KV隔离合同，历史报告保留，具体缺陷仍block。prepare日志保持phase2暂存、finished(true)才一次完成，失败/迟到/重复/重入failclosed；不凭官方建议宣称实际ASR。无模型资产读取/实际ASR/设备/PSS/性能/ASan验收。native期望SHA保A待另授identitybootstrap，full/新APK/安全提交未执行，旧A包不是B交付。
+
 首页或模型管理页 → **运行日志**。日志按发生先后显示，点击“查看最新日志”跳到底部；前台每秒刷新，不自动滚动打断阅读。完整构建与独立源码双审已完成，可供手机手动验证；尚未进行真实设备/JNI/SAF验收。
 
 每条包含中文说明、固定事件代码、时间戳（日期、毫秒、时区偏移）、App/IME/SHARED 来源、任务 UUID（有任务时）与可用的单调时钟耗时。模型导入/删除等管理事件也记录起止，但暂不提供其总耗时。
 
 ## 事件含义
-- `MODEL_ACCESS_*`：模型路径与当前就绪检查；可能触发懒 SHA 校验，也可能使用已有 SHA 证明。不是内存加载。
+- `MODEL_ACCESS_*`：模型路径与当前就绪检查；消耗已明确校验或轻恢复的文件证明，请求不隐式做 SHA；不是内存加载。
 - `MODEL_LOAD_STARTED/COMPLETED`：真实 MNN create/config/load 的起止。
 - `INFERENCE_STARTED/COMPLETED`：真实 response 的起止；只有正常结束才记录完成。
 - `REQUEST_SUCCESS`：返回的转写响应解析成功，**不代表报告保存、编辑器提交或日志导出成功**。

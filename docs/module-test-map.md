@@ -1,5 +1,11 @@
 # M3 模块与旧测试覆盖映射
 
+## llm-asr-zcm B：显式准备与单进程复用（targeted工程，尚不交包）
+
+文件校验证明与内存loaded分开：启动只轻恢复proof，模型管理页显式prepare/release；prepare在共享worker加载一次，同有效generation幂等，App/IME共用唯一resident。未prepare在asset/provider/capture之前拒绝，adapter末次复核；请求无load fallback，warm返回load_s=0且阶段仅3/4。prepare独立UUID的1/2事件，不生成REQUEST_SUCCESS。busy release立即关新准入，原native/cleanup/RequestRunner真退出后由既有worker卸载；release失败保EVICTING/pending，UI_HIDDEN20/页面离开/IME切换不卸载，无TTL或新线程。proof第四参maintenance lease覆盖current/generation/真实Repository写事务，先unload完成再DIRTY/资产首写，期间prepare拒绝。
+
+本轮状态及证据见[模型驻留targeted](../reports/model-residency-zcm/status.md)。真实production状态/adapter/proof/repo/owner及可编译mutants、actual JNIbridge受控port只证明工程控制流；SDK/JNI对象编译不等Android执行。用户明确改为官方正常复用合同：Module4深清撤回，6成员只清Llm/Omni/Tokenizer请求状态；正常onForward自动resize/rebind，不每请求重建Session/清Command。旧U1全私有状态枚举/固定图读取前置被有效寿命/下一执行正确输入及KV隔离合同取代，历史不抹、具体可达缺陷仍block。维护入口`tests/native_request_cleanup_test.sh`显式build/prebuilt，真实definitions、Add/Reshape/MatMul/Attention/Session及LlmOmni/BPE、ownedexit/完整receipt；测试源4新增路径见[native文档](native-build.md)，数值负控不是上游bug。无模型资产读取/实际ASR/设备/PSS/性能/ASan验收。native期望SHA保A待另授identitybootstrap，full/新APK/安全提交未执行，旧A包不是B交付。
+
 任务 llm-asr-76d.4，实施基准538dcb66；实现、本机验证、父独立复验和异家族审查完成，无本轮阻塞。功能已由父安全本地提交 `9ec98d3b9e9a2f28af21d86f811639e3a0302ade`，父批准工程验收并授权关闭M3成功。当前APK可供用户手动验证，但设备未验收；关闭状态文本待父另提交。
 
 ## 实际模块图与生产归属

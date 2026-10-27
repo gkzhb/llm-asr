@@ -9,7 +9,7 @@ plugins {
 
 val generated = layout.buildDirectory.dir("controlled-inputs")
 // Source preparation is deliberately separate from configuration/compilation.
-val nativeSources = rootProject.layout.projectDirectory.dir(".work/native-m2/sources")
+val nativeSources = rootProject.layout.projectDirectory.dir(".work/native-session-reuse/sources")
 val nativeBuild = layout.buildDirectory.dir("native-debug")
 val buildNativeArtifact by tasks.registering(Exec::class) {
     description = "Build pinned explicit MNN OBJECT/JNI artifact and recheck source/config/ELF identity"

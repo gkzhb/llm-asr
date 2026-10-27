@@ -32,7 +32,7 @@ PACKAGE_MAP = {
     'RecordingControl': 'audio', 'ForegroundRecorder': 'audio',
     'ModelEntry': 'model', 'ModelManifest': 'model', 'ModelReports': 'model',
     'ModelSource': 'model', 'ModelRepository': 'model', 'ModelReadiness': 'model',
-    'ModelAccess': 'model', 'ModelVerification': 'model', 'AndroidModelVerificationIo': 'model',
+    'ModelAccess': 'model', 'ModelResidency': 'model', 'ModelVerification': 'model', 'AndroidModelVerificationIo': 'model',
     'ModelProviderBoundary': 'model', 'SafModelSource': 'model',
     'FileSafety': 'model',
     'NativeResponse': 'asr', 'NativeTranscription': 'asr', 'JniNativeTranscription': 'asr',
@@ -66,7 +66,7 @@ graph = java('AppGraph')
 graph_kotlin = (SRC_ROOT / 'AppGraph.kt').is_file()
 assert ('AppState()' if graph_kotlin else 'new AppState()') in graph
 assert 'state::notifyChange' not in graph
-assert ('ModelAccess(repository, readiness)' if graph_kotlin else 'new ModelAccess(repository, readiness)') in graph
+assert ('ModelAccess(repository, readiness, resident)' if graph_kotlin else 'new ModelAccess(repository, readiness)') in graph
 assert ('ModelManagementController(coordinator, modelRepository, readiness, modelControl, modelState, runtimeLogStore)' if graph_kotlin else 'new ModelManagementController(coordinator, modelRepository, readiness, modelControl, modelState, runtimeLogStore)') in graph
 assert 'RuntimeLogStore' in graph
 assert 'runtimeLogStore' in graph
@@ -77,10 +77,13 @@ assert 'AndroidModelVerificationIo { app.noBackupFilesDir }' in graph
 assert 'ModelVerification(manifest, readiness,' in graph
 assert 'startRestore()' in java('ModelManagementController')
 assert '快速恢复已校验证明（不做 SHA）' in java('ModelManagementActivity')
-assert java('AsrOperation').count('modelAccess.requireReady()') == 3
+assert java('AsrOperation').count('modelAccess.requireResidentReady()') == 3
 assert 'backend!!.requireModelReady()' in java('ImeController')
 assert 'repo.verifyAll' not in java('ModelAccess')
-assert 'access::requireReady' in graph
+assert 'access::requireResidentReady' in graph
+assert 'object : InferenceAdapter.Session' in graph
+assert 'registerComponentCallbacks' in graph and 'level == 20' not in graph
+assert 'startPrepare()' in java('ModelManagementActivity') and 'startRelease()' in java('ModelManagementActivity')
 assert ('JniNativeTranscription()' if graph_kotlin else 'new JniNativeTranscription()') in graph
 assert 'TaskKind.MODEL_OPERATION' not in java('AsrOperation')
 assert 'MODEL_TREE' not in java('MainActivity')

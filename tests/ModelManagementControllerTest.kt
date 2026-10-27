@@ -189,7 +189,7 @@ class ModelManagementControllerTest {
                     check(c.startVerify()); q.run(); check(!owner.isBusy() && !control.isBusy && !f.ready.isReady)
                     check(state.current().phase == ModelManagementState.Phase.FAILED)
                     f.io.fail = null; f.io.beforeWrite = null
-                    try { check(!ModelVerification(f.manifest, ModelReadiness(), f.io).restoreFast(f.repo)) } catch (expected: IOException) { }
+                    try { check(!ModelVerification(f.manifest, ModelReadiness(), f.io, ModelAndroidHelpersTest.MemoryGuard()).restoreFast(f.repo)) } catch (expected: IOException) { }
                 }
             }
         }
@@ -306,7 +306,7 @@ class ModelManagementControllerTest {
                     // If the final ledger rename became visible despite sync failure and
                     // rollback also failed, next-process qualification is intentionally
                     // limited to complete COMMITTED continuity; current process never READY.
-                    var restored=false;try{restored=ModelVerification(f.manifest,ModelReadiness(),f.io).restoreFast(f.repo)}catch(expected:IOException){}
+                    var restored=false;try{restored=ModelVerification(f.manifest,ModelReadiness(),f.io,ModelAndroidHelpersTest.MemoryGuard()).restoreFast(f.repo)}catch(expected:IOException){}
                     check(restored==(stage=="dirsync"||stage=="afterRename"))
                 }
             }

@@ -17,7 +17,7 @@ PACKAGE_MAP = {
     'RecordingControl': 'audio', 'ForegroundRecorder': 'audio',
     'ModelEntry': 'model', 'ModelManifest': 'model', 'ModelReports': 'model',
     'ModelSource': 'model', 'ModelRepository': 'model', 'ModelReadiness': 'model',
-    'ModelAccess': 'model', 'ModelVerification': 'model', 'AndroidModelVerificationIo': 'model',
+    'ModelAccess': 'model', 'ModelResidency': 'model', 'ModelVerification': 'model', 'AndroidModelVerificationIo': 'model',
     'ModelProviderBoundary': 'model', 'SafModelSource': 'model',
     'FileSafety': 'model',
     'NativeResponse': 'asr', 'NativeTranscription': 'asr', 'JniNativeTranscription': 'asr',
@@ -58,7 +58,7 @@ def references(source):
 def check_model(source):
     forbidden = references(source) & {'ModelManagementState', 'ModelManagementActivity', 'ModelManagementController', 'AppGraph'}
     assert not forbidden, 'model core references presentation/wiring: ' + str(forbidden)
-for name in ['ModelReports', 'ModelRepository', 'ModelReadiness', 'ModelAccess', 'ModelVerification', 'ModelManifest', 'ModelEntry', 'ModelSource']:
+for name in ['ModelReports', 'ModelRepository', 'ModelReadiness', 'ModelAccess', 'ModelResidency', 'ModelVerification', 'ModelManifest', 'ModelEntry', 'ModelSource']:
     check_model(path_of(name).read_text())
 check_model('/* ModelManagementState */ String text="https://x/ModelManagementState";')
 for bad in ['ModelManagementState state;', 'org.llmasr.minimal.ModelManagementState.Snapshot s;',
@@ -131,8 +131,8 @@ for fixture in ['new InferenceAdapter(a,b,c,d);', 'val copy = InferenceAdapter(n
 check_inference_caller('val injected: InferenceAdapter? = null // InferenceAdapter(a,b,c,d)\n')
 graph_kotlin = path_of('AppGraph').suffix == '.kt'
 ASSEMBLY = [
-    ('new InferenceAdapter(logStore, access::requireReady,', 'InferenceAdapter(logStore, access::requireReady,'),
-    ('() -> System.loadLibrary("qwen_asr_jni"), new JniNativeTranscription()', '{ System.loadLibrary("qwen_asr_jni") }, JniNativeTranscription()'),
+    ('new InferenceAdapter(logStore, access::requireResidentReady,', 'InferenceAdapter(logStore, access::requireResidentReady,'),
+    ('null, bridge, new InferenceAdapter.Session()', 'null, bridge, object : InferenceAdapter.Session'),
     ('inference, new AppReportWriter(opCtx)', 'inference, AppReportWriter(opCtx)'),
     ('logStore, logWorker, inference)', 'logStore, logWorker, inference)'),
     ('new ImeBackend(context, modelRepository, inference, modelAccess)', 'ImeBackend(context, modelRepository, inference, modelAccess!!)'),

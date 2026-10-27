@@ -49,7 +49,7 @@ def suite(classes, directory):
     directory.mkdir(parents=True, exist_ok=False)
     source_dir = directory / 'source'
     source_dir.mkdir()
-    names = ('model/ModelVerification.kt', 'model/ModelAccess.kt', 'model/ModelRepository.java',
+    names = ('model/ModelResidency.kt', 'model/ModelVerification.kt', 'model/ModelAccess.kt', 'model/ModelRepository.java',
              'model/ModelReadiness.java', 'modelmanagement/ModelOperationControl.java')
     sources = []
     selected = {}
@@ -104,15 +104,15 @@ def suite(classes, directory):
             run(green, 'reader', ['read', str(shared)])
             mutations = [
                 ('missing', 'ModelVerification.kt',
-                 'val ledger = io.read("ledger", LIMIT) ?: return false',
-                 'val ledger = io.read("ledger", LIMIT) ?: run { val token = readiness.beginVerify("mutant"); readiness.commitVerified(token); return true }',
+                 'val ledger = io.read("ledger", LIMIT) ?: return@use false',
+                 'val ledger = io.read("ledger", LIMIT) ?: run { val token = readiness.beginVerify("mutant"); readiness.commitVerified(token); return@use true }',
                  'missing proof must not restore READY'),
                 ('revoke', 'ModelRepository.java',
                  '        mutationGuard.beforeMutation();\n        long freed = 0;',
                  '        if (!plan.isEmpty()) deleteManaged(plan.get(0));\n        mutationGuard.beforeMutation();\n        long freed = 0;',
                  'durable revoke must precede mutation'),
                 ('cancel', 'ModelVerification.kt',
-                 'if (!gate.reserve(token.epoch)) return false',
+                 'if (!gate.reserve(token.epoch)) return@use false',
                  '// Mutant: skip reservation until after durable publication.',
                  'cancel winner must not leave restorable proof'),
                 ('request', 'ModelAccess.kt',
@@ -126,12 +126,12 @@ def suite(classes, directory):
                 replace(path, old, new)
                 if mode == 'missing':
                     # Keep the production anchor/ledger path, alter the missing-proof qualification.
-                    replace(path, 'val a = anchor(false) ?: return false', 'val a = anchor(true)!!')
+                    replace(path, 'val a = anchor(false) ?: return@use false', 'val a = anchor(true)!!')
                 if mode == 'cancel':
                     # Actual disk publication occurs before the late reservation; leave a
                     # restorable committed journal even though cancel already won.
                     replace(path, 'if (!gate.succeed(token.epoch)) throw IOException("模型校验世代已过期")',
-                            'if (!gate.reserve(token.epoch)) return false\n            if (!gate.succeed(token.epoch)) return false')
+                            'if (!gate.reserve(token.epoch)) return@use false\n            if (!gate.succeed(token.epoch)) return@use false')
                 (directory / (mode + '-mutant.json')).write_text(json.dumps(identity(path), indent=2) + '\n')
                 mutated = compile(mode + '-mutant')
                 run(mutated, mode + '-mutant', [mode], diagnostic)
@@ -158,7 +158,7 @@ def suite(classes, directory):
 def core_fault_suite(classes, directory):
     """Independent new matrix budget: one mixed compile180, <=12 JVM30, outer600."""
     directory.mkdir(parents=True, exist_ok=False)
-    names = ('model/ModelVerification.kt', 'model/ModelReadiness.java', 'model/ModelRepository.java',
+    names = ('model/ModelResidency.kt', 'model/ModelVerification.kt', 'model/ModelReadiness.java', 'model/ModelRepository.java',
              'model/ModelAccess.kt', 'modelmanagement/ModelOperationControl.java',
              'modelmanagement/ModelManagementController.kt')
     sources = [BASE / name for name in names]

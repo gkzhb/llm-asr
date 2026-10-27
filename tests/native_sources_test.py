@@ -24,6 +24,9 @@ class SourcesTest(unittest.TestCase):
         self.lock_check = patch.object(m, 'locked_trees')
         self.lock_check.start()
         self.addCleanup(self.lock_check.stop)
+        self.patch_check = patch.object(m, 'validate_patch_lock', side_effect=lambda: {p: m.sha(ROOT / 'patches' / p) for p in m.PATCHES})
+        self.patch_check.start()
+        self.addCleanup(self.patch_check.stop)
 
     def archive(self, members):
         path = self.root / 'source.tar.gz'
@@ -96,6 +99,28 @@ class SourcesTest(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     m.prepare(self.root, path)
         self.assertEqual(list(target.iterdir()), [])
+
+    def test_exact_patch_lock_mapping(self):
+        self.patch_check.stop()
+        lock = json.loads((ROOT / 'native/source-lock.json').read_text())
+        m.validate_patch_lock()
+        for modified in [dict(lock, patches={}), dict(lock, patches={**lock['patches'], 'extra.patch': '0'*64}),
+                         dict(lock, patches={k:v for k,v in lock['patches'].items() if k != 'mnn-asr-request-cleanup.patch'})]:
+            with patch.object(m, 'read_source_lock', return_value=modified):
+                with self.assertRaisesRegex(ValueError, 'Patch lock mismatch'): m.validate_patch_lock()
+
+    def test_request_patch_six_members_normal_module_contract(self):
+        text = (ROOT / 'patches/mnn-asr-request-cleanup.patch').read_text()
+        members = [part.splitlines()[0] for part in text.split('--- a/')[1:]]
+        self.assertEqual(len(members), 6)
+        self.assertTrue(all(path.startswith('transformers/llm/engine/') for path in members))
+        self.assertEqual(len(set(members)), 6)
+        self.assertNotIn('clearRequestInputs', text)
+        self.assertNotIn('CPUAttention.hpp', text)
+        lock = json.loads((ROOT / 'native/source-lock.json').read_text())
+        self.assertEqual(lock['patches']['mnn-asr-request-cleanup.patch'], m.sha(ROOT / 'patches/mnn-asr-request-cleanup.patch'))
+        for filename in ('android/app/build.gradle.kts', 'build.gradle.kts'):
+            self.assertIn('.work/native-session-reuse/sources', (ROOT / filename).read_text())
 
     def test_actual_committed_source_lock(self):
         self.lock_check.stop()

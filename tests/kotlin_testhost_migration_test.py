@@ -238,8 +238,8 @@ def contracts(classpath, evidence):
                       'default: throw new AssertionError("unknown contract"); } System.out.println("PASS T5 external production caller"); }}\n')
     mutations = (
         ('asr/InferenceAdapter.kt',
-         '            readiness!!.requireReady()\n            phases.accessCompleted()\n            failure = "native-runtime"\n            library!!.load()',
-         '            library!!.load()\n            readiness!!.requireReady()\n            phases.accessCompleted()\n            failure = "native-runtime"',
+         '            readiness!!.requireReady()\n            phases.accessCompleted()\n            failure = "native-runtime"\n            if (session == null) library!!.load()\n            else { token = session.enter(); phases.residentReady() }',
+         '            if (session == null) library!!.load()\n            else { token = session.enter(); phases.residentReady() }\n            readiness!!.requireReady()\n            phases.accessCompleted()\n            failure = "native-runtime"',
          'readiness', 'readiness zero load/native'),
         ('asr/InferenceAdapter.kt', 'throw IOException("Invalid native response protocol")',
          'throw IOException("Invalid native response protocol", malformed)', 'bytes', 'bad bytes fixed safe exception'),

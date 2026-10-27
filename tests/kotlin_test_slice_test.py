@@ -76,6 +76,12 @@ def source_check(root):
         require((root / ('tests/' + oracle + '.java')).is_file()
                 and not (root / ('tests/' + oracle + '.kt')).exists(), 'original Java oracle identity: ' + oracle)
         require('  tests/' + oracle + '.java' in host, 'host original Java oracle admission: ' + oracle)
+    adapter = (root / 'tests/InferenceAdapterTest.kt').read_text()
+    require('ModelAndroidHelpersTest' not in adapter,
+            'runtime adapter must not depend on another test body')
+    require('private class MemoryGuard : ModelVerification.MaintenanceGuard' in adapter
+            and 'private class TestIo(val root: Path) : ModelVerification.Io' in adapter,
+            'runtime adapter private synthetic fixture closure')
     return len(BODIES) + len(WRAPPERS)
 
 
@@ -153,7 +159,18 @@ def self_test():
         for oracle in ('KotlinMigrationTest', 'PartRecoveryTest'):
             (root / ('tests/' + oracle + '.java')).write_text('original Java oracle fixture\n')
         host.write_text(host.read_text() + ''.join('  tests/' + n + '.java\n' for n in ('KotlinMigrationTest', 'PartRecoveryTest')))
+        adapter = root / 'tests/InferenceAdapterTest.kt'
+        adapter.write_text(adapter.read_text().replace('companion object',
+            'private class MemoryGuard : ModelVerification.MaintenanceGuard {} '
+            'private class TestIo(val root: Path) : ModelVerification.Io {} companion object'))
         source_check(root)
+        saved_adapter = adapter.read_bytes()
+        adapter.write_text(saved_adapter.decode() + '\n// ModelAndroidHelpersTest.TestIo external dependency\n')
+        rejected(lambda: source_check(root), 'must not depend on another test body')
+        adapter.write_bytes(saved_adapter)
+        adapter.write_text(saved_adapter.decode().replace('private class TestIo', 'class TestIo'))
+        rejected(lambda: source_check(root), 'private synthetic fixture closure')
+        adapter.write_bytes(saved_adapter)
         source = root / ('tests/' + BODIES[0] + '.kt'); original = source.read_bytes()
         source.unlink(); rejected(lambda: source_check(root), 'source missing'); source.write_bytes(original)
         sibling = source.with_suffix('.java'); sibling.touch()

@@ -2,6 +2,7 @@ package org.llmasr.minimal
 
 import java.io.*
 import java.nio.charset.StandardCharsets
+import java.nio.channels.FileChannel
 import java.nio.file.*
 import java.security.MessageDigest
 import java.util.*
@@ -15,6 +16,62 @@ import org.llmasr.minimal.transcription.AppRequestPolicy
 
 /** Same production App/IME orchestration; injected native port, no Android/JNI runtime. */
 class InferenceAdapterTest {
+    // Test-only JVM synthetic fixtures; no Android durability claim.
+    private class MemoryGuard : ModelVerification.MaintenanceGuard {
+        override fun acquire() = ModelVerification.MaintenanceLease { }
+        override fun invalidate() { }
+    }
+    /** Explicit synthetic JVM implementation, copied locally to isolate the runtime test closure. */
+    private class TestIo(val root: Path) : ModelVerification.Io {
+        val reads = AtomicInteger(); val identities = AtomicInteger(); val writes = AtomicInteger()
+        var fail: String? = null
+        var beforeWrite: ((String) -> Unit)? = null
+        data class Fault(val name: String, val kind: Int, val occurrence: Int, val stage: String, val failure: Throwable)
+        val faults = ArrayList<Fault>()
+        var atStage: ((String, Int, Int, String) -> Unit)? = null
+        private val occurrences = HashMap<String, Int>()
+        private var writingName = ""; private var writingKind = 0; private var writingOccurrence = 0
+        private fun fault(stage: String) {
+            atStage?.invoke(writingName, writingKind, writingOccurrence, stage)
+            val exact = faults.firstOrNull { it.name == writingName && it.kind == writingKind && it.occurrence == writingOccurrence && it.stage == stage }
+            if (exact != null) throw exact.failure
+            if (fail == stage) throw IOException("injected $stage")
+        }
+        override fun exists(file: File): Boolean = Files.exists(file.toPath(), LinkOption.NOFOLLOW_LINKS)
+        override fun identity(file: File, directory: Boolean): String {
+            identities.incrementAndGet(); fault("stat")
+            val path = file.toPath()
+            if (if (directory) !Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS) else !Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) throw IOException("unsafe type")
+            val a = Files.readAttributes(path, "unix:dev,ino,mode,size,lastModifiedTime,ctime", LinkOption.NOFOLLOW_LINKS)
+            return listOf("dev", "ino", "mode", "size", "lastModifiedTime", "ctime").joinToString(":") { a[it].toString() }
+        }
+        override fun read(name: String, limit: Int): ByteArray? {
+            reads.incrementAndGet(); fault("read")
+            val path = root.resolve(name)
+            if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) return null
+            if (!Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) throw IOException("unsafe proof type")
+            val bytes = ByteArrayOutputStream()
+            Files.newInputStream(path, LinkOption.NOFOLLOW_LINKS).use { input ->
+                while (true) { val c = input.read(); if (c == -1) break; if (bytes.size() == limit) throw IOException("bounded read"); bytes.write(c) }
+            }
+            return bytes.toByteArray()
+        }
+        override fun write(name: String, bytes: ByteArray) {
+            writes.incrementAndGet()
+            writingName = name; writingKind = if (bytes.size >= 8 && name != "anchor") java.nio.ByteBuffer.wrap(bytes, 4, 4).int else 0
+            val key = "$name:$writingKind"; writingOccurrence = (occurrences[key] ?: 0) + 1; occurrences[key] = writingOccurrence
+            beforeWrite?.invoke(name); fault("open")
+            Files.createDirectories(root)
+            val target = root.resolve(name); val temp = root.resolve("$name.tmp")
+            if (Files.exists(target, LinkOption.NOFOLLOW_LINKS) && !Files.isRegularFile(target, LinkOption.NOFOLLOW_LINKS)) throw IOException("unsafe proof")
+            FileOutputStream(temp.toFile()).use { output ->
+                fault("write"); output.write(bytes); fault("flush"); output.flush(); fault("fsync"); output.fd.sync(); fault("close")
+            }
+            fault("rename"); Files.move(temp, target, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
+            fault("afterRename"); fault("dirsync"); FileChannel.open(root, StandardOpenOption.READ).use { it.force(true) }
+            fault("afterSync")
+        }
+    }
     private fun interface Checked { fun run() }
     private class Fixture {
         val clock = RuntimeLogClock.Fake(1700000000123L, 123000L); val store = RuntimeLogStore(1000, clock)
@@ -91,7 +148,7 @@ class InferenceAdapterTest {
                         java.nio.channels.FileChannel.open(journal, StandardOpenOption.READ).use { it.force(true) }
                     }
                 }
-                val proof = ModelVerification(manifest, readiness, io)
+                val proof = ModelVerification(manifest, readiness, io, MemoryGuard())
                 val managed = object : ModelRepository(manifest, root.toFile(), { Long.MAX_VALUE }, proof) {
                     override fun verifyAll(progress: Progress?, gate: CancelGate?) { shaRuns.incrementAndGet(); super.verifyAll(progress, gate) }
                 }
@@ -225,6 +282,169 @@ class InferenceAdapterTest {
             check(!ids[0]!!.equals(ids[1]) && cleaned.get() == 2 && reportFailures.get() == 2, "real runner UUID and cleanup boundaries")
             check(count(f.store, REQUEST_SUCCESS) == 2L && count(f.store, REQUEST_FAILURE) == 0L, "external failure is NOT rewritten as inference adapter failure")
         }
+        @JvmStatic fun residencyContracts() {
+            val loads = AtomicInteger(); val frees = AtomicInteger(); val calls = AtomicInteger()
+            val resident = ModelResidency(object : ModelResidency.Native {
+                override fun prepare(config: String, cache: String): Double { loads.incrementAndGet(); return 1.25 }
+                override fun release() { frees.incrementAndGet() }
+            }, { true })
+            fun deniedRun(body: () -> Unit) { try { body() } catch (expected: IOException) { return }; throw AssertionError("resident admission missing") }
+            deniedRun { resident.requireReady("g") }
+            check(resident.prepare("g", "c", "cache") {} == 1.25, "explicit prepare load")
+            check(resident.prepare("g", "c", "cache") {} == 0.0 && loads.get() == 1, "same generation idempotent")
+            val clock = RuntimeLogClock.Fake(1,1); val store=RuntimeLogStore(100,clock)
+            var malformed=false;var fakeLoad=false
+            val session=object : InferenceAdapter.Session {
+                override fun enter(): Any = resident.enter("g")
+                override fun finish(token: Any, success: Boolean) { resident.finish(token,success) }
+            }
+            val adapter=InferenceAdapter(store,{resident.requireReady("g")},{throw AssertionError("warm library called")}, {_,_,_,_,listener->
+                calls.incrementAndGet();if(fakeLoad){listener!!.onPhase(1);listener.onPhase(2)}
+                listener!!.onPhase(3);listener.onPhase(4)
+                if(malformed) "0 1 129\nbad".toByteArray() else "0 1 2\npublic".toByteArray()
+            },session)
+            for(source in arrayOf(RuntimeLogSource.APP,RuntimeLogSource.IME,RuntimeLogSource.APP)) {
+                val result=adapter.transcribe(source,UUID.randomUUID().toString(),"c","w","auto","cache")
+                check(result.loadSeconds==0.0,"warm load must zero")
+            }
+            check(loads.get()==1&&calls.get()==3&&frees.get()==0,"prepare once AppIMEApp request3")
+            check(count(store,MODEL_LOAD_STARTED)==0L&&count(store,REQUEST_SUCCESS)==3L,"warm3/4 no load telemetry")
+            fakeLoad=true;adapter.transcribe(RuntimeLogSource.APP,UUID.randomUUID().toString(),"c","w","auto","cache")
+            check(count(store,MODEL_LOAD_STARTED)==0L&&count(store,LOG_TELEMETRY_FAILED)==1L,"warm fake load rejected")
+            malformed=true;deniedRun { adapter.transcribe(RuntimeLogSource.IME,UUID.randomUUID().toString(),"c","w","auto","cache") }
+            check(frees.get()==1&&resident.snapshot().state==ModelResidency.State.EMPTY,"parse failure evicts")
+            deniedRun { resident.requireReady("g") }
+            resident.prepare("g","c","cache") {};val token=resident.enter("g");resident.requestRelease()
+            deniedRun { resident.requireReady("g") };deniedRun { resident.enter("g") }
+            check(frees.get()==1&&resident.snapshot().state==ModelResidency.State.ACTIVE,"pending retains active owner")
+            resident.finish(token,true);check(frees.get()==1&&resident.snapshot().pendingRelease,"finish not outer runner release")
+            resident.drainRelease();check(frees.get()==2&&resident.snapshot().state==ModelResidency.State.EMPTY,"actual worker releases after owner")
+            resident.prepare("next","c","cache") {};resident.acquire().use {
+                deniedRun { resident.prepare("next","c","cache") {} }
+                check(frees.get()==3,"maintenance unload before first asset write")
+            }
+            val failure=IOException("release-sentinel");val bad=ModelResidency(object : ModelResidency.Native {
+                override fun prepare(c:String,t:String)=0.0
+                override fun release(){throw failure}
+            },{true});bad.prepare("g","c","t") {};bad.requestRelease()
+            try{bad.drainRelease();throw AssertionError("release failure hidden")}catch(actual:IOException){check(actual===failure,"release failure identity")}
+            check(bad.snapshot().state==ModelResidency.State.EVICTING&&bad.snapshot().pendingRelease,"release failed not counterfeit empty")
+            deniedRun { bad.requireReady("g") }
+            var loading:ModelResidency?=null
+            loading=ModelResidency(object : ModelResidency.Native {
+                override fun prepare(c:String,t:String):Double{loading!!.requestRelease();return 0.0}
+                override fun release(){frees.incrementAndGet()}
+            },{true})
+            deniedRun{loading.prepare("g","c","t") {}}
+            check(loading.snapshot().state==ModelResidency.State.EMPTY,"load trim winner never publishes loaded")
+            println("PASS residency production state/session prepare/warm/pending/parse/maintenance/failure")
+        }
+        private fun residencyProofTransactions() {
+            val root=Files.createTempDirectory("resident-proof-");val events=java.util.concurrent.CopyOnWriteArrayList<String>()
+            val frees=AtomicInteger();var failRelease=false
+            val resident=ModelResidency(object : ModelResidency.Native {
+                override fun prepare(c:String,t:String)=0.0
+                override fun release(){events.add("unload");if(failRelease)throw IOException("unload-fault");frees.incrementAndGet()}
+            },{true})
+            val ready=ModelReadiness();val manifest=ModelManifest(listOf(ModelEntry("a",3,"039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81")))
+            val dir=Files.createDirectory(root.resolve("model"));Files.write(dir.resolve("a"),byteArrayOf(1,2,3))
+            val io=TestIo(root.resolve("journal"));val proof=ModelVerification(manifest,ready,io,resident)
+            val repo=ModelRepository(manifest,dir.toFile(),{Long.MAX_VALUE},proof);val access=ModelAccess(repo,ready,resident)
+            fun verify(){val control=org.llmasr.minimal.modelmanagement.ModelOperationControl();val op=control.tryBegin(org.llmasr.minimal.modelmanagement.ModelOperationControl.Kind.VERIFY);val token=proof.begin(repo);repo.verifyAll();check(proof.commit(repo,token,object:ModelVerification.CommitGate{override fun reserve(t:ModelReadiness.VerifyToken)=control.tryReserveProofCommit(op,ready,t);override fun succeed(t:ModelReadiness.VerifyToken)=control.trySucceed(op,ready,t)}),"resident proof commit");control.complete(op,true)}
+            fun denied(body:()->Unit){try{body()}catch(expected:IOException){return};throw AssertionError("resident transaction admitted unsafe first write")}
+            var worker:Thread?=null
+            var unblock:java.util.concurrent.CountDownLatch?=null
+            try {
+                verify();access.prepare("c","t");val active=access.enterRequest();val before=io.writes.get()
+                denied{repo.deleteAll()};check(Files.exists(dir.resolve("a"))&&io.writes.get()==before&&frees.get()==0,"active repository first-write denied")
+                access.finishRequest(active,true);failRelease=true;denied{repo.deleteAll()}
+                check(Files.exists(dir.resolve("a"))&&io.writes.get()==before,"failed unload prevents durableDIRTY and asset write")
+                failRelease=false;access.requestRelease();access.release();access.prepare("c","t");events.clear()
+                io.beforeWrite={name->if(name=="ledger")events.add("dirty")}
+                repo.deleteAll();events.add("asset-deleted")
+                check(events.indexOf("unload")>=0&&events.indexOf("dirty")>events.indexOf("unload")&&events.indexOf("asset-deleted")>events.indexOf("dirty"),"native unload then DIRTY then actual asset write")
+                Files.createDirectories(dir);Files.write(dir.resolve("a"),byteArrayOf(1,2,3));io.beforeWrite=null;verify();access.prepare("c","t")
+                val entered=java.util.concurrent.CountDownLatch(1);val finish=java.util.concurrent.CountDownLatch(1);unblock=finish
+                val error=AtomicReference<Throwable>()
+                io.atStage={_,_,_,stage->if(stage=="read"){entered.countDown();if(!finish.await(3,java.util.concurrent.TimeUnit.SECONDS))throw IOException("bounded restore release")}}
+                worker=Thread({try{check(proof.restoreFast(repo),"real restore resumes proof")}catch(failure:Throwable){error.set(failure)}},"resident-proof-restore")
+                worker.start();check(entered.await(3,java.util.concurrent.TimeUnit.SECONDS),"restore reached real journal IO under maintenance")
+                denied{resident.prepare("other","c","t") {}}
+                finish.countDown();worker.join(3000);check(!worker.isAlive,"real restore worker terminal");error.get()?.let{throw it}
+                io.atStage=null;check(resident.snapshot().state==ModelResidency.State.EMPTY,"proof restore prevents stale prepare")
+            } finally {
+                unblock?.countDown()
+                val w=worker;if(w!=null&&w.isAlive){w.join(3000);if(w.isAlive)throw IOException("resident proof worker still active; retained $root")}
+                resident.requestRelease();try{resident.drainRelease()}catch(ignored:Exception){}
+                deleteTree(root)
+            }
+            println("PASS real proof/resident direct repository first-write and maintenance lease")
+        }
+        @JvmStatic fun crossGenerationReleaseRegression() {
+            val loads=AtomicInteger();val frees=AtomicInteger();val entered=java.util.concurrent.CountDownLatch(1);val resume=java.util.concurrent.CountDownLatch(1)
+            val error=AtomicReference<Throwable>();var block=false
+            val r=ModelResidency(object:ModelResidency.Native {
+                override fun prepare(c:String,t:String):Double{loads.incrementAndGet();return 0.0}
+                override fun release(){frees.incrementAndGet();if(block){entered.countDown();if(!resume.await(3,java.util.concurrent.TimeUnit.SECONDS))throw IOException("bounded unload")}}
+            },{true})
+            r.prepare("g1","c","t") {};block=true
+            val thread=Thread({try{r.prepare("g2","c","t") {}}catch(f:Throwable){error.set(f)}},"crossgen-worker")
+            thread.start()
+            try{check(entered.await(3,java.util.concurrent.TimeUnit.SECONDS),"old unload entered");r.requestRelease()}
+            finally{resume.countDown();thread.join(3000)}
+            check(!thread.isAlive,"crossgen worker true exit")
+            check(loads.get()==1&&frees.get()==1&&r.snapshot().state!=ModelResidency.State.LOADED,"external release must win old generation eviction")
+            check(error.get() is IOException,"release winner aborts new prepare")
+            try{r.requireReady("g2");throw AssertionError("new generation admission after release")}catch(expected:IOException){}
+            r.drainRelease();block=false;r.prepare("g2","c","t") {};check(loads.get()==2,"explicit retry after release acknowledged")
+            check(r.prepare("g2","c","t") {}==0.0&&loads.get()==2,"samegen remains idempotent")
+            r.prepare("g3","c","t") {};check(loads.get()==3&&frees.get()==2,"crossgen positive")
+            // Reentrant external request from the existing Native.release port
+            // occurs at the earliest observable old-eviction boundary, no hook.
+            var early:ModelResidency?=null;var first=true;val earlyLoads=AtomicInteger()
+            early=ModelResidency(object:ModelResidency.Native {
+                override fun prepare(c:String,t:String):Double{earlyLoads.incrementAndGet();return 0.0}
+                override fun release(){if(first){first=false;early!!.requestRelease()}}
+            },{true})
+            early.prepare("g1","c","t") {}
+            try{early.prepare("g2","c","t") {};throw AssertionError("early old eviction release swallowed")}catch(expected:IOException){}
+            check(earlyLoads.get()==1,"early old eviction release prevents g2 load")
+            println("PASS CORE-B-R1 exact real residency external-release epoch regression")
+        }
+        @JvmStatic fun prepareListenerRegression() {
+            fun store()=RuntimeLogStore(100,RuntimeLogClock.Fake(1,1))
+            val s=store();val p=LoggingInferencePhaseListener.prepareListener(s)
+            p.onPhase(1);p.finished(false);p.onPhase(2);p.finished(false);p.finished(true)
+            check(count(s,MODEL_LOAD_FAILED)==1L&&count(s,MODEL_LOAD_COMPLETED)==0L,"prepare failure terminal must close before late phase")
+            val n=store();val normal=LoggingInferencePhaseListener.prepareListener(n);normal.onPhase(1);normal.onPhase(2)
+            check(count(n,MODEL_LOAD_COMPLETED)==0L,"phase2 must await successful finish")
+            normal.finished(true);normal.finished(false);normal.onPhase(1)
+            check(count(n,MODEL_LOAD_COMPLETED)==1L&&count(n,MODEL_LOAD_FAILED)==0L,"prepare success exactly once")
+            val f=store();val after=LoggingInferencePhaseListener.prepareListener(f);after.onPhase(1);after.onPhase(2);after.finished(false)
+            check(count(f,MODEL_LOAD_FAILED)==1L&&count(f,MODEL_LOAD_COMPLETED)==0L,"phase2 then failure not contradictory")
+            val empty=store();val unstarted=LoggingInferencePhaseListener.prepareListener(empty);unstarted.finished(true);unstarted.onPhase(1);unstarted.onPhase(2);unstarted.finished(true)
+            check(empty.size()==0,"unstarted finished closes late load")
+            for(finishWrong in arrayOf(false,true)){
+                val w=store();val wrong=LoggingInferencePhaseListener.prepareListener(wrongStore(w));wrong.onPhase(1)
+                val t=Thread{if(finishWrong)wrong.finished(false)else wrong.onPhase(2)};t.start();t.join(3000);check(!t.isAlive,"wrongthread listener exited")
+                wrong.onPhase(2);wrong.finished(true);check(count(w,MODEL_LOAD_COMPLETED)==0L&&count(w,MODEL_LOAD_FAILED)==0L,"wrongthread prepare failclosed")
+            }
+            val re=store();lateinit var rp:LoggingInferencePhaseListener.PrepareListener
+            re.addSink{_,_->rp.finished(false)};rp=LoggingInferencePhaseListener.prepareListener(re);rp.onPhase(1);rp.onPhase(2);rp.finished(true)
+            check(count(re,MODEL_LOAD_FAILED)==0L&&count(re,MODEL_LOAD_COMPLETED)==0L,"reentrant sink cannot publish prepare terminal")
+            val clockEntry=AtomicReference<LoggingInferencePhaseListener.PrepareListener>();var hooked=false
+            val clock=object:RuntimeLogClock{override fun wallTimeMillis()=1L;override fun monotonicNanos():Long{if(!hooked){hooked=true;clockEntry.get()?.finished(false)};return 1}}
+            val cs=RuntimeLogStore(100,clock);val cp=LoggingInferencePhaseListener.prepareListener(cs);clockEntry.set(cp);cp.onPhase(1);cp.onPhase(2);cp.finished(true)
+            check(cs.size()==0,"reentrant clock closes before start publication")
+            val rejecting=RuntimeLogStore(100,object:RuntimeLogClock{override fun wallTimeMillis():Long{throw IllegalStateException("clock")}override fun monotonicNanos()=1L})
+            val rejected=LoggingInferencePhaseListener.prepareListener(rejecting);rejected.onPhase(1);rejected.onPhase(2);rejected.finished(true);check(rejecting.size()==0,"append rejection failclosed")
+            val throwing=store();throwing.addSink{_,_->throw AssertionError("sink")};val tp=LoggingInferencePhaseListener.prepareListener(throwing);tp.onPhase(1);tp.onPhase(2);tp.finished(true)
+            check(count(throwing,MODEL_LOAD_COMPLETED)==0L,"throwing sink never retry completion")
+            val ids=(s.snapshot()+n.snapshot()).mapNotNull{it.requestId}.toSet();check(ids.size==2,"prepare independent UUID")
+            for(e in s.snapshot()+n.snapshot()+f.snapshot()+re.snapshot())check(e.source==RuntimeLogSource.SHARED&&e.kind!=REQUEST_SUCCESS,"prepare shared no requestsuccess")
+            println("PASS PLATFORM-B-R2 production prepare listener exactly-once/reentry/owner/failure")
+        }
+        private fun wrongStore(store:RuntimeLogStore)=store
         private fun adapterConstructions(source: String): Int {
             val code = java.util.regex.Pattern.compile("\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'|//[^\\n]*|/\\*[\\s\\S]*?\\*/").matcher(source).replaceAll(" ")
             val calls = java.util.regex.Pattern.compile("\\b(?:new\\s+)?InferenceAdapter\\s*\\(").matcher(code); var count = 0; while (calls.find()) count++; return count
@@ -294,12 +514,13 @@ class InferenceAdapterTest {
             check(notifier.contains("GetMethodID(cls, \"onPhase\", \"(I)V\")") && notifier.contains("DeleteLocalRef(cls)"), "runtime method signature and class ref cleanup")
             check(!cpp.contains("VALUES") && !cpp.contains("onTerminal") && !cpp.contains("notifier.terminal"), "no reflection/early terminal")
             check(notifier.contains("onPhase = nullptr; // no later callbacks"), "throwing callback disables future success sequence")
-            ordered(cpp, "notifier.phase(PHASE_MODEL_LOAD_STARTED)", "Llm::createLLM(c)", "llm->set_config(settings)", "llm->load()", "notifier.phase(PHASE_MODEL_LOAD_COMPLETED)", "notifier.phase(PHASE_INFERENCE_STARTED)", "llm->response(", "ctx->status!=LlmStatus::NORMAL_FINISHED", "notifier.phase(PHASE_INFERENCE_COMPLETED)", "env->NewByteArray(")
+            ordered(cpp, "notifier.phase(PHASE_MODEL_LOAD_STARTED)", "LLM_ASR_ENGINE_FACTORY(c)", "fresh->set_config(settings)", "fresh->load()", "notifier.phase(PHASE_MODEL_LOAD_COMPLETED)", "notifier.phase(PHASE_INFERENCE_STARTED)", "LLM_ASR_RESPONSE(resident.get(),", "ctx->status!=LlmStatus::NORMAL_FINISHED", "resident->clearRequestState()", "notifier.phase(PHASE_INFERENCE_COMPLETED)", "env->NewByteArray(")
             check(cpp.contains("if (!out || env->ExceptionCheck()) return nullptr;") && cpp.contains("if (env->ExceptionCheck()) { env->DeleteLocalRef(out); return nullptr; }"), "allocation/copy pending exception retained")
-            check(cpp.contains("std::lock_guard<std::mutex> lock(engine_mutex)") && cpp.contains("std::unique_ptr<Llm> llm"), "mutex and per-request RAII preserved")
-            val settings = cpp.substring(cpp.indexOf("const std::string settings="), cpp.indexOf("if (!llm->set_config"))
-            check(settings.contains("\\\"async\\\":false,\\\"sampler_type\\\":\\\"greedy\\\",\\\"max_new_tokens\\\":128,") && settings.contains("\\\"backend_type\\\":\\\"cpu\\\",\\\"thread_num\\\":2,\\\"tmp_path\\\":\\\"") && settings.contains("\\\"asr_language\\\":\\\"") && settings.contains("(lang==\"auto\"?\"\":lang)"), "native settings/max tokens/CPU preserved")
-            check(cpp.contains("llm->response(\"<audio>\"+a+\"</audio>\",&raw)") && cpp.contains("ctx->gen_seq_len << \"\\n\" << raw.str()"), "input and result protocol unchanged")
+            check(cpp.contains("std::lock_guard<std::mutex> lock(engine_mutex)") && cpp.contains("EvictUnlessCommitted guard") && cpp.contains("~EvictUnlessCommitted() { if (!committed) evict(); }"), "mutex and default eviction guard preserved")
+            val settings = cpp.substring(cpp.indexOf("const std::string settings="), cpp.indexOf("if (!fresh->set_config"))
+            check(settings.contains("\\\"async\\\":false,\\\"sampler_type\\\":\\\"greedy\\\",\\\"max_new_tokens\\\":128,") && settings.contains("\\\"backend_type\\\":\\\"cpu\\\",\\\"thread_num\\\":2,\\\"tmp_path\\\":\\\"") && settings.contains("\\\"asr_language\\\":\\\""), "native fixed prepare settings/max tokens/CPU preserved")
+            check(cpp.contains("(lang==\"auto\"?std::string(\"\"):lang)"), "auto explicitly empty per request")
+            check(cpp.contains("LLM_ASR_RESPONSE(resident.get(),\"<audio>\"+a+\"</audio>\",&raw)") && cpp.contains("result << 0.0") && cpp.contains("<< generated << \"\\n\" << text"), "warm zero-load input and result protocol unchanged")
             check(cpp.indexOf("Java_org_llmasr_minimal_asr_JniNativeTranscription_transcribeWithListener(JNIEnv*,") < cpp.indexOf("Java_org_llmasr_minimal_asr_JniNativeTranscription_transcribe(JNIEnv*"), "forward declaration before wrapper")
             for (phase in InferencePhase.values()) check(cpp.contains("PHASE_" + phase.name + " = " + phase.code + ";"), "explicit ABI matches " + phase)
         }
@@ -324,6 +545,10 @@ class InferenceAdapterTest {
             group("listener/store Throwable isolation and persisted/exported privacy", ::loggingFaultsAndPrivacy)
             group("production RequestRunner owner/cleanup and external commit boundary", ::ownerBoundaries)
             group("actual App/IME wiring and real JNI source contracts (not JNI runtime)", ::sourceContracts)
+            group("production residency state/session warm/pending/eviction", ::residencyContracts)
+            group("real proof/resident direct repository transaction", ::residencyProofTransactions)
+            group("crossgen release focused regression", ::crossGenerationReleaseRegression)
+            group("prepare listener focused regression", ::prepareListenerRegression)
             println("PASS InferenceAdapterTest: " + groups + " groups, " + checks + " checks")
         }
     }

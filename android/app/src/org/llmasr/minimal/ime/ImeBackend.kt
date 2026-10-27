@@ -17,7 +17,7 @@ import org.llmasr.minimal.task.RequestContext
 class ImeBackend(private val context: OperationContext?, private val modelRepository: ModelRepository?,
                  private val inference: InferenceAdapter?, private val modelAccess: ModelAccess) : ImeController.Backend {
     @Throws(IOException::class)
-    override fun requireModelReady() { modelAccess.requireReady() }
+    override fun requireModelReady() { modelAccess.requireResidentReady() }
     @Throws(IOException::class)
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     override open fun capture(control: RecordingControl?, progress: ImeController.Progress?): ByteArray? {

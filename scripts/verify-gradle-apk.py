@@ -128,7 +128,7 @@ def verify(apk_dir, report_dir, native_build):
     spec = importlib.util.spec_from_file_location('native_verify', ROOT / 'scripts/verify-native-artifact.py')
     native_verify = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(native_verify)
-    native_result = native_verify.verify(native_build.absolute(), ROOT / '.work/native-m2/sources')
+    native_result = native_verify.verify(native_build.absolute(), ROOT / '.work/native-session-reuse/sources')
     apks = sorted(apk_dir.glob('*.apk'))
     if len(apks) != 1:
         raise ValueError('Expected exactly one AGP APK, got ' + str(apks))

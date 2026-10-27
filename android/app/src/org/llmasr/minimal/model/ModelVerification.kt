@@ -14,7 +14,12 @@ import java.util.concurrent.locks.ReentrantLock
  * IO is outside readiness/control monitors. The disk lock serializes direct repository
  * revocation against proof publication; cancellation never takes this lock. */
 class ModelVerification(private val manifest: ModelManifest, private val readiness: ModelReadiness,
-    private val io: Io) : ModelRepository.MutationGuard {
+    private val io: Io, private val maintenanceGuard: MaintenanceGuard) : ModelRepository.MutationGuard {
+    fun interface MaintenanceLease : AutoCloseable { override fun close() }
+    interface MaintenanceGuard {
+        @Throws(IOException::class) fun acquire(): MaintenanceLease
+        fun invalidate()
+    }
     interface Io {
         /** Stable no-follow identity including type, dev/inode, mode, size, mtime and ctime. */
         @Throws(IOException::class) fun identity(file: File, directory: Boolean): String
@@ -38,11 +43,14 @@ class ModelVerification(private val manifest: ModelManifest, private val readine
     @Volatile private var mutationThread: Thread? = null
     override fun beginMutation(): ModelRepository.MutationScope {
         val identity = Any()
-        disk.lock()
+        val lease = maintenanceGuard.acquire()
         try {
-            if (mutation != null) throw IOException("模型写入仍在收尾")
-            mutation = identity; mutationThread = Thread.currentThread()
-        } finally { disk.unlock() }
+            disk.lock()
+            try {
+                if (mutation != null) throw IOException("模型写入仍在收尾")
+                mutation = identity; mutationThread = Thread.currentThread()
+            } finally { disk.unlock() }
+        } catch (failure: Throwable) { lease.close(); throw failure }
         return object : ModelRepository.MutationScope {
             private var closed = false
             override fun close() {
@@ -52,6 +60,7 @@ class ModelVerification(private val manifest: ModelManifest, private val readine
                     if (mutation !== identity) throw IOException("模型写入世代失效")
                     mutation = null; mutationThread = null; closed = true
                 } finally { disk.unlock() }
+                lease.close()
                 // Releasing admission is not itself a new proof; do not run
                 // observers in the import's handoff to its own final SHA phase.
             }
@@ -63,6 +72,9 @@ class ModelVerification(private val manifest: ModelManifest, private val readine
 
     @Throws(IOException::class)
     override fun beforeMutation() {
+        val ownTransaction = mutation != null && mutationThread === Thread.currentThread()
+        val lease = if (ownTransaction) null else maintenanceGuard.acquire()
+        try {
         readiness.invalidateState()
         current = null
         disk.lock()
@@ -73,6 +85,7 @@ class ModelVerification(private val manifest: ModelManifest, private val readine
             readiness.invalidateState()
             dirtyLocked()
         } finally { disk.unlock(); readiness.notifyChange() }
+        } finally { lease?.close() }
     }
     private fun dirtyLocked(): Pair<String, String> {
         val anchor = anchor(true)!!
@@ -83,7 +96,7 @@ class ModelVerification(private val manifest: ModelManifest, private val readine
     }
     /** Explicit full VERIFY revokes even a previously valid proof. */
     @Throws(IOException::class)
-    fun begin(repository: ModelRepository): Token {
+    fun begin(repository: ModelRepository): Token = maintenanceGuard.acquire().use {
         disk.lock()
         try {
             noMutation()
@@ -91,16 +104,16 @@ class ModelVerification(private val manifest: ModelManifest, private val readine
             val g = generation ?: throw IOException("缺少模型世代")
             val a = anchor(false) ?: throw IOException("缺少安装锚点")
             val before = snapshot(repository)
-            return Token(g, a, readiness.beginVerify(g), before)
+            return@use Token(g, a, readiness.beginVerify(g), before)
         } finally { disk.unlock(); readiness.notifyChange() }
     }
     /** Bind the full SHA's before/after identities. Import calls begin at the first
      * FINAL_VERIFY callback, before that pass opens any model content. */
     @Throws(IOException::class)
-    fun commit(repository: ModelRepository, token: Token, gate: CommitGate): Boolean {
+    fun commit(repository: ModelRepository, token: Token, gate: CommitGate): Boolean = maintenanceGuard.acquire().use {
         val after = snapshot(repository)
         if (after != token.before) throw IOException("校验期间模型已变化")
-        if (!gate.reserve(token.epoch)) return false
+        if (!gate.reserve(token.epoch)) return@use false
         disk.lock()
         try {
             noMutation()
@@ -113,7 +126,7 @@ class ModelVerification(private val manifest: ModelManifest, private val readine
             io.write("ledger", encode(3, proof.generation, proof.anchor, emptyList()))
             if (!gate.succeed(token.epoch)) throw IOException("模型校验世代已过期")
             current = proof
-            return true
+            return@use true
         } catch (failure: Throwable) {
             current = null
             readiness.finishUnverified(token.epoch)
@@ -123,15 +136,15 @@ class ModelVerification(private val manifest: ModelManifest, private val readine
     }
     /** Independent startup/management worker only. Never hashes or loads native. */
     @Throws(IOException::class)
-    fun restoreFast(repository: ModelRepository): Boolean {
+    fun restoreFast(repository: ModelRepository): Boolean = maintenanceGuard.acquire().use {
         disk.lock()
         try {
             noMutation()
             current = null; readiness.invalidateState()
-            val a = anchor(false) ?: return false
-            val ledger = io.read("ledger", LIMIT) ?: return false
+            val a = anchor(false) ?: return@use false
+            val ledger = io.read("ledger", LIMIT) ?: return@use false
             val committed = decode(ledger, 3)
-            val receipt = io.read("receipt", LIMIT) ?: return false
+            val receipt = io.read("receipt", LIMIT) ?: return@use false
             val proof = decode(receipt, 2)
             if (proof.generation != committed.generation || proof.anchor != a || committed.anchor != a)
                 throw IOException("模型证明不连续")
@@ -141,7 +154,7 @@ class ModelVerification(private val manifest: ModelManifest, private val readine
             val token = readiness.beginVerify(proof.generation)
             if (!readiness.commitVerified(token)) throw IOException("模型世代已变化")
             current = proof
-            return true
+            return@use true
         } catch (failure: IOException) {
             readiness.markInvalidState()
             throw failure
@@ -157,10 +170,19 @@ class ModelVerification(private val manifest: ModelManifest, private val readine
                 throw IOException("模型文件已变化")
         } catch (failure: Throwable) {
             current = null
+            maintenanceGuard.invalidate()
             readiness.markInvalid()
             if (failure is Error) throw failure
             throw IOException("模型不可用，请到模型管理完整校验", failure)
         }
+    }
+    /** Opaque verified installation generation, never a path or persisted loaded flag. */
+    @Throws(IOException::class)
+    fun readyGeneration(repository: ModelRepository): String {
+        requireReady(repository)
+        val proof = current ?: throw IOException("模型证明已失效")
+        if (mutation != null || generation != proof.generation) throw IOException("模型世代已变化")
+        return proof.generation
     }
     private fun snapshot(repository: ModelRepository): List<String> {
         repository.validateManagedBoundary(ModelRepository.NEVER_CANCEL)

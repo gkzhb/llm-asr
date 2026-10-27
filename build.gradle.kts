@@ -79,7 +79,7 @@ val verifyJni by tasks.registering(Exec::class) {
     group = "verification"
     description = "Generated JNI header, NDK bridge object and actual symbol verification"
     environment("JNI_CHECK_OUT", layout.buildDirectory.dir("jni-check").get().asFile.absolutePath)
-    environment("JNI_MNN_SOURCE", file(".work/native-m2/sources/mnn").absolutePath)
+    environment("JNI_MNN_SOURCE", file(".work/native-session-reuse/sources/mnn").absolutePath)
     inputs.files(fileTree("android/app/src"), fileTree("core/src"), fileTree("android/asr-runtime/src"),
         fileTree("native/apk"), fileTree("scripts"))
     commandLine("bash", "scripts/compile-jni-object.sh")

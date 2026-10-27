@@ -11,6 +11,10 @@ import java.util.concurrent.atomic.*
 
 /** Real small-file verification protocol; JVM fsync is not Android power-loss acceptance. */
 class ModelAndroidHelpersTest {
+    class MemoryGuard : ModelVerification.MaintenanceGuard {
+        override fun acquire() = ModelVerification.MaintenanceLease { }
+        override fun invalidate() { }
+    }
     /** Explicit synthetic JVM implementation, shared only by core fixtures. */
     class TestIo(val root: Path) : ModelVerification.Io {
         val reads = AtomicInteger(); val identities = AtomicInteger(); val writes = AtomicInteger()
@@ -66,7 +70,7 @@ class ModelAndroidHelpersTest {
         val model = Files.createDirectories(base.resolve("model")); val io = TestIo(base.resolve("noBackup"))
         val ready = ModelReadiness(); val hashes = AtomicInteger()
         val manifest = ModelManifest(Collections.singletonList(ModelEntry("a", 3, "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81")))
-        val proof = ModelVerification(manifest, ready, io)
+        val proof = ModelVerification(manifest, ready, io, MemoryGuard())
         val repo = object : ModelRepository(manifest, model.toFile(), { Long.MAX_VALUE }, proof) {
             override fun verifyAll(progress: Progress?, gate: CancelGate?) { hashes.incrementAndGet(); super.verifyAll(progress, gate) }
         }
@@ -127,7 +131,7 @@ class ModelAndroidHelpersTest {
             val t = f.proof.begin(f.repo); f.repo.verifyAll(null, ModelRepository.NEVER_CANCEL)
             require(c.requestCancel(op.id), "cancel before reservation wins")
             val accepted = f.proof.commit(f.repo, t, commitGate(c, op, f.ready))
-            val fresh = ModelVerification(f.manifest, ModelReadiness(), f.io)
+            val fresh = ModelVerification(f.manifest, ModelReadiness(), f.io, MemoryGuard())
             var restored = false; try { restored = fresh.restoreFast(f.repo) } catch (expected: IOException) { }
             require(!restored, "cancel winner must not leave restorable proof")
             require(!accepted, "cancel must defeat proof commit")

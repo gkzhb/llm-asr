@@ -1,5 +1,11 @@
 # P1-A 本地分层验证契约
 
+## llm-asr-zcm B：显式准备与单进程复用（targeted工程，尚不交包）
+
+文件校验证明与内存loaded分开：启动只轻恢复proof，模型管理页显式prepare/release；prepare在共享worker加载一次，同有效generation幂等，App/IME共用唯一resident。未prepare在asset/provider/capture之前拒绝，adapter末次复核；请求无load fallback，warm返回load_s=0且阶段仅3/4。prepare独立UUID的1/2事件，不生成REQUEST_SUCCESS。busy release立即关新准入，原native/cleanup/RequestRunner真退出后由既有worker卸载；release失败保EVICTING/pending，UI_HIDDEN20/页面离开/IME切换不卸载，无TTL或新线程。proof第四参maintenance lease覆盖current/generation/真实Repository写事务，先unload完成再DIRTY/资产首写，期间prepare拒绝。
+
+本轮状态及证据见[模型驻留targeted](../reports/model-residency-zcm/status.md)。真实production状态/adapter/proof/repo/owner及可编译mutants、actual JNIbridge受控port只证明工程控制流；SDK/JNI对象编译不等Android执行。用户已授权按官方Session/Module正常复用实施：撤Module4深清，仅保Llm/Omni/Tokenizer6成员请求语义清理。旧U1全私有状态枚举/必须实际图库存要求已由有效输入输出寿命、下次正常onForward正确重绑定及KV/文本隔离合同取代，旧报告保留；具体可达invalid lifetime/KV错误仍block。见[native合同与固定官方文档SHA/行号](native-build.md#官方api复用与生命周期决策)。真实合成Add/Reshape/MatMul/Attention/Session与字段/BPE证据按当批报告；无模型资产读取/实际ASR/设备/PSS/性能/ASan验收。native期望SHA保A待另授identitybootstrap，full/新APK/安全提交未执行，旧A包不是B交付。
+
 任务 `llm-asr-76d.5`，P1-A 本地护栏切片。**当前 B3b 完整工程验证通过，待安全本地提交，尚非 APK 交付或 M4 关闭**；当前证据见 [full 报告](../reports/local-verify-p1/full.md) 与 [状态](../reports/local-verify-p1/status.md)。下文 B2/三修复/权限修复的 not-run/blocked 描述均为各自历史检查点，不代表本次 full 未执行。命令是未来 CI-ready 的同源入口；**未选择远端 provider，未创建远端 workflow、触发 CI 或上传产物**。当前 runtime 静态录音权限契约补全以 [权限修复状态](../reports/local-verify-p1/permission-fix.md) 及 `.work/p1-permission-fix/` 为准；三处生产 Lint 修复的历史 blocked 检查点见 [窄修复状态](../reports/local-verify-p1/lint-fix.md) 及 `.work/p1-lint-fix/handoff.md`（当时 runtime library 静态权限声明尚缺，不能当作补全后的 current 身份）；旧 B2 执行结果见 [B2 状态](../reports/local-verify-p1/b2.md)、`.work/p1-b2/final-handoff.md` 及 `.planning/llm-asr-76d.5/`；`.work/p1-build/handoff.md`、`.work/p1-repair/batch-a-handoff.md` 和 `.work/p1-b2/handoff.md` 均为历史检查点，不能拿旧 M3 报告或旧 A freeze 当 B2 当前通过。
 
 ## llm-asr-zcm 模型证明 targeted

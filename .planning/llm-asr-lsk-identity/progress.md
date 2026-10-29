@@ -1,0 +1,5 @@
+# Identity progress / lsk-build
+
+2026-10-29: restored separate read-only authorization, parent/ownfullplans, dependencyrefs, currentGit/bd. No candidatechanges. KnownGit/source-lock/prepare-script and namedrepresentation/adoptionreport references read; investigationevidence not yetaccepted. Fourrankedfalsifiablehypotheses shown; next boundedbyte/provenance/staticbaselineaudit. No background or productexecution.
+
+Read-only independentprobe completed:8contextbyteonly/sixretainedA/BoutputSHAsource-reportmapmatch/full3-adoption-HEADstale baseline chain,78fileauditonlycleanup mismatch/fourinventoriesequal; detailed findings/proposal/handoff written. Originalinspect missingguessedhistorypath exit1 preserved; freshrecheckevidenceroute0/trace-more0/close0, no product/applyexecution. Closurecandidate9/current238build10module84native/failedfullraw/protected2626same,6Gitreadonlybounded0/noBG;input290+6namedextra evidence bound. Parentping formalhandoff following outputmanifest; no repair/test/full/stagecommit.

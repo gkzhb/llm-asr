@@ -71,7 +71,7 @@ class AsrImeService : InputMethodService() {
         button(tools, "设置 / 授权") { leaveForExternalUi { startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) } }
         button(tools, "模型管理") { leaveForExternalUi { startActivity(Intent(this, ModelManagementActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) } }
         val keyboards = LinearLayout(ui); root.addView(keyboards)
-        button(keyboards, "返回上一输入法") { leaveForExternalUi(this::returnToPreviousInputMethod) }
+        button(keyboards, "返回上一输入法", this::returnToPreviousInputMethod)
         button(keyboards, "切换键盘") { leaveForExternalUi(this::showKeyboardPicker) }
         render(); return root
     }
@@ -85,8 +85,12 @@ class AsrImeService : InputMethodService() {
         render()
     }
     private fun returnToPreviousInputMethod() {
-        val accepted = try { switchToPreviousInputMethod() } catch (ignored: RuntimeException) { false }
-        if (!accepted) showKeyboardPicker()
+        visible = false; invalidate() // Return invalidates without clearing platform show intent.
+        try {
+            val accepted = try { switchToPreviousInputMethod() } catch (ignored: RuntimeException) { false }
+            if (!accepted) showKeyboardPicker()
+        } catch (ignored: RuntimeException) { /* Preserve the external-action boundary, including an unavailable picker hint. */ }
+        render()
     }
     private fun showKeyboardPicker() {
         try {

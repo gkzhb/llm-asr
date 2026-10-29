@@ -1,0 +1,10 @@
+# Progress — lsk-review
+- Read full authorization, AGENTS, delivery/code-review skills, complexity baseline README; restored Git and read-only bd context/show.
+- Loaded installed Herdr skill/help for read-only runtime inspection; no pane created, prompted or controlled.
+- Created isolated three plans. No product/test/doc changes or test/build process launched.
+- Read full root historical plans (truncated findings/progress tails explicitly recovered), parent/leaf plans, authorization/handoff, Service/base/Controller/RequestRunner/TaskCoordinator/RecordingControl, complete changed driver and Java fixture, unchanged ImeSessionTest and local-verification/status.
+- Read-only input snapshot/evidence JSON audit saved; all109owned/raw+238build10module+2646protected/current production restoration and seven candidates match. Old/fixed142samecaller manifests differ only Service, actual compile0/red1→compile0/green0.
+- Read existing ordinary/-O/default/compat/SDK/fast/graph/format and complexity raw summaries; no reruns. Same-binary/version/options/scope complexity raw hashes validated; all48change kinds and27ambiguous groups inspected against source/diff/manual dispositions.
+- No blocking defect identified. Two low-priority test gaps: generic escaping RuntimeException can be swallowed by test catch; Toast.show failure not directly injected. Production static boundaries correct; no self-fix.
+- Final review.md/verification.md/handoff.md written under own work directory, verdict NO BLOCKING; full/commit/APK/device not run explicitly retained. Single bounded PID-start read found all361stored command identities absent; both real fast XML SHA/attributes match35JUnit zero failure/error/skip.
+- Seven frozen candidate identities rechecked unchanged; HEAD/index and protected noncandidate SHA retained. Output-manifest records final six plan/report files and audit evidence mode/bytes/SHA, excludes self. No new tests/builds/background or delegated commands; reviewer stops for parent acceptance.

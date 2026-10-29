@@ -132,6 +132,7 @@ INVENTORY = (
     'tests/gradle_inputs_test.py',
     'reports/kotlin-to-java-p1/status.md',
     'reports/ime-return-23p/status.md',
+    'reports/ime-return-lsk/status.md',
     'android/app/src/org/llmasr/minimal/model/ModelVerification.kt',
     'android/app/src/org/llmasr/minimal/model/ModelResidency.kt',
     'android/app/src/org/llmasr/minimal/model/AndroidModelVerificationIo.kt',

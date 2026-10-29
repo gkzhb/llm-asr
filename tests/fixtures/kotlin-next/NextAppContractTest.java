@@ -207,7 +207,7 @@ public final class NextAppContractTest {
             AppGraph.install(new android.content.Context(graphRoot.toFile())); graph=AppGraph.get(); graph.coordinator().awaitFree();
             // Explicit synthetic prepared UI snapshot; synthetic Backend above is independently declared ready.
             graph.readiness().markVerified(graph.readiness().beginVerify()); set(service,"graph",graph);
-            android.widget.Toast.shows=0; android.widget.Toast.text="";
+            android.widget.Toast.shows=0; android.widget.Toast.text="";android.widget.Toast.failure=null;android.widget.Toast.fatal=null;
             set(service,"controller",controller);set(service,"alive",true);
             service.connection=(text,n)->{writes++;return true;};
             service.onStartInputView(service.info,false);
@@ -226,7 +226,7 @@ public final class NextAppContractTest {
                 "external switch never commits old preview");
         }
         public void close() throws Exception {
-            service.onDestroy();android.os.Handler.pending.clear();check(!owner.isBusy(),"IME fixture actual owner exit");
+            service.onDestroy();android.os.Handler.pending.clear();android.widget.Toast.failure=null;android.widget.Toast.fatal=null;check(!owner.isBusy(),"IME fixture actual owner exit");
             graph.coordinator().awaitFree(); graph.runtimeLogWorker().close();
             java.util.concurrent.ExecutorService executor=(java.util.concurrent.ExecutorService)field(graph.runtimeLogWorker(),"executor");
             executor.shutdown();check(executor.awaitTermination(5,java.util.concurrent.TimeUnit.SECONDS),"IME graph IO finalized");
@@ -242,9 +242,25 @@ public final class NextAppContractTest {
         }
         return null;
     }
+    static void imeVisibility() throws Exception {
+        android.inputmethodservice.InputMethodService direct=new android.inputmethodservice.InputMethodService();direct.visibilityModel=true;
+        check(direct.switchToPreviousInputMethod()&&direct.previousVisible,"model direct previous keeps show intent");
+        android.inputmethodservice.InputMethodService hidden=new android.inputmethodservice.InputMethodService();hidden.visibilityModel=true;
+        hidden.requestHideSelf(0);check(hidden.switchToPreviousInputMethod()&&!hidden.previousVisible,"model accepted is not visible after hide");
+        try(ImeFixture f=new ImeFixture()) {
+            f.service.visibilityModel=true;final List<Boolean> invalid=new ArrayList<>();
+            f.service.event=()->invalid.add(!f.original.valid()&&f.original.preview().isEmpty());
+            f.click("返回上一输入法");
+            check(f.service.previousCalls==1&&f.service.acceptedRequests==1&&f.service.manager.calls==0,"accepted previous never duplicates picker");
+            check(f.service.previousVisible,"accepted previous request must leave previous keyboard visible in host visibility model");
+            check(f.service.hides==0&&f.service.showRequested&&f.service.selectedIme.equals("previous"),"return preserves platform show intent");
+            check(invalid.size()==1&&invalid.get(0),"external switch must invalidate before platform request");
+            f.stale();check(f.captures==1&&f.writes==0,"visible previous never records or commits");
+        }
+    }
     static void imeFallback() throws Exception {
         for(int mode=0;mode<7;mode++) try(ImeFixture f=new ImeFixture()) {
-            f.service.previousResult=false;
+            f.service.visibilityModel=true;f.service.previousResult=false;
             if(mode==1)f.service.previousFailure=new SecurityException("PRIVATE editor sentinel");
             if(mode==2)f.service.previousFailure=new IllegalStateException("PRIVATE editor sentinel");
             if(mode==3)f.service.manager.failure=new SecurityException("PRIVATE editor sentinel");
@@ -254,7 +270,7 @@ public final class NextAppContractTest {
             f.click("返回上一输入法");
             check(f.service.previousCalls==1&&f.service.manager.calls==(mode==4||mode==5?0:1),
                 "previous failure must launch picker once");
-            check(f.service.hides==1&&f.events.get(0).equals("hide")&&f.events.get(1).equals("previous"),"hide before previous");
+            check(f.service.hides==0&&f.service.showRequested&&f.events.get(0).equals("previous"),"return fallback must not clear show intent");
             f.stale();check(f.captures==1&&f.writes==0,"switch does not record or commit");
             check(android.widget.Toast.shows==(mode>=3&&mode<=5?1:0),"only failed picker emits one friendly hint");
             if(android.widget.Toast.shows>0)check(android.widget.Toast.text.equals("暂时无法切换，请使用系统输入法选择入口。"),"picker hint sanitized");
@@ -265,22 +281,42 @@ public final class NextAppContractTest {
             final List<Boolean> invalid=new ArrayList<>();
             f.service.event=()->invalid.add(!f.original.valid()&&f.original.preview().isEmpty());
             f.click("返回上一输入法");
-            check(invalid.size()==2&&invalid.get(0)&&invalid.get(1),"external switch must invalidate before platform request");
+            check(invalid.size()==1&&invalid.get(0),"external switch must invalidate before platform request");
             f.stale();check(f.service.previousCalls==1&&f.service.manager.calls==0,"accepted previous never duplicates picker");
         }
     }
     static void imeHideFailure() throws Exception {
-        try(ImeFixture f=new ImeFixture()) {
-            f.service.hideFailure=new IllegalStateException("hide sentinel");
-            try{f.click("返回上一输入法");}catch(RuntimeException ignored){/* Assert observable attempt outside listener. */}
-            check(f.service.previousCalls==1,"hide failure must not suppress external attempt");f.stale();
+        for(String label:new String[]{"切换键盘","设置 / 授权","模型管理"}) for(boolean failHide:new boolean[]{false,true}) try(ImeFixture f=new ImeFixture()) {
+            f.service.hideChangesShown=true;
+            if(failHide)f.service.hideFailure=new IllegalStateException("hide sentinel");
+            try{f.click(label);}catch(RuntimeException ignored){/* Assert observable attempt outside listener. */}
+            check(f.service.hides==1&&f.service.previousCalls==0,"generic actions retain hide only");
+            check(f.service.manager.calls==(label.equals("切换键盘")?1:0)&&f.service.activityCalls==(label.equals("切换键盘")?0:1),"hide failure must not suppress external attempt");
+            check(f.events.get(0).equals("hide"),"generic hide precedes external action");f.stale();
         }
         try(ImeFixture f=new ImeFixture()) {
             f.controller.invalidate();set(f.service,"controller",null);
             f.service.hideFailure=new SecurityException("hide sentinel");f.service.previousResult=false;
             f.click("返回上一输入法");
-            check(f.service.previousCalls==1&&f.service.manager.calls==1,"null controller hide failure still attempts fallback");
+            check(f.service.previousCalls==1&&f.service.manager.calls==1&&f.service.hides==0,"null controller return still attempts fallback without hide");
             check(!f.button("丢弃 / 重新开始").isEnabled(),"null controller cannot restart");
+        }
+        try(ImeFixture f=new ImeFixture()) {
+            f.controller.invalidate();set(f.service,"controller",null);f.service.hideFailure=new SecurityException("hide sentinel");
+            f.click("切换键盘");check(f.service.hides==1&&f.service.manager.calls==1,"null controller generic hide failure still attempts picker");
+        }
+        for(boolean fatalToast:new boolean[]{false,true}) try(ImeFixture f=new ImeFixture()) {
+            f.service.previousResult=false;f.service.noManager=true;
+            Error fatal=new AssertionError("fatal toast sentinel");
+            if(fatalToast)android.widget.Toast.fatal=fatal;else android.widget.Toast.failure=new IllegalStateException("PRIVATE toast sentinel");
+            Throwable seen=null;try{f.click("返回上一输入法");}catch(Throwable failure){seen=failure;}
+            check(fatalToast?seen==fatal:seen==null,"return contains Toast RuntimeException but propagates Error");
+            check(f.service.previousCalls==1&&f.service.hides==0,"Toast failure never retries or hides");f.stale();
+        }
+        try(ImeFixture f=new ImeFixture()) {
+            Error fatal=new AssertionError("fatal previous sentinel");f.service.previousFatal=fatal;Throwable seen=null;
+            try{f.click("返回上一输入法");}catch(Error failure){seen=failure;}
+            check(seen==fatal&&f.service.manager.calls==0,"fatal previous error propagates without fallback");f.stale();
         }
         // Fatal errors are not swallowed by the RuntimeException policy.
         ImeController c=new ImeController(new TaskCoordinator(Runnable::run),null,()->{});
@@ -328,7 +364,46 @@ public final class NextAppContractTest {
             ImeSession fresh=(ImeSession)field(f.service,"session");check(fresh!=f.original&&fresh.preview().isEmpty(),"normal lifecycle fresh return");
         }
     }
+    static void imeActiveReturn() throws Exception {
+        for(String stage:new String[]{"capture","native","cleanup"}) {
+            java.util.concurrent.CountDownLatch entered=new java.util.concurrent.CountDownLatch(1),release=new java.util.concurrent.CountDownLatch(1);
+            java.util.concurrent.atomic.AtomicReference<Thread> worker=new java.util.concurrent.atomic.AtomicReference<>();
+            java.util.concurrent.atomic.AtomicReference<Throwable> failure=new java.util.concurrent.atomic.AtomicReference<>();
+            java.util.concurrent.atomic.AtomicReference<RecordingControl> control=new java.util.concurrent.atomic.AtomicReference<>();
+            TaskCoordinator owner=new TaskCoordinator(task->{Thread t=new Thread(()->{try{task.run();}catch(Throwable x){failure.set(x);}});worker.set(t);t.start();});
+            ImeController controller=new ImeController(owner,new ImeController.Backend(){
+                void block(){entered.countDown();try{if(!release.await(5,java.util.concurrent.TimeUnit.SECONDS))throw new AssertionError("return worker deadline");}catch(InterruptedException x){throw new AssertionError(x);}}
+                public void requireModelReady(){}
+                public byte[] capture(RecordingControl c,ImeController.Progress p){control.set(c);c.start(()->{});try{if(stage.equals("capture"))block();}finally{c.captureReleased();}return new byte[]{1};}
+                public String transcribe(RequestContext c,byte[] w,String l){if(stage.equals("native"))block();return "late private preview";}
+                public void cleanup(RequestContext c){if(stage.equals("cleanup"))block();}
+            },()->{});
+            AsrImeService service=new AsrImeService();set(service,"controller",controller);set(service,"alive",true);
+            service.onStartInputView(service.info,false);ImeSession old=(ImeSession)field(service,"session");
+            android.widget.LinearLayout root=(android.widget.LinearLayout)service.onCreateInputView();
+            int[] writes={0};service.connection=(text,n)->{writes[0]++;return true;};
+            List<Boolean> invalid=new ArrayList<>(),cancelled=new ArrayList<>();
+            service.event=()->{invalid.add(!old.valid()&&old.preview().isEmpty());cancelled.add(control.get().cancelled());};
+            try {
+                check(controller.start(old,"Chinese")&&entered.await(5,java.util.concurrent.TimeUnit.SECONDS),"actual return worker entered "+stage);
+                check(findButton(root,"返回上一输入法").performClick(),"active actual return button");
+                check(invalid.size()==1&&invalid.get(0),"active return invalidates before previous "+stage);
+                check(cancelled.get(0)==stage.equals("capture"),"active return capture cancel/native commitment "+stage);
+                check(service.hides==0&&service.previousCalls==1&&writes[0]==0,"active return no hide/auto commit");
+                ImeSession fresh=controller.begin(1,0,"fresh");String status=fresh.status();
+                check(owner.isBusy()&&controller.ownsTask()&&!controller.start(fresh,"Chinese")&&!owner.submit(()->{}),"actual return retains owner "+stage);
+                release.countDown();worker.get().join(5000);
+                check(!worker.get().isAlive()&&failure.get()==null&&!owner.isBusy()&&!controller.ownsTask(),"actual return real worker terminal "+stage);
+                check(!old.valid()&&old.preview().isEmpty()&&fresh.preview().isEmpty()&&fresh.status().equals(status)&&writes[0]==0,"active return rejects late preview/commit "+stage);
+            } finally {
+                release.countDown();if(worker.get()!=null)worker.get().join(5000);
+                check(worker.get()==null||!worker.get().isAlive(),"actual return finally joined "+stage);service.onDestroy();android.os.Handler.pending.clear();
+            }
+        }
+    }
     static void imeReturn(String mode) throws Exception {
+        if(mode.equals("ime-return")||mode.equals("ime-visibility"))imeVisibility();
+        if(mode.equals("ime-return"))imeActiveReturn();
         if(mode.equals("ime-return")||mode.equals("ime-fallback"))imeFallback();
         if(mode.equals("ime-return")||mode.equals("ime-invalidation"))imeInvalidation();
         if(mode.equals("ime-return")||mode.equals("ime-hide"))imeHideFailure();

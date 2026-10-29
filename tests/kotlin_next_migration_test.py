@@ -89,7 +89,8 @@ public void showInputMethodPicker(){calls++;event.run();if(failure!=null)throw f
 ''',
     'android/widget/Toast.java': '''package android.widget; public class Toast {
 public static final int LENGTH_SHORT=0;public static String text="";public static int shows;
-public static Toast makeText(android.content.Context c,CharSequence t,int duration){text=t.toString();return new Toast();}
+public static RuntimeException failure;public static Error fatal;
+public static Toast makeText(android.content.Context c,CharSequence t,int duration){if(fatal!=null)throw fatal;if(failure!=null)throw failure;text=t.toString();return new Toast();}
 public void show(){shows++;}}
 ''',
     'android/inputmethodservice/InputMethodService.java': '''package android.inputmethodservice;
@@ -99,12 +100,18 @@ public android.view.View onCreateInputView(){return null;} public void onStartIn
 public void onStartInputView(android.view.inputmethod.EditorInfo i,boolean r){} public void onWindowShown(){}
 public void onFinishInputView(boolean f){} public void onFinishInput(){} public void onWindowHidden(){}
 public void onUnbindInput(){} public void onDestroy(){}
+// Opt-in host model, not an Android framework implementation: hide clears show intent;
+// an accepted previous request changes selection but does not create a new show request.
+public boolean visibilityModel,showRequested=true,previousVisible;public String selectedIme="asr";
+public int acceptedRequests,activityCalls;public final java.util.List<String> modelEvents=new java.util.ArrayList<>();
+public void startActivity(android.content.Intent intent){activityCalls++;modelEvents.add("activity");}
 public int hides,previousCalls;public boolean previousResult=true,shown=true,hideChangesShown;
+public Error previousFatal,hideFatal;
 public RuntimeException hideFailure,previousFailure,serviceFailure;public boolean noManager;
 public Runnable event=()->{};public final android.view.inputmethod.InputMethodManager manager=new android.view.inputmethod.InputMethodManager();
 public android.view.inputmethod.EditorInfo info=new android.view.inputmethod.EditorInfo();public android.view.inputmethod.InputConnection connection;
-public void requestHideSelf(int f){hides++;event.run();if(hideFailure!=null)throw hideFailure;if(hideChangesShown)shown=false;}
-public final boolean switchToPreviousInputMethod(){previousCalls++;event.run();if(previousFailure!=null)throw previousFailure;return previousResult;}
+public void requestHideSelf(int f){hides++;event.run();if(hideFatal!=null)throw hideFatal;if(hideFailure!=null)throw hideFailure;if(hideChangesShown)shown=false;if(visibilityModel){showRequested=false;shown=false;previousVisible=false;modelEvents.add("hide:clear-show-intent");}}
+public final boolean switchToPreviousInputMethod(){previousCalls++;event.run();if(previousFatal!=null)throw previousFatal;if(previousFailure!=null)throw previousFailure;if(visibilityModel){modelEvents.add("previous:"+previousResult);if(previousResult){acceptedRequests++;selectedIme="previous";previousVisible=showRequested;shown=false;}}return previousResult;}
 public Object getSystemService(String n){if(serviceFailure!=null)throw serviceFailure;return noManager?null:manager;}
 public android.view.inputmethod.EditorInfo getCurrentInputEditorInfo(){return info;}
 public android.view.inputmethod.InputConnection getCurrentInputConnection(){return connection;} public boolean isInputViewShown(){return shown;}}
@@ -386,6 +393,8 @@ def ime_return_suite(directory):
     stdlib = Path(os.environ['KOTLIN_HOME']) / 'lib/kotlin-stdlib.jar'
     require(stdlib.is_file(), 'fixed stdlib missing')
     attempted = []
+    java_tmp = directory / 'java-tmp'
+    java_tmp.mkdir()
 
     def execute(argv, label, timeout):
         # Register before invoking the runner, including launch/observer failures.
@@ -409,7 +418,7 @@ def ime_return_suite(directory):
         compiled = execute(['bash', str(ROOT / 'scripts/compile-jvm-sources.sh'), str(classes), '',
                             *map(str, sources)], label + '-compile', 270)
         require(compiled.returncode == 0, 'IME compilation failure NOT target red ' + label + '\n' + compiled.stderr.decode())
-        result = execute(['java', '-cp', str(classes) + ':' + str(stdlib), 'NextAppContractTest', mode],
+        result = execute(['java', '-Djava.io.tmpdir=' + str(java_tmp), '-cp', str(classes) + ':' + str(stdlib), 'NextAppContractTest', mode],
                          label + '-run', 45)
         if diagnostic is None:
             require(result.returncode == 0 and b'PASS next real app/controller host contracts' in result.stdout,
@@ -421,8 +430,8 @@ def ime_return_suite(directory):
     mutations = [
         ('AsrImeService', 'ime-fallback', 'if (!accepted) showKeyboardPicker()', 'if (false && !accepted) showKeyboardPicker()',
          'previous failure must launch picker once'),
-        ('AsrImeService', 'ime-invalidation', 'controller!!.leaveForExternalUi({ requestHideSelf(0) }, launch)',
-         'run { requestHideSelf(0); launch.run() }', 'external switch must invalidate before platform request'),
+        ('AsrImeService', 'ime-invalidation', 'visible = false; invalidate() // Return invalidates without clearing platform show intent.',
+         'visible = false // MUTANT: old return transaction left live.', 'external switch must invalidate before platform request'),
         ('ImeController', 'ime-hide',
          'try { hide!!.run() } catch (ignored: RuntimeException) { /* Best-effort hide must not suppress the explicit action. */ }',
          'hide!!.run()', 'hide failure must not suppress external attempt'),

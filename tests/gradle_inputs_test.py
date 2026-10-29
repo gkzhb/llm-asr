@@ -82,6 +82,41 @@ class InputTests(unittest.TestCase):
             module.stage(self.root, self.root / 'rejected', self.native)
         self.assertFalse((self.root / 'rejected').exists())
 
+    def test_cleanup_patch_identity_consistent(self):
+        relative = 'patches/mnn-asr-request-cleanup.patch'
+        source_lock = json.loads((ROOT / 'native/source-lock.json').read_text())
+        locked = source_lock['patches'][Path(relative).name]
+        self.assertEqual(self.baseline['files'][relative], locked,
+                         'cleanup patch baseline must match accepted source-lock representation')
+        self.assertEqual(module.digest(self.root / relative), locked,
+                         'cleanup patch bytes must match accepted source-lock representation')
+
+    def test_cleanup_patch_drift_missing_duplicate_rejected_before_output(self):
+        relative = 'patches/mnn-asr-request-cleanup.patch'
+        path = self.root / relative
+        original = path.read_bytes()
+        duplicate = path.with_name('unexpected-cleanup.patch')
+        for kind in ('drift', 'missing', 'duplicate'):
+            with self.subTest(kind=kind):
+                output = self.root / ('cleanup-rejected-' + kind)
+                try:
+                    if kind == 'drift':
+                        path.write_bytes(original + b'\n')
+                    elif kind == 'missing':
+                        path.unlink()
+                    else:
+                        duplicate.write_bytes(original)
+                    message = ('Frozen product input mismatch: ' + relative
+                               if kind == 'drift' else 'Frozen product inventory mismatch: patches')
+                    with self.assertRaisesRegex(ValueError, message):
+                        module.stage(self.root, output, self.native)
+                    self.assertFalse(output.exists())
+                    self.command.assert_not_called()
+                finally:
+                    path.write_bytes(original)
+                    if duplicate.exists():
+                        duplicate.unlink()
+
     def test_selected_java_omission_rejected_before_output(self):
         for owner in ('audio/RecordingControl', 'task/RequestContext'):
             path = self.root / ('android/app/src/org/llmasr/minimal/' + owner + '.java')

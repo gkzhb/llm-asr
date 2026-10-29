@@ -1,5 +1,13 @@
 # P1-A 本地分层验证契约
 
+## llm-asr-lsk 返回上一输入法 no-hide targeted
+
+返回动作仅使应用私有会话/预览失效并取消未提交录音，不预先请求系统隐藏键盘；previous boolean 仅为请求接受，false/RuntimeException 保单次 picker 降级和原 Toast 失败保护。直接 picker/settings/model 原通用 hide 路径及 Controller/真实 worker owner 释放保持。无自动录音或编辑提交。
+
+增强 `tests/kotlin_next_migration_test.py --ime-return-only` 复用真实 Service/Controller/按钮和现有 owned runner，显式 host fake 建模 hide 清除 show intent、accepted switch 不等于键盘可见；这不是 Android 框架或设备复现。维护 caller/fakes 先冻结，对旧 HEAD Service 独立 fresh compile0/精确 visibility AssertionError1，再同 caller 修复后 green。成功不 hide、失败单次 picker/Toast RuntimeException 与 Error、通用按钮 best-effort hide、实际返回按钮在 capture/native/cleanup 期间的真实 owner/迟到预览保护均为该入口目标。普通/-O 各9compile/9run、270/45秒及外3000秒不增；原默认五 mutants/ABI/compat/host/native/full 预算不改。IME JVM 临时目录绑定自身 evidence，原 generic/default fake 行为默认保持。
+
+当前阶段与真实终态见[本批状态](../reports/ime-return-lsk/status.md)；targeted 不替代 fresh 审查、完整 JNI/APK/签名/input 绑定及安全本地提交。fresh NO BLOCKING已接受、两LOW覆盖gap defer；另授唯一正式full真实exit1，prepareInputs因HEAD已存在的request-cleanup patch frozen SHA不一致首停，未重试或改期望凑绿，见[失败full](../reports/ime-return-lsk/full.md)。尚无本批新APK/正式receipt/安全提交，旧APK不作修复包。其后父另授仅baseline cleanup字段的已接受表示传播修复与既有stage回归；同caller旧红/新普通-O及单文件复杂度为窄targeted，见[身份修复](../reports/ime-return-lsk/identity-repair.md)，原full失败快照不改。fresh delta审经父接受并另授后，机械续接监督命名碰撞（formal未启动）不重prepare，实际正式full `ba7b6690e` exit0/184actions/42JUnit，当前三APK/签名/238build10module84native receipts绑定通过，详[成功full](../reports/ime-return-lsk/full-rerun.md)；尚待两阶段安全提交，非APK交付。Android runner、系统 IME/fcitx5/设备往返及窗口/Binder/麦克风/private/模型仍 NOT RUN。
+
 ## llm-asr-zcm B：显式准备与单进程复用（targeted工程，尚不交包）
 
 文件校验证明与内存loaded分开：启动只轻恢复proof，模型管理页显式prepare/release；prepare在共享worker加载一次，同有效generation幂等，App/IME共用唯一resident。未prepare在asset/provider/capture之前拒绝，adapter末次复核；请求无load fallback，warm返回load_s=0且阶段仅3/4。prepare独立UUID的1/2事件，不生成REQUEST_SUCCESS。busy release立即关新准入，原native/cleanup/RequestRunner真退出后由既有worker卸载；release失败保EVICTING/pending，UI_HIDDEN20/页面离开/IME切换不卸载，无TTL或新线程。proof第四参maintenance lease覆盖current/generation/真实Repository写事务，先unload完成再DIRTY/资产首写，期间prepare拒绝。

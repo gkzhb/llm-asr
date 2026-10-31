@@ -1,0 +1,3 @@
+# Findings
+
+原verifyDebug依赖完整保留：host/JNI/build/native/APKchecker/core-runtimeJUnit/productverifyDebugPackage/architecture/format/localguards/Lint/checksumnegative/Lintnegative/androidTestpackage及最终fixture。无prepareinit；入口仅白名单offline/rerun。原hostfixedPartRecovery .work/red需备份；其余已审hostevidence新随机子目录，旧children只读保护。现Lintcacheblocker已解除但不假定整个full闭包已全；本次无新缺项，full3真实0，184actions1h2s；所有原门到达。JUnit42、Lint0EF24/17Warning非unique41、NewApi红恢复/末fixture5/current三包及独立产品report均通过。原T5fault5/6NOTRUN保边界，设备/Androidrunner/模型/性能未验证；受测dirtyfreeze不是新commit。最终333354历史保护0errors，35生成变化有备份；旧full1/full2原失败不回写。

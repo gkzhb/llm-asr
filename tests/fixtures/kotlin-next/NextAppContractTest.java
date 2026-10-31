@@ -54,19 +54,22 @@ public final class NextAppContractTest {
         return preparedAccess(root,new ModelResidency.Native(){public double prepare(String c,String cache){return 0;}public void release(){}});
     }
     static ModelAccess preparedAccess(Path root,ModelResidency.Native nativeControl) throws Exception {
+        return preparedAccess(root,nativeControl,new int[1]);
+    }
+    static ModelAccess preparedAccess(Path root,ModelResidency.Native nativeControl,int[] ioCalls) throws Exception {
         Path models=Files.createDirectories(root.resolve("prepared-model"));Files.write(models.resolve("a"),new byte[]{1,2,3});
         Path journal=Files.createDirectories(root.resolve("prepared-proof"));
         ModelManifest manifest=new ModelManifest(Arrays.asList(new ModelEntry("a",3,"039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81")));
         ModelReadiness ready=new ModelReadiness();
         ModelVerification.Io io=new ModelVerification.Io(){
-            public boolean exists(File f){return Files.exists(f.toPath(),LinkOption.NOFOLLOW_LINKS);}
-            public String identity(File f,boolean directory)throws IOException{return new java.util.TreeMap<>(Files.readAttributes(f.toPath(),"unix:dev,ino,mode,size,lastModifiedTime,ctime",LinkOption.NOFOLLOW_LINKS)).toString();}
+            public boolean exists(File f){ioCalls[0]++;return Files.exists(f.toPath(),LinkOption.NOFOLLOW_LINKS);}
+            public String identity(File f,boolean directory)throws IOException{ioCalls[0]++;return new java.util.TreeMap<>(Files.readAttributes(f.toPath(),"unix:dev,ino,mode,size,lastModifiedTime,ctime",LinkOption.NOFOLLOW_LINKS)).toString();}
             public byte[] read(String name,int limit)throws IOException{
-                Path p=journal.resolve(name);if(!Files.exists(p))return null;
+                ioCalls[0]++;Path p=journal.resolve(name);if(!Files.exists(p))return null;
                 try(InputStream in=Files.newInputStream(p)){ByteArrayOutputStream out=new ByteArrayOutputStream();for(int b;(b=in.read())!=-1;){if(out.size()==limit)throw new IOException("limit");out.write(b);}return out.toByteArray();}
             }
             public void write(String name,byte[] bytes)throws IOException{
-                Path temp=journal.resolve(name+".tmp");try(FileOutputStream out=new FileOutputStream(temp.toFile())){out.write(bytes);out.getFD().sync();}
+                ioCalls[0]++;Path temp=journal.resolve(name+".tmp");try(FileOutputStream out=new FileOutputStream(temp.toFile())){out.write(bytes);out.getFD().sync();}
                 Files.move(temp,journal.resolve(name),StandardCopyOption.ATOMIC_MOVE,StandardCopyOption.REPLACE_EXISTING);
                 try(java.nio.channels.FileChannel channel=java.nio.channels.FileChannel.open(journal,StandardOpenOption.READ)){channel.force(true);}
             }
@@ -203,10 +206,17 @@ public final class NextAppContractTest {
         final ImeSession original;
         final Path graphRoot = Files.createTempDirectory("ime-ui-readiness-fixture-");
         final AppGraph graph;
+        final ModelAccess access;
+        final int[] proofIo = new int[1];
+        boolean retainRoot; // Unconfirmed test worker exit must never permit deletion of its input tree.
         ImeFixture() throws Exception {
+            this(new ModelResidency.Native(){public double prepare(String c,String t){return 0;}public void release(){}});
+        }
+        ImeFixture(ModelResidency.Native nativeControl) throws Exception {
             AppGraph.install(new android.content.Context(graphRoot.toFile())); graph=AppGraph.get(); graph.coordinator().awaitFree();
-            // Explicit synthetic prepared UI snapshot; synthetic Backend above is independently declared ready.
-            graph.readiness().markVerified(graph.readiness().beginVerify()); set(service,"graph",graph);
+            // Real three-byte proof and real resident preparation, not a counterfeit READY flag.
+            access=preparedAccess(graphRoot,nativeControl,proofIo);
+            set(graph,"modelAccess",access);set(graph,"readiness",field(access,"readiness"));set(service,"graph",graph);
             android.widget.Toast.shows=0; android.widget.Toast.text="";android.widget.Toast.failure=null;android.widget.Toast.fatal=null;
             set(service,"controller",controller);set(service,"alive",true);
             service.connection=(text,n)->{writes++;return true;};
@@ -230,7 +240,7 @@ public final class NextAppContractTest {
             graph.coordinator().awaitFree(); graph.runtimeLogWorker().close();
             java.util.concurrent.ExecutorService executor=(java.util.concurrent.ExecutorService)field(graph.runtimeLogWorker(),"executor");
             executor.shutdown();check(executor.awaitTermination(5,java.util.concurrent.TimeUnit.SECONDS),"IME graph IO finalized");
-            Field singleton=AppGraph.class.getDeclaredField("INSTANCE");singleton.setAccessible(true);singleton.set(null,null);delete(graphRoot);
+            Field singleton=AppGraph.class.getDeclaredField("INSTANCE");singleton.setAccessible(true);singleton.set(null,null);check(!retainRoot,"unconfirmed IME test worker exit; retain "+graphRoot);delete(graphRoot);
         }
     }
     static android.widget.Button findButton(android.widget.LinearLayout root,String label) {
@@ -401,6 +411,130 @@ public final class NextAppContractTest {
             }
         }
     }
+    static void renderIme(AsrImeService service) throws Exception {
+        Method render=AsrImeService.class.getDeclaredMethod("render");render.setAccessible(true);render.invoke(service);
+    }
+    static String imeStatus(ImeFixture f) throws Exception {return ((android.widget.TextView)field(f.service,"status")).getText().toString();}
+    static void imeModelReady() throws Exception {
+        int[] nativeCalls={0};boolean[] failRelease={false};
+        try(ImeFixture f=new ImeFixture(new ModelResidency.Native(){
+            public double prepare(String c,String t){nativeCalls[0]++;return 0;}
+            public void release()throws IOException{nativeCalls[0]++;if(failRelease[0])throw new IOException("controlled release");}
+        })) {
+            f.access.requestRelease();f.access.release();
+            check(f.graph.readiness().snapshot().ready(),"release retains actual file proof");
+            int io=f.proofIo[0],nativeBefore=nativeCalls[0],captures=f.captures,provider=android.content.ContentResolver.calls;
+            renderIme(f.service);
+            check(!f.button("录音").isEnabled(),"verified proof without resident must disable IME record");
+            check(imeStatus(f).contains("显式准备")&&imeStatus(f).contains("文件已校验"),"EMPTY guides explicit memory prepare not SHA");
+            check(f.button("确认输入").isEnabled()&&f.original.preview().equals("synthetic preview"),"release preserves manually confirmable preview");
+            f.click("确认输入");check(f.writes==1&&!f.button("确认输入").isEnabled(),"released preview manual single commit");
+            check(!f.button("确认输入").performClick()&&f.writes==1,"no automatic or repeat commit");
+            check(f.proofIo[0]==io&&nativeCalls[0]==nativeBefore&&f.captures==captures&&android.content.ContentResolver.calls==provider,"UI render/confirm snapshots perform no proof/native/capture/provider IO");
+            f.access.prepare("synthetic-config","synthetic-cache");
+            f.service.onWindowShown();check(f.button("录音").isEnabled(),"explicit prepare enables through existing lifecycle refresh");
+            f.access.requestRelease();renderIme(f.service);
+            check(!f.button("录音").isEnabled()&&imeStatus(f).contains("释放"),"pending LOADED blocks and explains release");
+            failRelease[0]=true;try{f.access.release();throw new AssertionError("release must fail");}catch(IOException expected){}
+            check(f.access.residentSnapshot().getState()==ModelResidency.State.EVICTING,"controlled native failure produces EVICTING");
+            renderIme(f.service);check(!f.button("录音").isEnabled()&&imeStatus(f).contains("释放"),"EVICTING fail closed");
+            failRelease[0]=false;f.access.release();f.access.prepare("synthetic-config","synthetic-cache");
+            set(f.graph,"modelAccess",null);renderIme(f.service);check(!f.button("录音").isEnabled(),"missing access with READY proof fails closed");
+            set(f.graph,"modelAccess",f.access);
+            f.graph.readiness().invalidate();renderIme(f.service);
+            check(!f.button("录音").isEnabled()&&imeStatus(f).contains("校验"),"unverified proof blocks even LOADED");
+            f.service.permission=1;renderIme(f.service);check(imeStatus(f).contains("权限"),"permission denial precedes proof/resident hint");
+            f.service.permission=0;set(f.graph,"modelAccess",null);renderIme(f.service);check(!f.button("录音").isEnabled(),"missing access fails closed");
+            set(f.service,"graph",null);renderIme(f.service);check(!f.button("录音").isEnabled(),"missing graph fails closed");
+        }
+        imeReadyStaleClick();imeReadyActive();imeReadyLoading();
+    }
+    static void imeReadyStaleClick() throws Exception {
+        try(ImeFixture f=new ImeFixture()) {
+            List<Runnable> jobs=new ArrayList<>();int[] captures={0};
+            TaskCoordinator owner=new TaskCoordinator(jobs::add);
+            ImeBackend realBackend=new ImeBackend(f.graph.context(),f.graph.modelRepository(),null,f.access);
+            ImeController controller=new ImeController(owner,new ImeController.Backend(){
+                public void requireModelReady()throws IOException{realBackend.requireModelReady();}
+                public byte[] capture(RecordingControl c,ImeController.Progress p){captures[0]++;c.start(()->{});c.stop();c.captureReleased();return new byte[]{1};}
+                public String transcribe(RequestContext c,byte[] w,String l){return "queued preview";}
+                public void cleanup(RequestContext c){}
+            },()->{});
+            set(f.service,"controller",controller);f.service.onStartInputView(f.service.info,false);
+            check(f.button("录音").isEnabled(),"rendered LOADED action initially enabled");
+            f.access.requestRelease();int io=f.proofIo[0];
+            try {
+                f.click("录音");
+                check(jobs.isEmpty()&&!owner.isBusy()&&captures[0]==0,"stale IME record action must not admit pending resident");
+                check(f.proofIo[0]==io,"stale click snapshot performs no proof IO");
+            } finally {while(!jobs.isEmpty())jobs.remove(0).run();owner.awaitFree();}
+            f.access.release();f.access.prepare("synthetic-config","synthetic-cache");renderIme(f.service);
+            try {
+                f.click("录音");check(jobs.size()==1&&owner.isBusy(),"ready click submits exactly one owned worker");
+                // Release after the last UI guard: the unchanged real backend remains authoritative.
+                f.access.requestRelease();jobs.remove(0).run();owner.awaitFree();
+                check(captures[0]==0&&!owner.isBusy()&&!controller.ownsTask(),"worker final resident gate rejects UI snapshot race before capture");
+            } finally {while(!jobs.isEmpty())jobs.remove(0).run();owner.awaitFree();}
+            f.access.release();f.access.prepare("synthetic-config","synthetic-cache");
+            try {
+                check(owner.submit(()->{}),"foreign worker admitted");renderIme(f.service);
+                check(imeStatus(f).contains("等待应用或上一会话")&&!f.button("录音").isEnabled(),"foreign owner retains priority");
+                f.service.info.inputType=129;renderIme(f.service);
+                check(imeStatus(f).contains("敏感")&&!f.button("录音").isEnabled(),"sensitive field priority unchanged");
+            } finally {while(!jobs.isEmpty())jobs.remove(0).run();owner.awaitFree();}
+        }
+    }
+    static void imeReadyActive() throws Exception {
+        try(ImeFixture f=new ImeFixture()) {
+            java.util.concurrent.CountDownLatch entered=new java.util.concurrent.CountDownLatch(1),release=new java.util.concurrent.CountDownLatch(1);
+            AtomicReference<Thread> worker=new AtomicReference<>();AtomicReference<Throwable> failure=new AtomicReference<>();
+            TaskCoordinator owner=new TaskCoordinator(task->{Thread t=new Thread(()->{try{task.run();}catch(Throwable x){failure.set(x);}});worker.set(t);t.start();});
+            ImeController controller=new ImeController(owner,new ImeController.Backend(){
+                public void requireModelReady()throws IOException{f.access.requireResidentReady();}
+                public byte[] capture(RecordingControl c,ImeController.Progress p){c.start(()->{});c.stop();c.captureReleased();return new byte[]{1};}
+                public String transcribe(RequestContext c,byte[] w,String l)throws Exception{
+                    Object token=f.access.enterRequest();boolean success=false;
+                    try{entered.countDown();if(!release.await(5,java.util.concurrent.TimeUnit.SECONDS))throw new AssertionError("active deadline");success=true;return "active preview";}
+                    finally{f.access.finishRequest(token,success);}
+                }
+                public void cleanup(RequestContext c){}
+            },()->{});
+            set(f.service,"controller",controller);f.service.onStartInputView(f.service.info,false);
+            f.retainRoot=true;
+            try {
+                f.click("录音");check(entered.await(5,java.util.concurrent.TimeUnit.SECONDS),"real resident ACTIVE entered");
+                ImeSession session=(ImeSession)field(f.service,"session");renderIme(f.service);
+                check(f.access.residentSnapshot().getState()==ModelResidency.State.ACTIVE&&imeStatus(f).equals(session.status()),"owned IME task must retain session progress while resident active");
+                check(!f.button("录音").isEnabled()&&f.button("丢弃 / 重新开始").isEnabled(),"ACTIVE does not enable a second recording and keeps cancel");
+            } finally {
+                release.countDown();if(worker.get()!=null)worker.get().join(5000);
+                f.retainRoot=worker.get()!=null&&worker.get().isAlive();
+                check(!f.retainRoot,"active actual worker joined");owner.awaitFree();
+                if(failure.get()!=null)throw new AssertionError("active worker throwable",failure.get());
+            }
+            renderIme(f.service);check(f.button("确认输入").isEnabled()&&!owner.isBusy(),"ACTIVE worker true terminal exposes preview");
+        }
+    }
+    static void imeReadyLoading() throws Exception {
+        java.util.concurrent.CountDownLatch entered=new java.util.concurrent.CountDownLatch(1),release=new java.util.concurrent.CountDownLatch(1);
+        boolean[] block={false};AtomicReference<Throwable> failure=new AtomicReference<>();
+        try(ImeFixture f=new ImeFixture(new ModelResidency.Native(){
+            public double prepare(String c,String t)throws Exception{if(block[0]){entered.countDown();if(!release.await(5,java.util.concurrent.TimeUnit.SECONDS))throw new AssertionError("loading deadline");}return 0;}
+            public void release(){}
+        })) {
+            f.access.requestRelease();f.access.release();block[0]=true;
+            Thread worker=new Thread(()->{try{f.access.prepare("synthetic-config","synthetic-cache");}catch(Throwable x){failure.set(x);}});
+            f.retainRoot=true;worker.start();
+            try {
+                check(entered.await(5,java.util.concurrent.TimeUnit.SECONDS),"controlled prepare actually LOADING");renderIme(f.service);
+                check(f.access.residentSnapshot().getState()==ModelResidency.State.LOADING&&!f.button("录音").isEnabled()&&imeStatus(f).contains("准备中"),"LOADING snapshot denies new recording");
+            } finally {
+                release.countDown();worker.join(5000);f.retainRoot=worker.isAlive();check(!f.retainRoot,"loading worker actual joined");
+                if(failure.get()!=null)throw new AssertionError("loading worker throwable",failure.get());
+            }
+            f.service.onWindowShown();check(f.button("录音").isEnabled(),"loaded terminal refresh enables without auto capture");
+        }
+    }
     static void imeReturn(String mode) throws Exception {
         if(mode.equals("ime-return")||mode.equals("ime-visibility"))imeVisibility();
         if(mode.equals("ime-return"))imeActiveReturn();
@@ -529,7 +663,8 @@ public final class NextAppContractTest {
     }
     public static void main(String[] args) throws Exception {
         String mode = args.length == 0 ? "all" : args[0];
-        if (mode.startsWith("ime-")) imeReturn(mode);
+        if (mode.equals("ime-model-ready")) imeModelReady();
+        else if (mode.startsWith("ime-")) imeReturn(mode);
         if (mode.startsWith("compat-")) compat(mode);
         if (mode.equals("all") || mode.equals("fallback")) controller(false);
         if (mode.equals("all") || mode.equals("notification")) controller(true);

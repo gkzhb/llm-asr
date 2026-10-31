@@ -125,6 +125,13 @@ timeout 3900 python3 -B tests/kotlin_next_migration_test.py
 timeout 2700 python3 -B tests/kotlin_next_migration_test.py --compat-only
 # Independent IME slice: 9 fresh compile/run routes; legacy budgets above unchanged.
 timeout 3000 python3 -B tests/kotlin_next_migration_test.py --ime-return-only
+# Fake-tool cleanup faults call the actual readiness driver, including Python -O.
+timeout 30 python3 -B tests/ime_readiness_cleanup_test.py
+timeout 30 python3 -O tests/ime_readiness_cleanup_test.py
+# Independent readiness slice: seven fresh 270s compiles / 45s JVMs per Python mode.
+ime_ready_evidence=$(mktemp -d "$root/.work/build/ime-model-ready-XXXXXX")
+timeout 2400 python3 -B tests/kotlin_next_migration_test.py --ime-model-ready-only --evidence-dir "$ime_ready_evidence/ordinary"
+timeout 2400 python3 -O tests/kotlin_next_migration_test.py --ime-model-ready-only --evidence-dir "$ime_ready_evidence/optimized"
 # Independent verification: each mode <=9 mixed compile(180s), <=20 JVM(30s), unchanged legacy gates.
 verification_evidence=$(mktemp -d .work/model-verification-contracts-XXXXXX)
 timeout 2400 python3 -B tests/model_verification_contract_test.py --contracts "$classes" --evidence-dir "$verification_evidence/ordinary"

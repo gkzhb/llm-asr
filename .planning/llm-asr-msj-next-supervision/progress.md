@@ -1,0 +1,59 @@
+# Progress
+
+已读取 delivery/stewardship/planning skills、当前 Git/cwd/worktree/ref/index、embedded bd context/status/ready/blocked 与显式 msj/psn/ap5/lsk/M4/M5 任务、lsk 关联三文件与路线/本地验证。保留累计冻结历史，不更新旧 pending 掩盖时点。pi --list-models 核 newapi/gpt-6.1-sol，父当前 PI_MODEL/PROVIDER 同值。初次大范围 Beads/history 输出过大；后续限制字段与范围。
+
+本阶段仅协调恢复，尚无新产品修改/测试/构建/提交。下一步授权一个只读 leaf 给最小产品切片，再由父决定唯一 writer 实施。
+
+本次续接再次实核 main 64d00d1、tracked/index clean、embedded llm_asr；agents live 起初为空，ps 无相关构建进程。未跟踪历史 planning、两研究文档和 .beads.gate.lock 保持 excluded。显式 msj 当前 owner p1-steward、in_progress，zcm closed；不重复已交付功能。live catalog 核 newapi/gpt-6.1-sol。新 msj-next-plan target wY:p6D 准入实报 PI_PROVIDER=newapi/PI_MODEL=gpt-6.1-sol；/thinking high 已成功提交。旧 p6C 会话已不在 live，不恢复或读取其 session 正文。新 leaf 只拥有独占提案文稿范围，父仍唯一 Beads writer，产品开发待消费提案另授。
+
+提案正式handoff已完整消费：9552f0ec481224cf09479d9df35df9f31aef480be84a4006c65683b6563d48eb，独立18input/7output均同。接受IME proof/resident展示与stale-click窄修，父抽读实际Service140-165/ModelAccess无IO snapshot确认合理，不兼做实现。查重无同任务，创建llm-asr-t0t/in_progress/p1-steward，显式show只有discovered-from msj非blocks。新唯一writer t0t-build wY:p6E实报newapi/gpt-6.1-sol，/thinking high成功提交，正式六路径+独占plan/work开发及targeted assignment已发。现仅targeted权限，full/设备/commit后授。重复的仅准入/herdr回报为slash事件迟到，已send澄清正式assignment，不为此重复启动agent。
+
+收到t0t-build checkpoint非最终交接：六维护路径已实现且R2验证冻结，串行targeted主链b759db1df尚运行，有限复杂度b7448e98c已终态0。父仅消费其task_plan/progress：R1曾通过但caller补强后为历史，外supervisor取消后的inner进程已由exact PID/start恢复取真实-15/KeyboardInterrupt并封口，原outer exit UNKNOWN保留，不冒成功；现必须以R2同caller终态及新handoff为准。父未复确认运行任务、不启动审查/full/第二writer、不重跑成功链；等原agent自动终态完成SHA/保护审计。Service render复杂度增长与Kotlin UNKNOWN等待正式审查消费，不凭checkpoint接受实现或测试完成。
+
+正式BLOCKED handoff8c7e2466856eec45e5a52725b239d8e8f9d54c2e032fdbf977bbc04f8c98e295已全文消费，连同verification-summary、protection-audit及graph-fast失败原log。父独立六候选SHA、8组stdout/stderrSHA及旧三APK均同。R2旧源精确红、新readiness普通/-O三mutants恢复及旧return两模式、fast35JUnit通过；graph-fast原严格offline无法resolve AGP8.6.1任务未执行，独立format未运行。保护41944旧输出为leaf审计证据，父未冒全量重核。全部bg终态无待续，取消outer UNKNOWN只历史不用作验收。父已读dependencies skill及dependency-map，授权原leaf仅有限只读cache/环境/配置诊断；产品六路径继续冻结、无下载/修改锁metadata/cache/重试权限，等根因和最小路径再决定。父一次codemode内嵌多行字符串解析失败未执行工具，改独立bash和短codemode成功，非测试红。
+
+cache-inspect正式停写handoff3364cdd7e27bf37fb25bac10ce3c3984371122e98c228a3238374cac19c7a8d4已全文消费及独立hash，findings/progress及有限evidence已读。静态fast/graph默认home/仓库相同；AGP jar符合既有SHA，exact cache缺module/pom，目录mtime位于两次命令之间仅支持目录项变化，不能认定删除者/GC/唯一因果，历史child环境UNKNOWN保留。无合法完整cache来源已证、无无需新权限的解阻路径，父不授权下载或盲换home。任务继续blocked，六候选冻结，无新测试构建/后台/提交。单一下一输入为用户给合法cache或批准受控准备/必要下载，不以无限调查或旧APK替代交付。
+
+用户明确回复“允许”，对应父请求的现固定版本/受控仓库/严格校验规则下必要下载准备，禁止升级及锁metadata修改。父重核main64d00d1/仅六tracked改动、embedded llm_asr、t0t blocked owner p1-steward、无blocks/live原writer idle、catalog sol可用，读依赖change-workflow。另授同原writer独占t0t-cache-prepare plan/work、仅项目专用Gradle缓存受控写；配置级最小prepare成功后串行graph-fast/format严格offline验证。产品六路径/旧交接冻结，full与fresh审/提交仍后授；任务暂保blocked直到证据证明解除。
+
+收到cache-prepare checkpoint：leaf报告已落前置1925 tracked与202现有artifact身份，固定项目Gradle home+strict的配置级gradlew help已启动后台，未跑产品构建/后验。此仅检查点，父未独立验收快照或命令终态，保留同一writer与六候选冻结，不启动审查/full/第二writer、不轮询等待。待原agent自动终态后消费prepare/graph-fast/format及保护封口证据。
+
+prepare已正式BLOCKED封口，父全文消费handoff aacd01d0e6c220655e962c7339f3a3c76b932fe0805354355b15c62604812dc5/三plan及19POM分类并核SHA。help strict联网0仅1action；208新增189已有SHA吻合/19POM无对应条目/0已知checksum不符，后置库存gate1首停，graph-format未跑。原六候选及locks metadata/旧41944输出保护audit由leaf封口，父未冒全量复验。当前verify-metadata=true，不能用strict0推出所有物理下载已验或19POM未用。父另授原leaf有限只读19POM/对应module/Gradle8.7本地策略与消费证据审计，独占t0t-pom-audit，不运行Gradle/网络/补hash/删cache。三静态证据路径后无事实则具体止损，不无限循环。
+
+POM审计正式handoff68775d56c2e367521d133fea43b602b9f2ce3a885d7a99f0564e0955ed080933全文消费、核SHA，父抽读固定8.7 redirect/verification实际字节码。19/19原锁精确坐标、marker、对应已信任module/jar；POM依赖版本可在module发布variant并集找到，实际选中/逐URL仍UNKNOWN。父明确接受额外物理全库存gate范围纠正，非修改原工程门槛：19精确物理POM可保留未授信，所有项目strict+verify-metadata=true/checksum/locks保持；不得把它们已授信或完全未消费写成事实。原snapshot gate失败保历史不回写。另授原leaf独占t0t-cache-postcheck执行一次offline graph-fast成功再format；不为补trace新增复杂诊断或无限任务，额外无条目文件/任一checksum不符首停。main/base/index/live/catalog已复核，未full审查提交交包。
+
+postcheck正式handoff03d636f38eb16a02bf0d744e67ff55e4659822e077fb9891a4dfc382d5f64ec9全文及三plan消费、hash同：once graph1已过原AGP解析但创建core verifyModuleBoundary解析runtimeClasspath失败stdlib2.0.21，无task/完整图，format未跑。410artifact/19pairs/1925tracked/index及41944旧输出leaf audit0，noBG。父读当前core config确认runtimeClasspath.asPath在任务创建时解析；用户现固定依赖必要下载授权覆盖该窄准备，另授原leaf独占t0t-core-prepare以:core:dependencies --configuration runtimeClasspath strict联网仅解析、success后offline graph/format，报告含FAILED则非成功、不升预算不改门槛。若再缺配置/artifact明确报父，不自动无界prepare。环境blocker未解除，设备/full/审查提交未进行。
+
+core-prepare正式handoff ae9d21fc2ec1ae0bdce6ff9bd9be2803173947e655db6fff1973041f8bbba6e4及三plan全文消费hash同。dependencies strict联网0/noFAILED固定stdlib2.0.21 annotations13，module既有SHA吻合；新单POM fcbada4c…17da无条目超旧19首停，offline未跑/noBG，保护audit0。新增事实runtimeClasspath不在现锁配置列表，父接受保持原状态如实报告，不冒锁覆盖或改锁。父另授原leaf新stdlib-postcheck在有限SHA/GAV/marker/受信module-jar/POM依赖一致条件成立后直接once offline graph→format；此单物理POM例外同固定8.7已审策略，不授信不降原strict，不能反复同类泛调查。六候选及所有旧失败冻结。
+
+收到stdlib-postcheck检查点：leaf报告单POM全部有限条件吻合，仅第20个精确物理库存例外、不授checksum信任；一次strict offline graph-fast→format串行链已启动，待自动终态。父暂不将条件报告或命令启动当验收，不轮询/重跑/启动审查full或第二writer，六候选冻结等待同leaf正式handoff与保护封口。
+
+stdlib-postcheck正式handoff d85239e91ec0af8cb6a08e873f8f0dac531163191deee3f521aa49422aec1322/三plan/command-summary已全文消费，父独立六候选及两stdout/stderr SHA吻合、owned终态0/reaped/exited。graph0完整38dryrun无heavy非测试执行，format0实际133text1action；412artifact/exact20不扩大、1925tracked/index与41944旧输出leaf保护0，无BG。父接受解除当前配置缓存阻塞转in_progress，非full/设备验收。fresh reviewer新独立非fork开发会话t0t-review wY:p6F准入实报newapi gpt-6.1-sol，/thinking high已提交，正式六候选只读审assignment已授，原writer停写。重点render knots增长、worker收尾与原caller/mutants真实性；SDK/full后授。一次codemode多行嵌套字符串解析失败无工具执行后改短调用成功，非测试失败；迟到准入回报已澄清，不重复开agent。
+
+Fresh审正式handoff5b2e3d4cbc45bb0fb1eaba4073c669c880572fdc80ebd1dccd3670cea1b4d55e/findings全文消费并hash同。接受1项MEDIUM工具R1：driver readiness内finally恢复/ledger非dict错误会替primary，静态发现非运行red。生产无阻塞、render增长人工接受，独立66child/10outer成功证据保持。reviewer报告runtime曾xhigh而父提交high，按真实xhigh留边界不虚称观测high；准确模型sol不变，后续fresh需再实核。原writer另授集中最小修仅driver新增mode+唯一tests/ime_readiness_cleanup_test.py/host必要接线、新r1-fix plan/work，production/fixture/docs/locks冻结。真实driver故障旧源精确red/currentgreen普通-O及当前readiness两模式、有限复杂度/format后封口再fresh回审，无full提交。
+
+R1正式fix-handoff032176bf907ec1e07b5bbaa4a8f9650b49cfab08515e38f5de4223a2855fc6ac及三plan全文消费/hash同，父独立7候选SHA同。delta仅driver/host/newfaultcaller，Service/fixture/pin/docs不变；同最终fakefaultcaller旧driver普通-O精确AssertionError/current0，当前realreadiness28child/outer终态0/red恢复，format/复杂度/显式newtest格式/41944保护封口，无BG。plan早期callerSHA文字与最终frozenmanifest不同已交fresh核实，不回写历史或忽略身份。新独立t0t-r1-review wY:p6G实报sol，/thinking high提交，正式只读R1定点审已授；原writer停写、7候选冻结。newtest为未tracked显式纳入候选不能stage凑工具库存，currentbuild239/originalformat133不含newtest但显式policy覆盖，待审接受。full/APK/提交未跑。
+
+R1 fresh wY:p6G正式完整回复CLOSED/no newblocking已消费，28child/6outer原始证据独立核、7候选同、plan早期SHA仅历史supplemental不冒current。reviewer受上层只读规则未落报告/plan，父保存r1-review-disposition.md真实接受记录、不虚构其handoff或SHA；runtime xhigh请求high差异保留。父复核Git/index/embedded/catalog/live无writer冲突，另授原leaf唯一一次完整cacheonly strict offline rerun full，独占t0t-full/newreports文本，7维护候选冻结。允许先精确备份将覆盖known generated再full实际JNI/native/AGP/D8三包门槛，不授下载/native源码/设备模型；失败首停不自动第二full。真终态保护封口后安全stage1/另阶段commit，无新APK交付。
+
+full检查点：leaf报告前置2944 known generated归档逐SHA核同、41505旧历史原位保护，唯一完整strict offline full b9c45abab已启动仍BG。父未将快照声明/启动当验收、不并行第二构建/审查/轮询，保同writer与7候选冻结，待自动真实终态后原leaf封口当前输入/三包/保护证据；当前无交付结论。
+
+full1正式handoff7dce9c2899458fb85349e9082d44fb3a018013fc12dfbf9e67ac1dc4f8f917f7/三plan及execution summary全文消费。实际exit1/4actions/owned退出，corecompiler配置build-tools-impl2.0.21离线缺项；SDK35 JNI辅助混编/arm64符号/native增量/prepareInputspass非AGP完整app/host/JUnit/三包。唯一保护差异父progress f3f…25d8→16e4…6fe2，父实核currentSHA吻合并确认自己checkpoint edit归属，full-attempt1-disposition.md落证，不重写旧audit1。今后父supervision可变supplemental单列。用户已准固定依赖必要下载覆盖最小compilerprepare，另授原leaf新t0t-compiler-prepare仅实际artifact解析/严格offline配置复验，可自审临时只解析task不改产品/verify入口；原7候选和full1report冻结，成功后full2另授不自动。环境重新blocked，无提交或交APK。
+
+compilerprepare正式7f6ee100f18540e184e66813f2d0392a9509eb5b1e7428c0258ce327afa1299f/三plan全文消费，父独立7candidate/initSHA/online-offline两stdoutstderr同。17实际artifact精确原compilerlockset、全部现有checksums，新增8file全已有条目无新POM例外，online0/offline0/41505保护0/noBG；仅当前compiler配置解阻非全闭包保证。原writer另授唯一full2 strict cacheonly offline rerun全gate，独占full-2计划证据及新full-2.md/full-2-inputs，原full1报告/归档/失败保冻结，父supervision mutable单列。首失败停不full3/下载补绿，7候选不动，成功后安全stage1及另授commit，无新APK交付。
+
+收到full2检查点：leaf报告2944 known generated备份逐SHA核、41505历史原位保护，full1冻结保持；唯一full2 b4816f8af已启动后台、strict offline原门槛无init。父不凭启动作验收、不并行/轮询/重试，等待原leaf自动终态及当前产物/保护封口，7候选继续冻结。
+
+full2正式handoffe7e211def21ec0f546191cc74d31104d485bc9cb90ab134cb598c851c1009cd4/三plan/summary全文消费并核hash。actual1/131actions/50m54s，asr-runtime extractDebugAnnotations detached config缺stdlib1.9.20/annotations23/commonscodec1.10；已跑fullhost/readinessfault/JNI/native/AGP3APK/testhost7JUnit/checksumredrestore/静态receipt，root35JUnit/Lint/独立productfinalgate及fixture尾链未到，不能交新包。保护0/41505历史/7candidate/firstfull报告archive/index不变/noBG，current239build10module5tool84native三包绑。另授原leaf仅Lint闭包actualartifact在线prepare+同配置offline+定向verifyLint原gate先短路径确认，独占lint-prepare，若图暗带fullhost先停，不立即盲full3。用户固定依赖必要下载授权沿用、锁metadata/版本/7candidate冻结，首新failure报父，无提交交包。
+
+Lint检查点：leaf报告2960 known generated逐SHA归档、41505历史保护，原verify-local lint --offline --rerun-tasks已后台启动，无init/无host长链。此checkpoint未含最终prepare/actualartifact封口，父不先接受或推测Lint通过；维持同writer/7候选冻结，等待真实终态和完整证据，不轮询/重跑/并行full3。
+
+Lint准备正式d0dde6dc967c694951de098f8d37fbfc7530d85a6e98efeeb5c9a7632a311b01及三plan全文消费，父独立7candidate、online/offline/Lint三rawSHA/trueexit0/reaped/exited核同，currentdynamicinventory逐项等full2。实际原annotation配置66artifact精确既有identity/checksum，条件stdlib1.9.20单物理POM证据不授信；Lint75actions/0E-F app24/runtime17warning非41unique，full专属fault/fixture未运行。保护0/41505历史/旧plansreports/index同/noBG。解除当前Lintblocker转inprogress，另授原leaf唯一full3严格offline全链，独占full-3/新report两文件，原失败报告归档冻结，首failure不full4/prepare补绿。七候选未变，成功封口后安全审提交，设备/交包未验。
+
+full3准入检查点：leaf实核base/index/7候选及原门槛一致，live准确sol/high，无并行构建；当前仅精确generated备份BG，完整full3尚未启动，须备份逐SHA通过后同writer继续。父不把前置完成冒full启动/成功，不轮询等待或开第二writer，保持候选冻结等原chain自动终态。
+
+full3第二检查点：leaf报告备份2960files/325795840B逐SHA已真实通过，当前原位历史保护库存扩展333354files（当批动态，不沿旧41505固定门槛）；唯一full3已启动，Nixcacheonly/Gradlestrictoffline rerun原完整入口，无init/skip/并行。父不将checkpoint当terminal，等同writer自动终态与保护审计封口，不轮询/重跑/开审提交。
+
+full3正式handoff57ec73ae4165c6e7350c707fab8e15ae882ad64089a5a62599d62da52771e047/三plan全文消费；父独立finalmanifest881a7904…51a5中7candidate/2report/32workfiles逐SHA均同及current3APK吻合。真实184actions/1h2s/exit0，42JUnit0errorfailureskip、完整host/SDKAGP/JNI/native84/三包独立产品门/Lint0EF24-17W+NewApi红恢复/末fixture5全部到达，保护333354历史1046plan14handoff/35生成变更有备份/errors[]/noBG。父接受工程PASS非设备验收，不交包不关任务。new general profile独立shipreview wY:p6H实报sol，/thinking high成功提交；将授stage1只读安全候选审（general便于后续另阶段有限stagecommit，不受reviewer禁写规则假定），允许仅自身report/plan写，原writer及父候选冻结。精确候选产品7+报告7+本轮绑定planning，旧全失败原字节保留，无产物cache/init/session入候选。本进度作为stage1前最终freeze，后续父处置证据置ignored工作域不漂候选。
+
+Runtime准入：agents.spawn不支持model/thinking/fork字段，首次拒绝未创建agent；随后仅启动准入空任务，msj-next-plan target wY:p6C/session01a19141-0ef2-71e4-b9f7-7714b097ebb0实际为newapi/ds-v4-flash/high，故未授调查写权。父通过/model newapi/gpt-6.1-sol显式切换；紧接/thinking high遭busy拒绝，须正式工作前确认准确route与thinking，不能默用profile默认模型。此为运行配置问题，不是产品或工程失败。

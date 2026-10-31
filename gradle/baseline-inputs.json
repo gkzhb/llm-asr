@@ -18,7 +18,7 @@
     "android/app/assets/MNN-LICENSE.txt": "a830d59c4f98d110e0540d0581efada06192ba6e798434307d1794b07a290302",
     "android/app/assets/THIRD-PARTY-NOTICES.txt": "82e25bfef82694517670c4340471e8dffe32bf6d83eab9f2aec3904ba2008e7d",
     "android/app/src/org/llmasr/minimal/AppGraph.kt": "c43d9922f26ae444738fe572652f39ad64716e51a456eae1771977da62040515",
-    "android/app/src/org/llmasr/minimal/AsrImeService.kt": "e0cdcdbc8301edab3c253cf8f92cc1f6cf041f436f626a5f833b50bf90ea1a82",
+    "android/app/src/org/llmasr/minimal/AsrImeService.kt": "b89e6effaf90d1554f6bf917e4cf93d7239e3f8822bca59553c04e0cc051f310",
     "android/app/src/org/llmasr/minimal/LogsActivity.kt": "ac1c0e08c0c9e84a8055f9a90be49bdd3959533b320f16665eece20f25d17c4f",
     "android/app/src/org/llmasr/minimal/MainActivity.java": "b822e669a5fbc135355707153253b1c93bac0801f74a56fbb03a7d7c8756f9bc",
     "android/app/src/org/llmasr/minimal/ModelManagementActivity.java": "9606a26f1ebd4e4eb6a72735fafbfe5b0d16b54af0a511cea2eeb94a195973fe",

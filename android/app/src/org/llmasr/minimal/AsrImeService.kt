@@ -18,6 +18,7 @@ import org.llmasr.minimal.ime.ImeController
 import org.llmasr.minimal.ime.ImeFieldPolicy
 import org.llmasr.minimal.ime.ImeSession
 import org.llmasr.minimal.model.ModelReadiness
+import org.llmasr.minimal.model.ModelResidency
 import org.llmasr.minimal.task.TaskCoordinator
 
 /** Explicit-action voice keyboard; worker listeners retain only a weak target. */
@@ -137,8 +138,15 @@ class AsrImeService : InputMethodService() {
         val info = currentInputEditorInfo
         return alive && visible && session != null && session!!.valid() && info != null && session!!.fieldKey!!.equals(key(info)) && !ImeFieldPolicy.isSensitive(info.inputType, info.imeOptions)
     }
+    private fun residentReady(resident: ModelResidency.Snapshot?): Boolean =
+        resident != null && resident.state == ModelResidency.State.LOADED && !resident.pendingRelease
+    private fun residentHint(resident: ModelResidency.Snapshot?): String = when {
+        resident?.pendingRelease == true || resident?.state == ModelResidency.State.EVICTING -> "模型正在释放或等待收尾，完成后请到模型管理显式准备。"
+        resident?.state == ModelResidency.State.LOADING -> "模型准备中，请等待加载到内存。"
+        else -> "文件已校验；请打开模型管理，点击显式准备模型（加载到内存）。"
+    }
     private fun startRecording() {
-        if (!eligible() || !isInputViewShown || !permitted() || graph?.readiness()?.snapshot()?.ready() != true) { render(); return }
+        if (!eligible() || !isInputViewShown || !permitted() || graph?.readiness()?.snapshot()?.ready() != true || !residentReady(graph?.modelAccess()?.residentSnapshot())) { render(); return }
         controller!!.start(session, language!!.selectedItem.toString()); render()
     }
     private fun commitPreview() {
@@ -152,11 +160,15 @@ class AsrImeService : InputMethodService() {
     private fun render() {
         if (status == null) return
         val allowed = eligible(); val busy = controller != null && controller!!.busy()
-        val modelReady = graph?.readiness()?.snapshot()?.ready() == true
+        val proofReady = graph?.readiness()?.snapshot()?.ready() == true
+        val resident = graph?.modelAccess()?.residentSnapshot()
+        val modelReady = proofReady && residentReady(resident)
         status!!.setText(if (controller == null) setupError else if (!allowed) "当前会话不可用或为敏感输入框。"
             else if (!permitted()) "请点击设置 / 授权，在主App授予麦克风权限。"
             else if (busy && !controller!!.ownsTask()) "正在等待应用或上一会话处理完成……"
-            else if (!modelReady) "模型未准备，请打开模型管理完整校验或快速恢复已校验证明。" else session!!.status())
+            else if (busy && controller!!.ownsTask()) session!!.status()
+            else if (!proofReady) "模型未准备，请打开模型管理完整校验或快速恢复已校验证明。"
+            else if (!modelReady) residentHint(resident) else session!!.status())
         preview!!.setText(if (allowed) session!!.preview() else "")
         record!!.setEnabled(allowed && permitted() && !busy && modelReady)
         stop!!.setEnabled(allowed && controller!!.capturing())

@@ -1,5 +1,20 @@
 # P1-A 本地分层验证契约
 
+## llm-asr-t0t IME 文件证明 / 内存准备 targeted
+
+IME 录音按钮与点击分别重取无 IO 快照：文件 proof READY、resident LOADED 且无 pending release 才可录音。EMPTY 提示去模型管理显式准备到内存，LOADING/释放中禁录；own-busy ACTIVE 保留会话进度与停止/取消，foreign busy、敏感框及权限优先级不变。释放不清已有预览，手动确认不受 resident gate 限制；不自动 prepare/capture/commit、不增加 listener/poll，worker 最终 resident 准入原样保持。
+
+新增独立模式，必须使用全新独占 evidence 子目录：
+
+```bash
+bash scripts/nix-env.sh apk --cache-only timeout 2400 python3 -B tests/kotlin_next_migration_test.py --ime-model-ready-only --evidence-dir "$evidence/ordinary"
+bash scripts/nix-env.sh apk --cache-only timeout 2400 python3 -O tests/kotlin_next_migration_test.py --ime-model-ready-only --evidence-dir "$evidence/optimized"
+```
+
+每模式恰7次 fresh mixed compile（各270秒）/JVM（各45秒）：初绿及三真实 Service mutants（proof-only render、遗漏 stale-click resident 复核、own-busy ACTIVE 进度被提示覆盖）各 compile0→精确外部 AssertionError1→原字节恢复重编/run0。attempted ledger、真实 root_reaped/owned_exited、primary-preserving cleanup 保留；编译/工具/cache/timeout 失败不是目标 red。`--ime-service-source` 仅在此模式隔离副本替换 Service；配合 `--expect-ime-model-ready-red` 只编译/执行一次并要求旧源精确目标红，外层0不代表旧产品 green。旧 default/compat/ime-return/host/full 的断言、输出域与预算不改；新模式普通/-O 独立接 host。
+
+本批 targeted 原始证据与真实终态交接入口 `.work/t0t-build/handoff.md`（本地独占证据，非纳 Git 报告）。host fakes 只验证真实 Service/Controller/ModelAccess/Residency 工程控制流，不等 Android SDK/runner/设备。`:app:preBuild` 依赖 `prepareInputs`→native，故实际 SDK Service 编译后置获准 full，不暗跑 assemble。fresh 审查、必要 full/JNI/三 APK/input 绑定和安全本地提交均另阶段后授；旧 APK 不作本轮新产物，设备/麦克风/私人输入/模型计算/性能仍 NOT RUN。
+
 ## llm-asr-lsk 返回上一输入法 no-hide targeted
 
 返回动作仅使应用私有会话/预览失效并取消未提交录音，不预先请求系统隐藏键盘；previous boolean 仅为请求接受，false/RuntimeException 保单次 picker 降级和原 Toast 失败保护。直接 picker/settings/model 原通用 hide 路径及 Controller/真实 worker owner 释放保持。无自动录音或编辑提交。

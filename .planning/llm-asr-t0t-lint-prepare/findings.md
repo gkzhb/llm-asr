@@ -1,0 +1,5 @@
+# Findings / lint-prepare
+
+Full2extractDebugAnnotations detachedConfiguration1缺stdlib1.9.20/annotations23/codec1.10—notjarabsenceclaim. Current verifyLint onlyapp/runtime lintDebug, nohostchain; verifyLintEvidence/Androidfixture are separatefull prerequisites, cannot claimlintentryexecutes them. gradle/verify-lint-tools.gradle actualtypedlintconsumption gate retains66artifact/171edge frozenidentity; annotationextract detached originallynotassumedequivalent; actualrealconfig resolution最终证明66artifactbag与existingmanifest完全一致，原flags/attributes/excludes见online-artifact-check.json。不得把identitymanifest冒充detached锁覆盖。
+
+在线/离线actualresolve0；finitecache133→137，3既有checksum+1条件POMstdlib1.9.20，不授POMchecksumtrust、endpoint/selectedmetadata仍UNKNOWN。原strict离线Lint0/75actions；app24/runtime17Warning、0ErrorFatal，保留警告不抑制。verifyLintEvidence/fixture/full最终门尚未执行；本轮成功不消除full2失败记录。最终保护errors[]，full2输入239/三APK/receipt原SHA不变。

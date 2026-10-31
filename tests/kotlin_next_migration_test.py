@@ -474,13 +474,135 @@ def ime_return_suite(directory):
             primary.add_note('cleanup refused; retained ' + str(directory) + ': ' + repr(cleanup_failure))
 
 
+def ime_model_ready_suite(directory, service_source=None, expect_red=False):
+    """Independent seven-compile/JVM slice; old-source replay is one exact red only."""
+    directory.mkdir(parents=True, exist_ok=False)
+    sources = prepare(directory)
+    targets = [p for p in sources if p.stem == 'AsrImeService' and p.suffix == '.kt']
+    require(len(targets) == 1, 'readiness unique real Service source')
+    target = targets[0]
+    if service_source is not None:
+        shutil.copyfile(service_source, target)
+    (directory / 'inputs.json').write_text(json.dumps([identity(p) for p in sources], indent=2) + '\n')
+    stdlib = Path(os.environ['KOTLIN_HOME']) / 'lib/kotlin-stdlib.jar'
+    require(stdlib.is_file(), 'fixed stdlib missing')
+    attempted = []
+    java_tmp = directory / 'java-tmp'
+    java_tmp.mkdir()
+
+    def execute(argv, label, timeout):
+        attempted.append(directory / (label + '.json'))
+        (directory / 'attempted.json').write_text(json.dumps([str(p) for p in attempted], indent=2) + '\n')
+        return owned.execute(argv, directory, label, timeout)
+
+    def quiescent():
+        for path in attempted:
+            try:
+                record = json.loads(path.read_text())
+            except (OSError, ValueError):
+                return False
+            if (not isinstance(record, dict)
+                    or record.get('owned_exited') is not True or record.get('root_reaped') is not True
+                    or record.get('runner') != 'owned-linux-session-v1'
+                    or type(record.get('exit')) is not int
+                    or 'primary' not in record
+                    or (record['primary'] is not None and not isinstance(record['primary'], str))):
+                return False
+        return True
+
+    def compile_run(label, diagnostic=None):
+        classes = directory / ('classes-' + label)
+        require(not classes.exists(), 'fresh readiness class output required')
+        compiled = execute(['bash', str(ROOT / 'scripts/compile-jvm-sources.sh'), str(classes), '',
+                            *map(str, sources)], label + '-compile', 270)
+        require(compiled.returncode == 0, 'readiness compilation failure NOT target red ' + label + '\n' + compiled.stderr.decode())
+        result = execute(['java', '-Djava.io.tmpdir=' + str(java_tmp), '-cp', str(classes) + ':' + str(stdlib),
+                          'NextAppContractTest', 'ime-model-ready'], label + '-run', 45)
+        if diagnostic is None:
+            require(result.returncode == 0 and b'PASS next real app/controller host contracts ime-model-ready' in result.stdout,
+                    'readiness green failed ' + label + '\n' + result.stderr.decode())
+        else:
+            require(result.returncode == 1 and ('java.lang.AssertionError: ' + diagnostic).encode() in result.stderr,
+                    'readiness not exact behavioral red ' + label + '\n' + result.stderr.decode())
+
+    mutations = [
+        ('proof-only-render', 'val modelReady = proofReady && residentReady(resident)', 'val modelReady = proofReady',
+         'verified proof without resident must disable IME record'),
+        ('stale-click-admission', ' || !residentReady(graph?.modelAccess()?.residentSnapshot())', '',
+         'stale IME record action must not admit pending resident'),
+        ('own-busy-priority', 'else if (busy && controller!!.ownsTask()) session!!.status()', '',
+         'owned IME task must retain session progress while resident active'),
+    ]
+    primary = None
+    try:
+        if expect_red:
+            compile_run('old-source-red', 'verified proof without resident must disable IME record')
+        else:
+            compile_run('ready-green')
+            for mode, before, after, diagnostic in mutations:
+                original = target.read_bytes(); text = original.decode()
+                require(text.count(before) == 1, 'readiness mutant unique anchor ' + mode)
+                mutant_primary = None
+                try:
+                    target.write_text(text.replace(before, after, 1))
+                    compile_run(mode + '-red', diagnostic)
+                except BaseException as failure:
+                    mutant_primary = failure
+                    raise
+                finally:
+                    try:
+                        if quiescent():
+                            target.write_bytes(original)
+                    except BaseException as restore_failure:
+                        if mutant_primary is None:
+                            raise
+                        mutant_primary.add_note('restoration refused; retained ' + str(target) + ': ' + repr(restore_failure))
+                require(target.read_bytes() == original, 'readiness restoration refused or failed ' + mode)
+                compile_run(mode + '-restored')
+                print('PASS readiness production mutant compile0/exact assertion1/restored0 ' + mode, flush=True)
+        require(quiescent(), 'readiness owned exit unconfirmed; retain exact inputs')
+        (directory / 'result.json').write_text(json.dumps({'pass': True, 'ime_model_ready_only': True,
+            'expected_old_source_red': expect_red, 'source': identity(target),
+            'source_override': identity(service_source) if service_source is not None else None,
+            'driver': identity(Path(__file__)), 'caller': identity(ROOT / 'tests/fixtures/kotlin-next/NextAppContractTest.java'),
+            'tools': {name: identity(Path(shutil.which(name)).resolve()) for name in ('java', 'javac', 'kotlinc')},
+            'stdlib': identity(stdlib), 'compiles': 1 if expect_red else 7, 'runs': 1 if expect_red else 7,
+            'compile_timeout': 270, 'run_timeout': 45, 'not_android': True}, indent=2) + '\n')
+        print('PASS independent IME readiness ' + ('old-source exact RED' if expect_red else 'green/mutants/restores') + ' evidence ' + str(directory), flush=True)
+    except BaseException as failure:
+        primary = failure
+        raise
+    finally:
+        try:
+            owned.cleanup_workspace(directory, probe=quiescent, remove=False)
+        except BaseException as cleanup_failure:
+            if primary is None:
+                raise
+            primary.add_note('cleanup refused; retained ' + str(directory) + ': ' + repr(cleanup_failure))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument('--green-only', action='store_true')
     modes.add_argument('--compat-only', action='store_true')
     modes.add_argument('--ime-return-only', action='store_true')
+    modes.add_argument('--ime-model-ready-only', action='store_true')
+    parser.add_argument('--evidence-dir', type=Path)
+    parser.add_argument('--ime-service-source', type=Path)
+    parser.add_argument('--expect-ime-model-ready-red', action='store_true')
     args = parser.parse_args()
+    if not args.ime_model_ready_only and (args.evidence_dir is not None or args.ime_service_source is not None or args.expect_ime_model_ready_red):
+        parser.error('readiness evidence/source/red options require --ime-model-ready-only')
+    if args.expect_ime_model_ready_red and args.ime_service_source is None:
+        parser.error('--expect-ime-model-ready-red requires explicit --ime-service-source')
+    if args.ime_model_ready_only:
+        if args.evidence_dir is None:
+            parser.error('--ime-model-ready-only requires exclusive --evidence-dir')
+        ime_model_ready_suite(args.evidence_dir.resolve(),
+                              args.ime_service_source.resolve() if args.ime_service_source is not None else None,
+                              args.expect_ime_model_ready_red)
+        return
     parent = ROOT / ('.work/ime-build/contracts' if args.ime_return_only else '.work/ap5next-r1-fix/contracts')
     parent.mkdir(parents=True, exist_ok=True)
     directory = Path(tempfile.mkdtemp(prefix='run-', dir=parent)) / 'evidence'

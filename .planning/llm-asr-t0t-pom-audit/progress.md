@@ -1,0 +1,3 @@
+# Progress / pom-audit
+
+New scope admitted, exclusive plan initialized; no test/Gradle/network/cache writes/BG. Six-only tracked diff and empty index unchanged. Three finite static paths completed:19exact lock+marker+trustedmodule/jar identities; fixed8.7 bytecode13classes parsed only; original help/config/frozen evidence. All POM direct dependency key/version represented in module variants,5module-only BOM/self extras manual disposition, coroutines published component pointer explained by8.7parser semantics. Actual19selectedsource/variant/URL remainUNKNOWN without trace; no gate relaxation. freeze.py confirms1925tracked/index/old evidence/19cache pairs unchanged. Handoff frozen, all sync terminal, noBG/Gradle/network.

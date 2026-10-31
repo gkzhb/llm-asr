@@ -1,0 +1,3 @@
+# Progress / cache-inspect
+
+Read dependencies skill/map and diagnosing-bugs fully; checked cwd/base/diff/index, no new maintenance changes. Three falsifiable hypotheses posted before probes. No Gradle/test/build/BG/network or cache writes. Completed exact scripts/argv/cwd comparison; no mode-specific cache/repository branches. Finite default-home AGP cache has correct jar+descriptor but no module/pom; version-dir mtime between fast/graph final log times supports intervening directory changes without identifying actor/root cause. Historical child env/cache snapshot absent. collect.py exit0, six candidates and old handoff/summary/protection unchanged. Diagnosis handoff frozen; no BG, no reruns. Stop pending parent legitimate cache-source/preparation authorization.

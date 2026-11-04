@@ -39,8 +39,8 @@ def case(module, *, primary=None, ledger='valid', restore_failure=None, probe_fa
         stdlib = root / 'lib/kotlin-stdlib.jar'
         stdlib.parent.mkdir(); stdlib.write_bytes(b'fake-stdlib')
         target = root / 'evidence/AsrImeService.kt'
-        original = (b'val modelReady = proofReady && residentReady(resident)\n'
-                    b' || !residentReady(graph?.modelAccess()?.residentSnapshot())\n'
+        original = (b' && !busy && wired)\n'
+                    b'service.isInputViewShown && service.permitted()\n'
                     b'else if (busy && controller!!.ownsTask()) session!!.status()\n')
         calls = []
         active = False
@@ -84,8 +84,8 @@ def case(module, *, primary=None, ledger='valid', restore_failure=None, probe_fa
                     raise primary
             if label == 'proof-only-render-red-run' and primary is not None and fail_at_run:
                 raise primary
-            diagnostic = {'proof-only-render': 'verified proof without resident must disable IME record',
-                          'stale-click-admission': 'stale IME record action must not admit pending resident',
+            diagnostic = {'proof-only-render': 'first-use record must be enabled without proof or resident',
+                          'stale-click-admission': 'permission change during prepare must prevent capture',
                           'own-busy-priority': 'owned IME task must retain session progress while resident active'}
             red = label.endswith('-red-run')
             errors = ('java.lang.AssertionError: ' + diagnostic[label[:-8]]).encode() if red else b''

@@ -116,6 +116,22 @@ public final class RuntimeContractTest {
             else if (phase.equals("success") || phase.equals("illegalStop")) check(actual == null && wav != null && wav.length == 3244 && control.tryCommitInference(), "Recorder real PCM/gate result");
             else check(actual instanceof IOException && "麦克风权限不可用，请重新授权后重试".equals(actual.getMessage()) && actual.getCause() == null && actual.getSuppressed().length == 0, "Recorder permission privacy");
         }
+        recorderStartGate();
+    }
+    static void recorderStartGate() throws Exception {
+        for(String mode:Arrays.asList("deny","throw","start")){
+            RecordingControl control=new RecordingControl();AudioRecord.reset("success",control);
+            RuntimeException sentinel=new RuntimeException("start dispatcher sentinel");Throwable seen=null;
+            try{ForegroundRecorder.capture(control,s->{},hardware->{
+                check(AudioRecord.made==1&&AudioRecord.starts==0,"actual recorder init precedes dispatcher");
+                if(mode.equals("throw"))throw sentinel;
+                return mode.equals("start")&&control.start(hardware);
+            });}catch(Throwable t){seen=t;}
+            check(AudioRecord.releases==1&&control.released(),"dispatcher paths worker hardware cleanup acknowledged");
+            if(mode.equals("deny"))check(seen instanceof java.util.concurrent.CancellationException&&AudioRecord.starts==0&&!control.tryCommitInference(),"denied start never records or commits");
+            if(mode.equals("throw"))check(seen==sentinel&&AudioRecord.starts==0,"dispatcher exception propagates with hardware cleanup");
+            if(mode.equals("start"))check(seen==null&&AudioRecord.starts==1&&control.tryCommitInference(),"actual recorder gated start once");
+        }
     }
     static void backend() throws Exception {
         ImeBackend empty = new ImeBackend(null, null, null, new org.llmasr.minimal.model.ModelAccess(null, null));

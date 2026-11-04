@@ -78,8 +78,15 @@ assert 'ModelVerification(manifest, readiness,' in graph
 assert 'startRestore()' in java('ModelManagementController')
 assert '快速恢复已校验证明（不做 SHA）' in java('ModelManagementActivity')
 assert java('AsrOperation').count('modelAccess.requireResidentReady()') == 3
-assert 'backend!!.requireModelReady()' in java('ImeController')
-assert 'repo.verifyAll' not in java('ModelAccess')
+assert 'backend.requireModelReady()' in java('ImeController')
+# Only the explicit user-intent preparation helper may hash; ordinary adapter gates remain light.
+access = java('ModelAccess')
+prepare = access.index('fun prepareForCapture(')
+release = access.index('    fun requestRelease()', prepare)
+assert 'repo.verifyAll' in access[prepare:release]
+assert 'repo.verifyAll' not in access[:prepare] + access[release:]
+assert 'modelAccess.prepareForCapture' in java('ImeBackend')
+assert 'backend!!.prepare(control)' in java('ImeController')
 assert 'access::requireResidentReady' in graph
 assert 'object : InferenceAdapter.Session' in graph
 assert 'registerComponentCallbacks' in graph and 'level == 20' not in graph

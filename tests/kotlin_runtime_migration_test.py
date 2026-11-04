@@ -174,7 +174,7 @@ def prepare(directory):
     return paths
 
 
-def suite(directory, green_only):
+def suite(directory, green_only, mutation_names=None):
     directory.mkdir(parents=True, exist_ok=False)
     sources = prepare(directory)
     owned.write_json(directory / 'inputs.json', [identity(path) for path in sources])
@@ -209,6 +209,8 @@ def suite(directory, green_only):
             ('ImeBackend', 'ime-inference-order', 'val targetInference = inference\n', 'val targetInference = inference!!\n', 'IME null inference must evaluate arguments first'),
         ]
         for owner, mode, before, after, diagnostic in mutations:
+            if mutation_names is not None and mode not in mutation_names:
+                continue
             targets = [path for path in sources if path.stem == owner and path.suffix == '.kt']
             require(len(targets) == 1, 'mutant requires unique real Kotlin owner ' + owner)
             target = targets[0]
@@ -232,8 +234,10 @@ def suite(directory, green_only):
             print('PASS runtime production mutant compile0/external target1/restored0 ' + mode, flush=True)
     owned.write_json(directory / 'result.json', {'pass': True, 'green_only': green_only,
         'driver': identity(Path(__file__)), 'caller': identity(ROOT / 'tests/fixtures/kotlin-runtime/RuntimeContractTest.java'),
-        'mixed_compile_routes': 1 if green_only else 15, 'expected_compiler_commands': 2 if green_only else 30,
-        'java_runs': 1 if green_only else 15, 'compile_timeout': 270, 'java_timeout': 45,
+        'mixed_compile_routes': 1 if green_only else 1 + 2 * (7 if mutation_names is None else len(mutation_names)),
+        'expected_compiler_commands': 2 if green_only else 2 + 4 * (7 if mutation_names is None else len(mutation_names)),
+        'java_runs': 1 if green_only else 1 + 2 * (7 if mutation_names is None else len(mutation_names)),
+        'mutation_names': mutation_names, 'compile_timeout': 270, 'java_timeout': 45,
         'budget_worst_seconds': 1 * 325 if green_only else 15 * 325, 'not_android_runtime': True})
     print('PASS runtime4 migration evidence ' + str(directory), flush=True)
 

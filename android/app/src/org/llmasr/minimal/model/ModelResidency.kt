@@ -76,6 +76,13 @@ class ModelResidency(private val native: Native, private val worker: Worker) : M
                 throw IOException("模型未加载，请到模型管理显式准备")
         }
     }
+    /** Short capture/start admission, ordered with requestRelease by this same monitor.
+     * Caller supplies only the hardware start/control gate: no dispatch wait, file IO or model load. */
+    @Throws(IOException::class)
+    fun startCapture(expected: String, start: () -> Boolean): Boolean = synchronized(monitor) {
+        requireReady(expected)
+        start()
+    }
     /** Lease remains owned until adapter parsing and native cleanup have really returned. */
     @Throws(IOException::class)
     fun enter(expected: String): Any = synchronized(monitor) {

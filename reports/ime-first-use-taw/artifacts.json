@@ -1,0 +1,432 @@
+{
+  "schema": 1,
+  "status": "PARTIAL_BUILD_EVIDENCE_NOT_DELIVERY",
+  "three_apk_receipt": {
+    "path": "build/verification/android-test/run-c2fab362b8b94bf9900b589010af4277/receipt.json",
+    "sha256": "79c92b95a161fe87b2942f67c78dd2f24742d39a6995f249d40a824c262301c1",
+    "bytes": 253659
+  },
+  "packages": {
+    "product": {
+      "apk": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "bytes": 5372553,
+      "sha256": "5574e0afb81e63932eeb4a1d334bf60cd4ed068dbeffcb8c3bfcbb3e443a11be",
+      "metadata": {
+        "path": "android/app/build/outputs/apk/debug/output-metadata.json",
+        "sha256": "6a436665e72cca179545d50650d607f49ceaf965b7f3e76f74bdf68ff3586c8a",
+        "bytes": 406
+      },
+      "metadata_values": {
+        "version": 3,
+        "artifactType": {
+          "type": "APK",
+          "kind": "Directory"
+        },
+        "applicationId": "org.llmasr.minimal",
+        "variantName": "debug",
+        "elements": [
+          {
+            "type": "SINGLE",
+            "filters": [],
+            "attributes": [],
+            "versionCode": 6,
+            "versionName": "0.6-debug",
+            "outputFile": "app-debug.apk"
+          }
+        ],
+        "elementType": "File",
+        "minSdkVersionForDexing": 29
+      },
+      "package": "org.llmasr.minimal",
+      "manifest_version_code": "6",
+      "manifest_version_name": "0.6-debug",
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "class_count": 1417,
+      "compiled_methods": [],
+      "payload_sha256": {
+        "lib/arm64-v8a/libqwen_asr_jni.so": "4ee0b300caa099a7ef0358fdf42901b9f963d5e2be8fb8e330fb5cad55394481",
+        "assets/KOTLIN-LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "assets/KOTLIN-NOTICES.txt": "1f7ee5c77ad608a3c7c2b40503f866c6c6abe9dfe7e0f366bb699897e4833d78",
+        "assets/MNN-LICENSE.txt": "a830d59c4f98d110e0540d0581efada06192ba6e798434307d1794b07a290302",
+        "assets/THIRD-PARTY-NOTICES.txt": "82e25bfef82694517670c4340471e8dffe32bf6d83eab9f2aec3904ba2008e7d",
+        "assets/model-manifest.json": "1435b19c210472fa88d04e471595b4a709264b164a3eae2cec432643eaee380e",
+        "assets/sample.wav": "46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50"
+      },
+      "tool_checks": [
+        {
+          "tool": "apksigner",
+          "exit": 0,
+          "raw_sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "83982ff372f8511bcd93b6ef1689dfdca51dbac4772c250d9f35cbef9349519b"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "d8401caa7b230ffe49ccf26c52353d6a658a558ee78f86ef434762edb4912b4f"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "031b6cbade4e66174c1adc0f1e417281692b898d96ba862973184206ce16e7eb"
+        },
+        {
+          "tool": "zipalign",
+          "exit": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    "host": {
+      "apk": "android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+      "bytes": 2701228,
+      "sha256": "1f612142a37f94e7b25180d3857ac7d8c6db73c646b1ce0d1289b0599a223854",
+      "metadata": {
+        "path": "android/test-host/build/outputs/apk/debug/output-metadata.json",
+        "sha256": "343379a880059c602d4011bfe4cdeaf01ab32648d9c6cd87e07cdf321b722a1a",
+        "bytes": 424
+      },
+      "metadata_values": {
+        "version": 3,
+        "artifactType": {
+          "type": "APK",
+          "kind": "Directory"
+        },
+        "applicationId": "org.llmasr.minimal.testhost",
+        "variantName": "debug",
+        "elements": [
+          {
+            "type": "SINGLE",
+            "filters": [],
+            "attributes": [],
+            "versionCode": 1,
+            "versionName": "p1b-testhost",
+            "outputFile": "test-host-debug.apk"
+          }
+        ],
+        "elementType": "File",
+        "minSdkVersionForDexing": 29
+      },
+      "package": "org.llmasr.minimal.testhost",
+      "manifest_version_code": "1",
+      "manifest_version_name": "p1b-testhost",
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "class_count": 1304,
+      "compiled_methods": [],
+      "payload_sha256": {},
+      "tool_checks": [
+        {
+          "tool": "apksigner",
+          "exit": 0,
+          "raw_sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "26e92f78dc50c6e1617889887112d8b6cb38989feb3a471faf94a631c76b5f65"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "1f0603a9543901e4bdd4f73ad7237e41a485d8a38816b762c5c3f8a66e4fea10"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "b53569ad7515a2124f14ccc92c413fdb1d143c16913b8e0b8126cccd5c29d59b"
+        },
+        {
+          "tool": "zipalign",
+          "exit": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    "test": {
+      "apk": "android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+      "bytes": 66382,
+      "sha256": "4757d34d7d6ca604ecb335fb02431fe32849a3d0fc4ca1793f1c17d0d6e674d8",
+      "metadata": {
+        "path": "android/test-host/build/outputs/apk/androidTest/debug/output-metadata.json",
+        "sha256": "d61475692d336c0ec6039fbf628d2643da9eb90a45d22f5e3e22c225dac60ab8",
+        "bytes": 440
+      },
+      "metadata_values": {
+        "version": 3,
+        "artifactType": {
+          "type": "APK",
+          "kind": "Directory"
+        },
+        "applicationId": "org.llmasr.minimal.testhost.test",
+        "variantName": "debugAndroidTest",
+        "elements": [
+          {
+            "type": "SINGLE",
+            "filters": [],
+            "attributes": [],
+            "versionCode": 0,
+            "versionName": "",
+            "outputFile": "test-host-debug-androidTest.apk"
+          }
+        ],
+        "elementType": "File",
+        "minSdkVersionForDexing": 29
+      },
+      "package": "org.llmasr.minimal.testhost.test",
+      "manifest_version_code": null,
+      "manifest_version_name": null,
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "class_count": 47,
+      "compiled_methods": [
+        "testBadBytesAreSafe",
+        "testCleanupRetainsOwner",
+        "testEnginePayloadAndOrder",
+        "testInputConnectionAndManualInvalidation",
+        "testLateResultIsInvalidated",
+        "testProviderCancellationWaitsForQuery",
+        "testProviderCloseErrorIsPrivate",
+        "testProviderEnumerationClosesCursor",
+        "testProviderQueryErrorIsPrivate",
+        "testReadinessRejectsBeforeLoad",
+        "testReusedBackendQueuedCancellation",
+        "testSafImportCancellationWaitsForOpen",
+        "testSafImportOpenFailureThenRetryPreservesHistory",
+        "testSingleConfirmationAndPassword"
+      ],
+      "payload_sha256": {},
+      "tool_checks": [
+        {
+          "tool": "apksigner",
+          "exit": 0,
+          "raw_sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "b667f8b27da83ede5ec432a784a7a53c968d343e76d3b693e928395059eed436"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "02201047c25c1e19b6c97f250280e3525ff1d97ef887499fb20bb6915d90f04d"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "e0fe21064ad94cbe1e92a2343f0cf693990b60865293aeb562e32d59365cb6f2"
+        },
+        {
+          "tool": "zipalign",
+          "exit": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  },
+  "native": {
+    "path": "android/app/build/native-debug/artifact/verification.json",
+    "sha256": "2b9df06fb829a3f41951dca2dc2f7e52a1b5adb05f9316a32cf31b960dcbd50b",
+    "bytes": 13151,
+    "provenance": {
+      "path": "android/app/build/native-debug/artifact/native-link-provenance.json",
+      "sha256": "f0cf1cc10d60d8af4afdf8f76e252bce27e5d681e113c3309dbebfb32e0b17d3",
+      "bytes": 97061
+    },
+    "native": {
+      "path": "android/app/build/native-debug/artifact/libqwen_asr_jni.so",
+      "sha256": "4ee0b300caa099a7ef0358fdf42901b9f963d5e2be8fb8e330fb5cad55394481",
+      "bytes": 5406248
+    },
+    "jni_artifact_object": {
+      "path": "android/app/build/native-debug/jni-check/asr_jni.o",
+      "sha256": "6186abda6167c1a0ec45bff578e36da749e73fdd5650307293bfa0ff5bfbf9ae",
+      "bytes": 34872
+    },
+    "jni_independent_object": {
+      "path": "build/jni-check/asr_jni.o",
+      "sha256": "6186abda6167c1a0ec45bff578e36da749e73fdd5650307293bfa0ff5bfbf9ae",
+      "bytes": 34872
+    },
+    "generated_header": {
+      "path": "build/jni-check/headers/org_llmasr_minimal_asr_JniNativeTranscription.h",
+      "sha256": "25f81ea737cbb954fe6b547c97b53f8cf4c8191194fd5de71e3892bcf7248261",
+      "bytes": 1650
+    },
+    "mnn_objects": 578,
+    "mnn_objects_pre_post_unchanged": true,
+    "effective_config": {
+      "ANDROID_ABI": "arm64-v8a",
+      "ANDROID_PLATFORM": "android-29",
+      "ANDROID_STL": "c++_static",
+      "CMAKE_BUILD_TYPE": "Release",
+      "MNN_BUILD_LLM": "ON",
+      "MNN_BUILD_LLM_OMNI": "ON",
+      "MNN_BUILD_AUDIO": "ON",
+      "MNN_BUILD_OPENCV": "ON",
+      "MNN_IMGCODECS": "ON",
+      "MNN_LOW_MEMORY": "ON",
+      "MNN_SUPPORT_TRANSFORMER_FUSE": "ON",
+      "MNN_ARM82": "ON",
+      "MNN_KLEIDIAI": "ON",
+      "MNN_KLEIDIAI_DEFAULT_ON": "OFF",
+      "MNN_SME2": "ON",
+      "MNN_OPENCL": "OFF",
+      "MNN_VULKAN": "OFF",
+      "MNN_OPENGL": "OFF",
+      "MNN_CUDA": "OFF",
+      "MNN_NNAPI": "OFF",
+      "MNN_QNN": "OFF",
+      "MNN_INTERNAL": "OFF",
+      "MNN_JNI": "OFF",
+      "MNN_SEP_BUILD": "OFF",
+      "MNN_BUILD_SHARED_LIBS": "ON",
+      "LLM_SUPPORT_HTTP_RESOURCE": "OFF"
+    },
+    "needed": [
+      "liblog.so",
+      "libdl.so",
+      "libm.so",
+      "libandroid.so",
+      "libc.so"
+    ],
+    "elf_loads": [
+      {
+        "offset": 0,
+        "vaddr": 0,
+        "alignment": 16384
+      },
+      {
+        "offset": 1148160,
+        "vaddr": 1164544,
+        "alignment": 16384
+      },
+      {
+        "offset": 5305856,
+        "vaddr": 5338624,
+        "alignment": 16384
+      },
+      {
+        "offset": 5401264,
+        "vaddr": 5450416,
+        "alignment": 16384
+      }
+    ],
+    "native_inputs_match_pre": true
+  },
+  "junit": [
+    {
+      "path": "core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml",
+      "sha256": "1bbfd48cae4467116aa2ebab9d9c28cc70fde9d384e90270d32a0820e5be51fc",
+      "bytes": 9357,
+      "fresh_this_run": false,
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml",
+      "sha256": "8f0546edc3e325c19e533bc6ed732cd33aa127f442c2f1812ce08bf891d2935f",
+      "bytes": 1711,
+      "fresh_this_run": false,
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "android/test-host/build/test-results/testDebugUnitTest/TEST-org.llmasr.minimal.testhost.FixtureContractTest.xml",
+      "sha256": "206a7de075e907cc1357fe3cff77a03fecc90d81b0c94b36f46032a3e28258dd",
+      "bytes": 1155,
+      "fresh_this_run": true,
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "lint": [
+    {
+      "path": "android/app/build/reports/lint-results-debug.xml",
+      "sha256": "2a3051836f20b599d1625e5a5e344692d3e16c0cc435e61abd2b5818ca8abe37",
+      "bytes": 35232,
+      "fresh_this_run": false,
+      "severities": {
+        "Fatal": 0,
+        "Error": 0,
+        "Warning": 24,
+        "Information": 0
+      },
+      "status": "HISTORICAL ONLY; report task NOT RUN"
+    },
+    {
+      "path": "android/asr-runtime/build/reports/lint-results-debug.xml",
+      "sha256": "44df1691d60105bfa0705aa1eb76727fbafcba178295178e831ad1978ed6906d",
+      "bytes": 24852,
+      "fresh_this_run": false,
+      "severities": {
+        "Fatal": 0,
+        "Error": 0,
+        "Warning": 17,
+        "Information": 0
+      },
+      "status": "HISTORICAL ONLY; report task NOT RUN"
+    }
+  ],
+  "checksum": {
+    "phases": {
+      "original": {
+        "exit": 0,
+        "log": {
+          "path": ".work/gradle-m1/dependency-negative-8YEtd3/original.log",
+          "sha256": "d392fb0abcf93f158dd83f552e64c104595dafde1e499a1f86185af5eaa12aed",
+          "bytes": 1132
+        }
+      },
+      "rejection": {
+        "exit": 1,
+        "log": {
+          "path": ".work/gradle-m1/dependency-negative-8YEtd3/rejection.log",
+          "sha256": "15dc186c932f57e3674818a906a11bfc5d4b6ab581cdd1171086370a32c09e45",
+          "bytes": 1705
+        }
+      },
+      "restored": {
+        "exit": 0,
+        "log": {
+          "path": ".work/gradle-m1/dependency-negative-8YEtd3/restored.log",
+          "sha256": "73a455f3c5ecf881d5cf349b04022609db1ba088b680eb39237be87a1a98a2aa",
+          "bytes": 1132
+        }
+      }
+    },
+    "metadata_restored_sha256": "c2ad4bfd7e430df923faa14e4cb3a309b4c1e73bc3adad937d7a15ff55fc219a",
+    "expected": "0000000000000000000000000000000000000000000000000000000000000000",
+    "actual": "9697733a215f2ed42e5b2fc4053484ec832eab29584ebced94d92c91090051c1",
+    "target_diagnostic_in_full": true,
+    "html": [
+      {
+        "path": ".work/gradle-m1/dependency-negative-8YEtd3/build/reports/dependency-verification/at-1793744189180/dependency-verification-report.html",
+        "sha256": "ded796af436d2ece5b0cd381a33762e94c9c467737e6ce4979e4e3635b8f0d7e",
+        "bytes": 8991
+      }
+    ]
+  },
+  "limits": [
+    "Three APK checker passed; independent final product checker task did not run.",
+    "14 instrumentation methods parsed/compiled only; Android runner not run.",
+    "35 core/runtime JUnit and production Lint report XML on disk are historical, not evidence for this run."
+  ]
+}

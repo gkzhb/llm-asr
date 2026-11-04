@@ -128,8 +128,10 @@ public long getLong(String n)throws JSONException{return 0;}}
     'org/llmasr/minimal/MainActivity.java': 'package org.llmasr.minimal; public class MainActivity {}',
     'org/llmasr/minimal/ModelManagementActivity.java': 'package org.llmasr.minimal; public class ModelManagementActivity {}',
     'org/llmasr/minimal/audio/ForegroundRecorder.java': '''package org.llmasr.minimal.audio; public class ForegroundRecorder {
-public static int calls;public interface Progress{void update(double s);} public static byte[] capture(RecordingControl c,Progress p)throws java.io.IOException {
-calls++;c.start(()->{});c.stop();c.captureReleased();PcmWave wave=new PcmWave();wave.append(new short[PcmWave.MIN_SAMPLES],PcmWave.MIN_SAMPLES);return wave.finish();}}
+public static Runnable beforeStart=()->{};public static int starts;public static int calls;public interface Progress{void update(double s);} public static byte[] capture(RecordingControl c,Progress p)throws java.io.IOException {
+return capture(c,p,null);}
+public static byte[] capture(RecordingControl c,Progress p,RecordingControl.StartGate gate)throws java.io.IOException {
+calls++;try{beforeStart.run();boolean started=gate==null?c.start(()->{starts++;}):gate.start(()->{starts++;});if(!started)throw new java.util.concurrent.CancellationException();c.stop();PcmWave wave=new PcmWave();wave.append(new short[PcmWave.MIN_SAMPLES],PcmWave.MIN_SAMPLES);return wave.finish();}finally{c.captureReleased();}}}
 ''',
     'org/llmasr/minimal/transcription/AppReportWriter.java': '''package org.llmasr.minimal.transcription;
 import org.llmasr.minimal.task.RequestContext; import org.llmasr.minimal.asr.NativeResponse;
@@ -162,6 +164,21 @@ def stubs():
     result.pop('org/llmasr/minimal/AppGraph.java')
     result.pop('org/llmasr/minimal/platform/ActivityWindow.java')
     result.update(STUBS)
+    result['android/os/Looper.java'] = '''package android.os;
+public class Looper {private static final Looper MAIN=new Looper();private static final Thread main=Thread.currentThread();
+public static Looper getMainLooper(){return MAIN;}public static Looper myLooper(){return Thread.currentThread()==main?MAIN:null;}}
+'''
+    result['android/os/Handler.java'] = '''package android.os;
+public class Handler {
+public static final java.util.List<Runnable> pending=new java.util.concurrent.CopyOnWriteArrayList<>();
+public static final java.util.concurrent.Semaphore posted=new java.util.concurrent.Semaphore(0);
+public static long delay;public static int delayed;public Handler(Looper l){}
+public boolean post(Runnable r){pending.add(r);posted.release();return true;}
+public boolean postDelayed(Runnable r,long ms){delay=ms;delayed++;return post(r);}
+public void removeCallbacks(Runnable r){pending.removeIf(x->x==r);}
+public static void tick(){if(pending.size()!=1)throw new AssertionError("one pending refresh");pending.remove(0).run();}
+public static void drain(){for(Runnable r:pending.toArray(new Runnable[0]))if(pending.remove(r))r.run();}}
+'''
     result['android/app/Activity.java'] = '''package android.app; public class Activity extends android.content.Context {
 public android.view.Window getWindow(){return new android.view.Window();}
 public android.window.OnBackInvokedDispatcher getOnBackInvokedDispatcher(){return new android.window.OnBackInvokedDispatcher();}
@@ -474,7 +491,7 @@ def ime_return_suite(directory):
             primary.add_note('cleanup refused; retained ' + str(directory) + ': ' + repr(cleanup_failure))
 
 
-def ime_model_ready_suite(directory, service_source=None, expect_red=False):
+def ime_model_ready_suite(directory, service_source=None, expect_red=False, mutation_names=None, transaction_mutants=False):
     """Independent seven-compile/JVM slice; old-source replay is one exact red only."""
     directory.mkdir(parents=True, exist_ok=False)
     sources = prepare(directory)
@@ -526,20 +543,34 @@ def ime_model_ready_suite(directory, service_source=None, expect_red=False):
                     'readiness not exact behavioral red ' + label + '\n' + result.stderr.decode())
 
     mutations = [
-        ('proof-only-render', 'val modelReady = proofReady && residentReady(resident)', 'val modelReady = proofReady',
-         'verified proof without resident must disable IME record'),
-        ('stale-click-admission', ' || !residentReady(graph?.modelAccess()?.residentSnapshot())', '',
-         'stale IME record action must not admit pending resident'),
-        ('own-busy-priority', 'else if (busy && controller!!.ownsTask()) session!!.status()', '',
+        ('proof-only-render', ' && !busy && wired)', ' && !busy && wired && graph?.readiness()?.snapshot()?.ready() == true)',
+         'first-use record must be enabled without proof or resident'),
+        ('stale-click-admission', 'service.isInputViewShown && service.permitted()', 'true',
+         'permission change during prepare must prevent capture'),
+        ('own-busy-priority', 'else if (busy && controller!!.ownsTask()) session!!.status()',
+         'else if (busy && controller!!.ownsTask()) "模型未准备，请打开模型管理。"',
          'owned IME task must retain session progress while resident active'),
     ]
+    if transaction_mutants:
+        mutations = [
+            ('omit-preparation', 'backend!!.prepare(control) { stage -> status(session, rev, stage) }',
+             'backend!! // MUTANT: no explicit prepare', 'automatic SHA durable proof then prepare then capture'),
+            ('repeat-restore', 'val current = try { requireReady(); true } catch (unverified: IOException) { false }',
+             'val current = false', 'valid current proof reuses resident without restore or SHA'),
+            ('premature-capturing', 'phase = Phase.PREPARING', 'phase = Phase.CAPTURING', 'preparing is not capturing'),
+        ]
     primary = None
     try:
         if expect_red:
-            compile_run('old-source-red', 'verified proof without resident must disable IME record')
+            compile_run('old-source-red', 'first-use record must be enabled without proof or resident')
         else:
             compile_run('ready-green')
             for mode, before, after, diagnostic in mutations:
+                if mutation_names is not None and mode not in mutation_names:
+                    continue
+                candidates = [p for p in sources if p.suffix == '.kt' and before in p.read_text()]
+                require(len(candidates) == 1, 'unique production mutation owner ' + mode)
+                target = candidates[0]
                 original = target.read_bytes(); text = original.decode()
                 require(text.count(before) == 1, 'readiness mutant unique anchor ' + mode)
                 mutant_primary = None
@@ -566,7 +597,9 @@ def ime_model_ready_suite(directory, service_source=None, expect_red=False):
             'source_override': identity(service_source) if service_source is not None else None,
             'driver': identity(Path(__file__)), 'caller': identity(ROOT / 'tests/fixtures/kotlin-next/NextAppContractTest.java'),
             'tools': {name: identity(Path(shutil.which(name)).resolve()) for name in ('java', 'javac', 'kotlinc')},
-            'stdlib': identity(stdlib), 'compiles': 1 if expect_red else 7, 'runs': 1 if expect_red else 7,
+            'stdlib': identity(stdlib), 'compiles': 1 if expect_red else 1 + 2 * (3 if mutation_names is None else len(mutation_names)),
+            'runs': 1 if expect_red else 1 + 2 * (3 if mutation_names is None else len(mutation_names)),
+            'mutation_names': mutation_names, 'transaction_mutants': transaction_mutants,
             'compile_timeout': 270, 'run_timeout': 45, 'not_android': True}, indent=2) + '\n')
         print('PASS independent IME readiness ' + ('old-source exact RED' if expect_red else 'green/mutants/restores') + ' evidence ' + str(directory), flush=True)
     except BaseException as failure:
@@ -588,20 +621,23 @@ def main():
     modes.add_argument('--compat-only', action='store_true')
     modes.add_argument('--ime-return-only', action='store_true')
     modes.add_argument('--ime-model-ready-only', action='store_true')
+    modes.add_argument('--ime-first-use-only', action='store_true')
     parser.add_argument('--evidence-dir', type=Path)
     parser.add_argument('--ime-service-source', type=Path)
     parser.add_argument('--expect-ime-model-ready-red', action='store_true')
     args = parser.parse_args()
-    if not args.ime_model_ready_only and (args.evidence_dir is not None or args.ime_service_source is not None or args.expect_ime_model_ready_red):
+    if not (args.ime_model_ready_only or args.ime_first_use_only) and (args.evidence_dir is not None or args.ime_service_source is not None or args.expect_ime_model_ready_red):
         parser.error('readiness evidence/source/red options require --ime-model-ready-only')
     if args.expect_ime_model_ready_red and args.ime_service_source is None:
         parser.error('--expect-ime-model-ready-red requires explicit --ime-service-source')
-    if args.ime_model_ready_only:
+    if args.ime_first_use_only and (args.ime_service_source is not None or args.expect_ime_model_ready_red):
+        parser.error('first-use transaction mode does not accept Service overrides')
+    if args.ime_model_ready_only or args.ime_first_use_only:
         if args.evidence_dir is None:
             parser.error('--ime-model-ready-only requires exclusive --evidence-dir')
         ime_model_ready_suite(args.evidence_dir.resolve(),
                               args.ime_service_source.resolve() if args.ime_service_source is not None else None,
-                              args.expect_ime_model_ready_red)
+                              args.expect_ime_model_ready_red, transaction_mutants=args.ime_first_use_only)
         return
     parent = ROOT / ('.work/ime-build/contracts' if args.ime_return_only else '.work/ap5next-r1-fix/contracts')
     parent.mkdir(parents=True, exist_ok=True)

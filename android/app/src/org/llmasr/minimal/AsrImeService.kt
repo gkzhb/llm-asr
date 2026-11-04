@@ -18,7 +18,11 @@ import org.llmasr.minimal.ime.ImeController
 import org.llmasr.minimal.ime.ImeFieldPolicy
 import org.llmasr.minimal.ime.ImeSession
 import org.llmasr.minimal.model.ModelReadiness
-import org.llmasr.minimal.model.ModelResidency
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicReference
 import org.llmasr.minimal.task.TaskCoordinator
 
 /** Explicit-action voice keyboard; worker listeners retain only a weak target. */
@@ -138,16 +142,9 @@ class AsrImeService : InputMethodService() {
         val info = currentInputEditorInfo
         return alive && visible && session != null && session!!.valid() && info != null && session!!.fieldKey!!.equals(key(info)) && !ImeFieldPolicy.isSensitive(info.inputType, info.imeOptions)
     }
-    private fun residentReady(resident: ModelResidency.Snapshot?): Boolean =
-        resident != null && resident.state == ModelResidency.State.LOADED && !resident.pendingRelease
-    private fun residentHint(resident: ModelResidency.Snapshot?): String = when {
-        resident?.pendingRelease == true || resident?.state == ModelResidency.State.EVICTING -> "模型正在释放或等待收尾，完成后请到模型管理显式准备。"
-        resident?.state == ModelResidency.State.LOADING -> "模型准备中，请等待加载到内存。"
-        else -> "文件已校验；请打开模型管理，点击显式准备模型（加载到内存）。"
-    }
     private fun startRecording() {
-        if (!eligible() || !isInputViewShown || !permitted() || graph?.readiness()?.snapshot()?.ready() != true || !residentReady(graph?.modelAccess()?.residentSnapshot())) { render(); return }
-        controller!!.start(session, language!!.selectedItem.toString()); render()
+        if (!eligible() || !isInputViewShown || !permitted() || graph?.modelAccess() == null) { render(); return }
+        controller!!.start(session, language!!.selectedItem.toString(), CaptureGate(this, session!!)); render()
     }
     private fun commitPreview() {
         if (!eligible() || !isInputViewShown) { invalidate(); render(); return }
@@ -160,21 +157,84 @@ class AsrImeService : InputMethodService() {
     private fun render() {
         if (status == null) return
         val allowed = eligible(); val busy = controller != null && controller!!.busy()
-        val proofReady = graph?.readiness()?.snapshot()?.ready() == true
-        val resident = graph?.modelAccess()?.residentSnapshot()
-        val modelReady = proofReady && residentReady(resident)
+        val wired = graph?.modelAccess() != null
         status!!.setText(if (controller == null) setupError else if (!allowed) "当前会话不可用或为敏感输入框。"
             else if (!permitted()) "请点击设置 / 授权，在主App授予麦克风权限。"
             else if (busy && !controller!!.ownsTask()) "正在等待应用或上一会话处理完成……"
             else if (busy && controller!!.ownsTask()) session!!.status()
-            else if (!proofReady) "模型未准备，请打开模型管理完整校验或快速恢复已校验证明。"
-            else if (!modelReady) residentHint(resident) else session!!.status())
+            else if (!wired) "模型管理不可用，请打开主App检查安装。"
+            else if (session!!.status().isNotEmpty()) session!!.status()
+            else "点击录音将自动恢复 / 校验 / 加载模型，准备完成后才开麦；缺模型请到模型管理导入 / 修复。")
         preview!!.setText(if (allowed) session!!.preview() else "")
-        record!!.setEnabled(allowed && permitted() && !busy && modelReady)
+        record!!.setEnabled(allowed && isInputViewShown && permitted() && !busy && wired)
         stop!!.setEnabled(allowed && controller!!.capturing())
         cancel!!.setEnabled(alive && controller != null)
         commit!!.setEnabled(allowed && !busy && session!!.preview().isNotEmpty())
         language!!.setEnabled(!busy)
+    }
+    /** Main-thread snapshot of the actual editor/visibility/permission after slow preparation.
+     * Weak target only; a timed-out queued gate can never authorize late capture. */
+    private class CaptureGate(service: AsrImeService, private val expected: ImeSession) : ImeController.CaptureIntent {
+        private val target = WeakReference(service)
+        private val main = Handler(Looper.getMainLooper())
+        override fun start(hardwareStart: Runnable): Boolean {
+            fun invoke(): Boolean {
+                val service = target.get()
+                if (service == null || service.session !== expected || !service.eligible() ||
+                    !service.isInputViewShown || !service.permitted()) return false
+                hardwareStart.run() // Same main turn as final platform eligibility; no worker/main snapshot gap.
+                return true
+            }
+            if (Looper.myLooper() == Looper.getMainLooper()) return invoke()
+            val state = AtomicInteger(0) // queued=0, running=1, abandoned=2, complete=3
+            val done = CountDownLatch(1)
+            val result = AtomicBoolean(false)
+            val failure = AtomicReference<Throwable>()
+            val action = Runnable {
+                if (!state.compareAndSet(0, 1)) return@Runnable
+                try { result.set(invoke()) } catch (caught: Throwable) { failure.set(caught) }
+                finally { state.set(3); done.countDown() }
+            }
+            if (!main.post(action)) return false
+            var interrupted = false
+            try {
+                try {
+                    if (!done.await(5, TimeUnit.SECONDS) && state.compareAndSet(0, 2)) return false
+                } catch (caught: InterruptedException) {
+                    interrupted = true
+                    if (state.compareAndSet(0, 2)) return false
+                }
+                // A running hardware start cannot be abandoned: worker retains AudioRecord
+                // and shared owner until its real return, including failure/interrupt paths.
+                while (done.count != 0L) {
+                    try { done.await() } catch (caught: InterruptedException) { interrupted = true }
+                }
+                failure.get()?.let { throw it }
+                return result.get()
+            } finally {
+                main.removeCallbacks(action)
+                if (interrupted) Thread.currentThread().interrupt()
+            }
+        }
+        override fun allowed(): Boolean {
+            val result = AtomicBoolean(false)
+            val done = CountDownLatch(1)
+            val check = Runnable {
+                try {
+                    val service = target.get()
+                    result.set(service != null && service.session === expected && service.eligible() &&
+                        service.isInputViewShown && service.permitted())
+                } finally { done.countDown() }
+            }
+            if (Looper.myLooper() == Looper.getMainLooper()) check.run()
+            else {
+                if (!main.post(check)) return false
+                try { if (!done.await(5, TimeUnit.SECONDS)) return false }
+                catch (interrupted: InterruptedException) { Thread.currentThread().interrupt(); return false }
+                finally { main.removeCallbacks(check) }
+            }
+            return result.get()
+        }
     }
     private class UiRefresh(service: AsrImeService?) : TaskCoordinator.Listener, ModelReadiness.Listener, Runnable {
         private val target = WeakReference(service)

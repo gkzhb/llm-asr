@@ -14,7 +14,10 @@ class ForegroundRecorder {
         @JvmStatic
         @Throws(IOException::class)
         @Suppress("NON_FINAL_MEMBER_IN_OBJECT")
-        open fun capture(control: RecordingControl?, progress: Progress?): ByteArray {
+        open fun capture(control: RecordingControl?, progress: Progress?): ByteArray = capture(control, progress, null)
+        @JvmStatic
+        @Throws(IOException::class)
+        fun capture(control: RecordingControl?, progress: Progress?, startGate: RecordingControl.StartGate?): ByteArray {
             var recorder: AudioRecord? = null
             try {
                 try {
@@ -27,7 +30,9 @@ class ForegroundRecorder {
                         if (recorder.state != AudioRecord.STATE_INITIALIZED || recorder.sampleRate != PcmWave.RATE)
                             throw IOException("麦克风初始化失败或采样率不支持，请关闭其他录音应用")
                         val backend = recorder
-                        if (!control.start { backend.startRecording() }) throw CancellationException("录音已取消")
+                        val hardwareStart = Runnable { backend.startRecording() }
+                        val started = if (startGate == null) control.start(hardwareStart) else startGate.start(hardwareStart)
+                        if (!started) throw CancellationException("录音已取消")
                         if (recorder.recordingState != AudioRecord.RECORDSTATE_RECORDING) throw IOException("无法启动麦克风")
                         val pcm = PcmWave()
                         val buffer = ShortArray(1600)

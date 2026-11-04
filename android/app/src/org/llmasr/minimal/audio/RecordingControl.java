@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
  * Cancellation signals the worker; released() is its hardware-cleanup acknowledgement.
  */
 public final class RecordingControl {
+    /** Dispatcher invoked without this monitor; its callback must use start() for actual start. */
+    public interface StartGate { boolean start(Runnable hardwareStart); }
     private boolean stopped;
     private boolean cancelled;
     private boolean started;

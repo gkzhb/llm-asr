@@ -1,0 +1,853 @@
+{
+  "schema": 1,
+  "status": "FORMAL_FULL_PASS_PENDING_SAFE_COMMIT",
+  "three_apk_receipt": {
+    "path": "build/verification/android-test/run-fcd3a8d4a8d04cb1864cbb42ee41227a/receipt.json",
+    "sha256": "5ff9e61a8eeeb1a159761fb1ccbaaf57b1ce657f0b85b1f75ec9c4af5a6f6975",
+    "bytes": 254142
+  },
+  "product_receipt": {
+    "path": "android/app/build/verification/debug/run-c76ffef58bea463c9e4d4b0d3f48e63b/result.json",
+    "sha256": "088684ba1477bfb1eb6148edd30661ffa963f4eff0b42f6b82b34388665b7b53",
+    "bytes": 1681
+  },
+  "product_receipt_inputs": {
+    "path": "android/app/build/verification/debug/run-c76ffef58bea463c9e4d4b0d3f48e63b/build-input-sha256.json",
+    "sha256": "caaeecc206ef746df079a69d39eafc00df5fabf8d46585d2d3215ee8ca3d8bf5",
+    "bytes": 27739
+  },
+  "packages": {
+    "product": {
+      "apk": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "sha256": "5574e0afb81e63932eeb4a1d334bf60cd4ed068dbeffcb8c3bfcbb3e443a11be",
+      "bytes": 5372553,
+      "metadata": {
+        "path": "android/app/build/outputs/apk/debug/output-metadata.json",
+        "sha256": "6a436665e72cca179545d50650d607f49ceaf965b7f3e76f74bdf68ff3586c8a",
+        "bytes": 406
+      },
+      "metadata_values": {
+        "version": 3,
+        "artifactType": {
+          "type": "APK",
+          "kind": "Directory"
+        },
+        "applicationId": "org.llmasr.minimal",
+        "variantName": "debug",
+        "elements": [
+          {
+            "type": "SINGLE",
+            "filters": [],
+            "attributes": [],
+            "versionCode": 6,
+            "versionName": "0.6-debug",
+            "outputFile": "app-debug.apk"
+          }
+        ],
+        "elementType": "File",
+        "minSdkVersionForDexing": 29
+      },
+      "manifest_attrs": {
+        "versionCode": "6",
+        "versionName": "0.6-debug",
+        "compileSdkVersion": "35",
+        "compileSdkVersionCodename": "15",
+        "package": "org.llmasr.minimal",
+        "platformBuildVersionCode": "35",
+        "platformBuildVersionName": "15"
+      },
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "class_count": 1417,
+      "methods": [],
+      "payload_sha256": {
+        "lib/arm64-v8a/libqwen_asr_jni.so": "4ee0b300caa099a7ef0358fdf42901b9f963d5e2be8fb8e330fb5cad55394481",
+        "assets/KOTLIN-LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "assets/KOTLIN-NOTICES.txt": "1f7ee5c77ad608a3c7c2b40503f866c6c6abe9dfe7e0f366bb699897e4833d78",
+        "assets/MNN-LICENSE.txt": "a830d59c4f98d110e0540d0581efada06192ba6e798434307d1794b07a290302",
+        "assets/THIRD-PARTY-NOTICES.txt": "82e25bfef82694517670c4340471e8dffe32bf6d83eab9f2aec3904ba2008e7d",
+        "assets/model-manifest.json": "1435b19c210472fa88d04e471595b4a709264b164a3eae2cec432643eaee380e",
+        "assets/sample.wav": "46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50"
+      },
+      "pre_post_apk_sha_same": true,
+      "tool_checks": [
+        {
+          "tool": "apksigner",
+          "exit": 0,
+          "raw_sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "83982ff372f8511bcd93b6ef1689dfdca51dbac4772c250d9f35cbef9349519b"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "d8401caa7b230ffe49ccf26c52353d6a658a558ee78f86ef434762edb4912b4f"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "031b6cbade4e66174c1adc0f1e417281692b898d96ba862973184206ce16e7eb"
+        },
+        {
+          "tool": "zipalign",
+          "exit": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    "host": {
+      "apk": "android/test-host/build/outputs/apk/debug/test-host-debug.apk",
+      "sha256": "1f612142a37f94e7b25180d3857ac7d8c6db73c646b1ce0d1289b0599a223854",
+      "bytes": 2701228,
+      "metadata": {
+        "path": "android/test-host/build/outputs/apk/debug/output-metadata.json",
+        "sha256": "343379a880059c602d4011bfe4cdeaf01ab32648d9c6cd87e07cdf321b722a1a",
+        "bytes": 424
+      },
+      "metadata_values": {
+        "version": 3,
+        "artifactType": {
+          "type": "APK",
+          "kind": "Directory"
+        },
+        "applicationId": "org.llmasr.minimal.testhost",
+        "variantName": "debug",
+        "elements": [
+          {
+            "type": "SINGLE",
+            "filters": [],
+            "attributes": [],
+            "versionCode": 1,
+            "versionName": "p1b-testhost",
+            "outputFile": "test-host-debug.apk"
+          }
+        ],
+        "elementType": "File",
+        "minSdkVersionForDexing": 29
+      },
+      "manifest_attrs": {
+        "versionCode": "1",
+        "versionName": "p1b-testhost",
+        "compileSdkVersion": "35",
+        "compileSdkVersionCodename": "15",
+        "package": "org.llmasr.minimal.testhost",
+        "platformBuildVersionCode": "35",
+        "platformBuildVersionName": "15"
+      },
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "class_count": 1304,
+      "methods": [],
+      "payload_sha256": {},
+      "pre_post_apk_sha_same": true,
+      "tool_checks": [
+        {
+          "tool": "apksigner",
+          "exit": 0,
+          "raw_sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "26e92f78dc50c6e1617889887112d8b6cb38989feb3a471faf94a631c76b5f65"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "1f0603a9543901e4bdd4f73ad7237e41a485d8a38816b762c5c3f8a66e4fea10"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "b53569ad7515a2124f14ccc92c413fdb1d143c16913b8e0b8126cccd5c29d59b"
+        },
+        {
+          "tool": "zipalign",
+          "exit": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    "test": {
+      "apk": "android/test-host/build/outputs/apk/androidTest/debug/test-host-debug-androidTest.apk",
+      "sha256": "4757d34d7d6ca604ecb335fb02431fe32849a3d0fc4ca1793f1c17d0d6e674d8",
+      "bytes": 66382,
+      "metadata": {
+        "path": "android/test-host/build/outputs/apk/androidTest/debug/output-metadata.json",
+        "sha256": "d61475692d336c0ec6039fbf628d2643da9eb90a45d22f5e3e22c225dac60ab8",
+        "bytes": 440
+      },
+      "metadata_values": {
+        "version": 3,
+        "artifactType": {
+          "type": "APK",
+          "kind": "Directory"
+        },
+        "applicationId": "org.llmasr.minimal.testhost.test",
+        "variantName": "debugAndroidTest",
+        "elements": [
+          {
+            "type": "SINGLE",
+            "filters": [],
+            "attributes": [],
+            "versionCode": 0,
+            "versionName": "",
+            "outputFile": "test-host-debug-androidTest.apk"
+          }
+        ],
+        "elementType": "File",
+        "minSdkVersionForDexing": 29
+      },
+      "manifest_attrs": {
+        "compileSdkVersion": "35",
+        "compileSdkVersionCodename": "15",
+        "package": "org.llmasr.minimal.testhost.test",
+        "platformBuildVersionCode": "35",
+        "platformBuildVersionName": "15"
+      },
+      "certificates": [
+        "e9365bf6d711776e9ce7f7d994b21a081960b1563717d89987da04688893c16c"
+      ],
+      "v3": true,
+      "class_count": 47,
+      "methods": [
+        "testBadBytesAreSafe",
+        "testCleanupRetainsOwner",
+        "testEnginePayloadAndOrder",
+        "testInputConnectionAndManualInvalidation",
+        "testLateResultIsInvalidated",
+        "testProviderCancellationWaitsForQuery",
+        "testProviderCloseErrorIsPrivate",
+        "testProviderEnumerationClosesCursor",
+        "testProviderQueryErrorIsPrivate",
+        "testReadinessRejectsBeforeLoad",
+        "testReusedBackendQueuedCancellation",
+        "testSafImportCancellationWaitsForOpen",
+        "testSafImportOpenFailureThenRetryPreservesHistory",
+        "testSingleConfirmationAndPassword"
+      ],
+      "payload_sha256": {},
+      "pre_post_apk_sha_same": true,
+      "tool_checks": [
+        {
+          "tool": "apksigner",
+          "exit": 0,
+          "raw_sha256": "f447fe7c6b8d34462979bb84c8383a7846517344eebcd8968e49aa087b9f68d9"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "b667f8b27da83ede5ec432a784a7a53c968d343e76d3b693e928395059eed436"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "02201047c25c1e19b6c97f250280e3525ff1d97ef887499fb20bb6915d90f04d"
+        },
+        {
+          "tool": "aapt2",
+          "exit": 0,
+          "raw_sha256": "e0fe21064ad94cbe1e92a2343f0cf693990b60865293aeb562e32d59365cb6f2"
+        },
+        {
+          "tool": "zipalign",
+          "exit": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  },
+  "junit": [
+    {
+      "path": "core/build/test-results/test/TEST-CoreRegressionJUnitTest.xml",
+      "sha256": "af2f86e9284e198a613ffbbe83a2a29385b3ae700d4b424cabc03b1ff97063f4",
+      "bytes": 9355,
+      "fresh": true,
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "runtimeLogErrorIdentity",
+        "modelReadiness",
+        "imeSessionPrivacy",
+        "reviewWindow",
+        "reviewPublication",
+        "reviewDeletion",
+        "reviewLiveDeletion",
+        "resultFiles",
+        "modelPageHelpers",
+        "recordingRaces",
+        "kotlinJavaAbi",
+        "logExportGenerations",
+        "modelNotifications",
+        "admissionOwnerBoundary",
+        "privateModelRoot",
+        "reviewPlanning",
+        "modelOperationControl",
+        "modelWhitelistDeletion",
+        "reviewBoundary",
+        "modelRepository",
+        "runtimeLogCore",
+        "nativeResponseProtocol",
+        "modelCancelCleanup",
+        "textExportFatalIdentity",
+        "providerErrorAndStreamBoundary",
+        "requestRunner",
+        "reviewTerminal",
+        "textExport",
+        "partRecoveryProductionMutant",
+        "waveAndRecordingProtocol",
+        "modelManagementController",
+        "textExportSafety",
+        "reviewHistory",
+        "taskCoordinator"
+      ]
+    },
+    {
+      "path": "android/asr-runtime/build/test-results/testDebugUnitTest/TEST-RuntimeRegressionJUnitTest.xml",
+      "sha256": "11902ff80c575f7a96a55fa9fcee781f3f16e9974972081a8569294b0d84a9d7",
+      "bytes": 1711,
+      "fresh": true,
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "inferenceAdapterAndJniConstruction"
+      ]
+    },
+    {
+      "path": "android/test-host/build/test-results/testDebugUnitTest/TEST-org.llmasr.minimal.testhost.FixtureContractTest.xml",
+      "sha256": "0d06363018c2d51de4eee7f9dd1cf8d868ff16664bb8b996e31f9620a3eee009",
+      "bytes": 1153,
+      "fresh": true,
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "methods": [
+        "badBytesAreSafe",
+        "enginePayloadAndOrder",
+        "lateResultIsInvalidated",
+        "singleConfirmationAndPassword",
+        "cleanupRetainsOwner",
+        "readinessRejectsBeforeLoad",
+        "reusedBackendQueuedCancellation"
+      ]
+    }
+  ],
+  "junit_total": 42,
+  "production_lint": [
+    {
+      "path": "android/app/build/reports/lint-results-debug.xml",
+      "sha256": "2a3051836f20b599d1625e5a5e344692d3e16c0cc435e61abd2b5818ca8abe37",
+      "bytes": 35232,
+      "module": "app",
+      "fresh": true,
+      "error": 0,
+      "fatal": 0,
+      "warnings": 24,
+      "warning_categories": {
+        "UnusedAttribute": 3,
+        "GradleDependency": 1,
+        "ChromeOsAbiSupport": 1,
+        "DataExtractionRules": 1,
+        "UsableSpace": 2,
+        "MissingApplicationIcon": 1,
+        "SetTextI18n": 15
+      }
+    },
+    {
+      "path": "android/asr-runtime/build/reports/lint-results-debug.xml",
+      "sha256": "44df1691d60105bfa0705aa1eb76727fbafcba178295178e831ad1978ed6906d",
+      "bytes": 24852,
+      "module": "runtime",
+      "fresh": true,
+      "error": 0,
+      "fatal": 0,
+      "warnings": 17,
+      "warning_categories": {
+        "UsableSpace": 2,
+        "SetTextI18n": 15
+      }
+    }
+  ],
+  "native": {
+    "verification": {
+      "path": "android/app/build/native-debug/artifact/verification.json",
+      "sha256": "2b9df06fb829a3f41951dca2dc2f7e52a1b5adb05f9316a32cf31b960dcbd50b",
+      "bytes": 13151
+    },
+    "provenance": {
+      "path": "android/app/build/native-debug/artifact/native-link-provenance.json",
+      "sha256": "f0cf1cc10d60d8af4afdf8f76e252bce27e5d681e113c3309dbebfb32e0b17d3",
+      "bytes": 97061
+    },
+    "native": {
+      "path": "android/app/build/native-debug/artifact/libqwen_asr_jni.so",
+      "sha256": "4ee0b300caa099a7ef0358fdf42901b9f963d5e2be8fb8e330fb5cad55394481",
+      "bytes": 5406248
+    },
+    "jni_build_object": {
+      "path": "android/app/build/native-debug/jni-check/asr_jni.o",
+      "sha256": "6186abda6167c1a0ec45bff578e36da749e73fdd5650307293bfa0ff5bfbf9ae",
+      "bytes": 34872
+    },
+    "jni_independent_object": {
+      "path": "build/jni-check/asr_jni.o",
+      "sha256": "6186abda6167c1a0ec45bff578e36da749e73fdd5650307293bfa0ff5bfbf9ae",
+      "bytes": 34872
+    },
+    "generated_header": {
+      "path": "build/jni-check/headers/org_llmasr_minimal_asr_JniNativeTranscription.h",
+      "sha256": "25f81ea737cbb954fe6b547c97b53f8cf4c8191194fd5de71e3892bcf7248261",
+      "bytes": 1650
+    },
+    "mnn_object_count": 578,
+    "all_mnn_objects_sha_pre_post_equal": true,
+    "native_baseline_sha_equal": true,
+    "effective_config": {
+      "ANDROID_ABI": "arm64-v8a",
+      "ANDROID_PLATFORM": "android-29",
+      "ANDROID_STL": "c++_static",
+      "CMAKE_BUILD_TYPE": "Release",
+      "MNN_BUILD_LLM": "ON",
+      "MNN_BUILD_LLM_OMNI": "ON",
+      "MNN_BUILD_AUDIO": "ON",
+      "MNN_BUILD_OPENCV": "ON",
+      "MNN_IMGCODECS": "ON",
+      "MNN_LOW_MEMORY": "ON",
+      "MNN_SUPPORT_TRANSFORMER_FUSE": "ON",
+      "MNN_ARM82": "ON",
+      "MNN_KLEIDIAI": "ON",
+      "MNN_KLEIDIAI_DEFAULT_ON": "OFF",
+      "MNN_SME2": "ON",
+      "MNN_OPENCL": "OFF",
+      "MNN_VULKAN": "OFF",
+      "MNN_OPENGL": "OFF",
+      "MNN_CUDA": "OFF",
+      "MNN_NNAPI": "OFF",
+      "MNN_QNN": "OFF",
+      "MNN_INTERNAL": "OFF",
+      "MNN_JNI": "OFF",
+      "MNN_SEP_BUILD": "OFF",
+      "MNN_BUILD_SHARED_LIBS": "ON",
+      "LLM_SUPPORT_HTTP_RESOURCE": "OFF"
+    },
+    "needed": [
+      "liblog.so",
+      "libdl.so",
+      "libm.so",
+      "libandroid.so",
+      "libc.so"
+    ],
+    "elf_loads": [
+      {
+        "offset": 0,
+        "vaddr": 0,
+        "alignment": 16384
+      },
+      {
+        "offset": 1148160,
+        "vaddr": 1164544,
+        "alignment": 16384
+      },
+      {
+        "offset": 5305856,
+        "vaddr": 5338624,
+        "alignment": 16384
+      },
+      {
+        "offset": 5401264,
+        "vaddr": 5450416,
+        "alignment": 16384
+      }
+    ],
+    "external_tools": {
+      "compiler_sha256": "38eb002ec2af098c20be190e8dfd6f46551856f138599dbc7fcc5eae1225cd4e",
+      "readelf_sha256": "773606b7a23263021e1b19b266c4d363a73e5bec0279c9cf60e39b4a0b4ac7f9",
+      "ndk_source_properties_sha256": "c00aa236fdb205e9be9edd9e2169763e48aca52735efff4e16f34205d49783b5",
+      "build_tools": {
+        "cmake": {
+          "sha256": "25fef9dd619afd8a2cd352b7d24ad64e85b96e8aa3943f0a3810c036c7540965",
+          "version": "cmake version 4.4.2"
+        },
+        "ninja": {
+          "sha256": "ca5d70f5c44a69e36619509dba24b0917c374cafc21173e390801f1235044bd9",
+          "version": "1.13.2"
+        }
+      }
+    }
+  },
+  "checksum": {
+    "phases": {
+      "original": {
+        "exit": 0,
+        "log": {
+          "path": ".work/gradle-m1/dependency-negative-Vdj3hX/original.log",
+          "sha256": "be05e270729bd504b484e19b4ed1c9a4bcd3f673877b993aca8bca1f3de60281",
+          "bytes": 1132
+        }
+      },
+      "rejection": {
+        "exit": 1,
+        "log": {
+          "path": ".work/gradle-m1/dependency-negative-Vdj3hX/rejection.log",
+          "sha256": "0265c7dfd31d7c38daacfa4cece16701b7bdc486691eeca2c14ee0dba2adfc29",
+          "bytes": 1705
+        }
+      },
+      "restored": {
+        "exit": 0,
+        "log": {
+          "path": ".work/gradle-m1/dependency-negative-Vdj3hX/restored.log",
+          "sha256": "73a455f3c5ecf881d5cf349b04022609db1ba088b680eb39237be87a1a98a2aa",
+          "bytes": 1132
+        }
+      }
+    },
+    "html": [
+      {
+        "path": ".work/gradle-m1/dependency-negative-Vdj3hX/build/reports/dependency-verification/at-1793819049175/dependency-verification-report.html",
+        "sha256": "72c65f9a8b00af2e46397a1da286170995182e144118ebec94f045e181856572",
+        "bytes": 8991
+      }
+    ],
+    "restored_metadata_sha256": "c2ad4bfd7e430df923faa14e4cb3a309b4c1e73bc3adad937d7a15ff55fc219a",
+    "expected": "0000000000000000000000000000000000000000000000000000000000000000",
+    "actual": "9697733a215f2ed42e5b2fc4053484ec832eab29584ebced94d92c91090051c1"
+  },
+  "isolated_lint": {
+    "receipt": {
+      "path": ".work/gradle-lint-negative/run-xb5c13ik/result.json",
+      "sha256": "03e2782e2de1b98ee8a02dbecbc97b501538bb090fc1ac1f9dd21350e01a3e99",
+      "bytes": 2246
+    },
+    "details": {
+      "run": "run-xb5c13ik",
+      "records": [
+        {
+          "phase": "green0",
+          "exit": 0,
+          "source_sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+          "xml_sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+          "log_sha256": "43a658221f96c47e095e4c6222a6a3a60775f2a23f87645df0af82d93f884a28"
+        },
+        {
+          "phase": "red",
+          "exit": 1,
+          "source_sha256": "7f0cfde58056dadfe1643c9b6e4331103c71044822d1a70032e591da06f96509",
+          "xml_sha256": "2e98f1853ceb4b875bfa8395440aa620a14534fdada7cdc7403a52bbcfbddcb1",
+          "log_sha256": "b5c14393f988da566b28fcbb266c84cdc98cd841de2820f87acab13c23561201"
+        },
+        {
+          "phase": "green1",
+          "exit": 0,
+          "source_sha256": "5bbf7fbd366281c5f1741965b495938f56d256bc658a6c41684e0ab05cc07242",
+          "xml_sha256": "5cc633b3b87cc900d523ed067adf00c89ca6cc10afc544acd3e837e4f37ffdf2",
+          "log_sha256": "381144a384443626a71d3ed2be88f9c75d49739d48b27b954a973bc02bc754a1"
+        }
+      ],
+      "negative_records": [
+        {
+          "phase": "identity-artifact-negative",
+          "exit": 1,
+          "log_sha256": "8f3e427336f5b5ea0658e34dc9f49269e71aed7a19117b8b4dd4eeb89ab81983"
+        },
+        {
+          "phase": "identity-edge-negative",
+          "exit": 1,
+          "log_sha256": "972f1f73ae8c93f46acb7d3307af1f3bb8f677add768577f2fbe00c88e9d6ea3"
+        },
+        {
+          "phase": "classpath-missing-negative",
+          "exit": 1,
+          "log_sha256": "977662f165009b7c2723ca18aaff8979dca483b378caa7cc74b56ba19e049b3e"
+        },
+        {
+          "phase": "classpath-extra-negative",
+          "exit": 1,
+          "log_sha256": "f850ddefc67a6907153898643225b7b6d7690e32c660834e19b49a28acfd6b96"
+        },
+        {
+          "phase": "classpath-replacement-negative",
+          "exit": 1,
+          "log_sha256": "2f7408328be0360b2c81c960074469178a156358950b9637b8fa271092e1ea42"
+        },
+        {
+          "phase": "classpath-restore",
+          "exit": 0,
+          "log_sha256": "b92c4453e0d1b8f3a9b6160e38d58c42052eb3678db0dcc4e9b6d6dffd085ab1"
+        }
+      ],
+      "filecollection_negative_semantics": "Ordinary Gradle task invokes same production validator closure with real passed Configuration; marker restore is not a typed/default AGP Lint worker",
+      "device_verified": false,
+      "main_lint_executed": false
+    }
+  },
+  "fixture": {
+    "receipt": {
+      "path": ".work/p1b-build/2b/behavior-c2ldp8v8/result.json",
+      "sha256": "dde6e0ac101dfcb3f622c06456f78d582ed409c60e7dbcd88daf8967febac02c",
+      "bytes": 18869
+    },
+    "phases": [
+      {
+        "name": "green-initial",
+        "exit": 0,
+        "log": ".work/p1b-build/2b/behavior-c2ldp8v8/green-initial.log",
+        "log_sha256": "3c07fdb250f136e166b6229365ad765f4537231d2aa2732615b5b27a46ef6a5d",
+        "port_sha256": "089898c434c859b2810869315bbb73d948e7df71b51174a7dc10248b156d44ca",
+        "xml": {
+          "methods": [
+            "badBytesAreSafe",
+            "cleanupRetainsOwner",
+            "enginePayloadAndOrder",
+            "lateResultIsInvalidated",
+            "readinessRejectsBeforeLoad",
+            "reusedBackendQueuedCancellation",
+            "singleConfirmationAndPassword"
+          ],
+          "tests": 7,
+          "failures": [],
+          "sha256": "f7ed791ecbf03d8a687c9bc291be905a054b6c6dc713771242368f5ad4a58356"
+        }
+      },
+      {
+        "name": "red-payload",
+        "exit": 1,
+        "log": ".work/p1b-build/2b/behavior-c2ldp8v8/red-payload.log",
+        "log_sha256": "e2fe2704f57a19ce58116826469297e102f8a1d82508457e27c8628c844e0ceb",
+        "port_sha256": "ef114b783970754003f1c3a26e02e01254972f1f00311715ccce0fe8d8a29c73",
+        "xml": {
+          "methods": [
+            "badBytesAreSafe",
+            "cleanupRetainsOwner",
+            "enginePayloadAndOrder",
+            "lateResultIsInvalidated",
+            "readinessRejectsBeforeLoad",
+            "reusedBackendQueuedCancellation",
+            "singleConfirmationAndPassword"
+          ],
+          "tests": 7,
+          "failures": [
+            "enginePayloadAndOrder"
+          ],
+          "sha256": "44bbbba4e30c201a910ef1bcad0236fa128042489a422539b95b5e7d4df8f5fd"
+        }
+      },
+      {
+        "name": "green-payload-restored",
+        "exit": 0,
+        "log": ".work/p1b-build/2b/behavior-c2ldp8v8/green-payload-restored.log",
+        "log_sha256": "c9b463cd768a7d8b76e2c2f585110f7163f676fc71f91674b8fd4676049824b4",
+        "port_sha256": "089898c434c859b2810869315bbb73d948e7df71b51174a7dc10248b156d44ca",
+        "xml": {
+          "methods": [
+            "badBytesAreSafe",
+            "cleanupRetainsOwner",
+            "enginePayloadAndOrder",
+            "lateResultIsInvalidated",
+            "readinessRejectsBeforeLoad",
+            "reusedBackendQueuedCancellation",
+            "singleConfirmationAndPassword"
+          ],
+          "tests": 7,
+          "failures": [],
+          "sha256": "3355031b2d90921b162f6434b7891664dbe73d5fcb61a41b061acf9eb6f2c462"
+        }
+      },
+      {
+        "name": "red-cleanup",
+        "exit": 1,
+        "log": ".work/p1b-build/2b/behavior-c2ldp8v8/red-cleanup.log",
+        "log_sha256": "f41d0b40c6a9ac50895a9a202751d6c06bfb65cfd913ef99dbe1d86255d688d7",
+        "port_sha256": "71c22feede700c1c673fc3067b87eeaaf03cd434aca2504322d4249b53fb2750",
+        "xml": {
+          "methods": [
+            "badBytesAreSafe",
+            "cleanupRetainsOwner",
+            "enginePayloadAndOrder",
+            "lateResultIsInvalidated",
+            "readinessRejectsBeforeLoad",
+            "reusedBackendQueuedCancellation",
+            "singleConfirmationAndPassword"
+          ],
+          "tests": 7,
+          "failures": [
+            "cleanupRetainsOwner"
+          ],
+          "sha256": "943a83676f1596e9030be1e9b1abefd3c073988e0c01248569ea3906eb52943e"
+        }
+      },
+      {
+        "name": "green-final",
+        "exit": 0,
+        "log": ".work/p1b-build/2b/behavior-c2ldp8v8/green-final.log",
+        "log_sha256": "c9b463cd768a7d8b76e2c2f585110f7163f676fc71f91674b8fd4676049824b4",
+        "port_sha256": "089898c434c859b2810869315bbb73d948e7df71b51174a7dc10248b156d44ca",
+        "xml": {
+          "methods": [
+            "badBytesAreSafe",
+            "cleanupRetainsOwner",
+            "enginePayloadAndOrder",
+            "lateResultIsInvalidated",
+            "readinessRejectsBeforeLoad",
+            "reusedBackendQueuedCancellation",
+            "singleConfirmationAndPassword"
+          ],
+          "tests": 7,
+          "failures": [],
+          "sha256": "1042345b21a6075490610dd46befc218ee2f667c345dab8456ba695a94de3ad8"
+        }
+      }
+    ]
+  },
+  "cache": {
+    "pre_audit": {
+      "path": ".work/taw-full-rerun/pre-cache-audit.json",
+      "sha256": "85fe54a1901b68f784741d835be327e82f3961ac151c8a24b3133b8892de614f",
+      "bytes": 6933
+    },
+    "post_audit": {
+      "path": ".work/taw-full-rerun/post-cache-audit.json",
+      "sha256": "bbd712db207f746e2f8282762a51dd7296e5ad507acf60c0a1a20a939f2aa4fd",
+      "bytes": 6934
+    },
+    "five_artifacts": [
+      {
+        "component": "junit:junit:4.13.2",
+        "artifact": "junit-4.13.2.jar",
+        "approved_sha256": "8e495b634469d64fb8acfa3495a065cbacc8a0fff55ce1e31007be4c16dc57d3",
+        "expected_bytes": 384581,
+        "matches": [
+          {
+            "path": ".cache/gradle-user-home/caches/modules-2/files-2.1/junit/junit/4.13.2/8ac9e16d933b6fb43bc7f576336b8f4d7eb5ba12/junit-4.13.2.jar",
+            "sha256": "8e495b634469d64fb8acfa3495a065cbacc8a0fff55ce1e31007be4c16dc57d3",
+            "bytes": 384581,
+            "mtime_ns": 1791135479310539427,
+            "mode": "0o644"
+          }
+        ]
+      },
+      {
+        "component": "junit:junit:4.13.2",
+        "artifact": "junit-4.13.2.pom",
+        "approved_sha256": "569b6977ee4603c965c1c46c3058fa6e969291b0160eb6964dd092cd89eadd94",
+        "expected_bytes": 27018,
+        "matches": [
+          {
+            "path": ".cache/gradle-user-home/caches/modules-2/files-2.1/junit/junit/4.13.2/73bc5be628edeb297a1caf421a5a2e494798b92f/junit-4.13.2.pom",
+            "sha256": "569b6977ee4603c965c1c46c3058fa6e969291b0160eb6964dd092cd89eadd94",
+            "bytes": 27018,
+            "mtime_ns": 1793818337947718772,
+            "mode": "0o644"
+          }
+        ]
+      },
+      {
+        "component": "org.hamcrest:hamcrest-core:1.3",
+        "artifact": "hamcrest-core-1.3.jar",
+        "approved_sha256": "66fdef91e9739348df7a096aa384a5685f4e875584cce89386a7a47251c4d8e9",
+        "expected_bytes": 45024,
+        "matches": [
+          {
+            "path": ".cache/gradle-user-home/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar",
+            "sha256": "66fdef91e9739348df7a096aa384a5685f4e875584cce89386a7a47251c4d8e9",
+            "bytes": 45024,
+            "mtime_ns": 1791135479573543429,
+            "mode": "0o644"
+          }
+        ]
+      },
+      {
+        "component": "org.hamcrest:hamcrest-core:1.3",
+        "artifact": "hamcrest-core-1.3.pom",
+        "approved_sha256": "fde386a7905173a1b103de6ab820727584b50d0e32282e2797787c20a64ffa93",
+        "expected_bytes": 766,
+        "matches": [
+          {
+            "path": ".cache/gradle-user-home/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/872e413497b906e7c9fa85ccc96046c5d1ef7ece/hamcrest-core-1.3.pom",
+            "sha256": "fde386a7905173a1b103de6ab820727584b50d0e32282e2797787c20a64ffa93",
+            "bytes": 766,
+            "mtime_ns": 1793818338328081912,
+            "mode": "0o644"
+          }
+        ]
+      },
+      {
+        "component": "org.hamcrest:hamcrest-parent:1.3",
+        "artifact": "hamcrest-parent-1.3.pom",
+        "approved_sha256": "6d535f94efb663bdb682c9f27a50335394688009642ba7a9677504bc1be4129b",
+        "expected_bytes": 1972,
+        "matches": [
+          {
+            "path": ".cache/gradle-user-home/caches/modules-2/files-2.1/org.hamcrest/hamcrest-parent/1.3/80391bd32bfa4837a15215d5e9f07c60555c379a/hamcrest-parent-1.3.pom",
+            "sha256": "6d535f94efb663bdb682c9f27a50335394688009642ba7a9677504bc1be4129b",
+            "bytes": 1972,
+            "mtime_ns": 1793818338582656382,
+            "mode": "0o644"
+          }
+        ]
+      }
+    ],
+    "all_five_exact_same_sha_size_mode_mtime_pre_post": true,
+    "checksum_daemons": [
+      {
+        "path": ".cache/gradle-user-home/daemon/8.7/daemon-2857905.out.log",
+        "sha256": "e076a199b49eaeda152a1023daaf8999bfbe837a5c346380952ea83bdebdb39c",
+        "bytes": 28771,
+        "pid": 2857905,
+        "first_line_timestamp": "2026-11-05T03:04:00.594+0800",
+        "last_line_timestamp": "2026-11-05T03:04:07.054+0800",
+        "cleanup_lines": [
+          "2026-11-05T03:04:07.023+0800 [DEBUG] [org.gradle.launcher.daemon.server.exec.CleanUpVirtualFileSystemAfterBuild] Cleaning virtual file system after build finished"
+        ],
+        "lru_or_file_deletion_lines": []
+      },
+      {
+        "path": ".cache/gradle-user-home/daemon/8.7/daemon-2858018.out.log",
+        "sha256": "d87bfaf8b13a97fbc26f3582b75c5baff116067e6de5b76224cc957956c861b0",
+        "bytes": 29171,
+        "pid": 2858018,
+        "first_line_timestamp": "2026-11-05T03:04:08.316+0800",
+        "last_line_timestamp": "2026-11-05T03:04:10.684+0800",
+        "cleanup_lines": [
+          "2026-11-05T03:04:10.647+0800 [DEBUG] [org.gradle.launcher.daemon.server.exec.CleanUpVirtualFileSystemAfterBuild] Cleaning virtual file system after build finished"
+        ],
+        "lru_or_file_deletion_lines": []
+      },
+      {
+        "path": ".cache/gradle-user-home/daemon/8.7/daemon-2858123.out.log",
+        "sha256": "e5896d6eff396354556deec5983c4e0c690539eb59d2cae70b7fdf575225a11a",
+        "bytes": 28771,
+        "pid": 2858123,
+        "first_line_timestamp": "2026-11-05T03:04:11.982+0800",
+        "last_line_timestamp": "2026-11-05T03:04:17.458+0800",
+        "cleanup_lines": [
+          "2026-11-05T03:04:17.446+0800 [DEBUG] [org.gradle.launcher.daemon.server.exec.CleanUpVirtualFileSystemAfterBuild] Cleaning virtual file system after build finished"
+        ],
+        "lru_or_file_deletion_lines": []
+      }
+    ],
+    "availability_boundary": "Post audit after formal exit and all checksum-child cleanup; no mid-run polling/probe or continuous absence trace. Successful later runtime Lint/JUnit proves resolution at use.",
+    "old_failed_evidence_all_sha_unchanged": true
+  },
+  "not_run": [
+    "Android runner discovery/execution",
+    "install/device/system IME/SAF/Binder/grant",
+    "microphone/private inputs",
+    "model computation/ASR/latency/PSS",
+    "4KiB/16KiB runtime",
+    "empty-cache/hermetic/remote CI/release/R8",
+    "stage/commit/push"
+  ]
+}

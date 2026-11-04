@@ -132,6 +132,14 @@ timeout 30 python3 -O tests/ime_readiness_cleanup_test.py
 ime_ready_evidence=$(mktemp -d "$root/.work/build/ime-model-ready-XXXXXX")
 timeout 2400 python3 -B tests/kotlin_next_migration_test.py --ime-model-ready-only --evidence-dir "$ime_ready_evidence/ordinary"
 timeout 2400 python3 -O tests/kotlin_next_migration_test.py --ime-model-ready-only --evidence-dir "$ime_ready_evidence/optimized"
+# Independent first-use transaction mutants; original host/default/return/readiness budgets unchanged.
+ime_first_evidence=$(mktemp -d "$root/.work/build/ime-first-use-XXXXXX")
+timeout 2400 python3 -B tests/kotlin_next_migration_test.py --ime-first-use-only --evidence-dir "$ime_first_evidence/ordinary"
+timeout 2400 python3 -O tests/kotlin_next_migration_test.py --ime-first-use-only --evidence-dir "$ime_first_evidence/optimized"
+# Actual hardware-start R1/R2 arbitration: independent five-compilation route, legacy budgets unchanged.
+ime_start_evidence=$(mktemp -d "$root/.work/build/ime-start-XXXXXX")
+timeout 2400 python3 -B tests/ime_start_boundary_test.py --evidence-dir "$ime_start_evidence/ordinary"
+timeout 2400 python3 -O tests/ime_start_boundary_test.py --evidence-dir "$ime_start_evidence/optimized"
 # Independent verification: each mode <=9 mixed compile(180s), <=20 JVM(30s), unchanged legacy gates.
 verification_evidence=$(mktemp -d .work/model-verification-contracts-XXXXXX)
 timeout 2400 python3 -B tests/model_verification_contract_test.py --contracts "$classes" --evidence-dir "$verification_evidence/ordinary"

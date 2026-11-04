@@ -1,19 +1,24 @@
 # P1-A 本地分层验证契约
 
-## llm-asr-t0t IME 文件证明 / 内存准备 targeted
+## llm-asr-taw IME 首次使用 prepare-before-capture targeted
 
-IME 录音按钮与点击分别重取无 IO 快照：文件 proof READY、resident LOADED 且无 pending release 才可录音。EMPTY 提示去模型管理显式准备到内存，LOADING/释放中禁录；own-busy ACTIVE 保留会话进度与停止/取消，foreign busy、敏感框及权限优先级不变。释放不清已有预览，手动确认不受 resident gate 限制；不自动 prepare/capture/commit、不增加 listener/poll，worker 最终 resident 准入原样保持。
+本批替代 t0t 的“必须先手动 prepare 才可点击”体验门槛，保留同名独立测试入口及原预算。按钮只检查当前会话 / 可见性 / 权限 / wiring / 共享 busy；点击在唯一 worker owner 内轻复核当前 proof，否则 restoreFast，再按需可取消全 SHA 并复用既有持久 commit/revoke；随后 prepare/reuse 单 resident，main-thread 最终复核字段 / 可见性 / 权限 / 会话意图，再由 RecordingControl 仲裁实际 start。PREPARING 不启用停止，可丢弃；native 加载取消等待真实返回，不硬中止、不嵌套管理 submit。缺文件 / 坏 hash 零 capture，预览仍手动提交，adapter 最终 gate 保留。
 
 新增独立模式，必须使用全新独占 evidence 子目录：
 
 ```bash
 bash scripts/nix-env.sh apk --cache-only timeout 2400 python3 -B tests/kotlin_next_migration_test.py --ime-model-ready-only --evidence-dir "$evidence/ordinary"
 bash scripts/nix-env.sh apk --cache-only timeout 2400 python3 -O tests/kotlin_next_migration_test.py --ime-model-ready-only --evidence-dir "$evidence/optimized"
+# 独立事务负例：遗漏准备、有效 proof 反复 restore、准备阶段误报 capturing。
+bash scripts/nix-env.sh apk --cache-only timeout 2400 python3 -B tests/kotlin_next_migration_test.py --ime-first-use-only --evidence-dir "$evidence/first-ordinary"
+bash scripts/nix-env.sh apk --cache-only timeout 2400 python3 -O tests/kotlin_next_migration_test.py --ime-first-use-only --evidence-dir "$evidence/first-optimized"
 ```
 
-每模式恰7次 fresh mixed compile（各270秒）/JVM（各45秒）：初绿及三真实 Service mutants（proof-only render、遗漏 stale-click resident 复核、own-busy ACTIVE 进度被提示覆盖）各 compile0→精确外部 AssertionError1→原字节恢复重编/run0。attempted ledger、真实 root_reaped/owned_exited、primary-preserving cleanup 保留；编译/工具/cache/timeout 失败不是目标 red。`--ime-service-source` 仅在此模式隔离副本替换 Service；配合 `--expect-ime-model-ready-red` 只编译/执行一次并要求旧源精确目标红，外层0不代表旧产品 green。旧 default/compat/ime-return/host/full 的断言、输出域与预算不改；新模式普通/-O 独立接 host。
+每模式恰7次 fresh mixed compile（各270秒）/JVM（各45秒）：初绿及三真实 Service mutants（错误恢复 proof-only 按钮门槛、遗漏最终权限 / 显示复核、own-busy 进度被提示覆盖）各 compile0→精确外部 AssertionError1→原字节恢复重编/run0。独立 `--ime-first-use-only` 普通/-O 各同样7次270秒compile/45秒JVM，保原 host/full 所有既有预算和 gate，不以工具失败算目标红。真实 Backend / helper / proof / residency 使用微型合成文件，不访问用户模型；覆盖跨 JVM 恢复免 SHA、自动 SHA / 持久证明、复用 / 释放后准备、缺坏文件、准备阶段取消 / 连点 / 互斥及加载真实收尾。attempted ledger、真实 root_reaped/owned_exited、primary-preserving cleanup 保留；编译/工具/cache/timeout 失败不是目标 red。`--ime-service-source` 仅在此模式隔离副本替换 Service；配合 `--expect-ime-model-ready-red` 只编译/执行一次并要求旧源精确目标红（首次使用按钮仍禁用），外层0不代表旧产品 green。旧 default/compat/ime-return/host/full 的断言、输出域与预算不改；新模式普通/-O 独立接 host。
 
-本批 targeted 原始证据与真实终态交接入口 `.work/t0t-build/handoff.md`（本地独占证据，非纳 Git 报告）。host fakes 只验证真实 Service/Controller/ModelAccess/Residency 工程控制流，不等 Android SDK/runner/设备。`:app:preBuild` 依赖 `prepareInputs`→native，故实际 SDK Service 编译后置获准 full，不暗跑 assemble。fresh 审查、必要 full/JNI/三 APK/input 绑定和安全本地提交均另阶段后授；旧 APK 不作本轮新产物，设备/麦克风/私人输入/模型计算/性能仍 NOT RUN。
+R1/R2 修复另加 `tests/ime_start_boundary_test.py --evidence-dir NEW_DIR` 普通 / `-O` 各独立2400秒：5次270秒混编 / 11次45秒JVM，实际 gate 成功后到硬件 start 前改变资格 / pending release，生产 Service / resident 两 mutant 精确红→恢复绿；另测排队超时 / 中断禁止迟到、已运行 start 等真实返回、异常身份传播及 release/start 顺序。原 App 双参 capture API/default、RecordingControl cancel/start 和所有旧预算保持，不在持 Controller / RecordingControl monitor 时等待主线程；实际 start 主线程同回调复核资格，resident 短 monitor 只覆盖准入与硬件 start，不做文件 IO / 模型加载。旧 frozen 证据保留；修复新证据入口 `.work/taw-repair-r1r2/handoff.md`。
+
+本批 targeted 原始证据与真实终态交接入口 `.work/taw-implement/handoff.md`（本地独占证据，非纳 Git 报告）。host fakes 只验证真实 Service/Controller/ModelAccess/Residency 工程控制流，不等 Android SDK/runner/设备。`:app:preBuild` 依赖 `prepareInputs`→native，故实际 SDK Service 编译后置获准 full，不暗跑 assemble。fresh 审查、必要 full/JNI/三 APK/input 绑定和安全本地提交均另阶段后授；旧 APK 不作本轮新产物，设备/麦克风/私人输入/模型计算/性能仍 NOT RUN。
 
 ## llm-asr-lsk 返回上一输入法 no-hide targeted
 

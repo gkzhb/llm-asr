@@ -10,6 +10,7 @@ import org.llmasr.minimal.audio.WaveInput
 import org.llmasr.minimal.diagnostics.RuntimeLogSource
 import org.llmasr.minimal.model.ModelRepository
 import org.llmasr.minimal.model.ModelAccess
+import org.llmasr.minimal.model.ModelReadiness
 import org.llmasr.minimal.platform.OperationContext
 import org.llmasr.minimal.task.RequestContext
 
@@ -18,11 +19,35 @@ class ImeBackend(private val context: OperationContext?, private val modelReposi
                  private val inference: InferenceAdapter?, private val modelAccess: ModelAccess) : ImeController.Backend {
     @Throws(IOException::class)
     override fun requireModelReady() { modelAccess.requireResidentReady() }
+    @Throws(Exception::class)
+    override fun prepare(control: RecordingControl, progress: ImeController.Preparation) {
+        val gate = object : ModelAccess.PreparationControl {
+            private var reserved = false
+            override fun cancelled(): Boolean = control.cancelled()
+            // Recording cancellation and proof reservation have one short linearization point.
+            // Once reserved, valid durable proof may survive cancel, but microphone intent cannot.
+            override fun reserve(ready: ModelReadiness, token: ModelReadiness.VerifyToken): Boolean = synchronized(control) {
+                if (reserved || control.cancelled() || !ready.accepts(token)) false
+                else { reserved = true; true }
+            }
+            override fun succeed(ready: ModelReadiness, token: ModelReadiness.VerifyToken): Boolean =
+                reserved && ready.commitVerified(token)
+        }
+        modelAccess.prepareForCapture(gate, File(modelRepository!!.modelDir(), "config.json").absolutePath,
+            context!!.cacheDir()!!.absolutePath) { progress.update(it) }
+    }
     @Throws(IOException::class)
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     override open fun capture(control: RecordingControl?, progress: ImeController.Progress?): ByteArray? {
         val target = progress!!
         return ForegroundRecorder.capture(control) { seconds -> target.update(seconds) }
+    }
+    @Throws(IOException::class)
+    override fun captureWithStart(control: RecordingControl, progress: ImeController.Progress, gate: RecordingControl.StartGate): ByteArray? {
+        val generation = modelAccess.readyGeneration() // Worker-only file identity check.
+        return ForegroundRecorder.capture(control, { seconds -> progress.update(seconds) }, RecordingControl.StartGate { hardware ->
+            gate.start { modelAccess.startCapture(generation) { hardware.run(); true } }
+        })
     }
     @Throws(Exception::class)
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS", "PLATFORM_CLASS_MAPPED_TO_KOTLIN")

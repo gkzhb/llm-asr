@@ -76,6 +76,7 @@ INVENTORY = (
     'reports/kotlin-tests-p9/status.md',
     'android/app/src/org/llmasr/minimal/LogsActivity.kt',
     'tests/kotlin_next_migration_test.py',
+    'tests/ime_start_boundary_test.py',
     'tests/fixtures/kotlin-next/NextAppContractTest.java',
     'tests/kotlin_runtime_migration_test.py',
     'tests/fixtures/kotlin-runtime/RuntimeContractTest.java',

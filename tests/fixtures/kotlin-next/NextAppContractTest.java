@@ -415,126 +415,186 @@ public final class NextAppContractTest {
         Method render=AsrImeService.class.getDeclaredMethod("render");render.setAccessible(true);render.invoke(service);
     }
     static String imeStatus(ImeFixture f) throws Exception {return ((android.widget.TextView)field(f.service,"status")).getText().toString();}
-    static void imeModelReady() throws Exception {
-        int[] nativeCalls={0};boolean[] failRelease={false};
-        try(ImeFixture f=new ImeFixture(new ModelResidency.Native(){
-            public double prepare(String c,String t){nativeCalls[0]++;return 0;}
-            public void release()throws IOException{nativeCalls[0]++;if(failRelease[0])throw new IOException("controlled release");}
-        })) {
-            f.access.requestRelease();f.access.release();
-            check(f.graph.readiness().snapshot().ready(),"release retains actual file proof");
-            int io=f.proofIo[0],nativeBefore=nativeCalls[0],captures=f.captures,provider=android.content.ContentResolver.calls;
-            renderIme(f.service);
-            check(!f.button("录音").isEnabled(),"verified proof without resident must disable IME record");
-            check(imeStatus(f).contains("显式准备")&&imeStatus(f).contains("文件已校验"),"EMPTY guides explicit memory prepare not SHA");
-            check(f.button("确认输入").isEnabled()&&f.original.preview().equals("synthetic preview"),"release preserves manually confirmable preview");
-            f.click("确认输入");check(f.writes==1&&!f.button("确认输入").isEnabled(),"released preview manual single commit");
-            check(!f.button("确认输入").performClick()&&f.writes==1,"no automatic or repeat commit");
-            check(f.proofIo[0]==io&&nativeCalls[0]==nativeBefore&&f.captures==captures&&android.content.ContentResolver.calls==provider,"UI render/confirm snapshots perform no proof/native/capture/provider IO");
-            f.access.prepare("synthetic-config","synthetic-cache");
-            f.service.onWindowShown();check(f.button("录音").isEnabled(),"explicit prepare enables through existing lifecycle refresh");
-            f.access.requestRelease();renderIme(f.service);
-            check(!f.button("录音").isEnabled()&&imeStatus(f).contains("释放"),"pending LOADED blocks and explains release");
-            failRelease[0]=true;try{f.access.release();throw new AssertionError("release must fail");}catch(IOException expected){}
-            check(f.access.residentSnapshot().getState()==ModelResidency.State.EVICTING,"controlled native failure produces EVICTING");
-            renderIme(f.service);check(!f.button("录音").isEnabled()&&imeStatus(f).contains("释放"),"EVICTING fail closed");
-            failRelease[0]=false;f.access.release();f.access.prepare("synthetic-config","synthetic-cache");
-            set(f.graph,"modelAccess",null);renderIme(f.service);check(!f.button("录音").isEnabled(),"missing access with READY proof fails closed");
-            set(f.graph,"modelAccess",f.access);
-            f.graph.readiness().invalidate();renderIme(f.service);
-            check(!f.button("录音").isEnabled()&&imeStatus(f).contains("校验"),"unverified proof blocks even LOADED");
-            f.service.permission=1;renderIme(f.service);check(imeStatus(f).contains("权限"),"permission denial precedes proof/resident hint");
-            f.service.permission=0;set(f.graph,"modelAccess",null);renderIme(f.service);check(!f.button("录音").isEnabled(),"missing access fails closed");
-            set(f.service,"graph",null);renderIme(f.service);check(!f.button("录音").isEnabled(),"missing graph fails closed");
-        }
-        imeReadyStaleClick();imeReadyActive();imeReadyLoading();
-    }
-    static void imeReadyStaleClick() throws Exception {
-        try(ImeFixture f=new ImeFixture()) {
-            List<Runnable> jobs=new ArrayList<>();int[] captures={0};
-            TaskCoordinator owner=new TaskCoordinator(jobs::add);
-            ImeBackend realBackend=new ImeBackend(f.graph.context(),f.graph.modelRepository(),null,f.access);
-            ImeController controller=new ImeController(owner,new ImeController.Backend(){
-                public void requireModelReady()throws IOException{realBackend.requireModelReady();}
-                public byte[] capture(RecordingControl c,ImeController.Progress p){captures[0]++;c.start(()->{});c.stop();c.captureReleased();return new byte[]{1};}
-                public String transcribe(RequestContext c,byte[] w,String l){return "queued preview";}
-                public void cleanup(RequestContext c){}
+    /** First-use transaction through real Service/Controller/Backend/ModelAccess/proof/residency. */
+    static final class FirstUse implements AutoCloseable {
+        final Path root=Files.createTempDirectory("ime-first-use-");
+        final ModelReadiness ready=new ModelReadiness();
+        final int[] loads={0},unloads={0},reads={0},writes={0},hashUpdates={0},captures={0};
+        final List<String> stages=new ArrayList<>();
+        final AtomicReference<Throwable> workerFailure=new AtomicReference<>();
+        final List<Runnable> jobs=new ArrayList<>();
+        final TaskCoordinator owner=new TaskCoordinator(jobs::add);
+        final ModelResidency resident;
+        final ModelRepository repo;
+        final ModelAccess access;
+        final AsrImeService service=new AsrImeService();
+        final ImeController controller;
+        final android.widget.LinearLayout view;
+        final OperationContext context;
+        Runnable onLoad=()->{},onRead=()->{},onWrite=()->{},onStage=()->{};
+        boolean failWrite;
+        Thread worker;
+        boolean retained;
+        FirstUse()throws Exception {
+            Files.createDirectories(root.resolve("models"));Files.write(root.resolve("models/config.json"),new byte[]{1,2,3});
+            resident=new ModelResidency(new ModelResidency.Native(){
+                public double prepare(String c,String t){loads[0]++;onLoad.run();return 0;}
+                public void release(){unloads[0]++;}
+            },()->true);
+            AndroidModelVerificationIo disk=new AndroidModelVerificationIo(()->root.toFile());
+            ModelVerification.Io io=new ModelVerification.Io(){
+                public String identity(File f,boolean d)throws IOException{return disk.identity(f,d);}
+                public boolean exists(File f)throws IOException{return disk.exists(f);}
+                public byte[] read(String n,int limit)throws IOException{reads[0]++;onRead.run();return disk.read(n,limit);}
+                public void write(String n,byte[] b)throws IOException{writes[0]++;onWrite.run();if(failWrite&&n.equals("receipt"))throw new IOException("controlled proof disk failure");disk.write(n,b);}
+            };
+            ModelManifest manifest=new ModelManifest(Arrays.asList(new ModelEntry("config.json",3,"039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81")));
+            ModelVerification proof=new ModelVerification(manifest,ready,io,resident);
+            repo=new ModelRepository(manifest,root.resolve("models").toFile(),()->Long.MAX_VALUE,proof);
+            access=new ModelAccess(repo,ready,resident);
+            context=new OperationContext(){public File filesDir(){return root.toFile();}public File cacheDir(){return root.toFile();}
+                public InputStream openAsset(String n){throw new AssertionError("no asset IO");}
+                public android.content.ContentResolver contentResolver(){throw new AssertionError("no provider IO");}};
+            ImeBackend real=new ImeBackend(context,repo,null,access);
+            controller=new ImeController(owner,new ImeController.Backend(){
+                public void requireModelReady()throws IOException{real.requireModelReady();}
+                public void prepare(RecordingControl c,ImeController.Preparation p)throws Exception {
+                    real.prepare(c,s->{stages.add(s);if(s.contains("SHA-256："))hashUpdates[0]++;p.update(s);onStage.run();});
+                }
+                public byte[] capture(RecordingControl c,ImeController.Progress p)throws IOException{captures[0]++;return real.capture(c,p);}
+                public byte[] captureWithStart(RecordingControl c,ImeController.Progress p,RecordingControl.StartGate gate)throws IOException{captures[0]++;return real.captureWithStart(c,p,gate);}
+                public String transcribe(RequestContext c,byte[] w,String l)throws Exception{
+                    Object token=access.enterRequest();try{return "manual preview";}finally{access.finishRequest(token,true);}
+                }
+                public void cleanup(RequestContext c)throws IOException{real.cleanup(c);}
             },()->{});
-            set(f.service,"controller",controller);f.service.onStartInputView(f.service.info,false);
-            check(f.button("录音").isEnabled(),"rendered LOADED action initially enabled");
-            f.access.requestRelease();int io=f.proofIo[0];
-            try {
-                f.click("录音");
-                check(jobs.isEmpty()&&!owner.isBusy()&&captures[0]==0,"stale IME record action must not admit pending resident");
-                check(f.proofIo[0]==io,"stale click snapshot performs no proof IO");
-            } finally {while(!jobs.isEmpty())jobs.remove(0).run();owner.awaitFree();}
-            f.access.release();f.access.prepare("synthetic-config","synthetic-cache");renderIme(f.service);
-            try {
-                f.click("录音");check(jobs.size()==1&&owner.isBusy(),"ready click submits exactly one owned worker");
-                // Release after the last UI guard: the unchanged real backend remains authoritative.
-                f.access.requestRelease();jobs.remove(0).run();owner.awaitFree();
-                check(captures[0]==0&&!owner.isBusy()&&!controller.ownsTask(),"worker final resident gate rejects UI snapshot race before capture");
-            } finally {while(!jobs.isEmpty())jobs.remove(0).run();owner.awaitFree();}
-            f.access.release();f.access.prepare("synthetic-config","synthetic-cache");
-            try {
-                check(owner.submit(()->{}),"foreign worker admitted");renderIme(f.service);
-                check(imeStatus(f).contains("等待应用或上一会话")&&!f.button("录音").isEnabled(),"foreign owner retains priority");
-                f.service.info.inputType=129;renderIme(f.service);
-                check(imeStatus(f).contains("敏感")&&!f.button("录音").isEnabled(),"sensitive field priority unchanged");
-            } finally {while(!jobs.isEmpty())jobs.remove(0).run();owner.awaitFree();}
+            AppGraph.install(new android.content.Context(root.toFile()));AppGraph graph=AppGraph.get();graph.coordinator().awaitFree();
+            set(graph,"modelAccess",access);set(graph,"readiness",ready);set(service,"graph",graph);set(service,"controller",controller);set(service,"alive",true);
+            service.onStartInputView(service.info,false);view=(android.widget.LinearLayout)service.onCreateInputView();
+        }
+        android.widget.Button button(String label){return findButton(view,label);}
+        void click()throws Exception{check(button("录音").performClick(),"record click enabled");}
+        void run()throws Exception{check(jobs.size()==1,"exactly one owned transaction");jobs.remove(0).run();check(!owner.isBusy(),"owner released after real work");}
+        void threaded()throws Exception{
+            Runnable task=jobs.remove(0);worker=new Thread(()->{try{task.run();}catch(Throwable t){workerFailure.set(t);}},"first-use-test");worker.start();
+        }
+        void join()throws Exception{if(worker!=null){worker.join(5000);retained=worker.isAlive();check(!retained,"actual preparation worker joined");}owner.awaitFree();if(workerFailure.get()!=null)throw new AssertionError("worker throwable",workerFailure.get());}
+        public void close()throws Exception{
+            service.onDestroy();while(!jobs.isEmpty())jobs.remove(0).run();join();
+            android.os.Handler.pending.clear();AppGraph graph=AppGraph.get();graph.coordinator().awaitFree();graph.runtimeLogWorker().close();
+            java.util.concurrent.ExecutorService executor=(java.util.concurrent.ExecutorService)field(graph.runtimeLogWorker(),"executor");executor.shutdown();
+            check(executor.awaitTermination(5,java.util.concurrent.TimeUnit.SECONDS),"first-use log worker exited");
+            Field singleton=AppGraph.class.getDeclaredField("INSTANCE");singleton.setAccessible(true);singleton.set(null,null);
+            check(!retained,"retain live input tree");delete(root);
+        }
+    }
+    static void imeModelReady()throws Exception{
+        try(FirstUse f=new FirstUse()) {
+            check(f.button("录音").isEnabled(),"first-use record must be enabled without proof or resident");
+            check(f.reads[0]==0&&f.loads[0]==0&&f.hashUpdates[0]==0,"render performs no proof/hash/native IO");
+            f.click();check(f.controller.phase()==ImeController.Phase.PREPARING&&!f.button("停止").isEnabled(),"preparing is not capturing");
+            check(f.owner.isBusy()&&!f.controller.start((ImeSession)field(f.service,"session"),"Chinese"),"double click shares single owner");
+            check(!f.owner.submit(()->{throw new AssertionError("foreign app overlap");}),"App and IME mutually exclusive during prepare");
+            f.run();check(f.ready.isReady()&&f.hashUpdates[0]>0&&f.writes[0]>=3&&f.loads[0]==1&&f.captures[0]==1,"automatic SHA durable proof then prepare then capture");
+            check(((ImeSession)field(f.service,"session")).preview().equals("manual preview"),"preview remains manual");
+            int reads=f.reads[0],writes=f.writes[0],hash=f.hashUpdates[0];
+            renderIme(f.service);f.click();f.run();
+            check(f.loads[0]==1&&f.unloads[0]==0&&f.reads[0]==reads&&f.writes[0]==writes&&f.hashUpdates[0]==hash,"valid current proof reuses resident without restore or SHA");
+            f.access.requestRelease();f.access.release();renderIme(f.service);f.click();f.run();
+            check(f.loads[0]==2&&f.unloads[0]==1&&f.hashUpdates[0]==hash,"released model re-prepares without SHA");
+            // New authority objects restore the on-disk proof; real separate JVM is below.
+            ModelReadiness next=new ModelReadiness();ModelVerification proof=new ModelVerification(f.repo.manifest(),next,new AndroidModelVerificationIo(()->f.root.toFile()),f.resident);
+            ModelRepository nextRepo=new ModelRepository(f.repo.manifest(),f.repo.modelDir(),()->Long.MAX_VALUE,proof);
+            check(new ModelAccess(nextRepo,next,f.resident).restoreFast()&&next.isReady(),"durable proof restores new authority");
+            Process child=new ProcessBuilder(System.getProperty("java.home")+"/bin/java","-cp",System.getProperty("java.class.path"),
+                "NextAppContractTest","first-use-proof-child",f.root.toString()).inheritIO().start();
+            try{check(child.waitFor(10,java.util.concurrent.TimeUnit.SECONDS)&&child.exitValue()==0,"separate JVM prepare restores without SHA");}
+            finally{if(child.isAlive()){child.destroyForcibly();check(child.waitFor(5,java.util.concurrent.TimeUnit.SECONDS),"proof child actual exit");}}
+        }
+        for(String damage:Arrays.asList("missing","hash"))try(FirstUse f=new FirstUse()) {
+            if(damage.equals("missing"))Files.delete(f.root.resolve("models/config.json"));else Files.write(f.root.resolve("models/config.json"),new byte[]{3,2,1});
+            f.click();f.run();check(f.captures[0]==0&&f.loads[0]==0&&!f.ready.isReady(),"bad or missing model capture zero");
+            check(((ImeSession)field(f.service,"session")).status().contains("导入 / 修复"),"missing model repair guidance");
+        }
+        for(String stage:Arrays.asList("恢复","SHA-256：","加载 / 复用"))try(FirstUse f=new FirstUse()) {
+            f.onStage=()->{if(!f.stages.isEmpty()&&f.stages.get(f.stages.size()-1).contains(stage))f.controller.invalidate();};
+            f.click();f.run();check(f.captures[0]==0&&f.loads[0]==0,"cancel at prepare stage never captures or loads");
+            check(f.ready.isReady()==stage.equals("加载 / 复用"),"only completed proof survives preparation cancellation");
+        }
+        // Cancellation can lose durable-proof publication but can never authorize the microphone.
+        try(FirstUse f=new FirstUse()) {
+            f.onWrite=()->{if(f.writes[0]==3)f.controller.invalidate();};f.click();f.run();
+            check(f.captures[0]==0&&f.loads[0]==0&&f.ready.isReady(),"commit winner may retain valid proof but cancelled intent never captures");
+        }
+        try(FirstUse f=new FirstUse()) {
+            f.failWrite=true;f.click();f.run();
+            check(f.captures[0]==0&&f.loads[0]==0&&!f.ready.isReady(),"proof IO failure never captures");
+            f.failWrite=false;
+            boolean restored=false;try{restored=new ModelAccess(f.repo,f.ready,f.resident).restoreFast();}catch(IOException expected){}
+            check(!restored,"failed proof publication leaves dirty journal");
+            renderIme(f.service);f.click();f.run();check(f.captures[0]==1&&f.ready.isReady(),"proof IO failure retry safely prepares");
+        }
+        try(FirstUse f=new FirstUse()) {
+            f.onLoad=f.controller::stop;f.click();f.run();
+            check(f.captures[0]==1&&((ImeSession)field(f.service,"session")).preview().equals("manual preview"),"stop during PREPARING cannot pre-stop future recording");
+        }
+        imePrepareRestoreCancel();imePrepareNativeCancel();imePrepareIntent();imeReadyActive();
+        ImeSessionTest.main(new String[0]);
+    }
+    static void imePrepareRestoreCancel()throws Exception{
+        try(FirstUse f=new FirstUse()){
+            java.util.concurrent.CountDownLatch entered=new java.util.concurrent.CountDownLatch(1),release=new java.util.concurrent.CountDownLatch(1);
+            f.onRead=()->{entered.countDown();try{if(!release.await(5,java.util.concurrent.TimeUnit.SECONDS))throw new AssertionError("restore IO deadline");}catch(InterruptedException e){throw new AssertionError(e);}};
+            f.click();f.threaded();
+            try{
+                check(entered.await(5,java.util.concurrent.TimeUnit.SECONDS),"restore actual IO entered");f.service.onWindowHidden();
+                check(f.owner.isBusy()&&f.captures[0]==0&&!f.owner.submit(()->{}),"restore cancellation retains owner during IO");
+            }finally{release.countDown();f.join();}
+            check(f.captures[0]==0&&f.loads[0]==0&&!f.owner.isBusy(),"restore IO actual return before cancelled owner release");
+        }
+    }
+    static void imePrepareNativeCancel()throws Exception{
+        for(String cancel:Arrays.asList("cancel","hidden","field"))try(FirstUse f=new FirstUse()){
+            java.util.concurrent.CountDownLatch entered=new java.util.concurrent.CountDownLatch(1),release=new java.util.concurrent.CountDownLatch(1);
+            f.onLoad=()->{entered.countDown();try{if(!release.await(5,java.util.concurrent.TimeUnit.SECONDS))throw new AssertionError("load deadline");}catch(InterruptedException e){throw new AssertionError(e);}};
+            f.click();f.threaded();
+            try{
+                check(entered.await(5,java.util.concurrent.TimeUnit.SECONDS),"native prepare entered");renderIme(f.service);
+                check(f.controller.phase()==ImeController.Phase.PREPARING&&!f.button("停止").isEnabled(),"native load remains PREPARING");
+                f.controller.stop();
+                if(cancel.equals("hidden"))f.service.onWindowHidden();else if(cancel.equals("field")){f.service.info.fieldId++;f.service.onStartInput(f.service.info,false);}else f.controller.invalidate();
+                check(f.owner.isBusy()&&f.controller.ownsTask()&&f.captures[0]==0&&!f.owner.submit(()->{}),"cancel retains owner until actual native return");
+            }finally{release.countDown();f.join();}
+            check(f.captures[0]==0&&!f.owner.isBusy()&&!f.controller.ownsTask(),"cancelled native preparation cannot open microphone late");
+        }
+    }
+    static void imePrepareIntent()throws Exception{
+        for(String change:Arrays.asList("permission","shown","field","sensitive"))try(FirstUse f=new FirstUse()){
+            f.onLoad=()->{if(change.equals("permission"))f.service.permission=1;else if(change.equals("shown"))f.service.shown=false;else if(change.equals("field"))f.service.info.fieldId++;else f.service.info.inputType=129;};
+            f.click();f.run();
+            check(f.captures[0]==0,change.equals("permission")?"permission change during prepare must prevent capture":"editor visibility or field change prevents capture");
+        }
+        // Exercise the worker->main Handler handshake (not an Android framework test).
+        try(FirstUse f=new FirstUse()){
+            f.click();android.os.Handler.posted.drainPermits();f.threaded();
+            try{
+                check(android.os.Handler.posted.tryAcquire(5,java.util.concurrent.TimeUnit.SECONDS),"final intent posted to main");
+                check(f.captures[0]==0&&f.owner.isBusy(),"worker waits for actual main intent gate");
+                f.service.permission=1;android.os.Handler.drain();
+            }finally{android.os.Handler.drain();f.join();}
+            check(f.captures[0]==0,"main thread permission gate refuses late microphone");
         }
     }
     static void imeReadyActive() throws Exception {
-        try(ImeFixture f=new ImeFixture()) {
-            java.util.concurrent.CountDownLatch entered=new java.util.concurrent.CountDownLatch(1),release=new java.util.concurrent.CountDownLatch(1);
-            AtomicReference<Thread> worker=new AtomicReference<>();AtomicReference<Throwable> failure=new AtomicReference<>();
-            TaskCoordinator owner=new TaskCoordinator(task->{Thread t=new Thread(()->{try{task.run();}catch(Throwable x){failure.set(x);}});worker.set(t);t.start();});
-            ImeController controller=new ImeController(owner,new ImeController.Backend(){
-                public void requireModelReady()throws IOException{f.access.requireResidentReady();}
-                public byte[] capture(RecordingControl c,ImeController.Progress p){c.start(()->{});c.stop();c.captureReleased();return new byte[]{1};}
-                public String transcribe(RequestContext c,byte[] w,String l)throws Exception{
-                    Object token=f.access.enterRequest();boolean success=false;
-                    try{entered.countDown();if(!release.await(5,java.util.concurrent.TimeUnit.SECONDS))throw new AssertionError("active deadline");success=true;return "active preview";}
-                    finally{f.access.finishRequest(token,success);}
-                }
-                public void cleanup(RequestContext c){}
-            },()->{});
-            set(f.service,"controller",controller);f.service.onStartInputView(f.service.info,false);
-            f.retainRoot=true;
-            try {
-                f.click("录音");check(entered.await(5,java.util.concurrent.TimeUnit.SECONDS),"real resident ACTIVE entered");
-                ImeSession session=(ImeSession)field(f.service,"session");renderIme(f.service);
-                check(f.access.residentSnapshot().getState()==ModelResidency.State.ACTIVE&&imeStatus(f).equals(session.status()),"owned IME task must retain session progress while resident active");
-                check(!f.button("录音").isEnabled()&&f.button("丢弃 / 重新开始").isEnabled(),"ACTIVE does not enable a second recording and keeps cancel");
-            } finally {
-                release.countDown();if(worker.get()!=null)worker.get().join(5000);
-                f.retainRoot=worker.get()!=null&&worker.get().isAlive();
-                check(!f.retainRoot,"active actual worker joined");owner.awaitFree();
-                if(failure.get()!=null)throw new AssertionError("active worker throwable",failure.get());
-            }
-            renderIme(f.service);check(f.button("确认输入").isEnabled()&&!owner.isBusy(),"ACTIVE worker true terminal exposes preview");
+        try(FirstUse f=new FirstUse()){
+            // External assertion after the callback: production listeners may swallow failures.
+            String[] shown={null},expected={null};
+            f.onLoad=()->{try{renderIme(f.service);shown[0]=imeStatusText(f.service);expected[0]=((ImeSession)field(f.service,"session")).status();}catch(Exception e){throw new AssertionError(e);}};
+            f.click();f.run();
+            check(shown[0]!=null&&shown[0].equals(expected[0]),"owned IME task must retain session progress while resident active");
         }
     }
-    static void imeReadyLoading() throws Exception {
-        java.util.concurrent.CountDownLatch entered=new java.util.concurrent.CountDownLatch(1),release=new java.util.concurrent.CountDownLatch(1);
-        boolean[] block={false};AtomicReference<Throwable> failure=new AtomicReference<>();
-        try(ImeFixture f=new ImeFixture(new ModelResidency.Native(){
-            public double prepare(String c,String t)throws Exception{if(block[0]){entered.countDown();if(!release.await(5,java.util.concurrent.TimeUnit.SECONDS))throw new AssertionError("loading deadline");}return 0;}
-            public void release(){}
-        })) {
-            f.access.requestRelease();f.access.release();block[0]=true;
-            Thread worker=new Thread(()->{try{f.access.prepare("synthetic-config","synthetic-cache");}catch(Throwable x){failure.set(x);}});
-            f.retainRoot=true;worker.start();
-            try {
-                check(entered.await(5,java.util.concurrent.TimeUnit.SECONDS),"controlled prepare actually LOADING");renderIme(f.service);
-                check(f.access.residentSnapshot().getState()==ModelResidency.State.LOADING&&!f.button("录音").isEnabled()&&imeStatus(f).contains("准备中"),"LOADING snapshot denies new recording");
-            } finally {
-                release.countDown();worker.join(5000);f.retainRoot=worker.isAlive();check(!f.retainRoot,"loading worker actual joined");
-                if(failure.get()!=null)throw new AssertionError("loading worker throwable",failure.get());
-            }
-            f.service.onWindowShown();check(f.button("录音").isEnabled(),"loaded terminal refresh enables without auto capture");
-        }
-    }
+    static String imeStatusText(AsrImeService service)throws Exception{return ((android.widget.TextView)field(service,"status")).getText().toString();}
     static void imeReturn(String mode) throws Exception {
         if(mode.equals("ime-return")||mode.equals("ime-visibility"))imeVisibility();
         if(mode.equals("ime-return"))imeActiveReturn();
@@ -661,8 +721,78 @@ public final class NextAppContractTest {
         if(mode.equals("compat-all")||mode.equals("compat-wave-null"))waveNullable();
         if(mode.equals("compat-all")||mode.equals("compat-window-null"))windowNullable();
     }
+    static void startBoundary(String mode)throws Exception{
+        try(FirstUse f=new FirstUse()){
+            org.llmasr.minimal.audio.ForegroundRecorder.starts=0;
+            org.llmasr.minimal.audio.ForegroundRecorder.beforeStart=()->{
+                if(mode.equals("start-intent")){f.service.shown=false;f.service.permission=-1;}
+                else f.access.requestRelease();
+            };
+            try{f.click();f.run();
+                check(org.llmasr.minimal.audio.ForegroundRecorder.starts==0,
+                    mode.equals("start-intent")?"R1 post-gate invalidation must reject actual microphone start":"R2 pending release must reject actual microphone start");
+            }finally{org.llmasr.minimal.audio.ForegroundRecorder.beforeStart=()->{};}
+        }
+    }
+    static void startProtocol()throws Exception{
+        try(FirstUse f=new FirstUse()){
+            // Obtain the actual Service gate; no copy of production dispatch/arbitration logic.
+            Class<?> type=Class.forName("org.llmasr.minimal.AsrImeService$CaptureGate");
+            java.lang.reflect.Constructor<?> ctor=type.getDeclaredConstructors()[0];ctor.setAccessible(true);
+            ImeController.CaptureIntent intent=(ImeController.CaptureIntent)ctor.newInstance(f.service,field(f.service,"session"));
+            for(String mode:Arrays.asList("queued-cancel","queued-timeout","throw","running-interrupt")){
+                android.os.Handler.pending.clear();android.os.Handler.posted.drainPermits();
+                java.util.concurrent.atomic.AtomicInteger starts=new java.util.concurrent.atomic.AtomicInteger();
+                AtomicReference<Throwable> failure=new AtomicReference<>();boolean[] result={true},interrupted={false};
+                java.util.concurrent.CountDownLatch hardware=new java.util.concurrent.CountDownLatch(1),finish=new java.util.concurrent.CountDownLatch(1);
+                RuntimeException sentinel=new RuntimeException("hardware start sentinel");
+                Thread worker=new Thread(()->{try{result[0]=intent.start(()->{starts.incrementAndGet();hardware.countDown();if(mode.equals("throw"))throw sentinel;if(mode.equals("running-interrupt"))try{if(!finish.await(5,java.util.concurrent.TimeUnit.SECONDS))throw new AssertionError("hardware deadline");}catch(InterruptedException e){throw new AssertionError(e);}});}catch(Throwable t){failure.set(t);}finally{interrupted[0]=Thread.currentThread().isInterrupted();}});
+                Thread dispatch=null;worker.start();
+                try{
+                    check(android.os.Handler.posted.tryAcquire(5,java.util.concurrent.TimeUnit.SECONDS),"actual start posted");
+                    if(mode.equals("queued-cancel")){worker.interrupt();worker.join(1000);android.os.Handler.drain();}
+                    else if(mode.equals("queued-timeout")){worker.join(6500);android.os.Handler.drain();}
+                    else if(mode.equals("throw")){android.os.Handler.drain();worker.join(1000);}
+                    else{
+                        dispatch=new Thread(android.os.Handler::drain);dispatch.start();
+                        check(hardware.await(5,java.util.concurrent.TimeUnit.SECONDS),"hardware callback actually running");worker.interrupt();
+                        worker.join(50);check(worker.isAlive(),"running start interrupt must retain worker until actual return");finish.countDown();dispatch.join(1000);worker.join(1000);
+                    }
+                    check(!worker.isAlive(),"start protocol worker bounded actual return");
+                    if(mode.startsWith("queued"))check(starts.get()==0&&!result[0]&&failure.get()==null,"abandoned queued start must never run late");
+                    if(mode.equals("queued-cancel"))check(interrupted[0],"queued interrupt preserved");
+                    if(mode.equals("throw"))check(failure.get()==sentinel&&starts.get()==1,"actual start Throwable identity reaches worker");
+                    if(mode.equals("running-interrupt"))check(result[0]&&interrupted[0]&&starts.get()==1,"running start finishes once and restores interrupt");
+                }finally{finish.countDown();worker.interrupt();worker.join(7000);if(dispatch!=null)dispatch.join(1000);check(!worker.isAlive()&&(dispatch==null||!dispatch.isAlive()),"protocol threads really joined");android.os.Handler.pending.clear();}
+            }
+            f.click();f.run();String generation=f.access.readyGeneration();
+            java.util.concurrent.CountDownLatch entered=new java.util.concurrent.CountDownLatch(1),done=new java.util.concurrent.CountDownLatch(1),releaseDone=new java.util.concurrent.CountDownLatch(1);
+            AtomicReference<Throwable> failure=new AtomicReference<>();
+            Thread starter=new Thread(()->{try{f.access.startCapture(generation,()->{entered.countDown();try{if(!done.await(5,java.util.concurrent.TimeUnit.SECONDS))throw new AssertionError("resident hardware deadline");}catch(InterruptedException e){throw new AssertionError(e);}return true;});}catch(Throwable t){failure.set(t);}});
+            Thread releaser=new Thread(()->{f.access.requestRelease();releaseDone.countDown();});starter.start();
+            try{check(entered.await(5,java.util.concurrent.TimeUnit.SECONDS),"resident start entered");releaser.start();check(!releaseDone.await(50,java.util.concurrent.TimeUnit.MILLISECONDS),"release cannot overtake running actual start");}
+            finally{done.countDown();starter.join(1000);releaser.join(1000);check(!starter.isAlive()&&!releaser.isAlive()&&failure.get()==null,"resident start/release actual threads joined");}
+            check(f.access.residentSnapshot().getPendingRelease(),"start winner precedes release pending");
+        }
+    }
+    static void firstUseProofChild(Path root)throws Exception{
+        ModelManifest manifest=new ModelManifest(Arrays.asList(new ModelEntry("config.json",3,"039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81")));
+        ModelReadiness ready=new ModelReadiness();int[] loads={0},hash={0};
+        ModelResidency resident=new ModelResidency(new ModelResidency.Native(){public double prepare(String c,String t){loads[0]++;return 0;}public void release(){}},()->true);
+        ModelVerification proof=new ModelVerification(manifest,ready,new AndroidModelVerificationIo(()->root.toFile()),resident);
+        ModelRepository repo=new ModelRepository(manifest,root.resolve("models").toFile(),()->Long.MAX_VALUE,proof);
+        new ModelAccess(repo,ready,resident).prepareForCapture(new ModelAccess.PreparationControl(){
+            public boolean cancelled(){return false;}
+            public boolean reserve(ModelReadiness r,ModelReadiness.VerifyToken t){throw new AssertionError("no SHA reservation on restored proof");}
+            public boolean succeed(ModelReadiness r,ModelReadiness.VerifyToken t){throw new AssertionError("no full proof commit on restore");}
+        },"config","cache",s->{if(s.contains("SHA-256"))hash[0]++;return kotlin.Unit.INSTANCE;});
+        check(ready.isReady()&&loads[0]==1&&hash[0]==0,"cross-process helper restores valid proof without SHA");
+    }
     public static void main(String[] args) throws Exception {
+        if(args.length>0&&args[0].equals("first-use-proof-child")){firstUseProofChild(Paths.get(args[1]));return;}
         String mode = args.length == 0 ? "all" : args[0];
+        if (mode.equals("start-protocol")) startProtocol();
+        else if (mode.startsWith("start-")) startBoundary(mode);
         if (mode.equals("ime-model-ready")) imeModelReady();
         else if (mode.startsWith("ime-")) imeReturn(mode);
         if (mode.startsWith("compat-")) compat(mode);

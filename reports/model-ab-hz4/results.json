@@ -1,0 +1,3325 @@
+{
+  "schema": 1,
+  "task": "llm-asr-hz4",
+  "base": "7e794773dd91cba05ab7b55715a60558dc4713bc",
+  "status": "ACTUAL_HOST_ENGINEERING_AB_COMPLETE_PENDING_PARENT_REVIEW",
+  "modelscope": {
+    "status": "PASS",
+    "model": "Qwen/Qwen3-ASR-0.6B",
+    "revision": "4ce9cc728b473a5aedbe7b6e1ea45646316824dc",
+    "cap_received_bytes": 2100000000,
+    "actual_body_received_bytes": 1880622912,
+    "retries": 0,
+    "seconds": 110.22089150093962,
+    "files": [
+      {
+        "source_url": "https://modelscope.cn/api/v1/models/Qwen/Qwen3-ASR-0.6B/repo/files?Revision=4ce9cc728b473a5aedbe7b6e1ea45646316824dc&Recursive=true",
+        "path": ".work/hz4-ab/modelscope-fixed-metadata.json",
+        "started": true,
+        "received_bytes": 4697,
+        "http_status": 200,
+        "final_host": "modelscope.cn",
+        "content_length": null,
+        "sha256": "92bd8c186b4416915f1306c2d8471bbe131dbbc212347cdab1fc37eaa6482158",
+        "complete": true
+      },
+      {
+        "source_url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/4ce9cc728b473a5aedbe7b6e1ea45646316824dc/chat_template.json",
+        "path": "models/modelscope/Qwen3-ASR-0.6B-4ce9cc72-hz4/chat_template.json",
+        "started": true,
+        "received_bytes": 1161,
+        "http_status": 200,
+        "final_host": "modelscope.cn",
+        "content_length": "1161",
+        "sha256": "75a8cfca24f00de72d796fbfed6858fc9614ef3dabd8696684cc3bc03a9c58ff",
+        "complete": true,
+        "lock_match": true,
+        "hf_actual": {
+          "bytes": 1161,
+          "sha256": "75a8cfca24f00de72d796fbfed6858fc9614ef3dabd8696684cc3bc03a9c58ff",
+          "same": true
+        }
+      },
+      {
+        "source_url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/4ce9cc728b473a5aedbe7b6e1ea45646316824dc/config.json",
+        "path": "models/modelscope/Qwen3-ASR-0.6B-4ce9cc72-hz4/config.json",
+        "started": true,
+        "received_bytes": 6193,
+        "http_status": 200,
+        "final_host": "modelscope.cn",
+        "content_length": "6193",
+        "sha256": "76d3ae4601ce939830b2517f4a6cadb86cc51316c3900af6b020b051c21a478c",
+        "complete": true,
+        "lock_match": true,
+        "hf_actual": {
+          "bytes": 6193,
+          "sha256": "76d3ae4601ce939830b2517f4a6cadb86cc51316c3900af6b020b051c21a478c",
+          "same": true
+        }
+      },
+      {
+        "source_url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/4ce9cc728b473a5aedbe7b6e1ea45646316824dc/configuration.json",
+        "path": "models/modelscope/Qwen3-ASR-0.6B-4ce9cc72-hz4/configuration.json",
+        "started": true,
+        "received_bytes": 56,
+        "http_status": 200,
+        "final_host": "modelscope.cn",
+        "content_length": "56",
+        "sha256": "c57f6a580d63f7465c6a22ba95847aee05a1ae1181f5abddffb943d9febda061",
+        "complete": true,
+        "lock_match": true,
+        "hf_actual": {
+          "absent": true,
+          "platform_only": true
+        }
+      },
+      {
+        "source_url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/4ce9cc728b473a5aedbe7b6e1ea45646316824dc/generation_config.json",
+        "path": "models/modelscope/Qwen3-ASR-0.6B-4ce9cc72-hz4/generation_config.json",
+        "started": true,
+        "received_bytes": 142,
+        "http_status": 200,
+        "final_host": "modelscope.cn",
+        "content_length": "142",
+        "sha256": "1da527824d81e07118facff437e03f2e24a23311e3bdeb2368973fe77e5f275c",
+        "complete": true,
+        "lock_match": true,
+        "hf_actual": {
+          "bytes": 142,
+          "sha256": "1da527824d81e07118facff437e03f2e24a23311e3bdeb2368973fe77e5f275c",
+          "same": true
+        }
+      },
+      {
+        "source_url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/4ce9cc728b473a5aedbe7b6e1ea45646316824dc/merges.txt",
+        "path": "models/modelscope/Qwen3-ASR-0.6B-4ce9cc72-hz4/merges.txt",
+        "started": true,
+        "received_bytes": 1671853,
+        "http_status": 200,
+        "final_host": "cdn-lfs-cn-1.modelscope.cn",
+        "content_length": "1671853",
+        "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "complete": true,
+        "lock_match": true,
+        "hf_actual": {
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+          "same": true
+        }
+      },
+      {
+        "source_url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/4ce9cc728b473a5aedbe7b6e1ea45646316824dc/model.safetensors",
+        "path": "models/modelscope/Qwen3-ASR-0.6B-4ce9cc72-hz4/model.safetensors",
+        "started": true,
+        "received_bytes": 1876091704,
+        "http_status": 200,
+        "final_host": "cdn-lfs-cn-1.modelscope.cn",
+        "content_length": "1876091704",
+        "sha256": "79d6cbd4c98c7bbffe9db2edac07f56cd6637d0d5944b27f6c2b8353840323ea",
+        "complete": true,
+        "lock_match": true,
+        "hf_actual": {
+          "bytes": 1876091704,
+          "sha256": "79d6cbd4c98c7bbffe9db2edac07f56cd6637d0d5944b27f6c2b8353840323ea",
+          "same": true
+        }
+      },
+      {
+        "source_url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/4ce9cc728b473a5aedbe7b6e1ea45646316824dc/preprocessor_config.json",
+        "path": "models/modelscope/Qwen3-ASR-0.6B-4ce9cc72-hz4/preprocessor_config.json",
+        "started": true,
+        "received_bytes": 330,
+        "http_status": 200,
+        "final_host": "modelscope.cn",
+        "content_length": "330",
+        "sha256": "45e120a4eda2c20c5d7f2ea9354e63536bf35e27aa573fb7cdf78017b378770d",
+        "complete": true,
+        "lock_match": true,
+        "hf_actual": {
+          "bytes": 330,
+          "sha256": "45e120a4eda2c20c5d7f2ea9354e63536bf35e27aa573fb7cdf78017b378770d",
+          "same": true
+        }
+      },
+      {
+        "source_url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/4ce9cc728b473a5aedbe7b6e1ea45646316824dc/README.md",
+        "path": "models/modelscope/Qwen3-ASR-0.6B-4ce9cc72-hz4/README.md",
+        "started": true,
+        "received_bytes": 57456,
+        "http_status": 200,
+        "final_host": "modelscope.cn",
+        "content_length": "57456",
+        "sha256": "5058416891bc47a2051557765997e8c42f8eb78a0e33c3e775bd17d4b0ba4d50",
+        "complete": true,
+        "lock_match": true,
+        "hf_actual": {
+          "bytes": 57456,
+          "sha256": "5058416891bc47a2051557765997e8c42f8eb78a0e33c3e775bd17d4b0ba4d50",
+          "same": true
+        }
+      },
+      {
+        "source_url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/4ce9cc728b473a5aedbe7b6e1ea45646316824dc/tokenizer_config.json",
+        "path": "models/modelscope/Qwen3-ASR-0.6B-4ce9cc72-hz4/tokenizer_config.json",
+        "started": true,
+        "received_bytes": 12487,
+        "http_status": 200,
+        "final_host": "modelscope.cn",
+        "content_length": "12487",
+        "sha256": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+        "complete": true,
+        "lock_match": true,
+        "hf_actual": {
+          "bytes": 12487,
+          "sha256": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+          "same": true
+        }
+      },
+      {
+        "source_url": "https://modelscope.cn/models/Qwen/Qwen3-ASR-0.6B/resolve/4ce9cc728b473a5aedbe7b6e1ea45646316824dc/vocab.json",
+        "path": "models/modelscope/Qwen3-ASR-0.6B-4ce9cc72-hz4/vocab.json",
+        "started": true,
+        "received_bytes": 2776833,
+        "http_status": 200,
+        "final_host": "cdn-lfs-cn-1.modelscope.cn",
+        "content_length": "2776833",
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+        "complete": true,
+        "lock_match": true,
+        "hf_actual": {
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+          "same": true
+        }
+      }
+    ],
+    "error": null,
+    "lock_sha256": "84758ac5296eb96d2d6e6c5e17e18f7f69a16d203b288f56058a811bcc7c076c"
+  },
+  "tensor_header": {
+    "header_bytes": 74544,
+    "tensor_count": 612,
+    "dtypes": [
+      "BF16"
+    ],
+    "tensor_metadata_sha256": "e49d3cb502c242d298f63ba1912ea55a98e9bfe0535f18bfbc42ff7a1f67a362",
+    "all_raw_byte_equal_to_hf": true,
+    "mathematical_boundary": "identical full raw bytes exclude raw-byte source differences; no third conversion warranted"
+  },
+  "corpus_provenance": {
+    "status": "PASS",
+    "source_manifest_sha256": "be44021c54672b12f2fb298e29668390fbf63137a94fe9b3627b01004f2e1194",
+    "generator_sha256": "b71cc9a45cd6b11fa6a214b149ee04cb61dd88121a9d0399717f14a194256799",
+    "sources": [
+      {
+        "source": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen3-ASR-Repo/asr_zh.wav",
+        "sha256": "46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50",
+        "bytes": 134570,
+        "acquisition": "existing-public-byte-copy"
+      },
+      {
+        "source": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen3-ASR-Repo/asr_en.wav",
+        "sha256": "f9b4440ac8393e47c14a6240e9739dea09b645bb1592b8f2dd48feb9666cea7f",
+        "bytes": 2172458,
+        "acquisition": "fresh-official-HTTPS"
+      }
+    ],
+    "actual_additional_received_bytes": 2172458,
+    "budget_bytes": 8388608,
+    "independent_recordings": 2,
+    "cases": 20,
+    "independent_human_labels": 0,
+    "quality_wer_cer": "not_available",
+    "license_scope": "official Apache-2.0 model card/examples, local engineering use only; no redistribution"
+  },
+  "spec_sha256": "07b208916a2a315395944f6250bc9fa220a25087c912abf07312654b346004cc",
+  "hardware": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.42",
+    "cpu_model": "model name\t: Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz",
+    "logical_cpus": "12"
+  },
+  "models": {
+    "A": [
+      {
+        "path": "QwenASR/audio.mnn",
+        "bytes": 2989192,
+        "sha256": "cd6237e0c02003345ba035e0fa6e67fe8658f270978ca8fbd4a60bf27ad5e825"
+      },
+      {
+        "path": "QwenASR/audio.mnn.weight",
+        "bytes": 373185600,
+        "sha256": "1456a76d7039681fbfdd94ffdac486545da62859f80a58b43a6f527f42a72382"
+      },
+      {
+        "path": "QwenASR/llm.mnn",
+        "bytes": 1628400,
+        "sha256": "3ce4f4d93e0fc1d2adb10d834421ae98f421913d85f5238abb6929d7a65ebb5b"
+      },
+      {
+        "path": "QwenASR/llm.mnn.weight",
+        "bytes": 1192493056,
+        "sha256": "001a7838a2420182f0c6855657920d5a45c7b8b0999a7e045ef7ef0955a22ab4"
+      },
+      {
+        "path": "QwenASR/tokenizer.txt",
+        "bytes": 3194212,
+        "sha256": "70e5e435679b6520af2b8f5fd400e30023600321b09ab6153f7215b659b68c07"
+      },
+      {
+        "path": "QwenASR/llm_config.json",
+        "bytes": 1104,
+        "sha256": "8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85"
+      },
+      {
+        "path": "QwenASR/config.json",
+        "bytes": 617,
+        "sha256": "fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d"
+      }
+    ],
+    "B": [
+      {
+        "path": "models/mnn-v1v-entry-fp16/audio.mnn",
+        "bytes": 2989192,
+        "sha256": "b5040dc262c5b01d3ff065e8397eb9c15c162a05092a21b4b6b2e009744295d6"
+      },
+      {
+        "path": "models/mnn-v1v-entry-fp16/audio.mnn.weight",
+        "bytes": 373185600,
+        "sha256": "1456a76d7039681fbfdd94ffdac486545da62859f80a58b43a6f527f42a72382"
+      },
+      {
+        "path": "models/mnn-v1v-entry-fp16/llm.mnn",
+        "bytes": 1628400,
+        "sha256": "1f5dae086ff965503efd77ed7702d3517fca7d45a67a33438b5930b5c3095c41"
+      },
+      {
+        "path": "models/mnn-v1v-entry-fp16/llm.mnn.weight",
+        "bytes": 1192493056,
+        "sha256": "001a7838a2420182f0c6855657920d5a45c7b8b0999a7e045ef7ef0955a22ab4"
+      },
+      {
+        "path": "models/mnn-v1v-entry-fp16/tokenizer.txt",
+        "bytes": 3194212,
+        "sha256": "70e5e435679b6520af2b8f5fd400e30023600321b09ab6153f7215b659b68c07"
+      },
+      {
+        "path": "models/mnn-v1v-entry-fp16/llm_config.json",
+        "bytes": 1104,
+        "sha256": "8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85"
+      },
+      {
+        "path": "models/mnn-v1v-entry-fp16/config.json",
+        "bytes": 617,
+        "sha256": "fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d"
+      }
+    ]
+  },
+  "runtime_inputs": [
+    {
+      "path": ".work/bt4-prepare-convert/mnn-host/libMNN.so",
+      "bytes": 7001576,
+      "sha256": "53c129743e4369ebf58eb57de584d65be81cfcdecad31ce849a06762dcf02f6b"
+    },
+    {
+      "path": ".work/bt4-prepare-convert/mnn-host/tools/converter/libMNNConvertDeps.so",
+      "bytes": 10660784,
+      "sha256": "4542ba4a47bd982473607c6528bc38d1b38c725dd48dcf4c785bdc736d1e2d03"
+    },
+    {
+      "path": "/nix/store/wkiqjb44n5k0fwhmc523dvflspd47q3b-gcc-15.3.0-libgcc/lib/libgcc_s.so.1",
+      "bytes": 196968,
+      "sha256": "5e9e168007e3c97615d5891495e6ae4e5a07b9f3debfc5786aee94524bfcf5cb"
+    },
+    {
+      "path": "/nix/store/604gsr59rj7dzd0nrhp143rpvf7gyiaz-gcc-15.3.0-lib/lib/libstdc++.so.6.0.34",
+      "bytes": 3235776,
+      "sha256": "f89d52396dc0767878d66c3ea98983e70c44bb987d3089752b75c02961d660e7"
+    },
+    {
+      "path": "/nix/store/lm3pknxi0ipypy3lxh1wmm8wvvavdwrn-glibc-2.42-84/lib/ld-linux-x86-64.so.2",
+      "bytes": 263056,
+      "sha256": "05657061620b22dbeb881cd13630ef66d39916d3b9c2a8efeb9ec6244367051f"
+    },
+    {
+      "path": "/nix/store/lm3pknxi0ipypy3lxh1wmm8wvvavdwrn-glibc-2.42-84/lib/libc.so.6",
+      "bytes": 2404904,
+      "sha256": "b8cb091b34bdd88f6902eebff8761f9ea306e6789b4ac4d06d4470c0d568c80c"
+    },
+    {
+      "path": "/nix/store/lm3pknxi0ipypy3lxh1wmm8wvvavdwrn-glibc-2.42-84/lib/libdl.so.2",
+      "bytes": 15688,
+      "sha256": "cdc7cf03d3b7db61930406eb336c74ba71c0347b77f2dc1ff03ebe6519442f1b"
+    },
+    {
+      "path": "/nix/store/lm3pknxi0ipypy3lxh1wmm8wvvavdwrn-glibc-2.42-84/lib/libm.so.6",
+      "bytes": 1102240,
+      "sha256": "864704dfd98b7025f21dd1dcc8f8f1f6388ecb44aa984b075f0188c253d4ab53"
+    },
+    {
+      "path": "/nix/store/lm3pknxi0ipypy3lxh1wmm8wvvavdwrn-glibc-2.42-84/lib/libpthread.so.0",
+      "bytes": 16536,
+      "sha256": "9d02cade61289234b7203fd73a4115207734f6c9ed1a6eeddd4b9f530ea46b28"
+    },
+    {
+      "path": "/nix/store/pqyiidz5mi73wv5f91d48s9plcqyj5bz-glibc-2.44-57/lib/ld-linux-x86-64.so.2",
+      "bytes": 276216,
+      "sha256": "d2fbe26249c12dd8ac1cfb618c705fe37d625d5a4dd4035b27869766480c1244"
+    },
+    {
+      "path": "native/source-lock.json",
+      "bytes": 876,
+      "sha256": "4ea18ecb1448f519865e167d5aba2e9ffc78f12e62d9e3653c9ac766a2bfb15a"
+    },
+    {
+      "path": "model-tools/source-lock.json",
+      "bytes": 486,
+      "sha256": "e9707011467deb8d3cc5a08551abea1b601c1c3d8774ce60936f9e492802121f"
+    },
+    {
+      "path": "native/p0/asr_main.cpp",
+      "bytes": 2567,
+      "sha256": "69757ccafc62fdf717bf6f10d3fe39285a97d8a84b6b60e52429a20a1e39e418"
+    },
+    {
+      "path": ".work/bt4-prepare-convert/runtime_env.sh",
+      "bytes": 774,
+      "sha256": "2e8259bfec17208a3756370f4800d937bb7f3c2507a16a108b2c5bf9321f9002"
+    },
+    {
+      "path": ".work/bt4-prepare-convert/compile_probes.sh",
+      "bytes": 1223,
+      "sha256": "97ac88a62b4c39cb315e150780d903384b510f36f38e17a3e92b4be55d9f1fb7"
+    },
+    {
+      "path": ".work/native-session-reuse/sources/sources.json",
+      "bytes": 1232525,
+      "sha256": "64001d621d7c37774295ab62803155465812d2be3289ecdc378eaeaa20633536"
+    },
+    {
+      "path": ".work/hz4-ab/runtime-linked-closure.json",
+      "bytes": 2052,
+      "sha256": "729186a50ed22bb25cb50d491e54022f0a64253217c51c6b91d7247574cbc006"
+    },
+    {
+      "path": ".work/native-session-reuse/sources/mnn/transformers/llm/engine/include/llm/llm.hpp",
+      "bytes": 12516,
+      "sha256": "7e721a16c1413d3994c876d722e5d839753c65468a2a88241fa2c0a9fb4d0323"
+    },
+    {
+      "path": ".work/native-session-reuse/sources/mnn/transformers/llm/engine/src/llm.cpp",
+      "bytes": 74180,
+      "sha256": "64ba6934691a2e615247368a72259e69df17f1984360e03b6141607ea66f3e20"
+    },
+    {
+      "path": ".work/native-session-reuse/sources/mnn/transformers/llm/engine/src/llmconfig.hpp",
+      "bytes": 23334,
+      "sha256": "0235df8fe75f0f33f114b4782b6a19c3e85a7d4c48c3601758675d83b4970230"
+    },
+    {
+      "path": ".work/native-session-reuse/sources/mnn/transformers/llm/engine/src/omni.cpp",
+      "bytes": 161712,
+      "sha256": "2005c4e636d772f649e0e4ad930145045f6463c08e9c146fa8bfe8c85a77141d"
+    }
+  ],
+  "driver": {
+    "path": ".work/bt4-prepare-convert/bin/asr_main",
+    "bytes": 23496,
+    "sha256": "169e5e23ad99a6d12f4ad14de28b27046666e3ba240912235f35734daa5a39fd"
+  },
+  "corpus_inputs": [
+    {
+      "path": ".work/hz4-ab/corpus/zh-original.wav",
+      "bytes": 134570,
+      "sha256": "46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50",
+      "id": "zh-original",
+      "language": "Chinese",
+      "samples": 67263,
+      "synthetic_silence": false,
+      "source_kind": "public zh example normalized to mono16k PCM16"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/en-original.wav",
+      "bytes": 481684,
+      "sha256": "64e219123047e533c1c1dbb446cb04873ff8c72a2ff20e24ae9d84664d9b455f",
+      "id": "en-original",
+      "language": "English",
+      "samples": 240820,
+      "synthetic_silence": false,
+      "source_kind": "public en example normalized to mono16k PCM16"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-3200.wav",
+      "bytes": 6444,
+      "sha256": "817b3f000ea63fc1d58e686d41d8bfee2109d54ad383400648af48242cd239af",
+      "id": "zh-3200",
+      "language": "Chinese",
+      "samples": 3200,
+      "synthetic_silence": false,
+      "source_kind": "crop/tile public zh audio; boundary fixture, not independent speech"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-15840.wav",
+      "bytes": 31724,
+      "sha256": "e304fb7e9f5dea01fcc21303f6f11177938e96e54e6b9f9f8181d3598f36b2f1",
+      "id": "zh-15840",
+      "language": "Chinese",
+      "samples": 15840,
+      "synthetic_silence": false,
+      "source_kind": "crop/tile public zh audio; boundary fixture, not independent speech"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-16000.wav",
+      "bytes": 32044,
+      "sha256": "010b8f0e64091f87fc98508ba380b3efbd5ff33a72181727158ffd246e11c5d6",
+      "id": "zh-16000",
+      "language": "Chinese",
+      "samples": 16000,
+      "synthetic_silence": false,
+      "source_kind": "crop/tile public zh audio; boundary fixture, not independent speech"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-16160.wav",
+      "bytes": 32364,
+      "sha256": "7c01d0bb8a03190a2c33c038005cd4d482c0074a9705a59204f26abb82a68f1d",
+      "id": "zh-16160",
+      "language": "Chinese",
+      "samples": 16160,
+      "synthetic_silence": false,
+      "source_kind": "crop/tile public zh audio; boundary fixture, not independent speech"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-127840.wav",
+      "bytes": 255724,
+      "sha256": "e484f8a6456a25e91190fd8c8f67bcc9d23ab2c446851edbc8b1ba81b66941f0",
+      "id": "zh-127840",
+      "language": "Chinese",
+      "samples": 127840,
+      "synthetic_silence": false,
+      "source_kind": "crop/tile public zh audio; boundary fixture, not independent speech"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-128000.wav",
+      "bytes": 256044,
+      "sha256": "42e4df7822e89c7aff6fe83e7646faae53f90b76dd163323d47a54fff4cb28c0",
+      "id": "zh-128000",
+      "language": "Chinese",
+      "samples": 128000,
+      "synthetic_silence": false,
+      "source_kind": "crop/tile public zh audio; boundary fixture, not independent speech"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-128160.wav",
+      "bytes": 256364,
+      "sha256": "5a7efc9d6ea8d0b89d5cfc4ff1d9f908b2729a7ac3976cf54d4df0b80478f02b",
+      "id": "zh-128160",
+      "language": "Chinese",
+      "samples": 128160,
+      "synthetic_silence": false,
+      "source_kind": "crop/tile public zh audio; boundary fixture, not independent speech"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-240000.wav",
+      "bytes": 480044,
+      "sha256": "3cf133d1248a94556e9b5f6d1c0699b81d98b3af34f7e0c659878509f2b03ae0",
+      "id": "zh-240000",
+      "language": "Chinese",
+      "samples": 240000,
+      "synthetic_silence": false,
+      "source_kind": "crop/tile public zh audio; boundary fixture, not independent speech"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-480000.wav",
+      "bytes": 960044,
+      "sha256": "961d13c46b94b4e2935a9c28412a407b48432a6aefcba33e8caee87c1e20b99e",
+      "id": "zh-480000",
+      "language": "Chinese",
+      "samples": 480000,
+      "synthetic_silence": false,
+      "source_kind": "crop/tile public zh audio; boundary fixture, not independent speech"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/silence-3200.wav",
+      "bytes": 6444,
+      "sha256": "946c3f59f3e671ef87ad6655ece8bfc00c451f868f751787278c2d462f4bde26",
+      "id": "silence-3200",
+      "language": "Chinese",
+      "samples": 3200,
+      "synthetic_silence": true,
+      "source_kind": "synthetic silence"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/silence-16000.wav",
+      "bytes": 32044,
+      "sha256": "643f8a8dc8bd9c19225afffad2becfec5426180b3749cb208abdf1a6c8354efc",
+      "id": "silence-16000",
+      "language": "Chinese",
+      "samples": 16000,
+      "synthetic_silence": true,
+      "source_kind": "synthetic silence"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/silence-128160.wav",
+      "bytes": 256364,
+      "sha256": "11e86c545f047216cd616baa1efe68dc1507651021837de51a793b355ac871f8",
+      "id": "silence-128160",
+      "language": "Chinese",
+      "samples": 128160,
+      "synthetic_silence": true,
+      "source_kind": "synthetic silence"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-noise-100.wav",
+      "bytes": 134570,
+      "sha256": "10e5f7a3441a90e4db3f7e3684fa9cb4740247117534091710d0ff14ebb17cb5",
+      "id": "zh-noise-100",
+      "language": "Chinese",
+      "samples": 67263,
+      "synthetic_silence": false,
+      "source_kind": "public zh example plus seeded Gaussian noise (not music)"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-noise-500.wav",
+      "bytes": 134570,
+      "sha256": "54f00ab4c75d806f8d29c4f888e66ba61b66fde7bf5e939d506db493e5db4f71",
+      "id": "zh-noise-500",
+      "language": "Chinese",
+      "samples": 67263,
+      "synthetic_silence": false,
+      "source_kind": "public zh example plus seeded Gaussian noise (not music)"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-repeat.wav",
+      "bytes": 277096,
+      "sha256": "80ed66559faa4fa54eb47c9ee26c60ee770b77a9730fbbf69ed507bd53303e59",
+      "id": "zh-repeat",
+      "language": "Chinese",
+      "samples": 138526,
+      "synthetic_silence": false,
+      "source_kind": "same phrase repeated with 250ms gap"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-en.wav",
+      "bytes": 624210,
+      "sha256": "0ad4542a026f1d67501aec4de93b3046b93d7cf373d0997bc270fe1c709579f9",
+      "id": "zh-en",
+      "language": null,
+      "samples": 312083,
+      "synthetic_silence": false,
+      "source_kind": "concatenated public zh/en examples, automatic language"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/zh-tail-silence.wav",
+      "bytes": 150570,
+      "sha256": "4efae3c478371ca2eae761196228b9d9bce1d7dc82c3c8f45a8ec6416a5cbe9a",
+      "id": "zh-tail-silence",
+      "language": "Chinese",
+      "samples": 75263,
+      "synthetic_silence": false,
+      "source_kind": "real 500ms appended silence, valid audio"
+    },
+    {
+      "path": ".work/hz4-ab/corpus/en-2s.wav",
+      "bytes": 64044,
+      "sha256": "b4fffd5e8c74b940606b380e3d386068ee9bec73d5e9599b350e59adeff665cf",
+      "id": "en-2s",
+      "language": "English",
+      "samples": 32000,
+      "synthetic_silence": false,
+      "source_kind": "cropped/tiled public English example"
+    }
+  ],
+  "effective_base_config_sha256": "9ee59bb7ed2f63d1f3d2f6c641879c2a3d2c757bcb925be63dceb8554109a268",
+  "model_metadata_sha256": "4e853b553575b4eb716f2fb480a05d61748367476949195959f888f4ba62d684",
+  "tool_sha256": "dd2ff2daac41ef92300a48c4a74b8682b69fc15aa56fb91d44fc02f8c4bff654",
+  "process_helper_sha256": "57e4442f7704f0d97bb133a624f1f196ca7e420a1f27bad52f537e1e4c1c8f8a",
+  "summary": {
+    "models": {
+      "A": {
+        "correctness_runs": 20,
+        "complete_eos": 20,
+        "incomplete_or_failed": 0,
+        "truncated": 0,
+        "silence_nonempty": 3,
+        "repetition_heuristic": 0,
+        "first_observed_load_s": 2.63585,
+        "performance_complete": 3,
+        "performance_stats": {
+          "load_s": {
+            "n": 3,
+            "median": 5.3264,
+            "min": 4.60682,
+            "max": 6.30339,
+            "mad": 0.7195799999999997
+          },
+          "inference_s": {
+            "n": 3,
+            "median": 1.90999,
+            "min": 1.90919,
+            "max": 1.95709,
+            "mad": 0.0008000000000001339
+          },
+          "inference_rtf": {
+            "n": 3,
+            "median": 0.45433358607258073,
+            "min": 0.4541432882862792,
+            "max": 0.4655373682410835,
+            "mad": 0.00019029778630152983
+          },
+          "wall_rtf": {
+            "n": 3,
+            "median": 1.793484310366913,
+            "min": 1.6341972836381575,
+            "max": 2.0302810006269763,
+            "mad": 0.1592870267287554
+          },
+          "process_wall_s": {
+            "n": 3,
+            "median": 7.5396959480131045,
+            "min": 6.870063243084587,
+            "max": 8.53517443407327,
+            "mad": 0.6696327049285173
+          },
+          "sampled_owned_rss_sum_bytes": {
+            "n": 3,
+            "median": 3406176256,
+            "min": 3406176256,
+            "max": 3406245888,
+            "mad": 0
+          }
+        },
+        "gold_scores": []
+      },
+      "B": {
+        "correctness_runs": 20,
+        "complete_eos": 20,
+        "incomplete_or_failed": 0,
+        "truncated": 0,
+        "silence_nonempty": 3,
+        "repetition_heuristic": 0,
+        "first_observed_load_s": 6.14646,
+        "performance_complete": 3,
+        "performance_stats": {
+          "load_s": {
+            "n": 3,
+            "median": 5.2096,
+            "min": 4.37404,
+            "max": 5.78933,
+            "mad": 0.5797299999999996
+          },
+          "inference_s": {
+            "n": 3,
+            "median": 1.89979,
+            "min": 1.89822,
+            "max": 1.91036,
+            "mad": 0.0015700000000000713
+          },
+          "inference_rtf": {
+            "n": 3,
+            "median": 0.4519072892972362,
+            "min": 0.45153382989161944,
+            "max": 0.4544215987987452,
+            "mad": 0.0003734594056167828
+          },
+          "wall_rtf": {
+            "n": 3,
+            "median": 1.767261588927071,
+            "min": 1.5699146364608687,
+            "max": 1.9050869661940533,
+            "mad": 0.13782537726698219
+          },
+          "process_wall_s": {
+            "n": 3,
+            "median": 7.4294572660000995,
+            "min": 6.599823012016714,
+            "max": 8.008866537944414,
+            "mad": 0.5794092719443142
+          },
+          "sampled_owned_rss_sum_bytes": {
+            "n": 3,
+            "median": 3406114816,
+            "min": 3406094336,
+            "max": 3406180352,
+            "mad": 20480
+          }
+        },
+        "gold_scores": []
+      }
+    },
+    "agreement": {
+      "eligible": 20,
+      "raw_equal": 20,
+      "normalized_equal": 20
+    },
+    "quality": "not_available_without_independent_gold",
+    "paired_performance": {
+      "zh-original": {
+        "pairs": [
+          {
+            "repeat": 0,
+            "inference_delta_b_minus_a_s": -0.05729999999999991,
+            "inference_ratio_b_over_a": 0.9707218370131164
+          },
+          {
+            "repeat": 1,
+            "inference_delta_b_minus_a_s": 0.0011700000000001154,
+            "inference_ratio_b_over_a": 1.000612825334304
+          },
+          {
+            "repeat": 2,
+            "inference_delta_b_minus_a_s": -0.011770000000000058,
+            "inference_ratio_b_over_a": 0.9938376640715396
+          }
+        ],
+        "delta_stats": {
+          "n": 3,
+          "median": -0.011770000000000058,
+          "min": -0.05729999999999991,
+          "max": 0.0011700000000001154,
+          "mad": 0.012940000000000174
+        },
+        "ratio_stats": {
+          "n": 3,
+          "median": 0.9938376640715396,
+          "min": 0.9707218370131164,
+          "max": 1.000612825334304,
+          "mad": 0.006775161262764451
+        }
+      }
+    }
+  },
+  "runs": [
+    {
+      "phase": "correctness",
+      "repeat": 0,
+      "case": "zh-original",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-original.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406049280,
+        "failure": null,
+        "pid": 3253973,
+        "pid_start_ticks": "84278573",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 4.893379715969786,
+        "log_sha256": "6a1fd3f321bd6e62f585e2008760e6a94e86bf5f48accd0542e4920cc060f685"
+      },
+      "metrics": {
+        "load_s": 2.63585,
+        "inference_s": 1.95401,
+        "audio_us": 335906,
+        "prefill_us": 521081,
+        "decode_us": 1074470,
+        "prompt_tokens": 73,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4648047217638226,
+      "wall_rtf": 1.1639991593523418
+    },
+    {
+      "phase": "correctness",
+      "repeat": 0,
+      "case": "zh-original",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-original.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3405959168,
+        "failure": null,
+        "pid": 3253975,
+        "pid_start_ticks": "84279063",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 8.502095064963214,
+        "log_sha256": "218eb954dd50e4f86b8f8d014cd8b1b8b998a3dc08bddadcb71f2da462ca7281"
+      },
+      "metrics": {
+        "load_s": 6.14646,
+        "inference_s": 2.02639,
+        "audio_us": 343511,
+        "prefill_us": 514095,
+        "decode_us": 1057620,
+        "prompt_tokens": 73,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.48202191397945376,
+      "wall_rtf": 2.0224123372346074
+    },
+    {
+      "phase": "correctness",
+      "repeat": 1,
+      "case": "en-original",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/en-original.wav",
+          "English"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3541164032,
+        "failure": null,
+        "pid": 3253988,
+        "pid_start_ticks": "84279913",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 13.615144305047579,
+        "log_sha256": "8355816d87ca43f3eeda029a24ab1dd4c857b84bb8c5392e0580302f80f56492"
+      },
+      "metrics": {
+        "load_s": 4.10802,
+        "inference_s": 9.17517,
+        "audio_us": 1050833,
+        "prefill_us": 1352811,
+        "decode_us": 6755614,
+        "prompt_tokens": 214,
+        "generated_tokens": 45,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "5ef1a9357f9bfed37603e4987adbae756de78ef10a90cbb5ff84ef7c65998bf7",
+      "raw_output_sha256": "86b865fb34b42413fc0d62b1362269ab31daf6300ec6c04682c74c44d635fdfd",
+      "text_sha256": "86b865fb34b42413fc0d62b1362269ab31daf6300ec6c04682c74c44d635fdfd",
+      "normalized_sha256": "ce2d2e5a8829b7c157ac2db508f80fa68d5fab16811a678573b9107605469bd1",
+      "text_characters": 185,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.6095952163441575,
+      "wall_rtf": 0.9045856194699828
+    },
+    {
+      "phase": "correctness",
+      "repeat": 1,
+      "case": "en-original",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/en-original.wav",
+          "English"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3541172224,
+        "failure": null,
+        "pid": 3254003,
+        "pid_start_ticks": "84281275",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 16.008069216040894,
+        "log_sha256": "e9d46a20474772f8e3aa68b7e9840d449d686e68cce242e202fb9cdda69e1c0e"
+      },
+      "metrics": {
+        "load_s": 6.56596,
+        "inference_s": 9.11917,
+        "audio_us": 1008090,
+        "prefill_us": 1341871,
+        "decode_us": 6754351,
+        "prompt_tokens": 214,
+        "generated_tokens": 45,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "5ef1a9357f9bfed37603e4987adbae756de78ef10a90cbb5ff84ef7c65998bf7",
+      "raw_output_sha256": "86b865fb34b42413fc0d62b1362269ab31daf6300ec6c04682c74c44d635fdfd",
+      "text_sha256": "86b865fb34b42413fc0d62b1362269ab31daf6300ec6c04682c74c44d635fdfd",
+      "normalized_sha256": "ce2d2e5a8829b7c157ac2db508f80fa68d5fab16811a678573b9107605469bd1",
+      "text_characters": 185,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.6058745951332947,
+      "wall_rtf": 1.0635707476814813
+    },
+    {
+      "phase": "correctness",
+      "repeat": 2,
+      "case": "zh-3200",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-3200.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3344773120,
+        "failure": null,
+        "pid": 3254021,
+        "pid_start_ticks": "84282875",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 6.332833959022537,
+        "log_sha256": "6be2e1f60da975e2f624234127562e9fefddd12265f3990413513a022cefb852"
+      },
+      "metrics": {
+        "load_s": 5.32257,
+        "inference_s": 0.711943,
+        "audio_us": 68933,
+        "prefill_us": 312096,
+        "decode_us": 312445,
+        "prompt_tokens": 21,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "text_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "normalized_sha256": "821ea6fd74a74c12dfe83babf1c9f495bee9012e2301d5b7f3010fff99b8fd6f",
+      "text_characters": 2,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 3.5597149999999997,
+      "wall_rtf": 31.664169795112684
+    },
+    {
+      "phase": "correctness",
+      "repeat": 2,
+      "case": "zh-3200",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-3200.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3344703488,
+        "failure": null,
+        "pid": 3254079,
+        "pid_start_ticks": "84283509",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 5.4076357369776815,
+        "log_sha256": "9d5e0d89a81fd125e184b6d5e6c69cfafc700ef3fca6f2c9229307beaa0cb0e8"
+      },
+      "metrics": {
+        "load_s": 4.40364,
+        "inference_s": 0.671649,
+        "audio_us": 62162,
+        "prefill_us": 282558,
+        "decode_us": 304497,
+        "prompt_tokens": 21,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "text_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "normalized_sha256": "821ea6fd74a74c12dfe83babf1c9f495bee9012e2301d5b7f3010fff99b8fd6f",
+      "text_characters": 2,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 3.358245,
+      "wall_rtf": 27.038178684888408
+    },
+    {
+      "phase": "correctness",
+      "repeat": 3,
+      "case": "zh-15840",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-15840.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3344830464,
+        "failure": null,
+        "pid": 3254081,
+        "pid_start_ticks": "84284050",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 5.322466712095775,
+        "log_sha256": "ae6522ccb47f747888a5f855134baee57a9cead557556d77829502ee6ad7d7cf"
+      },
+      "metrics": {
+        "load_s": 4.21983,
+        "inference_s": 0.793501,
+        "audio_us": 148316,
+        "prefill_us": 342097,
+        "decode_us": 301413,
+        "prompt_tokens": 31,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "79955bc4268756edc9cca9493173e8ed27fe4bc4c5a426809a0139ea16de3f6c",
+      "text_sha256": "79955bc4268756edc9cca9493173e8ed27fe4bc4c5a426809a0139ea16de3f6c",
+      "normalized_sha256": "32962a1037e45d878a6540c4315ff7b974915e1d02a40cffb2b7c334843af8f9",
+      "text_characters": 3,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.8015161616161617,
+      "wall_rtf": 5.376229002116944
+    },
+    {
+      "phase": "correctness",
+      "repeat": 3,
+      "case": "zh-15840",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-15840.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3344838656,
+        "failure": null,
+        "pid": 3254115,
+        "pid_start_ticks": "84284582",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 4.765619560028426,
+        "log_sha256": "9e271a2a15e7fd1550ca7f4d48a728ea56377c59ccf8be6439e1b44937b3ea67"
+      },
+      "metrics": {
+        "load_s": 3.62839,
+        "inference_s": 0.799105,
+        "audio_us": 145586,
+        "prefill_us": 351844,
+        "decode_us": 300627,
+        "prompt_tokens": 31,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "79955bc4268756edc9cca9493173e8ed27fe4bc4c5a426809a0139ea16de3f6c",
+      "text_sha256": "79955bc4268756edc9cca9493173e8ed27fe4bc4c5a426809a0139ea16de3f6c",
+      "normalized_sha256": "32962a1037e45d878a6540c4315ff7b974915e1d02a40cffb2b7c334843af8f9",
+      "text_characters": 3,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.8071767676767676,
+      "wall_rtf": 4.813757131341845
+    },
+    {
+      "phase": "correctness",
+      "repeat": 4,
+      "case": "zh-16000",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-16000.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3344838656,
+        "failure": null,
+        "pid": 3254117,
+        "pid_start_ticks": "84285059",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 3.7815356800565496,
+        "log_sha256": "c8a0e456199527772e1ee60b3c66b69dfdbe2dde1faeee3562ea49ec5c95ff18"
+      },
+      "metrics": {
+        "load_s": 2.646,
+        "inference_s": 0.79932,
+        "audio_us": 142077,
+        "prefill_us": 352231,
+        "decode_us": 303377,
+        "prompt_tokens": 31,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "79955bc4268756edc9cca9493173e8ed27fe4bc4c5a426809a0139ea16de3f6c",
+      "text_sha256": "79955bc4268756edc9cca9493173e8ed27fe4bc4c5a426809a0139ea16de3f6c",
+      "normalized_sha256": "32962a1037e45d878a6540c4315ff7b974915e1d02a40cffb2b7c334843af8f9",
+      "text_characters": 3,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.79932,
+      "wall_rtf": 3.7815356800565496
+    },
+    {
+      "phase": "correctness",
+      "repeat": 4,
+      "case": "zh-16000",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-16000.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3344838656,
+        "failure": null,
+        "pid": 3254131,
+        "pid_start_ticks": "84285437",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 5.227999610942788,
+        "log_sha256": "aca919dd73c5ed5543769c9f772158d15b9750ba3eb981cfee7d9cc8671b09b4"
+      },
+      "metrics": {
+        "load_s": 4.11405,
+        "inference_s": 0.82705,
+        "audio_us": 148378,
+        "prefill_us": 376930,
+        "decode_us": 300673,
+        "prompt_tokens": 31,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "79955bc4268756edc9cca9493173e8ed27fe4bc4c5a426809a0139ea16de3f6c",
+      "text_sha256": "79955bc4268756edc9cca9493173e8ed27fe4bc4c5a426809a0139ea16de3f6c",
+      "normalized_sha256": "32962a1037e45d878a6540c4315ff7b974915e1d02a40cffb2b7c334843af8f9",
+      "text_characters": 3,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.82705,
+      "wall_rtf": 5.227999610942788
+    },
+    {
+      "phase": "correctness",
+      "repeat": 5,
+      "case": "zh-16160",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-16160.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3369218048,
+        "failure": null,
+        "pid": 3254133,
+        "pid_start_ticks": "84285960",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 3.766901205992326,
+        "log_sha256": "df53a56c7440281244ae6315ba7d8da156ffcd023932d363640d7a7b1ba431fc"
+      },
+      "metrics": {
+        "load_s": 2.61077,
+        "inference_s": 0.834925,
+        "audio_us": 179598,
+        "prefill_us": 354423,
+        "decode_us": 299251,
+        "prompt_tokens": 32,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "79955bc4268756edc9cca9493173e8ed27fe4bc4c5a426809a0139ea16de3f6c",
+      "text_sha256": "79955bc4268756edc9cca9493173e8ed27fe4bc4c5a426809a0139ea16de3f6c",
+      "normalized_sha256": "32962a1037e45d878a6540c4315ff7b974915e1d02a40cffb2b7c334843af8f9",
+      "text_characters": 3,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.8266584158415842,
+      "wall_rtf": 3.7296051544478477
+    },
+    {
+      "phase": "correctness",
+      "repeat": 5,
+      "case": "zh-16160",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-16160.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3369218048,
+        "failure": null,
+        "pid": 3254136,
+        "pid_start_ticks": "84286337",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 7.433968352037482,
+        "log_sha256": "7dbf4260029351c2aa44138fc3f4b4af49a4a8254cd2a51ddac7579001822621"
+      },
+      "metrics": {
+        "load_s": 6.25212,
+        "inference_s": 0.858328,
+        "audio_us": 175663,
+        "prefill_us": 367898,
+        "decode_us": 313649,
+        "prompt_tokens": 32,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "79955bc4268756edc9cca9493173e8ed27fe4bc4c5a426809a0139ea16de3f6c",
+      "text_sha256": "79955bc4268756edc9cca9493173e8ed27fe4bc4c5a426809a0139ea16de3f6c",
+      "normalized_sha256": "32962a1037e45d878a6540c4315ff7b974915e1d02a40cffb2b7c334843af8f9",
+      "text_characters": 3,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.849829702970297,
+      "wall_rtf": 7.360364704987606
+    },
+    {
+      "phase": "correctness",
+      "repeat": 6,
+      "case": "zh-127840",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-127840.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3442892800,
+        "failure": null,
+        "pid": 3254138,
+        "pid_start_ticks": "84287080",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 7.990766115020961,
+        "log_sha256": "e4d2a937a0762d3039bac6e0b90614a1065a756175235dbab62adf53ec136fda"
+      },
+      "metrics": {
+        "load_s": 4.06895,
+        "inference_s": 3.58968,
+        "audio_us": 607784,
+        "prefill_us": 814892,
+        "decode_us": 2147454,
+        "prompt_tokens": 122,
+        "generated_tokens": 15,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "e2c53c550ea463c522ccd763b222bf7adffc1e40f324fc914b46cc14fab88ebb",
+      "text_sha256": "e2c53c550ea463c522ccd763b222bf7adffc1e40f324fc914b46cc14fab88ebb",
+      "normalized_sha256": "b7e717a8c5f44d35a3550429fa8fb9d2c6484c731564a92c5b2531178212122f",
+      "text_characters": 28,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4492715894868586,
+      "wall_rtf": 1.0000958842329113
+    },
+    {
+      "phase": "correctness",
+      "repeat": 6,
+      "case": "zh-127840",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-127840.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3443150848,
+        "failure": null,
+        "pid": 3254280,
+        "pid_start_ticks": "84287880",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 9.987585854018107,
+        "log_sha256": "89f85465c96f4091475776c269e28ac29f3dcd08eb0c01d9a87b57c6021165e4"
+      },
+      "metrics": {
+        "load_s": 6.18955,
+        "inference_s": 3.47722,
+        "audio_us": 561548,
+        "prefill_us": 783338,
+        "decode_us": 2124673,
+        "prompt_tokens": 122,
+        "generated_tokens": 15,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "e2c53c550ea463c522ccd763b222bf7adffc1e40f324fc914b46cc14fab88ebb",
+      "text_sha256": "e2c53c550ea463c522ccd763b222bf7adffc1e40f324fc914b46cc14fab88ebb",
+      "normalized_sha256": "b7e717a8c5f44d35a3550429fa8fb9d2c6484c731564a92c5b2531178212122f",
+      "text_characters": 28,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4351964956195244,
+      "wall_rtf": 1.250010745183743
+    },
+    {
+      "phase": "correctness",
+      "repeat": 7,
+      "case": "zh-128000",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-128000.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3442864128,
+        "failure": null,
+        "pid": 3254283,
+        "pid_start_ticks": "84288878",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 7.340065285912715,
+        "log_sha256": "e756296cddaadf798434500ba43bd09beda6ae8d0cb3c5f7ae8784bcd426152f"
+      },
+      "metrics": {
+        "load_s": 3.47251,
+        "inference_s": 3.49015,
+        "audio_us": 557582,
+        "prefill_us": 811054,
+        "decode_us": 2112829,
+        "prompt_tokens": 122,
+        "generated_tokens": 15,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "e2c53c550ea463c522ccd763b222bf7adffc1e40f324fc914b46cc14fab88ebb",
+      "text_sha256": "e2c53c550ea463c522ccd763b222bf7adffc1e40f324fc914b46cc14fab88ebb",
+      "normalized_sha256": "b7e717a8c5f44d35a3550429fa8fb9d2c6484c731564a92c5b2531178212122f",
+      "text_characters": 28,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.43626875,
+      "wall_rtf": 0.9175081607390894
+    },
+    {
+      "phase": "correctness",
+      "repeat": 7,
+      "case": "zh-128000",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-128000.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3442798592,
+        "failure": null,
+        "pid": 3254296,
+        "pid_start_ticks": "84289613",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 10.91012433799915,
+        "log_sha256": "de07ce20e0d20c3a0df92540166f12e41ff02fe04598aaa81cb445f00df3f71a"
+      },
+      "metrics": {
+        "load_s": 7.01966,
+        "inference_s": 3.57471,
+        "audio_us": 561280,
+        "prefill_us": 880827,
+        "decode_us": 2124849,
+        "prompt_tokens": 122,
+        "generated_tokens": 15,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "e2c53c550ea463c522ccd763b222bf7adffc1e40f324fc914b46cc14fab88ebb",
+      "text_sha256": "e2c53c550ea463c522ccd763b222bf7adffc1e40f324fc914b46cc14fab88ebb",
+      "normalized_sha256": "b7e717a8c5f44d35a3550429fa8fb9d2c6484c731564a92c5b2531178212122f",
+      "text_characters": 28,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.44683875,
+      "wall_rtf": 1.3637655422498938
+    },
+    {
+      "phase": "correctness",
+      "repeat": 8,
+      "case": "zh-128160",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-128160.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3455197184,
+        "failure": null,
+        "pid": 3254299,
+        "pid_start_ticks": "84290704",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 8.034833408892155,
+        "log_sha256": "96451d5d783010b7c60922adfd5d3bd29f9901f6f29f39683c5e56ced6c712f0"
+      },
+      "metrics": {
+        "load_s": 4.14119,
+        "inference_s": 3.58294,
+        "audio_us": 676091,
+        "prefill_us": 782770,
+        "decode_us": 2113769,
+        "prompt_tokens": 123,
+        "generated_tokens": 15,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "e2c53c550ea463c522ccd763b222bf7adffc1e40f324fc914b46cc14fab88ebb",
+      "text_sha256": "e2c53c550ea463c522ccd763b222bf7adffc1e40f324fc914b46cc14fab88ebb",
+      "normalized_sha256": "b7e717a8c5f44d35a3550429fa8fb9d2c6484c731564a92c5b2531178212122f",
+      "text_characters": 28,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4473083645443196,
+      "wall_rtf": 1.0031003007355999
+    },
+    {
+      "phase": "correctness",
+      "repeat": 8,
+      "case": "zh-128160",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-128160.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3454910464,
+        "failure": null,
+        "pid": 3254353,
+        "pid_start_ticks": "84291507",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 10.573812612099573,
+        "log_sha256": "ac91ed27d85059c0cb45dee6c6536b2822fed05d9aba80f87225ffbbef890861"
+      },
+      "metrics": {
+        "load_s": 6.74246,
+        "inference_s": 3.49765,
+        "audio_us": 597470,
+        "prefill_us": 786397,
+        "decode_us": 2106774,
+        "prompt_tokens": 123,
+        "generated_tokens": 15,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "e2c53c550ea463c522ccd763b222bf7adffc1e40f324fc914b46cc14fab88ebb",
+      "text_sha256": "e2c53c550ea463c522ccd763b222bf7adffc1e40f324fc914b46cc14fab88ebb",
+      "normalized_sha256": "b7e717a8c5f44d35a3550429fa8fb9d2c6484c731564a92c5b2531178212122f",
+      "text_characters": 28,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4366604244694133,
+      "wall_rtf": 1.3200764809113075
+    },
+    {
+      "phase": "correctness",
+      "repeat": 9,
+      "case": "zh-240000",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-240000.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3528896512,
+        "failure": null,
+        "pid": 3254356,
+        "pid_start_ticks": "84292565",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 10.157430922030471,
+        "log_sha256": "83a0d687af10ce69f2e0f0a3e794481a164859e7792bbe2b6ea5dc276c34a149"
+      },
+      "metrics": {
+        "load_s": 3.41022,
+        "inference_s": 6.44142,
+        "audio_us": 1032715,
+        "prefill_us": 1411349,
+        "decode_us": 3983782,
+        "prompt_tokens": 213,
+        "generated_tokens": 27,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "cd2190db937150e21f9f8ade65a167ed3c0ba95d9342abae6237b2d69db4fd8c",
+      "text_sha256": "cd2190db937150e21f9f8ade65a167ed3c0ba95d9342abae6237b2d69db4fd8c",
+      "normalized_sha256": "87972eaf789f07fa340483aad832c02b999d4915cd1eaa36587193619a4f875e",
+      "text_characters": 51,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.429428,
+      "wall_rtf": 0.6771620614686981
+    },
+    {
+      "phase": "correctness",
+      "repeat": 9,
+      "case": "zh-240000",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-240000.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3528921088,
+        "failure": null,
+        "pid": 3254370,
+        "pid_start_ticks": "84293581",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 14.163058312027715,
+        "log_sha256": "6c68b1aece330bb21126051fdaa1f4b4295fd7ced5418acea73f999b5c2bc042"
+      },
+      "metrics": {
+        "load_s": 7.55273,
+        "inference_s": 6.30266,
+        "audio_us": 994360,
+        "prefill_us": 1372627,
+        "decode_us": 3920077,
+        "prompt_tokens": 213,
+        "generated_tokens": 27,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "cd2190db937150e21f9f8ade65a167ed3c0ba95d9342abae6237b2d69db4fd8c",
+      "text_sha256": "cd2190db937150e21f9f8ade65a167ed3c0ba95d9342abae6237b2d69db4fd8c",
+      "normalized_sha256": "87972eaf789f07fa340483aad832c02b999d4915cd1eaa36587193619a4f875e",
+      "text_characters": 51,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.42017733333333335,
+      "wall_rtf": 0.9442038874685144
+    },
+    {
+      "phase": "correctness",
+      "repeat": 10,
+      "case": "zh-480000",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-480000.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3732918272,
+        "failure": null,
+        "pid": 3254415,
+        "pid_start_ticks": "84294997",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 17.2384057759773,
+        "log_sha256": "c25e4fe4f026025b473160d7073ff0e8b8290e8d11ca65ce2e704e304a1ff6a6"
+      },
+      "metrics": {
+        "load_s": 3.93398,
+        "inference_s": 12.9844,
+        "audio_us": 2249064,
+        "prefill_us": 3125547,
+        "decode_us": 7583209,
+        "prompt_tokens": 408,
+        "generated_tokens": 50,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "4a4649689b4ab78188c551623e4727e52de5504d3e1cfc2bf483e0ce4e9d2e0e",
+      "text_sha256": "4a4649689b4ab78188c551623e4727e52de5504d3e1cfc2bf483e0ce4e9d2e0e",
+      "normalized_sha256": "e9d7506f83b177f7a318f64fa689ba01d4b1d36791862a4fbeb22555b1716918",
+      "text_characters": 98,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4328133333333334,
+      "wall_rtf": 0.57461352586591
+    },
+    {
+      "phase": "correctness",
+      "repeat": 10,
+      "case": "zh-480000",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-480000.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3732987904,
+        "failure": null,
+        "pid": 3254429,
+        "pid_start_ticks": "84296722",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 19.743949812022038,
+        "log_sha256": "b1955f1ecbf62a2bab1efb78d8a368805ab809651ca0aaea7ad7d7aa6460581c"
+      },
+      "metrics": {
+        "load_s": 6.71622,
+        "inference_s": 12.7313,
+        "audio_us": 2108767,
+        "prefill_us": 3059789,
+        "decode_us": 7537998,
+        "prompt_tokens": 408,
+        "generated_tokens": 50,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "4a4649689b4ab78188c551623e4727e52de5504d3e1cfc2bf483e0ce4e9d2e0e",
+      "text_sha256": "4a4649689b4ab78188c551623e4727e52de5504d3e1cfc2bf483e0ce4e9d2e0e",
+      "normalized_sha256": "e9d7506f83b177f7a318f64fa689ba01d4b1d36791862a4fbeb22555b1716918",
+      "text_characters": 98,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4243766666666666,
+      "wall_rtf": 0.6581316604007346
+    },
+    {
+      "phase": "correctness",
+      "repeat": 11,
+      "case": "silence-3200",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/silence-3200.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3344838656,
+        "failure": null,
+        "pid": 3254443,
+        "pid_start_ticks": "84298696",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 3.5197302929591388,
+        "log_sha256": "40cb00ee4aaae5f9011b1e3ba2bad2dd974046927ce636e971bc01b7eab3cd6d"
+      },
+      "metrics": {
+        "load_s": 2.57071,
+        "inference_s": 0.640311,
+        "audio_us": 57344,
+        "prefill_us": 281844,
+        "decode_us": 299579,
+        "prompt_tokens": 21,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "text_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "normalized_sha256": "821ea6fd74a74c12dfe83babf1c9f495bee9012e2301d5b7f3010fff99b8fd6f",
+      "text_characters": 2,
+      "repetition_heuristic": false,
+      "silence_nonempty": true,
+      "inference_rtf": 3.2015549999999995,
+      "wall_rtf": 17.598651464795694
+    },
+    {
+      "phase": "correctness",
+      "repeat": 11,
+      "case": "silence-3200",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/silence-3200.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3344822272,
+        "failure": null,
+        "pid": 3254445,
+        "pid_start_ticks": "84299048",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 8.271437080926262,
+        "log_sha256": "96cfd48e13ac4bf4863e7715207d5aea90e8eb38bd43d1d8af5a9aec98b5e172"
+      },
+      "metrics": {
+        "load_s": 7.3056,
+        "inference_s": 0.646965,
+        "audio_us": 58335,
+        "prefill_us": 289237,
+        "decode_us": 298338,
+        "prompt_tokens": 21,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "text_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "normalized_sha256": "821ea6fd74a74c12dfe83babf1c9f495bee9012e2301d5b7f3010fff99b8fd6f",
+      "text_characters": 2,
+      "repetition_heuristic": false,
+      "silence_nonempty": true,
+      "inference_rtf": 3.234825,
+      "wall_rtf": 41.35718540463131
+    },
+    {
+      "phase": "correctness",
+      "repeat": 12,
+      "case": "silence-16000",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/silence-16000.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3344912384,
+        "failure": null,
+        "pid": 3254461,
+        "pid_start_ticks": "84299876",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 5.897088665049523,
+        "log_sha256": "b977005c797c535dacfb3ad5c6b690c1677a9a8e911785017e28f0e3feaf9a89"
+      },
+      "metrics": {
+        "load_s": 4.76336,
+        "inference_s": 0.800744,
+        "audio_us": 152466,
+        "prefill_us": 348416,
+        "decode_us": 298168,
+        "prompt_tokens": 31,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "text_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "normalized_sha256": "821ea6fd74a74c12dfe83babf1c9f495bee9012e2301d5b7f3010fff99b8fd6f",
+      "text_characters": 2,
+      "repetition_heuristic": false,
+      "silence_nonempty": true,
+      "inference_rtf": 0.800744,
+      "wall_rtf": 5.897088665049523
+    },
+    {
+      "phase": "correctness",
+      "repeat": 12,
+      "case": "silence-16000",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/silence-16000.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3344818176,
+        "failure": null,
+        "pid": 3254463,
+        "pid_start_ticks": "84300465",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 5.707909496035427,
+        "log_sha256": "49f885c8312b2c35247a41b1547b2410631c4c5415cc7af95dd742dc0a71cfd4"
+      },
+      "metrics": {
+        "load_s": 4.57746,
+        "inference_s": 0.804098,
+        "audio_us": 142701,
+        "prefill_us": 356927,
+        "decode_us": 303406,
+        "prompt_tokens": 31,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "text_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "normalized_sha256": "821ea6fd74a74c12dfe83babf1c9f495bee9012e2301d5b7f3010fff99b8fd6f",
+      "text_characters": 2,
+      "repetition_heuristic": false,
+      "silence_nonempty": true,
+      "inference_rtf": 0.804098,
+      "wall_rtf": 5.707909496035427
+    },
+    {
+      "phase": "correctness",
+      "repeat": 13,
+      "case": "silence-128160",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/silence-128160.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3455107072,
+        "failure": null,
+        "pid": 3254465,
+        "pid_start_ticks": "84301036",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 6.0607198510551825,
+        "log_sha256": "6f4d06f6905ec122aa81090ae6dc8a7ad5db20d52fabfb136c70f29cc8d230cb"
+      },
+      "metrics": {
+        "load_s": 4.08956,
+        "inference_s": 1.65302,
+        "audio_us": 577529,
+        "prefill_us": 768996,
+        "decode_us": 300370,
+        "prompt_tokens": 123,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "text_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "normalized_sha256": "821ea6fd74a74c12dfe83babf1c9f495bee9012e2301d5b7f3010fff99b8fd6f",
+      "text_characters": 2,
+      "repetition_heuristic": false,
+      "silence_nonempty": true,
+      "inference_rtf": 0.20636953807740324,
+      "wall_rtf": 0.7566441761616958
+    },
+    {
+      "phase": "correctness",
+      "repeat": 13,
+      "case": "silence-128160",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/silence-128160.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3455139840,
+        "failure": null,
+        "pid": 3254479,
+        "pid_start_ticks": "84301643",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 8.187272347975522,
+        "log_sha256": "125a28ea0c0c972ca39f9594d131f8f34777ad230be943001c75e8774e296137"
+      },
+      "metrics": {
+        "load_s": 6.2186,
+        "inference_s": 1.67031,
+        "audio_us": 571335,
+        "prefill_us": 792902,
+        "decode_us": 300079,
+        "prompt_tokens": 123,
+        "generated_tokens": 3,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "text_sha256": "5c7a9f97adb5bed9d4c6aca666dffd0e37fda970ebcfc2c8c0060523a483e295",
+      "normalized_sha256": "821ea6fd74a74c12dfe83babf1c9f495bee9012e2301d5b7f3010fff99b8fd6f",
+      "text_characters": 2,
+      "repetition_heuristic": false,
+      "silence_nonempty": true,
+      "inference_rtf": 0.20852808988764046,
+      "wall_rtf": 1.0221313792728492
+    },
+    {
+      "phase": "correctness",
+      "repeat": 14,
+      "case": "zh-noise-100",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-noise-100.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406184448,
+        "failure": null,
+        "pid": 3254481,
+        "pid_start_ticks": "84302462",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 6.573263596976176,
+        "log_sha256": "acca2215d3d6e2b7b0dedb043826a710bf3da943dcd99c06d2080c09721c91a5"
+      },
+      "metrics": {
+        "load_s": 4.31942,
+        "inference_s": 1.92106,
+        "audio_us": 335916,
+        "prefill_us": 534019,
+        "decode_us": 1044477,
+        "prompt_tokens": 73,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4569668316905282,
+      "wall_rtf": 1.5635968891012713
+    },
+    {
+      "phase": "correctness",
+      "repeat": 14,
+      "case": "zh-noise-100",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-noise-100.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406143488,
+        "failure": null,
+        "pid": 3254483,
+        "pid_start_ticks": "84303119",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 6.309285840019584,
+        "log_sha256": "ad65b6827a16c17baeb09a007ffff23e8b114a9f1fe9b22774dcb9dd1b82e484"
+      },
+      "metrics": {
+        "load_s": 4.05615,
+        "inference_s": 1.90639,
+        "audio_us": 333615,
+        "prefill_us": 515814,
+        "decode_us": 1052549,
+        "prompt_tokens": 73,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.45347724603422385,
+      "wall_rtf": 1.5008039106241668
+    },
+    {
+      "phase": "correctness",
+      "repeat": 15,
+      "case": "zh-noise-500",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-noise-500.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406180352,
+        "failure": null,
+        "pid": 3254497,
+        "pid_start_ticks": "84303750",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 6.318474171101116,
+        "log_sha256": "138dfdb61c8e1cde023f623f7d7c2d81bd821d5fd5117c300f4c24f00736735a"
+      },
+      "metrics": {
+        "load_s": 4.06339,
+        "inference_s": 1.94437,
+        "audio_us": 340466,
+        "prefill_us": 545089,
+        "decode_us": 1053415,
+        "prompt_tokens": 73,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.46251163343888907,
+      "wall_rtf": 1.5029895594549432
+    },
+    {
+      "phase": "correctness",
+      "repeat": 15,
+      "case": "zh-noise-500",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-noise-500.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406180352,
+        "failure": null,
+        "pid": 3254499,
+        "pid_start_ticks": "84304382",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 6.542086431058124,
+        "log_sha256": "cc2762b178637374d92198defd1b88b93c9f7074a7f281589020be8848bd14da"
+      },
+      "metrics": {
+        "load_s": 4.23247,
+        "inference_s": 1.97379,
+        "audio_us": 339269,
+        "prefill_us": 568947,
+        "decode_us": 1060889,
+        "prompt_tokens": 73,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.46950983453012796,
+      "wall_rtf": 1.5561807070295701
+    },
+    {
+      "phase": "correctness",
+      "repeat": 16,
+      "case": "zh-repeat",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-repeat.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3455332352,
+        "failure": null,
+        "pid": 3254501,
+        "pid_start_ticks": "84305037",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 8.705088668968529,
+        "log_sha256": "9b19a547fa4b71a3e0d6b77674e104bb22bfb03122cbf4776c783f7368df96a8"
+      },
+      "metrics": {
+        "load_s": 4.81143,
+        "inference_s": 3.5818,
+        "audio_us": 584431,
+        "prefill_us": 883386,
+        "decode_us": 2106433,
+        "prompt_tokens": 131,
+        "generated_tokens": 15,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "b07153e88e48139c6d9020f40520901543a93f01ff3e953288e6013ed6d6642b",
+      "text_sha256": "b07153e88e48139c6d9020f40520901543a93f01ff3e953288e6013ed6d6642b",
+      "normalized_sha256": "b7e717a8c5f44d35a3550429fa8fb9d2c6484c731564a92c5b2531178212122f",
+      "text_characters": 28,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4137042865599237,
+      "wall_rtf": 1.0054532629506117
+    },
+    {
+      "phase": "correctness",
+      "repeat": 16,
+      "case": "zh-repeat",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-repeat.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3455201280,
+        "failure": null,
+        "pid": 3254514,
+        "pid_start_ticks": "84305908",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 7.939751554979011,
+        "log_sha256": "d5a48b38cec5f6d93a5ab2fc1a74cc41e79d9c0e4802a9231d8499fb706ab080"
+      },
+      "metrics": {
+        "load_s": 4.01776,
+        "inference_s": 3.59388,
+        "audio_us": 597067,
+        "prefill_us": 886740,
+        "decode_us": 2102193,
+        "prompt_tokens": 131,
+        "generated_tokens": 15,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "b07153e88e48139c6d9020f40520901543a93f01ff3e953288e6013ed6d6642b",
+      "text_sha256": "b07153e88e48139c6d9020f40520901543a93f01ff3e953288e6013ed6d6642b",
+      "normalized_sha256": "b7e717a8c5f44d35a3550429fa8fb9d2c6484c731564a92c5b2531178212122f",
+      "text_characters": 28,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.41509954809927374,
+      "wall_rtf": 0.9170554616437648
+    },
+    {
+      "phase": "correctness",
+      "repeat": 17,
+      "case": "zh-en",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-en.wav",
+          "auto"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3590471680,
+        "failure": null,
+        "pid": 3254516,
+        "pid_start_ticks": "84306702",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 14.872097290004604,
+        "log_sha256": "d4218cbda12b30268a7a3360f9982a3ac414ce2cf88f55ec7b930f8182cc217f"
+      },
+      "metrics": {
+        "load_s": 3.08271,
+        "inference_s": 11.4859,
+        "audio_us": 1430181,
+        "prefill_us": 1854101,
+        "decode_us": 8179119,
+        "prompt_tokens": 269,
+        "generated_tokens": 54,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd473dc374f69ee540dcdb491ec3405488e734c042f3d010820fcd24522e9669",
+      "raw_output_sha256": "47bd5c22736c4f6e838c1c9d235ba22796ce48e2dc17d5774bcaec9a4c4824c8",
+      "text_sha256": "ec87b2f77c34c9f5627b2d120329d5016f18988f5d088152e3474e23923638fe",
+      "normalized_sha256": "5e0a6541ee8f5fb090d8e568b13924efde059bbc27195797c790eea803e183f9",
+      "text_characters": 211,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.5888638599346968,
+      "wall_rtf": 0.7624688196411648
+    },
+    {
+      "phase": "correctness",
+      "repeat": 17,
+      "case": "zh-en",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-en.wav",
+          "auto"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3590455296,
+        "failure": null,
+        "pid": 3254530,
+        "pid_start_ticks": "84308189",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 16.862733365036547,
+        "log_sha256": "ddea99e3c4bcbaea1bdc0c671cdc1fc122706464279ad2eca995d8f09c79992f"
+      },
+      "metrics": {
+        "load_s": 5.31057,
+        "inference_s": 11.2512,
+        "audio_us": 1413810,
+        "prefill_us": 1753129,
+        "decode_us": 8062938,
+        "prompt_tokens": 269,
+        "generated_tokens": 54,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd473dc374f69ee540dcdb491ec3405488e734c042f3d010820fcd24522e9669",
+      "raw_output_sha256": "47bd5c22736c4f6e838c1c9d235ba22796ce48e2dc17d5774bcaec9a4c4824c8",
+      "text_sha256": "ec87b2f77c34c9f5627b2d120329d5016f18988f5d088152e3474e23923638fe",
+      "normalized_sha256": "5e0a6541ee8f5fb090d8e568b13924efde059bbc27195797c790eea803e183f9",
+      "text_characters": 211,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.5768311635045805,
+      "wall_rtf": 0.8645255712120966
+    },
+    {
+      "phase": "correctness",
+      "repeat": 18,
+      "case": "zh-tail-silence",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-tail-silence.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406184448,
+        "failure": null,
+        "pid": 3254543,
+        "pid_start_ticks": "84309876",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 5.691543556982651,
+        "log_sha256": "83d29825dec9ea4173be91274c17f1ae45611eaa8a69b3243e32fca316e16c79"
+      },
+      "metrics": {
+        "load_s": 3.35203,
+        "inference_s": 2.02329,
+        "audio_us": 368444,
+        "prefill_us": 605444,
+        "decode_us": 1044028,
+        "prompt_tokens": 79,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.43012688837808744,
+      "wall_rtf": 1.2099530567705568
+    },
+    {
+      "phase": "correctness",
+      "repeat": 18,
+      "case": "zh-tail-silence",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-tail-silence.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406012416,
+        "failure": null,
+        "pid": 3254545,
+        "pid_start_ticks": "84310445",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 7.61922291002702,
+        "log_sha256": "c934f16b14ed091dcb530e6464193bb1e5b36b0166284cc7335a5d5657d7acf2"
+      },
+      "metrics": {
+        "load_s": 5.22216,
+        "inference_s": 2.05977,
+        "audio_us": 366542,
+        "prefill_us": 597587,
+        "decode_us": 1090482,
+        "prompt_tokens": 79,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.43788209345893725,
+      "wall_rtf": 1.6197542824552875
+    },
+    {
+      "phase": "correctness",
+      "repeat": 19,
+      "case": "en-2s",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/en-2s.wav",
+          "English"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3369218048,
+        "failure": null,
+        "pid": 3254558,
+        "pid_start_ticks": "84311207",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 5.691827827016823,
+        "log_sha256": "fd86f4d94747af0392f6d4c1d9cfaed6bf181b62bbb5e999ecbcd52e77154d15"
+      },
+      "metrics": {
+        "load_s": 3.64433,
+        "inference_s": 1.73779,
+        "audio_us": 169987,
+        "prefill_us": 342290,
+        "decode_us": 1206111,
+        "prompt_tokens": 44,
+        "generated_tokens": 9,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "5ef1a9357f9bfed37603e4987adbae756de78ef10a90cbb5ff84ef7c65998bf7",
+      "raw_output_sha256": "b986ee131a62a7d3a4c9883aac65bf0a80f5e8dbca835700768975604b2e7feb",
+      "text_sha256": "b986ee131a62a7d3a4c9883aac65bf0a80f5e8dbca835700768975604b2e7feb",
+      "normalized_sha256": "c8324e0a5d44582d44c61ae07f73e44f11d2edc2a03dec1a37fc95def3ade990",
+      "text_characters": 22,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.868895,
+      "wall_rtf": 2.8459139135084115
+    },
+    {
+      "phase": "correctness",
+      "repeat": 19,
+      "case": "en-2s",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/en-2s.wav",
+          "English"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3369213952,
+        "failure": null,
+        "pid": 3254560,
+        "pid_start_ticks": "84311777",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 8.200118327978998,
+        "log_sha256": "bc8a91eea5e2a9e41c0638c22a43ac57885d043e3b71ba78f113ce0d084f02ca"
+      },
+      "metrics": {
+        "load_s": 6.14646,
+        "inference_s": 1.70834,
+        "audio_us": 170728,
+        "prefill_us": 320530,
+        "decode_us": 1215047,
+        "prompt_tokens": 44,
+        "generated_tokens": 9,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "5ef1a9357f9bfed37603e4987adbae756de78ef10a90cbb5ff84ef7c65998bf7",
+      "raw_output_sha256": "b986ee131a62a7d3a4c9883aac65bf0a80f5e8dbca835700768975604b2e7feb",
+      "text_sha256": "b986ee131a62a7d3a4c9883aac65bf0a80f5e8dbca835700768975604b2e7feb",
+      "normalized_sha256": "c8324e0a5d44582d44c61ae07f73e44f11d2edc2a03dec1a37fc95def3ade990",
+      "text_characters": 22,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.85417,
+      "wall_rtf": 4.100059163989499
+    },
+    {
+      "phase": "performance",
+      "repeat": 0,
+      "case": "zh-original",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-original.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406176256,
+        "failure": null,
+        "pid": 3254563,
+        "pid_start_ticks": "84312597",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 6.870063243084587,
+        "log_sha256": "2917b997d02aac8081f18c84ef0a816a9fe46195babd255ce75918459f8ba454"
+      },
+      "metrics": {
+        "load_s": 4.60682,
+        "inference_s": 1.95709,
+        "audio_us": 336664,
+        "prefill_us": 520756,
+        "decode_us": 1093461,
+        "prompt_tokens": 73,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4655373682410835,
+      "wall_rtf": 1.6341972836381575
+    },
+    {
+      "phase": "performance",
+      "repeat": 0,
+      "case": "zh-original",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-original.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406094336,
+        "failure": null,
+        "pid": 3254576,
+        "pid_start_ticks": "84313284",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 6.599823012016714,
+        "log_sha256": "d55b251fef43a62277764b2885ab6fa2523b79cd37b3a4641813dabda5c65269"
+      },
+      "metrics": {
+        "load_s": 4.37404,
+        "inference_s": 1.89979,
+        "audio_us": 337160,
+        "prefill_us": 517826,
+        "decode_us": 1040433,
+        "prompt_tokens": 73,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4519072892972362,
+      "wall_rtf": 1.5699146364608687
+    },
+    {
+      "phase": "performance",
+      "repeat": 1,
+      "case": "zh-original",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-original.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406114816,
+        "failure": null,
+        "pid": 3254578,
+        "pid_start_ticks": "84313945",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 7.4294572660000995,
+        "log_sha256": "4d5c789d43efa33b2511d123d4930d883d47eaf64f4edf10b9861e6a535659e5"
+      },
+      "metrics": {
+        "load_s": 5.2096,
+        "inference_s": 1.91036,
+        "audio_us": 351533,
+        "prefill_us": 511232,
+        "decode_us": 1043092,
+        "prompt_tokens": 73,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4544215987987452,
+      "wall_rtf": 1.767261588927071
+    },
+    {
+      "phase": "performance",
+      "repeat": 1,
+      "case": "zh-original",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-original.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406176256,
+        "failure": null,
+        "pid": 3254581,
+        "pid_start_ticks": "84314688",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 7.5396959480131045,
+        "log_sha256": "8026ac437858e4bd4bd3be105e3cc3664bb958de95a05d208bd0741413073d4f"
+      },
+      "metrics": {
+        "load_s": 5.3264,
+        "inference_s": 1.90919,
+        "audio_us": 334242,
+        "prefill_us": 507512,
+        "decode_us": 1062451,
+        "prompt_tokens": 73,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.4541432882862792,
+      "wall_rtf": 1.793484310366913
+    },
+    {
+      "phase": "performance",
+      "repeat": 2,
+      "case": "zh-original",
+      "model": "A",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/QwenASR/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-original.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406245888,
+        "failure": null,
+        "pid": 3254594,
+        "pid_start_ticks": "84315442",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 8.53517443407327,
+        "log_sha256": "47f272a22aa426abf23d68a5df1725f01c7ca9246f0082904f883bcb39d47860"
+      },
+      "metrics": {
+        "load_s": 6.30339,
+        "inference_s": 1.90999,
+        "audio_us": 320223,
+        "prefill_us": 541095,
+        "decode_us": 1043335,
+        "prompt_tokens": 73,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.45433358607258073,
+      "wall_rtf": 2.0302810006269763
+    },
+    {
+      "phase": "performance",
+      "repeat": 2,
+      "case": "zh-original",
+      "model": "B",
+      "status": "PASS",
+      "complete_eos": true,
+      "execution": {
+        "argv": [
+          "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/bin/asr_main",
+          "/home/zhb/gitrep/llm-asr/models/mnn-v1v-entry-fp16/config.json",
+          "/home/zhb/gitrep/llm-asr/.work/hz4-ab/corpus/zh-original.wav",
+          "Chinese"
+        ],
+        "status": "PASS",
+        "started": true,
+        "exit": 0,
+        "timeout_seconds": 120,
+        "rss_limit_bytes": 9663676416,
+        "peak_owned_tree_rss_bytes": 3406180352,
+        "failure": null,
+        "pid": 3254596,
+        "pid_start_ticks": "84316296",
+        "cleanup": {
+          "direct_child_reaped": true,
+          "observed_live_pids": [],
+          "confirmed_observed_terminal": true,
+          "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+        },
+        "seconds": 8.008866537944414,
+        "log_sha256": "e94b4a0511812596080a79420d821b5f20ee95463aa2514fb5c21382d21dc8ba"
+      },
+      "metrics": {
+        "load_s": 5.78933,
+        "inference_s": 1.89822,
+        "audio_us": 332489,
+        "prefill_us": 518032,
+        "decode_us": 1043183,
+        "prompt_tokens": 73,
+        "generated_tokens": 8,
+        "status": 1,
+        "truncated": false
+      },
+      "config_sha256": "dd8823caa37daa5b911b3fa268c375e1cb40f30bab9ee50914b476b7b803aec3",
+      "raw_output_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "text_sha256": "c2e21537e98ec94cf4c629dbe843e2e33918116e3175f19ef8400c2fb64d2b61",
+      "normalized_sha256": "8c1a149d63132595f2094166e7b4f78395f5afba1fd7788cdf5d5a1fc7dab20d",
+      "text_characters": 14,
+      "repetition_heuristic": false,
+      "silence_nonempty": null,
+      "inference_rtf": 0.45153382989161944,
+      "wall_rtf": 1.9050869661940533
+    }
+  ],
+  "seconds": 385.24019267898984,
+  "execution": {
+    "argv": [
+      "/home/zhb/gitrep/llm-asr/.work/bt4-prepare-convert/venv/bin/python",
+      "-B",
+      "model-tools/compare_mnn_models.py",
+      "--spec",
+      ".work/hz4-ab/spec.json",
+      "--output",
+      ".work/hz4-ab/actual-ab"
+    ],
+    "status": "PASS",
+    "started": true,
+    "exit": 0,
+    "timeout_seconds": 1950,
+    "rss_limit_bytes": 9663676416,
+    "peak_owned_tree_rss_bytes": 3760824320,
+    "failure": null,
+    "pid": 3253971,
+    "pid_start_ticks": "84277883",
+    "cleanup": {
+      "direct_child_reaped": true,
+      "observed_live_pids": [],
+      "confirmed_observed_terminal": true,
+      "boundary": "direct child reaped + sampled PID-start identities only; not all descendants"
+    },
+    "seconds": 400.36345618392807,
+    "log_sha256": "c02ca9ed724be15a93d80ec4a9b433a11e4f3ea9c2c06dd20e7cdcdde009d287"
+  },
+  "evidence": [
+    {
+      "path": ".work/hz4-ab/source-prebench-freeze.json",
+      "bytes": 4520,
+      "sha256": "788eb90bd5a6dcd2d635b056110680960b2071fa7ca934fbc8ab7c8becc74621"
+    },
+    {
+      "path": ".work/hz4-ab/actual-command.json",
+      "bytes": 978,
+      "sha256": "7ba6dadae58ed91e89fe1f8cabc00f549c192b65884dda8ed78efa8f8887b355"
+    },
+    {
+      "path": ".work/hz4-ab/actual-execution.json",
+      "bytes": 795,
+      "sha256": "125f3fb908e66e8c9c0ef87da9c274f5f8af35b5c51c0b4e757baf69ffbc94d5"
+    },
+    {
+      "path": ".work/hz4-ab/actual-launch.log",
+      "bytes": 1994,
+      "sha256": "c02ca9ed724be15a93d80ec4a9b433a11e4f3ea9c2c06dd20e7cdcdde009d287"
+    },
+    {
+      "path": ".work/hz4-ab/actual-ab/results.json",
+      "bytes": 112924,
+      "sha256": "95f3e755080e76a4beff3b803e889b4095a53fe159c1234451a7142b358cad8f"
+    },
+    {
+      "path": ".work/hz4-ab/spec.json",
+      "bytes": 16626,
+      "sha256": "07b208916a2a315395944f6250bc9fa220a25087c912abf07312654b346004cc"
+    },
+    {
+      "path": ".work/hz4-ab/modelscope-download.log",
+      "bytes": 1357,
+      "sha256": "6cd462da6185907592381b514cf70e75087c09aaf4994fc39d52274acf3e5094"
+    },
+    {
+      "path": ".work/hz4-ab/interface-frozen-py314.log",
+      "bytes": 1650,
+      "sha256": "2b967498ae1ca2a7ffe858ba50be365ebe5a0b64494e4abe31885f3e83a13b41"
+    },
+    {
+      "path": ".work/hz4-ab/interface-frozen-py312.log",
+      "bytes": 1650,
+      "sha256": "3b29d222e87c42d7a0fb5cdd97c641f90c5005d098fc6d41f268d3345e4d3f2d"
+    },
+    {
+      "path": ".work/hz4-ab/process-regression.log",
+      "bytes": 2730,
+      "sha256": "3583c37e6f32cc462f8cac511be02ccf1b232564920b9314d3c4bed7bd24a1fc"
+    },
+    {
+      "path": ".work/hz4-ab/prepared-source-check.log",
+      "bytes": 58,
+      "sha256": "5956afb0d9323b7a6c2246749e0d74ccac7c6a627d2b7eeb2a8404e47de32c54"
+    }
+  ],
+  "boundaries": [
+    "host only; no APK/device/import acceptance",
+    "two independent public recordings,20 derived engineering cases,0humanlabels; no CER/WER/quality winner",
+    "example audio is authorized local engineering material; model Apache-2.0 card does not establish independent dataset/gold license",
+    "fresh process !=OS page cold; first observed load separate, repeated filesystem warm",
+    "RSS is250ms sampled owned process sum, not PSS/guaranteed peak",
+    "single Chinese representative3pairs only; n3 observational timing cannot establish universal winner",
+    "strictmel historical FAIL remains separate"
+  ]
+}

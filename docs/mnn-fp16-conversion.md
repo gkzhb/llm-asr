@@ -57,7 +57,34 @@ python3 -B model-tools/test_convert_fp16.py
 
 覆盖当前绑定 gate 接受、缺失/重复长度、失败/非 finite/超门槛、未绑定或不同 graph/weight 大小SHA及实际资产变更拒绝。它不替代真实转换/数值运行。
 
-## 4. 当前字节与质量限制
+## 4. 可维护的完整分阶段编排
+
+`model-tools/reproduce_fp16.py` 串行调用上述已提交 helper，不依赖 `.work` 中的临时 runner；新入口不准备/下载环境、不编译 converter/probe、不修改数学补丁或信任清单。调用前仍须按本页前提核对官方 raw、prepared source `--check`、同源 converter/动态库与 `native/p0/audio_gate.cpp` probe、受审 Python 环境。它不是不可信代码执行沙箱。
+
+```bash
+python3 model-tools/reproduce_fp16.py \
+  --model "$MODEL" --source "$SOURCE" --converter "$CONVERTER" \
+  --audio-probe "$AUDIO_GATE" --python "$AUDITED_PYTHON" \
+  --output "$NEW_OUTPUT" --evidence "$NEW_EVIDENCE"
+```
+
+- `output` / `evidence` 必须是**不存在、互不嵌套、不与输入重叠**的新目录；拒绝覆盖，不支持原地 resume。失败保留已有阶段证据；重新执行须使用另一组新路径。
+- Linux `/proc` 进程组+递归 PPID 采样，单模型串行，线程环境固定为2，encoder 总预算1800秒、decoder2400秒、进程树采样 RSS≤9216MiB（共享页会重复计入；采样不是硬内核内存隔离）。可调小预算，不能从 CLI 放大这些上限。
+- `reproduction.json` 记录实际 argv/exit/logSHA/阶段产物SHA，失败后后续阶段明确 `NOT_RUN`。六长度 Python、三语言 prompt、七次同 session ORT 动态长度与当前 ONNX SHA、当前 encoder graph/weight gate 均检查后才导出 decoder；最终重新核七资产清单。不将进程 exit0 单独称数值通过。
+- 普通可捕获的 `SIGTERM`/`SIGINT` 使用非抛异常取消 latch：先持久化阶段 `RUNNING`，实际启动后记录 `started`/PID 身份，停止并有界等待直接子进程，再写阶段实际 exit、logSHA 和运行 `CANCELLED`（CLI exit `128+signal`）；后续阶段保持 `NOT_RUN`。重复取消不打断第一次清理，返回后恢复原 handler。若已观察子进程终态无法确认则标 `FAILED`/cleanup uncertainty，保留输入与证据，不冒称可安全释放。采样只能覆盖直接子进程和已观察的 PID-start 身份，不保证任意逃逸/重挂的孙进程均被等待回收；`SIGKILL`、断电或不可写文件系统不提供持久终态保证。
+- `--dry-run` 只打印 `NOT_RUN` 的准确命令计划，不创建输出目录、不转换、不做数值验收。入口不自动执行 frontend/positions/logits/完整 ASR 或设备测试；这些是单列的工程验证，不应因 conversion PASS 而关闭 strict frontend FAIL。
+- 输入前提仍由调用者承担：prepared source、converter依赖库/probe同源身份和完整环境审计不是只凭入口检查文件存在就得到证明。`--python` 必须指已审本地解释器，不能拿任意脚本/未知可执行文件当可信工具。
+
+不载入真实权重的生产接口回归：
+
+```bash
+python3 -B model-tools/test_reproduce_fp16.py
+python3 -B model-tools/test_convert_fp16.py
+```
+
+测试实际启动 tiny fake child，覆盖串行排序、带空格路径、子进程非零、exit0但 gate失败、旧ONNX/encoder/最终清单绑定拒绝、失败保留/后续NOT_RUN、无覆盖、dry-run、资源上限和真实 timeout，以及实际CLI的外部TERM/INT就绪子进程、重复取消、spawn后首采样前取消及终态写入取消。**这些 fake 不证明真实数值门槛。** v1v 真转换先经任务独占临时编排运行，之后才提炼此维护入口；不能追溯声称真权重命令已经运行过新入口。真批结果和此证据差异见 [v1v 报告](../reports/mnn-reproduction-v1v/status.md)。
+
+## 5. 当前字节与质量限制
 
 - 本批七真实资产完整，encoder/ORT/MNN、三语言 native prompt、text/audio positions、完整词表首步 logits 对照已实际执行；详细数值/完整与未运行项见 [转换报告](../reports/mnn-package-bt4/conversion-progress.md)。
 - 两外置权重、tokenizer、两配置与历史可信 tuple 相同；两个 graph SHA 不同，当前 APK 会拒绝。当前 converter 默认向新图写随机 UUID4；旧 graph 不存在，不能证明仅 UUID 不同，不能改UUID/旧SHA来凑导入。模型数值行为验证与应用信任身份分开。

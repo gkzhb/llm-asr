@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """FP16-stored MNN encoder gate vs existing FP32 official reference arrays."""
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import numpy as np
@@ -8,8 +9,12 @@ import numpy as np
 LENGTHS=[801,20,99,100,101,800]
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('stage',choices=['prepare','validate']);args=p.parse_args()
-    root=Path('.work/onnx-audio-p0')
+    p=argparse.ArgumentParser();p.add_argument('stage',choices=['prepare','validate'])
+    p.add_argument('--directory',default='.work/onnx-audio-p0')
+    p.add_argument('--output',default='reports/p0/mnn-audio-parity.json')
+    p.add_argument('--model',type=Path,help='bind current graph and external weights to validation')
+    args=p.parse_args()
+    root=Path(args.directory)
     if args.stage=='prepare':
         for n in LENGTHS:np.load(root/f'input-{n}.npy').astype('<f4').tofile(root/f'input-{n}.bin')
         return
@@ -25,7 +30,14 @@ def main():
         # Relaxed from FP32 gate specifically for FP16 weight storage; not ASR quality.
         row['passed']=row['finite'] and row['max_abs']<=0.002 and row['relative_l2']<=0.02
         rows.append(row)
-    Path('reports/p0/mnn-audio-parity.json').write_text(json.dumps({'reference':'official eager FP32',
+    artifacts=[]
+    if args.model:
+        for path in [args.model,Path(str(args.model)+'.weight')]:
+            digest=hashlib.sha256()
+            with path.open('rb') as stream:
+                for block in iter(lambda:stream.read(65536),b''):digest.update(block)
+            artifacts.append({'file':path.name,'bytes':path.stat().st_size,'sha256':digest.hexdigest()})
+    Path(args.output).write_text(json.dumps({'reference':'official eager FP32','artifacts':artifacts,
         'backend':'matched-commit MNN CPU, high precision, FP16 stored weights',
         'limits':{'max_abs':0.002,'relative_l2':0.02},'results':rows},indent=2)+'\n')
     print(json.dumps(rows),flush=True)

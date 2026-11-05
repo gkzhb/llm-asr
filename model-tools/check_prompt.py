@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Compare prompt bytes and IDs using actual pinned tokenizer assets (no weights)."""
+import argparse
 import ast
 import json
 from pathlib import Path
@@ -8,11 +9,16 @@ from audio_contract import render_prompt
 
 
 def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--model',default='models/raw/Qwen3-ASR-0.6B')
+    parser.add_argument('--source',default='.work/sources/MNN-a03b005cf6f888ebf092e4753840f935827f9c36/transformers/llm/export/llmexport.py')
+    parser.add_argument('--output',default='reports/p0/prompt-parity.json')
+    args=parser.parse_args()
     from transformers import AutoTokenizer
-    model=Path('models/raw/Qwen3-ASR-0.6B')
+    model=Path(args.model)
     tokenizer=AutoTokenizer.from_pretrained(model,trust_remote_code=False,local_files_only=True)
     official=json.loads((model/'chat_template.json').read_text())['chat_template']
-    source=Path('.work/sources/MNN-a03b005cf6f888ebf092e4753840f935827f9c36/transformers/llm/export/llmexport.py')
+    source=Path(args.source)
     tree=ast.parse(source.read_text())
     cls=next(x for x in tree.body if isinstance(x,ast.ClassDef) and x.name=='LlmExporter')
     func=next(x for x in cls.body if isinstance(x,ast.FunctionDef) and x.name=='qwen3_asr_chat_template')
@@ -32,7 +38,7 @@ def main():
         actual_ids=tokenizer.encode(mnn,add_special_tokens=False)
         rows.append({'language':language,'equal':expected_ids==actual_ids,'expected':prompt,'mnn':mnn,
                      'expected_ids':expected_ids,'mnn_ids':actual_ids})
-    output=Path('reports/p0/prompt-parity.json')
+    output=Path(args.output)
     output.write_text(json.dumps(rows,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps([{'language':r['language'],'equal':r['equal']} for r in rows]))
     if not all(r['equal'] for r in rows):raise SystemExit(1)

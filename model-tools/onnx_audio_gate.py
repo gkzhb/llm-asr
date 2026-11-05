@@ -23,7 +23,7 @@ def export(args):
     from qwen_asr.core.transformers_backend.modeling_qwen3_asr import Qwen3ASRAudioEncoder, SinusoidsPositionEmbedding
     torch.set_num_threads(2);torch.set_num_interop_threads(1);torch.manual_seed(42)
     out=Path(args.directory);out.mkdir(parents=True,exist_ok=True)
-    model=Path('models/raw/Qwen3-ASR-0.6B')
+    model=Path(args.model)
     cfg=Qwen3ASRAudioEncoderConfig(**json.loads((model/'config.json').read_text())['thinker_config']['audio_config'])
     cfg._attn_implementation='eager'
     with torch.device('meta'):tower=Qwen3ASRAudioEncoder(cfg)
@@ -75,7 +75,7 @@ def validate(args):
         # Conservative FP32 conversion gate, declared before running ORT.
         row['passed']=row['finite'] and row['max_abs']<=1e-4 and row['relative_l2']<=1e-3
         rows.append(row);print(json.dumps(row),flush=True)
-        Path('reports/p0/onnx-audio-parity.json').write_text(json.dumps({
+        Path(args.output).write_text(json.dumps({
             'backend':'ORT CPU unoptimized vs official eager FP32','onnx_sha256':graph_hash,
             'limits':{'max_abs':1e-4,'relative_l2':1e-3},'results':rows},indent=2)+'\n')
     if not all(r['passed'] for r in rows):raise SystemExit(1)
@@ -91,6 +91,8 @@ def filehash(path):
 def main():
     p=argparse.ArgumentParser();p.add_argument('stage',choices=['export','validate'])
     p.add_argument('--directory',default='.work/onnx-audio-p0');p.add_argument('--source',default=DEFAULT_SOURCE)
+    p.add_argument('--model',default='models/raw/Qwen3-ASR-0.6B')
+    p.add_argument('--output',default='reports/p0/onnx-audio-parity.json')
     args=p.parse_args();globals()[args.stage](args)
 
 

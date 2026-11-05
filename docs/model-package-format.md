@@ -40,6 +40,8 @@ config.json
 
 ## 可重复生成：只用 Python 标准库
 
+推荐使用已实现的标准库 CLI：[`scripts/package-mnn-model.py`](../scripts/package-mnn-model.py)，操作与信任边界见 [MNN 打包说明](mnn-model-packaging.md)。默认模式锚定当前 APK 的固定 tuple；generic 模式必须使用不同的 `GENERIC-NOT-IMPORTABLE-` 身份，不使任意新模型进入当前 catalog。CLI 输入源目录只含七资产，外部 policy 不能放在源内；它会生成第八个 JSON、拒绝覆盖并验证最终 ZIP。下面保留历史手动配方作为格式说明，不把历史产物缺失或旧测试冒充本次转换成功。
+
 以下供用户在**已拥有、获准使用的七文件目录**执行；本轮工程测试只对微型合成文件使用相同 ZipInfo 配方，未读取、打包或下载真实权重。输出不能放在源目录内。先保存上面的 JSON，再运行经审阅的代码。代码预检每个源为普通非符号链接文件、实际大小与可信 SHA 匹配，流式写入（不把大权重一次装入 RAM）。输出用 `xb` 创建且可 seek，已有输出不会覆盖。
 
 ```python

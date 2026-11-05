@@ -12,6 +12,10 @@ printf '%s\n' "$ROOT"
 
 ## 1. 先看结论
 
+> 当前下载/转换状态（`llm-asr-bt4`）：新增 HF 快照位于 `models/hf/Qwen3-ASR-0.6B-5eb14417/`，revision `5eb144179a02acc5e5ba31e748d22b0cf3e303b0`；十文件已重新核验，其中九个共享文件与历史 raw 锁一致。HF 无 ModelScope 专属 `configuration.json`，不要补造。历史 `models/mnn-16/` 在本机只剩两个配置，不是可立即打包的完整模型。当前锁定 Python 环境/依赖缓存及 host converter 缺失，FP16 重新转换与真实 ZIP **尚未执行**，见[当批报告](../reports/mnn-package-bt4/status.md)。下列 P0 路径和数值是历史链路说明，不等于本次产物。
+>
+> 已实现独立[通用七资产 MNN ZIP CLI](mnn-model-packaging.md)：默认检查当前 APK 的固定 tuple；generic 包格式合法不代表当前 App 可导入，不得更新旧信任 SHA 凑通过。
+
 - **原始模型**：`models/raw/Qwen3-ASR-0.6B/`，从 ModelScope 固定版本下载，包含原始权重及官方配置。
 - **手机实际使用的模型**：`models/mnn-16/`，由固定版本、打过项目补丁的 MNN 工具导出；不是直接下载的手机模型包。
 - **手机所需配置**：同目录的 `config.json`、`llm_config.json`，必须与权重、tokenizer 配套，不能拿原始目录中的同名配置替换。

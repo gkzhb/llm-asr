@@ -170,7 +170,9 @@ bash scripts/nix-env.sh native bash scripts/build-mnn-p0.sh android
 
 ### 5.2 为什么当前模型采用分阶段导出
 
-项目提供两类入口：
+**新运行优先看[脚本分类与验证入口](script-tools-map.md)**：使用[显式路径 FP16 编排](mnn-fp16-conversion.md)的 `reproduce_fp16.py`，按需独立做[固定配置 host A/B](mnn-model-comparison.md)与[七资产 ZIP 打包](mnn-model-packaging.md)。这些入口不更新旧可信清单；转换通过、generic ZIP 合法或 host agreement 均不等于当前 APK 可导入、质量或设备验收。下述是保留的 **P0 历史链路**，固定路径导出/报告可能覆盖旧产物，复现前必须另核写入范围与授权，不因脚本仍在就默认可运行。
+
+历史链路提供两类入口：
 
 - `model-tools/export_mnn.py --bits 16`：全模型导出入口，先检查 Python encoder、ONNX 动态形状和 prompt 对齐报告，再调用上游 `llmexport.py`。支持 4/8/16 参数不代表其他位宽已导出、验证或可以直接导入当前 App。
 - `model-tools/export_decoder.py`：当前低内存流程使用的 decoder-only 入口。先确认音频配置已捕获，再释放 encoder，仅导出 decoder/tokenizer/config，并验证已通过门槛的 `audio.mnn` 与权重没有变化。
@@ -183,7 +185,7 @@ bash scripts/nix-env.sh native bash scripts/build-mnn-p0.sh android
 4. `mnn_audio_gate.py prepare` 生成 native 输入；编译运行 `native/p0/audio_gate.cpp` 得到 `actual-*.bin`，再通过 `mnn_audio_gate.py validate` 写出 MNN encoder 对齐报告。
 5. `export_decoder.py` 读取上述门槛，生成余下部署文件，并生成清单。
 
-转换器调用和 native gate 编译/执行并没有封装成一个完整恢复脚本。因此，**不能只执行 `export_decoder.py` 就从空目录生成全部七文件**，也不能把 Git 中已有的历史报告当作新机器本次验证通过。encoder 原始/修补数值检查还对应 `check_audio_parity.py`，prompt 检查对应 `check_prompt.py`；应对本次输入重跑并保留失败证据。
+上述历史链路的转换器调用和 native gate 编译/执行当时没有封装成一个完整恢复脚本；现有显式路径编排见本节开头链接，仍要求先准备已审同源工具。因此，**不能只执行 `export_decoder.py` 就从空目录生成全部七文件**，也不能把 Git 中已有的历史报告当作新机器本次验证通过。encoder 原始/修补数值检查还对应 `check_audio_parity.py`，prompt 检查对应 `check_prompt.py`；应对本次输入重跑并保留失败证据。
 
 各阶段会覆盖相应本地产物或文本报告。重建前备份当前已验证产物，不要在唯一可用模型目录上做无备份的实验。完整历史及门槛边界见 [`progress.md`](../progress.md) 和 [P0 报告](../reports/p0/report.md)。
 
@@ -244,7 +246,7 @@ python3 scripts/prepare-model-configs.py --check
 - `export_args.json`：上游导出器的 `export_config` 保存参数对象，供追溯使用；可以包含主机路径，不需要导入 App。
 - `reports/p0/mnn-model-manifest.json`：项目 `export_decoder.py` 的 `finalize()` 遍历七个部署文件，记录字节数与 SHA-256；App 用它确认文件身份。
 
-如果部署文件已完整存在，下面的命令**不加载或重新导出模型**，但会重新读取全部文件并**覆盖已追踪的部署清单**：
+如果部署文件已完整存在，下面的历史命令**不加载或重新导出模型**，但会重新读取固定 `models/mnn-16/` 的全部部署文件并**覆盖已追踪的 `reports/p0/mnn-model-manifest.json`**；它不是新入口的无副作用清点命令，执行须另核可信清单写入授权：
 
 ```bash
 python3 model-tools/export_decoder.py --finalize-existing

@@ -21,6 +21,7 @@
 - [研究发现](findings.md)：已核验事实、源码风险、资料访问限制。
 - [历史执行规划](task_plan.md) / [工作日志](progress.md)：持久化进度与错误记录；当前任务状态查询`bd status`。
 - [本地模型与配置说明](docs/local-models-and-config.md)：Git 未追踪模型的位置、下载/导出链路、配置来源、校验和迁移边界。
+- [脚本分类与验证入口](docs/script-tools-map.md)：新运行的模型转换/比较/打包入口、历史脚本、实际调用方及构建验证边界。
 - [证据来源与哈希](docs/research/source-manifest.json)：本轮下载的小型文本/源码快照，不包含模型权重。
 
 ## 推荐方案

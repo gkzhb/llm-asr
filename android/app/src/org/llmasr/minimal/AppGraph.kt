@@ -19,6 +19,9 @@ import org.llmasr.minimal.diagnostics.RuntimeLogStore
 import org.llmasr.minimal.diagnostics.RuntimeLogWorker
 import org.llmasr.minimal.ime.ImeBackend
 import org.llmasr.minimal.ime.ImeController
+import org.llmasr.minimal.model.FixedModelPackage
+import org.llmasr.minimal.model.SafModelZipSource
+import org.llmasr.minimal.model.ModelSource
 import org.llmasr.minimal.model.ModelAccess
 import org.llmasr.minimal.model.ModelResidency
 import org.llmasr.minimal.model.ModelVerification
@@ -60,6 +63,10 @@ class AppGraph private constructor(private val context: OperationContext?, priva
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun modelAccess(): ModelAccess? = modelAccess
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun modelManagement(): ModelManagementController = modelManagement
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun pickerTickets(): ModelPickerTickets = pickerTickets
+    // Suppliers run only after worker admission, preserving synthetic no-ZIP Graph fixtures and UI no-IO.
+    fun modelZipSource(uri: android.net.Uri): ModelSource = SafModelZipSource(context!!.contentResolver(), uri,
+        java.util.function.Supplier { context.filesDir()!! },
+        java.util.function.Supplier { FixedModelPackage.mnn(modelRepository!!.manifest()) })
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun context(): OperationContext? = context
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun coordinator(): TaskCoordinator? = coordinator
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun modelRepository(): ModelRepository? = modelRepository

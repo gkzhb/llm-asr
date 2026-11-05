@@ -117,6 +117,23 @@ with tempfile.TemporaryDirectory(prefix='android-inputs-') as temp:
         java_path.write_bytes(java_original)
     pins_path.write_bytes(pins_original)
     c.require(p.collect_build_inputs(root) == collected, 'reciprocal input restoration')
+    # ZIP production owners are baseline-pinned product inputs (not test-host module inputs).
+    zip_keys = ['android/app/src/org/llmasr/minimal/model/' + name for name in
+                ('FixedModelPackage.kt', 'ModelZipArchive.java', 'ModelZipSource.kt', 'SafModelZipSource.kt')]
+    pins = json.loads(pins_original)
+    for key in zip_keys:
+        c.require(key in pins['files'] and key in p.collect_build_inputs(root), 'ZIP source omitted from real product collector')
+        path = root / key
+        saved = path.read_bytes()
+        before = p.collect_build_inputs(root)
+        path.write_bytes(saved + b'// ZIP SHA drift\n')
+        after = p.collect_build_inputs(root)
+        c.require(before[key] != after[key], 'ZIP SHA drift invisible to actual collector')
+        omitted = dict(after); omitted.pop(key)
+        reject(lambda: c.require(omitted == p.collect_build_inputs(root), 'ZIP product SHA/inventory mismatch'), 'ZIP product SHA/inventory mismatch')
+        wrong = dict(after); wrong[key] = '0' * 64
+        reject(lambda: c.require(wrong == p.collect_build_inputs(root), 'ZIP product SHA/inventory mismatch'), 'ZIP product SHA/inventory mismatch')
+        path.write_bytes(saved)
     # Missing required lock/config fails instead of silently shrinking the inventory.
     (root / 'android/test-host/gradle.lockfile').unlink()
     reject(lambda: c.module_inputs(root), 'missing/symlink')

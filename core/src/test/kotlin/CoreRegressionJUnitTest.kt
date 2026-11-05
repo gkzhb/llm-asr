@@ -14,7 +14,7 @@ class CoreRegressionJUnitTest {
     @Test(timeout = 45000) @Throws(Exception::class)
     fun nativeResponseProtocol() { NativeResponseTest.main(none) }
     @Test(timeout = 45000) @Throws(Exception::class)
-    fun modelRepository() { ModelRepositoryTest.main(none) }
+    fun modelRepository() { ModelRepositoryTest.main(none); ModelZipImportTest.main(none) }
     @Test(timeout = 45000) @Throws(Exception::class)
     fun privateModelRoot() { ModelPrivateRootTest.main(none) }
     @Test(timeout = 45000) @Throws(Exception::class)

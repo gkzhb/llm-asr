@@ -45,7 +45,7 @@ public final class ModelManagementActivity extends Activity {
     private final ActivityWindow.BackRegistration windowBack = new ActivityWindow.BackRegistration(this, this::onBackPressed);
     private ModelPageSession<Uri> page;
     private TextView readiness, storage, task, files, busy;
-    private Button choose, verify, restore, delete, cancel, prepare, release;
+    private Button choose, chooseZip, verify, restore, delete, cancel, prepare, release;
     private volatile boolean visible;
     private boolean inspectNeeded, receiverRegistered;
     private final UiRefresh invalidation = new UiRefresh(this);
@@ -72,7 +72,7 @@ public final class ModelManagementActivity extends Activity {
         ActivityWindow.configure(this, scroll);
         button(root, "‹ 返回 · 模型管理", this::onBackPressed);
         text(root,"Qwen3-ASR-0.6B",24);
-        text(root,"MNN · FP16 权重 · CPU · 当前固定部署版本\n仅支持内置固定清单，不支持原始 safetensors、压缩包或在线下载。",16);
+        text(root,"MNN · FP16 权重 · CPU · 当前固定部署版本\n仅支持内置固定清单目录或规范 ZIP 包，不支持原始 safetensors、任意 ZIP 或在线下载。",16);
         button(root, "运行日志（独立页面）", () -> {
             if (page.ownsActive()) {
                 toast("请等待本页模型操作结束，或先取消并等待收尾，再查看日志。"); return;
@@ -85,7 +85,9 @@ public final class ModelManagementActivity extends Activity {
         text(root,"内部存储",20); storage = text(root,"",16);
         text(root,"逻辑文件字节不是物理磁盘分配；可用存储不是 RAM。删除释放量仅为估计。\n云文件提供方可能联网获取模型，优先选择专用本地目录；本应用无网络权限。",15);
         busy = text(root,"",16);
-        choose = button(root,"选择模型目录 / 修复导入（重试需重新选择）",this::chooseDirectory);
+        chooseZip = button(root,"选择模型 ZIP 包 / 修复导入",() -> chooseModel(ModelPickerTickets.Mode.ZIP));
+        choose = button(root,"选择模型目录 / 修复导入（兼容入口）",this::chooseDirectory);
+        text(root,"ZIP 须为固定根目录规范包；先完整审核再逐文件发布，并非整包回滚。私有 ZIP 另占存储，落包时保守预留完整模型与 64 MiB；低空间不会删除旧模型，可改选目录。",15);
         restore = button(root,"快速恢复已校验证明（不做 SHA）", () -> {
             if (!graph.modelManagement().startRestore()) rejected();
             invalidation.onChange();
@@ -138,19 +140,32 @@ public final class ModelManagementActivity extends Activity {
         PowerManager power = (PowerManager)getSystemService(POWER_SERVICE);
         return key != null && power != null && !key.isKeyguardLocked() && power.isInteractive();
     }
-    private void chooseDirectory() {
-        if (!visible || !unlocked()) return;
+    private void chooseDirectory() { chooseModel(ModelPickerTickets.Mode.DIRECTORY); }
+    private void chooseModel(ModelPickerTickets.Mode mode) {
+        if (!visible || !unlocked() || graph.coordinator().isBusy()) return;
         try {
-            int code = page.beginPicker();
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            int code = page.beginPicker(mode);
+            Intent intent;
+            if (mode == ModelPickerTickets.Mode.ZIP) {
+                intent = new Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE)
+                    .setType("application/zip").putExtra(Intent.EXTRA_ALLOW_MULTIPLE,false)
+                    .putExtra(Intent.EXTRA_MIME_TYPES,new String[]{"application/zip","application/octet-stream"});
+            } else intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivityForResult(intent,code);
         } catch (RuntimeException e) { page.abandonPicker(); toast("无法打开目录选择器，或已有选择未结束；请返回后重试。"); }
     }
     @Override protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request,result,data);
         if (page == null || !ModelPickerTickets.isRequest(request)) return;
+        ModelPickerTickets.Mode mode = page.mode(request);
+        if (mode == null) { toast("选择会话失效，请重新选择；未导入。"); return; }
         Uri uri = result == RESULT_OK && data != null ? data.getData() : null;
-        if (!page.result(request,uri)) { toast("目录选择会话失效，请重新选择；未导入。"); return; }
+        if (uri != null && mode == ModelPickerTickets.Mode.ZIP &&
+            (!"content".equals(uri.getScheme()) || (data.getClipData() != null && data.getClipData().getItemCount() != 0))) {
+            page.result(request,mode,null); toast("请选择单个可读取的本地模型 ZIP 文件；未导入。"); return;
+        }
+        if (!page.result(request,mode,uri)) { toast("选择会话失效，请重新选择；未导入。"); return; }
         if (uri == null) toast("已取消选择，模型与转写结果未改变。");
         consumePicker();
     }
@@ -158,7 +173,8 @@ public final class ModelManagementActivity extends Activity {
         page.foreground(visible && unlocked());
         if (!visible || !unlocked() || !page.hasDeferred()) return;
         inspectNeeded = false;
-        if (!page.consume(uri -> graph.modelManagement().startImport(new SafModelSource(getApplicationContext().getContentResolver(),uri)))) rejected();
+        if (!page.consumeTyped(selection -> graph.modelManagement().startImport(selection.mode == ModelPickerTickets.Mode.ZIP
+            ? graph.modelZipSource(selection.value) : new SafModelSource(getApplicationContext().getContentResolver(),selection.value)))) rejected();
         invalidation.onChange();
     }
     private void confirmDelete() {
@@ -207,7 +223,7 @@ public final class ModelManagementActivity extends Activity {
         files.setText(detail);
         boolean any = false, completeFile = false;
         for (ModelReports.FileDetail f : s.files) { any |= f.present || f.partExists; completeFile |= f.present && f.sizeMatch; }
-        choose.setEnabled(!ownerBusy); verify.setEnabled(!ownerBusy && completeFile); restore.setEnabled(!ownerBusy); delete.setEnabled(!ownerBusy && any);
+        choose.setEnabled(!ownerBusy); chooseZip.setEnabled(!ownerBusy); verify.setEnabled(!ownerBusy && completeFile); restore.setEnabled(!ownerBusy); delete.setEnabled(!ownerBusy && any);
         prepare.setEnabled(!ownerBusy && r.ready());
         release.setEnabled(true);
         cancel.setVisibility(page.ownsActive() && s.operationKind != ModelManagementState.OperationKind.DELETE ? View.VISIBLE : View.GONE);

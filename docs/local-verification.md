@@ -1,5 +1,18 @@
 # P1-A 本地分层验证契约
 
+## llm-asr-7vl 固定 ZIP targeted
+
+```bash
+bash scripts/nix-env.sh apk --cache-only python3 -B tests/model_zip_import_contract_test.py --evidence-dir NEW_ZIP_DIR
+bash scripts/nix-env.sh apk --cache-only python3 -O tests/model_zip_import_contract_test.py --evidence-dir NEW_ZIP_OPT_DIR
+bash scripts/nix-env.sh apk --cache-only python3 -B tests/model_zip_picker_test.py --evidence-dir NEW_PICKER_DIR
+bash scripts/nix-env.sh apk --cache-only python3 -O tests/model_zip_picker_test.py --evidence-dir NEW_PICKER_OPT_DIR
+```
+
+微型合成七文件，标准库固定ZipInfo/seekable配方，不读或打包真实权重。新ZIP driver每模式总6600s、≤24 mixed compile/64 JVM；picker1800s、≤6compile/12JVM；每compile≤180s、JVM≤30s/-Xmx256m。原host/full/JUnit45s预算不变。`--quick`仅增量checkpoint，不等完整fault/crash/mutant矩阵。每child owned ledger真实exit后才释放source/dependency；ordinary/-O均显式require，不用可擦除assert判行为。
+
+生产路径为完整首遍CEN/LFH/JSON/CRC/可信SHA→既有Repository `.part`逐文件发布→session关闭/cleanup→最终全SHA/proof。typed picker由不可变ticket带模式，Activity无provider IO、Graph固定policy/stage惰性在worker；原目录路径保留。[格式与可重复打包](model-package-format.md)。implementation阶段不改baseline pin、不跑prepareInputs/native/assemble/full，不覆盖旧APK或formal receipt；fresh审、另授identity/full/安全提交后才可交付ZIP APK。主机fakes不是设备SAF/Binder/grant/真实生命周期/性能/掉电/ASR验收。
+
 ## llm-asr-taw IME 首次使用 prepare-before-capture targeted
 
 本批替代 t0t 的“必须先手动 prepare 才可点击”体验门槛，保留同名独立测试入口及原预算。按钮只检查当前会话 / 可见性 / 权限 / wiring / 共享 busy；点击在唯一 worker owner 内轻复核当前 proof，否则 restoreFast，再按需可取消全 SHA 并复用既有持久 commit/revoke；随后 prepare/reuse 单 resident，main-thread 最终复核字段 / 可见性 / 权限 / 会话意图，再由 RecordingControl 仲裁实际 start。PREPARING 不启用停止，可丢弃；native 加载取消等待真实返回，不硬中止、不嵌套管理 submit。缺文件 / 坏 hash 零 capture，预览仍手动提交，adapter 最终 gate 保留。

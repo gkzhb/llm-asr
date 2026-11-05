@@ -23,6 +23,9 @@ class ModelUiText private constructor() {
         @JvmStatic open fun phase(p: ModelManagementState.Phase?): String = when (p!!) {
             ModelManagementState.Phase.INSPECTING -> "读取概况 / 预检"
             ModelManagementState.Phase.ENUMERATING -> "枚举目录 / 回收残片 / 规划"
+            ModelManagementState.Phase.COPYING_ARCHIVE -> "复制私有模型包（另需展开模型与 64 MiB 预留）"
+            ModelManagementState.Phase.CHECKING_ARCHIVE -> "全包格式 / CRC / 可信 SHA 审核（尚未发布）"
+            ModelManagementState.Phase.CLEANING_ARCHIVE -> "关闭模型包并清理私有暂存"
             ModelManagementState.Phase.CHECKING_EXISTING -> "校验可复用文件"
             ModelManagementState.Phase.COPYING -> "复制（完成后仍需 SHA 校验）"
             ModelManagementState.Phase.VERIFYING_FILE -> "校验临时文件"
@@ -79,7 +82,8 @@ class ModelUiText private constructor() {
             val state = s!!
             val plan = state.importPlan ?: return "本次保守空间需求：未知 / 等待导入预检"
             return "最近导入计划需复制：" + bytes(plan.copyBytes) + "\n本次保守空间需求：" + bytes(plan.requiredBytes) +
-                "\n预检时可用空间：" + bytes(plan.availableAtCheck) + "（需复制时含 64 MiB 余量；每文件仍独立检查）"
+                "\n预检时可用空间：" + bytes(plan.availableAtCheck) + "（需复制时含 64 MiB 余量；每文件仍独立检查）" +
+                (if (plan.zipPackage) "\n另已占用私有 ZIP：" + bytes(plan.archiveBytes) + "（以上可用空间已扣除此项）；落包阶段保守预留完整模型，低空间可改选目录。" else "")
         }
         @Suppress("NON_FINAL_MEMBER_IN_OBJECT")
         @JvmStatic open fun task(s: ModelManagementState.Snapshot?): String {
@@ -105,7 +109,7 @@ class ModelUiText private constructor() {
             if (state.isTerminalPhase) {
                 text.append(if (state.cleanupOutcome == ModelManagementState.Outcome.FAILED) "\n清理未完全成功：残片或状态未知，请检查并重试。" else "\n受管残片检查完成。")
                 if (state.operationKind == ModelManagementState.OperationKind.IMPORT)
-                    text.append("\n已发布的完整文件保留；重试需重新选择目录，复用通过 SHA 的文件，不从半文件偏移续传。")
+                    text.append("\n已发布的完整文件保留；重试需重新选择 ZIP 或目录，复用通过 SHA 的文件，不从半文件偏移续传。")
                 if (state.operationKind == ModelManagementState.OperationKind.DELETE)
                     text.append("\n删除成功 ").append(state.deleteSucceeded).append(" 项，失败 ").append(state.deleteFailed)
                         .append(" 项；剩余受管正式文件 ").append(bytes(state.installedBytes))

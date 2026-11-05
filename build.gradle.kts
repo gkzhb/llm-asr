@@ -17,7 +17,7 @@ extra["appSources"] = listOf("AppGraph.kt", "AsrImeService.kt", "MainActivity.ja
     "transcription/AsrOperation.kt", "transcription/AppReportWriter.java")
     .map { "org/llmasr/minimal/$it" }
 extra["runtimeSources"] = listOf("asr/JniNativeTranscription.java", "audio/ForegroundRecorder.kt",
-    "model/SafModelSource.kt", "model/AndroidModelVerificationIo.kt", "platform/OperationContext.kt", "ime/ImeBackend.kt")
+    "model/SafModelSource.kt", "model/SafModelZipSource.kt", "model/AndroidModelVerificationIo.kt", "platform/OperationContext.kt", "ime/ImeBackend.kt")
     .map { "org/llmasr/minimal/$it" }
 
 // javac otherwise implicitly recompiles excluded .java files from a shared

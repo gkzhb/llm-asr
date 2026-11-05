@@ -532,7 +532,37 @@ public final class KotlinMigrationTest {
         org.llmasr.minimal.modelmanagement.ModelPickerTickets.Ticket mine=first.begin(), foreign=other.begin();
         require(!first.valid(foreign),"ModelPickerTickets foreign ticket must be rejected");
         first.release(foreign);require(first.valid(mine),"ModelPickerTickets foreign release no-op");first.release(mine);
+        require(mine.mode==org.llmasr.minimal.modelmanagement.ModelPickerTickets.Mode.DIRECTORY
+            && foreign.mode==org.llmasr.minimal.modelmanagement.ModelPickerTickets.Mode.DIRECTORY,
+            "ModelPickerTickets noarg begin remains DIRECTORY");
+        org.llmasr.minimal.modelmanagement.ModelPickerTickets.Ticket zip=first.begin(
+            org.llmasr.minimal.modelmanagement.ModelPickerTickets.Mode.ZIP);
+        require(zip.mode==org.llmasr.minimal.modelmanagement.ModelPickerTickets.Mode.ZIP
+            && zip.requestCode==mine.requestCode+1 && first.valid(zip),
+            "ModelPickerTickets explicit ZIP immutable mode binding");
+        first.release(mine);first.release(foreign);
+        require(first.valid(zip) && !first.valid(mine) && !first.valid(foreign),
+            "ModelPickerTickets stale or foreign directory release cannot revoke ZIP");
+        require(batchFailure(() -> first.begin()) instanceof IllegalStateException,
+            "ModelPickerTickets one pending chooser across modes");
+        first.release(zip);
+        org.llmasr.minimal.modelmanagement.ModelPickerTickets.Ticket directory=first.begin();
+        require(directory.mode==org.llmasr.minimal.modelmanagement.ModelPickerTickets.Mode.DIRECTORY
+            && directory.requestCode==zip.requestCode+1 && first.valid(directory) && !first.valid(zip),
+            "ModelPickerTickets release ZIP then default DIRECTORY cannot leak mode");
+        first.release(zip);require(first.valid(directory),"ModelPickerTickets old ZIP release cannot revoke DIRECTORY");
+        first.release(directory);other.release(foreign);
+        for (String field : new String[]{"requestCode","mode"}) {
+            java.lang.reflect.Field member=org.llmasr.minimal.modelmanagement.ModelPickerTickets.Ticket.class.getField(field);
+            require(member.getModifiers()==(Modifier.PUBLIC | Modifier.FINAL)
+                && member.getType()==(field.equals("mode")
+                    ? org.llmasr.minimal.modelmanagement.ModelPickerTickets.Mode.class : int.class),
+                "ModelPickerTickets immutable public final field " + field);
+        }
         require(Modifier.isSynchronized(first.getClass().getMethod("begin").getModifiers()),"ModelPickerTickets monitor flag");
+        require(Modifier.isSynchronized(first.getClass().getMethod("begin",
+            org.llmasr.minimal.modelmanagement.ModelPickerTickets.Mode.class).getModifiers()),
+            "ModelPickerTickets typed begin monitor flag");
         final class Output extends ByteArrayOutputStream { int flushes,closes;public void flush(){flushes++;}public void close(){closes++;} }
         Output out=new Output();
         RuntimeLogEvent event=new RuntimeLogEvent(0,1,2,RuntimeLogEventKind.APP_STARTUP,RuntimeLogSource.APP,null,"ok");
@@ -563,7 +593,8 @@ public final class KotlinMigrationTest {
         require(error instanceof IOException && "Native returned null".equals(error.getMessage()),"InferenceAdapter null result must use fixed failure");
         for (Class<?> type : new Class<?>[]{org.llmasr.minimal.model.ModelEntry.class,org.llmasr.minimal.model.ModelManifest.class,org.llmasr.minimal.model.ModelReports.class,org.llmasr.minimal.model.ModelAccess.class,org.llmasr.minimal.model.FileSafety.class,org.llmasr.minimal.model.ModelProviderBoundary.class,org.llmasr.minimal.modelmanagement.ModelPageSession.class,org.llmasr.minimal.modelmanagement.ModelPickerTickets.class,org.llmasr.minimal.modelmanagement.ModelUiText.class,RuntimeLogCodec.class,org.llmasr.minimal.diagnostics.RuntimeLogText.class,org.llmasr.minimal.diagnostics.RuntimeLogWorker.class,org.llmasr.minimal.diagnostics.LogExportController.class,org.llmasr.minimal.diagnostics.LogExportPage.class,org.llmasr.minimal.transcription.TextExportController.class,org.llmasr.minimal.transcription.TextExportPage.class,org.llmasr.minimal.transcription.ResultFiles.class,org.llmasr.minimal.asr.InferenceAdapter.class,org.llmasr.minimal.ime.ImeController.class})
             require(Modifier.isPublic(type.getModifiers()) && Modifier.isFinal(type.getModifiers()),"batch final class ABI "+type.getName());
-        batchPrivateConstructor(org.llmasr.minimal.modelmanagement.ModelPickerTickets.Ticket.class, int.class);
+        batchPrivateConstructor(org.llmasr.minimal.modelmanagement.ModelPickerTickets.Ticket.class,
+            int.class, org.llmasr.minimal.modelmanagement.ModelPickerTickets.Mode.class);
         batchPrivateConstructor(org.llmasr.minimal.diagnostics.LogExportController.Ticket.class, long.class, int.class, List.class);
         batchPrivateConstructor(org.llmasr.minimal.diagnostics.LogExportController.State.class,
             org.llmasr.minimal.diagnostics.LogExportController.Ticket.class, org.llmasr.minimal.diagnostics.LogExportController.Phase.class, long.class);

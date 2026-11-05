@@ -77,6 +77,8 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
     private fun run(op: ModelOperationControl.Operation?, source: ModelSource?, confirmEpoch: Long, restore: Boolean) {
         val token = arrayOfNulls<ModelReadiness.VerifyToken>(1)
         var proofToken: ModelVerification.Token? = null
+        var sourceCleanup: Boolean? = null
+        var modelCleanup: Boolean? = null
         val verification = repository.verification()
         val gate = object : ModelRepository.CancelGate {
             override fun cancelled(): Boolean = control.isCancelled(op)
@@ -94,6 +96,8 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
                 if (token[0] == null || token[0]!!.epoch() == readiness.epoch())
                     progress(op, stage, file, index, count, done, total, sd, st, reused)
             }
+            override fun sourceCleanup(succeeded: Boolean) { sourceCleanup = (sourceCleanup != false) && succeeded }
+            override fun modelCleanup(succeeded: Boolean) { modelCleanup = (modelCleanup != false) && succeeded }
             override fun planned(plan: ModelReports.ImportPlan?) { publishPlan(op, plan) }
             override fun fileResult(file: String?, outcome: ModelReports.FileOutcome?) { publishFileResult(op, file, outcome) }
             override fun deletion(succeeded: Int, failed: MutableList<String?>?) { publishDeletion(op, succeeded, failed) }
@@ -147,7 +151,7 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
             readiness.finishUnverified(token[0])
             if (proofToken != null) readiness.finishUnverified(proofToken!!.epoch)
         }
-        terminal(op, report, deletion, success, failure)
+        terminal(op, report, deletion, success, failure, sourceCleanup, modelCleanup)
         readiness.notifyChange()
     }
     private fun pending(op: ModelOperationControl.Operation) {
@@ -215,7 +219,7 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
         state.notifyListeners()
     }
     private fun terminal(op: ModelOperationControl.Operation?, report: ModelRepository.InspectReport?,
-        deletion: ModelRepository.DeleteReport?, success: Boolean, failure: Throwable?) {
+        deletion: ModelRepository.DeleteReport?, success: Boolean, failure: Throwable?, sourceCleanup: Boolean?, modelCleanup: Boolean?) {
         val isInspect = op!!.kind == ModelOperationControl.Kind.INSPECT
         var terminalKind: RuntimeLogEventKind? = null
         var terminalDetail: String? = null
@@ -241,7 +245,8 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
                     ModelManagementState.Phase.CANCELLED else ModelManagementState.Phase.FAILED
                 b.lastOutcome = ModelManagementState.Outcome.valueOf(b.phase.name)
                 b.errorCode = failure?.message
-                b.cleanupOutcome = if (report == null || report.orphanPartBytes > 0 || (failure != null && failure.suppressed.isNotEmpty()))
+                b.cleanupOutcome = if (report == null || report.orphanPartBytes > 0 || report.files.any { it.partExists } ||
+                    sourceCleanup == false || modelCleanup == false || (sourceCleanup == null && failure != null && failure.suppressed.isNotEmpty()))
                     ModelManagementState.Outcome.FAILED else ModelManagementState.Outcome.SUCCEEDED
                 if (failure is ModelRepository.ModelFileException) {
                     val file = failure.file

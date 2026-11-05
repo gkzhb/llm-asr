@@ -31,7 +31,7 @@ kotlin.sourceSets.named("test") {
     kotlin.include("*.java")
     kotlin.exclude("InferenceAdapterTest.java", "InferenceAdapterTest.kt")
     kotlin.include("CoreRegressionJUnitTest.kt", "MinimalApkTest.kt", "ResultFilesTest.kt",
-        "NativeResponseTest.kt", "ModelOperationControlTest.kt", "ModelRepositoryDeleteTest.kt",
+        "NativeResponseTest.kt", "ModelOperationControlTest.kt", "ModelZipImportTest.kt", "ModelRepositoryDeleteTest.kt",
         "ModelPrivateRootTest.kt", "TextExportFatalTest.kt", "TextExportSafetyTest.kt",
         "AdmissionBoundaryTest.kt",
         "ImeSessionTest.kt",

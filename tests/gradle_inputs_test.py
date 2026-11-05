@@ -170,6 +170,29 @@ class InputTests(unittest.TestCase):
             self.assertFalse(output.exists())
             duplicate.unlink()
 
+    def test_zip_sources_missing_drift_duplicate(self):
+        for name in ("FixedModelPackage.kt", "ModelZipArchive.java", "ModelZipSource.kt", "SafModelZipSource.kt"):
+            path = self.root / "android/app/src/org/llmasr/minimal/model" / name
+            original = path.read_bytes()
+            output = self.root / ("zip-reject-" + name)
+            path.unlink()
+            with self.assertRaisesRegex(ValueError, "Frozen product inventory mismatch"):
+                module.stage(self.root, output, self.native)
+            self.assertFalse(output.exists())
+            path.write_bytes(original + b"// synthetic SHA drift\n")
+            with self.assertRaisesRegex(ValueError, "Frozen product input mismatch"):
+                module.stage(self.root, output, self.native)
+            self.assertFalse(output.exists())
+            path.write_bytes(original)
+            other = path.with_suffix(".java" if path.suffix == ".kt" else ".kt")
+            other.write_text("// duplicate ZIP owner\n")
+            try:
+                with self.assertRaisesRegex(ValueError, "Frozen product inventory mismatch"):
+                    module.stage(self.root, output, self.native)
+                self.assertFalse(output.exists())
+            finally:
+                other.unlink()
+
     def test_added_asset_rejected(self):
         (self.root / 'android/app/assets/extra.txt').write_text('fixture')
         with self.assertRaisesRegex(ValueError, 'inventory mismatch'):

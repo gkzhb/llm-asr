@@ -29,6 +29,36 @@ class OwnersTests(unittest.TestCase):
     def test_current_positive(self):
         check(self.root)
 
+    def test_missing_zip_owners(self):
+        for module, suffix, name in [(CORE, ".java", "ModelZipArchive"),
+                                     (Path("core/build/classes/kotlin/main"), ".kt", "FixedModelPackage"),
+                                     (Path("core/build/classes/kotlin/main"), ".kt", "ModelZipSource"),
+                                     (RUNTIME_KOTLIN, ".kt", "SafModelZipSource")]:
+            path = self.root / module / PREFIX / ("model/" + name + ".class")
+            original = path.read_bytes()
+            path.unlink()
+            try:
+                with self.assertRaisesRegex(AssertionError, "missing"):
+                    check(self.root)
+            finally:
+                path.write_bytes(original)
+
+    def test_zip_platform_pollution(self):
+        path = self.root / CORE / PREFIX / "model/ModelZipArchive.class"
+        path.write_bytes(path.read_bytes() + b"org/json/JSONObject")
+        with self.assertRaisesRegex(AssertionError, "platform reference"):
+            check(self.root)
+
+    def test_old_66_inventory_refused(self):
+        path = self.root / "gradle/baseline-inputs.json"
+        import json
+        pins = json.loads(path.read_text())
+        for name in ("FixedModelPackage.kt", "ModelZipArchive.java", "ModelZipSource.kt", "SafModelZipSource.kt"):
+            pins["files"].pop("android/app/src/org/llmasr/minimal/model/" + name)
+        path.write_text(json.dumps(pins))
+        with self.assertRaisesRegex(AssertionError, "inventory changed"):
+            check(self.root)
+
     def test_missing_owner(self):
         (self.root / CORE / PREFIX / 'model/ModelRepository.class').unlink()
         with self.assertRaisesRegex(AssertionError, 'missing'):

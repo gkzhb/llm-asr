@@ -1,5 +1,11 @@
 # M3 模块与旧测试覆盖映射
 
+## llm-asr-7vl 固定 ZIP 导入
+
+当前生产owner由66增至70：新增 core `FixedModelPackage.kt`（固定trust/严格JSON）、`ModelZipArchive.java`（有界CEN/LFH/Inflater/CRC）、`ModelZipSource.kt`（私有archive/session）；runtime仅新增 `SafModelZipSource.kt`（净化SAF单stream）。原app8、runtime由6至7、core由52至55；生产测试体不进入release。`ModelVerification`/`AndroidModelVerificationIo`/`ModelAccess`/`ModelResidency`/`ModelOperationControl`只读不变。
+
+`tests/ModelZipImportTest.kt`接入既有 core JUnit modelRepository 方法（原45000ms不变）与host混编；独立 `model_zip_import_contract_test.py` ordinary/-O 测生产ZIP/事务/资源/fault/cancel/crash/mutants，`model_zip_picker_test.py`编译完整Activity+typed page/ticket及受控provider，不等Android runner。精确库存、输入collector、DEX owner负例保持fail-closed；基线pin采纳与full后置另授，不以旧66输出或旧APK冒本轮green。详[定向入口](local-verification.md)及[格式](model-package-format.md)。
+
 ## llm-asr-zcm B：显式准备与单进程复用（targeted工程，尚不交包）
 
 文件校验证明与内存loaded分开：启动只轻恢复proof，模型管理页显式prepare/release；prepare在共享worker加载一次，同有效generation幂等，App/IME共用唯一resident。未prepare在asset/provider/capture之前拒绝，adapter末次复核；请求无load fallback，warm返回load_s=0且阶段仅3/4。prepare独立UUID的1/2事件，不生成REQUEST_SUCCESS。busy release立即关新准入，原native/cleanup/RequestRunner真退出后由既有worker卸载；release失败保EVICTING/pending，UI_HIDDEN20/页面离开/IME切换不卸载，无TTL或新线程。proof第四参maintenance lease覆盖current/generation/真实Repository写事务，先unload完成再DIRTY/资产首写，期间prepare拒绝。

@@ -142,7 +142,8 @@ public final class PartRecoveryTest {
         String src = new String(Files.readAllBytes(source), StandardCharsets.UTF_8);
         // The production order: reclaim first, then space check.
         // The buggy order: space check first, then reclaim.
-        String reclaim = "            for (ModelEntry e : manifest.entries()) { checkpoint(gate); reclaimEntryPart(e); }\n";
+        String reclaim = "            for (ModelEntry e : manifest.entries()) { checkpoint(gate); reclaimEntryPart(e, progress); }\n";
+        check(src.indexOf(reclaim) >= 0 && src.indexOf(reclaim) == src.lastIndexOf(reclaim));
         String budget = "            if (totalCopy > 0 && space.usableBytes() < Math.addExact(totalCopy, SPACE_PAD))\n                throw new IOException(\"存储空间不足：预检\");\n";
         // Add the premature aggregate refusal before reclaim, leaving the real post-reclaim
         // captured plan/check intact. Same semantic defect with the new structured plan.

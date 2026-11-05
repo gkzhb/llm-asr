@@ -5,7 +5,9 @@ import java.util.Collections
 
 /** Immutable model vocabulary, independent of the management page. */
 class ModelReports private constructor() {
-    class ImportPlan(copyBytes: Long, reusedBytes: Long, availableAtCheck: Long, reusableFiles: List<String?>?) {
+    class ImportPlan @JvmOverloads constructor(copyBytes: Long, reusedBytes: Long, availableAtCheck: Long, reusableFiles: List<String?>?,
+                                              @JvmField val archiveBytes: Long = 0L) {
+        @JvmField val zipPackage: Boolean = archiveBytes > 0L
         @JvmField val copyBytes: Long = copyBytes
         @JvmField val reusedBytes: Long = reusedBytes
         @JvmField val requiredBytes: Long = if (copyBytes == 0L) 0L else Math.addExact(copyBytes, ModelRepository.SPACE_PAD)

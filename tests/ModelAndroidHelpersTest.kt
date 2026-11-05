@@ -286,6 +286,20 @@ class ModelAndroidHelpersTest {
                 val p = f.page(id); p.stopped(false); require(f.control.peekActive().isCancelRequested && f.owner.isBusy(), "cancel retains owner")
                 f.queue.run(); require(f.state.current().phase == ModelManagementState.Phase.CANCELLED && !f.owner.isBusy(), "cancel real finalization"); p.destroy()
             }
+            fixture { f ->
+                val p=f.page(null);p.foreground(true)
+                val code=p.beginPicker(ModelPickerTickets.Mode.ZIP)
+                require(!p.result(code,ModelPickerTickets.Mode.DIRECTORY,f.source()),"ZIP stale or mismatched picker cannot import")
+                require(p.result(code,ModelPickerTickets.Mode.ZIP,f.source()),"typed ZIP callback")
+                p.foreground(false)
+                require(!p.consumeTyped {true},"typed background callback deferred")
+                p.foreground(true)
+                var mode:ModelPickerTickets.Mode?=null
+                require(p.consumeTyped {selection -> mode=selection.mode;f.controller.startImport(selection.value)},"typed foreground import")
+                require(mode==ModelPickerTickets.Mode.ZIP,"immutable ZIP ticket mode")
+                f.queue.run();require(f.ready.isReady,"typed import existing proof protocol")
+                p.destroy();require(!p.result(code,ModelPickerTickets.Mode.ZIP,f.source()),"destroyed typed callback rejected")
+            }
             val tickets = ModelPickerTickets()
             for (code in ModelPickerTickets.FIRST..ModelPickerTickets.LAST) { val t = tickets.begin(); require(t.requestCode == code && !TextExportController.isRequest(code), "picker unique range"); tickets.release(t) }
             try { tickets.begin(); throw AssertionError("picker exhaustion") } catch (expected: IllegalStateException) { }

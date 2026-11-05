@@ -34,6 +34,7 @@ PACKAGE_MAP = {
     'ModelSource': 'model', 'ModelRepository': 'model', 'ModelReadiness': 'model',
     'ModelAccess': 'model', 'ModelResidency': 'model', 'ModelVerification': 'model', 'AndroidModelVerificationIo': 'model',
     'ModelProviderBoundary': 'model', 'SafModelSource': 'model',
+    'FixedModelPackage': 'model', 'ModelZipArchive': 'model', 'ModelZipSource': 'model', 'SafModelZipSource': 'model',
     'FileSafety': 'model',
     'NativeResponse': 'asr', 'NativeTranscription': 'asr', 'JniNativeTranscription': 'asr',
     'InferenceAdapter': 'asr', 'InferencePhase': 'asr', 'InferencePhaseListener': 'asr',
@@ -102,7 +103,10 @@ if ime_kotlin:
 else:
     assert re.search(r'"模型管理", \(\) -> leaveForExternalUi\(\(\) ->\s*startActivity\(new Intent\(this, ModelManagementActivity.class\).addFlags\(Intent.FLAG_ACTIVITY_NEW_TASK\)', ime)
 activity = java('ModelManagementActivity')
-assert 'takePersistableUriPermission' not in activity and 'putExtra' not in activity
+assert 'takePersistableUriPermission' not in activity
+assert 'Intent.EXTRA_ALLOW_MULTIPLE,false' in activity and 'Intent.ACTION_OPEN_DOCUMENT)' in activity
+assert 'graph.modelZipSource(selection.value)' in activity and 'page.consumeTyped' in activity
+assert 'FixedModelPackage.mnn(modelRepository!!.manifest())' in graph
 assert 'page.stopped(isChangingConfigurations())' in activity
 assert 'ActivityWindow.configure(this, scroll);' in activity
 assert 'getApplicationContext().getContentResolver()' in activity

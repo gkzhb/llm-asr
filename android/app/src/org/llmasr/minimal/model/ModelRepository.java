@@ -57,6 +57,11 @@ public class ModelRepository {
                     long stageDone, long stageTotal,
                     long reusedBytes);
         default void planned(ModelReports.ImportPlan plan) { }
+        /** Actual source resource/archive cleanup, including prepare stream closes.
+         * Independent of model-part cleanup, displayed phase and cancellation; false is sticky. */
+        default void sourceCleanup(boolean succeeded) { }
+        /** Actual managed-part cleanup failure; source success cannot override it. */
+        default void modelCleanup(boolean succeeded) { }
         default void deletion(int succeeded, List<String> failed) { }
         /** Per-file milestone observation. Typed outcome so the model core
          *  never embeds UI strings; the page renders them through ModelUiText. */
@@ -73,6 +78,7 @@ public class ModelRepository {
          *  (and the caller has reserved publication so a later cancel does
          *  not undo the in-flight rename); false if cancel already won. */
         boolean reservePublish();
+        default void checkpoint() throws IOException { }
         default void beforeMutation() throws IOException { }
         default void invalidExisting(String file) { }
     }
@@ -85,6 +91,9 @@ public class ModelRepository {
     public enum Stage {
         INSPECTING,
         ENUMERATING,
+        COPYING_ARCHIVE,
+        CHECKING_ARCHIVE,
+        CLEANING_ARCHIVE,
         CHECKING_EXISTING,
         COPYING,
         VERIFYING_FILE,
@@ -267,7 +276,10 @@ public class ModelRepository {
         InvalidModelException(String file) { super(file, "SHA-256 不符"); }
     }
     private static void checkpoint(CancelGate cancel) throws IOException {
-        if (cancel != null && cancel.cancelled()) throw new CancelledException();
+        if (cancel != null) {
+            if (cancel.cancelled()) throw new CancelledException();
+            cancel.checkpoint();
+        }
     }
     // Narrow real-IO fault seams; defaults preserve the original filesystem behavior.
     protected OutputStream openPart(File part) throws IOException { return new FileOutputStream(part); }
@@ -373,6 +385,30 @@ public class ModelRepository {
         checkpoint(gate);
         RootStatus root = checkedRoot();
         if (root != RootStatus.ROOT_OK && root != RootStatus.ROOT_MISSING) throw new IOException("非法 model 根目录");
+        ModelSource.Session session = source.openSession(manifest, space, progress, gate);
+        CancelGate sessionGate = new CancelGate() {
+            @Override public boolean cancelled() { return gate.cancelled(); }
+            @Override public boolean reservePublish() { return gate.reservePublish(); }
+            @Override public void beforeMutation() throws IOException { gate.beforeMutation(); }
+            @Override public void invalidExisting(String file) { gate.invalidExisting(file); }
+            @Override public void checkpoint() throws IOException { session.checkpoint(); gate.checkpoint(); }
+        };
+        Throwable primary = null;
+        try { importFiles(session, progress, sessionGate, root); }
+        catch (IOException | RuntimeException | Error failure) { primary = failure; throw failure; }
+        finally {
+            if (primary == null) session.close();
+            else try { session.close(); } catch (Throwable close) { if (close != primary) primary.addSuppressed(close); }
+        }
+        session.checkpoint();
+        checkpoint(gate);
+        // Source/provider/ZipFile/Inflater/cleanup must finish before final SHA/proof.
+        scope.close();
+        verifyAll(progress, sessionGate);
+        session.checkpoint();
+        checkpoint(gate);
+    }
+    private void importFiles(ModelSource.Session source, Progress progress, CancelGate gate, RootStatus root) throws IOException {
         Set<String> expected = new HashSet<>();
         for (ModelEntry e : manifest.entries()) expected.add(e.file());
         emit(progress, Stage.ENUMERATING, null, 0, 0, 0, 0, 0, 0);
@@ -415,7 +451,7 @@ public class ModelRepository {
                 : new ModelReports.FileOutcome(ModelReports.FileOutcome.Status.PENDING));
             index++;
         }
-        if (progress != null) progress.planned(new ModelReports.ImportPlan(totalCopy, reused, -1, reusableFiles));
+        if (progress != null) progress.planned(new ModelReports.ImportPlan(totalCopy, reused, -1, reusableFiles, source.archiveBytes()));
         for (ModelEntry e : manifest.entries()) {
             checkpoint(gate);
             if (!reuse.get(e) && refs.get(e.file()) == null) throw new ModelFileException(e.file(), "源目录缺少");
@@ -428,11 +464,11 @@ public class ModelRepository {
             mutationGuard.beforeMutation();
             gate.beforeMutation();
             ModelManifest.requireSafeRoot(modelDir);
-            for (ModelEntry e : manifest.entries()) { checkpoint(gate); reclaimEntryPart(e); }
+            for (ModelEntry e : manifest.entries()) { checkpoint(gate); reclaimEntryPart(e, progress); }
         }
         // Capture the actual budget check once, AFTER reclaim; preserve it on rejection.
         long availableAtCheck = space.usableBytes();
-        ModelReports.ImportPlan plan = new ModelReports.ImportPlan(totalCopy, reused, availableAtCheck, reusableFiles);
+        ModelReports.ImportPlan plan = new ModelReports.ImportPlan(totalCopy, reused, availableAtCheck, reusableFiles, source.archiveBytes());
         if (progress != null) progress.planned(plan);
         if (totalCopy > 0 && availableAtCheck < plan.requiredBytes)
             throw new IOException("存储空间不足：预检");
@@ -441,7 +477,7 @@ public class ModelRepository {
             checkpoint(gate);
             if (reuse.get(entry)) { index++; continue; }
             File dest = safe(entry.file());
-            reclaimEntryPart(entry);
+            reclaimEntryPart(entry, progress);
 
             if (space.usableBytes() < entry.bytes() + SPACE_PAD) {
                 throw new IOException("存储空间不足：" + entry.file());
@@ -451,11 +487,6 @@ public class ModelRepository {
             stageDone += entry.bytes(); index++;
         }
         checkpoint(gate);
-        // All asset streams/publication/failure cleanup have truly finished. Only
-        // now may this import enter its own final full verification/proof phase.
-        scope.close();
-        verifyAll(progress, gate);
-        checkpoint(gate);
     }
 
     private void emit(Progress p, Stage stage, String name, int index, long done, long total,
@@ -463,9 +494,17 @@ public class ModelRepository {
         if (p != null) p.update(stage, name, index, manifest.entries().size(), done, total, stageDone, stageTotal, reused);
     }
 
-    private void reclaimEntryPart(ModelEntry entry) throws IOException {
+    private void reclaimEntryPart(ModelEntry entry, Progress progress) throws IOException {
         File part = safe(entry.partName());
-        if (part.exists()) deleteManaged(part);
+        if (part.exists()) try { deleteManaged(part); }
+        catch (IOException | RuntimeException | Error failure) {
+            modelCleanupFailed(progress, failure);
+            throw failure;
+        }
+    }
+    private static void modelCleanupFailed(Progress progress, Throwable primary) {
+        if (progress != null) try { progress.modelCleanup(false); }
+        catch (Throwable notify) { if (notify != primary) primary.addSuppressed(notify); }
     }
 
     private void copyAndVerify(ModelSource source, ModelSource.UriRef ref, ModelEntry entry, File dest,
@@ -477,7 +516,11 @@ public class ModelRepository {
         if (stream == null) throw new IOException("无法读取：" + entry.file());
         try {
             long count = 0;
-            try (InputStream in = stream; OutputStream out = openPart(part)) {
+            OutputStream out = null;
+            Throwable copyingFailure = null;
+            try {
+                out = openPart(part);
+                InputStream in = stream;
                 byte[] b = new byte[1024 * 1024];
                 int n;
                 while (true) {
@@ -492,6 +535,20 @@ public class ModelRepository {
                         count, entry.bytes(), stageBase + count, stageTotal, reusedBytes);
                 }
                 if (count != entry.bytes()) throw new ModelFileException(entry.file(), "写入字节数不匹配清单");
+            } catch (IOException | RuntimeException | Error failure) {
+                copyingFailure = failure; throw failure;
+            } finally {
+                Throwable closing = copyingFailure;
+                if (out != null) try { out.close(); }
+                catch (Throwable close) { if (closing == null) closing = close; else if (closing != close) closing.addSuppressed(close); }
+                try { stream.close(); }
+                catch (Throwable close) { if (closing == null) closing = close; else if (closing != close) closing.addSuppressed(close); }
+                if (copyingFailure == null && closing != null) {
+                    if (closing instanceof IOException) throw (IOException) closing;
+                    if (closing instanceof RuntimeException) throw (RuntimeException) closing;
+                    if (closing instanceof Error) throw (Error) closing;
+                    throw new IOException("模型流关闭失败", closing);
+                }
             }
             // Stream closed cleanly. Now verify the part.
             if (progress != null) progress.update(Stage.VERIFYING_FILE, entry.file(), fileIndex, manifest.entries().size(),
@@ -508,6 +565,7 @@ public class ModelRepository {
             // the reservation is already in.
             if (progress != null) progress.update(Stage.PUBLISHING, entry.file(), fileIndex, manifest.entries().size(),
                 0L, entry.bytes(), 0L, entry.bytes(), reusedBytes);
+            checkpoint(cancel);
             if (!cancel.reservePublish()) throw new CancelledException();
 
             // Rename only after both streams have closed cleanly. A close
@@ -519,10 +577,13 @@ public class ModelRepository {
             if (progress != null) progress.fileResult(entry.file(),
                 new ModelReports.FileOutcome(ModelReports.FileOutcome.Status.PUBLISHED));
             checkpoint(cancel);
-        } catch (IOException | RuntimeException failure) {
+        } catch (IOException | RuntimeException | Error failure) {
             if (part.exists()) {
                 try { deleteManaged(part); }
-                catch (IOException cleanup) { failure.addSuppressed(cleanup); }
+                catch (Throwable cleanup) {
+                    if (cleanup != failure) failure.addSuppressed(cleanup);
+                    modelCleanupFailed(progress, failure);
+                }
             }
             throw failure;
         }

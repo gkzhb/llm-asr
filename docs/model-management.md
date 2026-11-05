@@ -2,6 +2,16 @@
 
 > 当前0.5已完成实现、构建和独立源码复核，可供手动设备验收；不代表设备已通过。最终APK身份以`reports/apk/result.json`和`reports/apk/status.md`为准。详细功能契约见[规划](model-management-plan.md)，实现证据见[验收记录](model-management-validation.md)。
 
+## 固定 ZIP 与目录并列入口（llm-asr-7vl）
+
+“选择模型 ZIP 包 / 修复导入”仅接收单个 content 文件；规范、完整七元组清单与可重复 Python 标准库打包配方见[模型包格式](model-package-format.md)。ZIP32 profile 有意拒绝 DD/ZIP64/extra/comment/链接等，不能使用任意通用 ZIP。原目录入口保留。
+
+ZIP 先落私有 archive（model 根外），完整首遍格式/CRC/可信 SHA 通过后才复用原逐文件 `.part` 发布；所有流/ZIP/Inflater/cleanup 完成后才最终全 SHA 与持久证明。不是整包原子回滚：审核前失败保原有效磁盘资产与证明（maintenance 可能卸载 resident），发布中正确文件保留，DIRTY 需重选 ZIP/目录修复。
+
+页面显示 archive 复制/审核/清理阶段及实际 archive 成本。落包保守预留完整模型+64MiB，最坏额外 archive+模型+64MiB 上限3,215,141,802bytes；可能更早拒绝低空间，但不先删旧模型，可显式选择目录。30分钟协作期限不硬中断 provider；取消时保 owner 和活目录到真实 IO 收尾。URI/模式不持久化，旧 picker/重建回调不能复活导入。
+
+本 ZIP implementation 阶段尚无新 APK 交付；主机 fakes/targeted 不等系统 SAF/Binder/grant/生命周期或设备/麦克风/ASR/掉电验收，均 NOT RUN。下文0.5为历史使用记录，不重标旧 APK 为 ZIP 版本。
+
 ## 页面入口
 
 - 转写主页：模型摘要下点击“模型管理”。旧导入/校验/空间操作移到独立页面。
@@ -11,7 +21,7 @@
 
 ## 导入与重试
 
-1. 准备本项目固定MNN部署目录，而不是原始safetensors或压缩包。当前清单7文件，总计1,573,492,181 bytes，界面按清单动态显示。
+1. 准备本项目固定MNN部署目录，或按上述规范生成单个 ZIP；不是原始safetensors或任意压缩包。当前清单7文件，总计1,573,492,181 bytes，界面按清单动态显示。
 2. 点击“选择模型目录 / 修复导入”，在系统文件选择器授予只读访问。推荐本地目录；云provider可能联网取文件，App本身无网络权限不等于provider离线。
 3. 页面分阶段显示检查已有文件、复制、part校验、发布和最终SHA；复制100%不等于模型安装完成。
 4. 完整正确文件可复用，残缺单文件不按字节续传。取消或失败后主动重新选择目录重试；不保存长期目录授权，不自动重试。

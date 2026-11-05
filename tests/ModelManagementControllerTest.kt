@@ -319,12 +319,31 @@ class ModelManagementControllerTest {
                 check(!thread.isAlive&&error.get()==null&&state.current().phase==ModelManagementState.Phase.FAILED&&!f.ready.isReady)
             }
         }
+        private fun sessionCleanupLogging() = loggingFixture { f ->
+            val source=object:ModelSource {
+                override fun enumerate(expected:MutableCollection<String?>?,maxEntries:Int)=f.source().enumerate(expected,maxEntries)
+                override fun open(ref:ModelSource.UriRef?)=f.source().open(ref)
+                override fun openSession(manifest:ModelManifest,space:ModelRepository.SpaceProvider,progress:ModelRepository.Progress?,cancel:ModelRepository.CancelGate):ModelSource.Session {
+                    val delegate=super.openSession(manifest,space,progress,cancel)
+                    return object:ModelSource.Session {
+                        override fun archiveBytes()=1L
+                        override fun enumerate(expected:MutableCollection<String?>?,maxEntries:Int)=delegate.enumerate(expected,maxEntries)
+                        override fun open(ref:ModelSource.UriRef?)=delegate.open(ref)
+                        override fun close(){delegate.close();progress?.update(ModelRepository.Stage.CLEANING_ARCHIVE,null,0,0,0,0,0,0,0);progress?.sourceCleanup(false);throw IOException("cleanup failure")}
+                    }
+                }
+            }
+            val c=f.controller();logCheck(c.startImport(source),"source session close fault admitted")
+            val id=f.control.peekActive().id;f.queue.run()
+            logCheck(!f.readiness.isReady && f.state.current().phase==ModelManagementState.Phase.FAILED && f.state.current().cleanupOutcome==ModelManagementState.Outcome.FAILED && !f.owner.isBusy(),"session cleanup blocks final SHA/proof success")
+            logPair(f,id,ModelOperationControl.Kind.IMPORT,"FAILED","session cleanup exactly one log pair")
+        }
         private fun loggingAll() { for (n in arrayOf("logging-rejection-import", "logging-rejection-verify", "logging-rejection-delete", "logging-abnormal", "logging-terminal-observer", "logging-admission-observer", "logging-protection")) logging(n) }
         @JvmStatic @Throws(Exception::class)
         fun main(args: Array<out String?>?) {
             if (args!!.size > 0 && args[0]=="corefault") { committedFaults(); println("PASS final COMMITTED/controller owner/rollback/lateepoch faults");return }
             if (args.size > 0) { logging(args[0]); println("PASS maintenance logging case " + args[0] + ": " + checks + " checks"); return }
-            loggingAll()
+            loggingAll(); sessionCleanupLogging()
             persistentControllerFaults()
             committedFaults()
             run {

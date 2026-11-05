@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BODIES = ('MinimalApkTest', 'ResultFilesTest', 'NativeResponseTest',
           'ModelOperationControlTest', 'ModelRepositoryDeleteTest', 'ModelPrivateRootTest',
           'TextExportFatalTest', 'TextExportSafetyTest',
-          'AdmissionBoundaryTest', 'ImeSessionTest', 'InferenceAdapterTest', 'LogExportTest', 'ModelAndroidHelpersTest', 'ModelManagementControllerTest', 'ModelNotificationTest', 'ModelProviderBoundaryTest', 'ModelReadinessTest', 'ModelRepositoryCancelTest', 'ModelRepositoryTest', 'ModelReviewFixTest', 'RecordingRaceTest', 'RequestRunnerTest', 'RuntimeLogCoreTest', 'RuntimeLogStoreErrorTest', 'RuntimeLogWorkerErrorTest', 'TaskCoordinatorTest', 'TextExportTest')
+          'AdmissionBoundaryTest', 'ImeSessionTest', 'InferenceAdapterTest', 'LogExportTest', 'ModelAndroidHelpersTest', 'ModelManagementControllerTest', 'ModelNotificationTest', 'ModelProviderBoundaryTest', 'ModelReadinessTest', 'ModelRepositoryCancelTest', 'ModelRepositoryTest', 'ModelReviewFixTest', 'RecordingRaceTest', 'RequestRunnerTest', 'RuntimeLogCoreTest', 'RuntimeLogStoreErrorTest', 'RuntimeLogWorkerErrorTest', 'TaskCoordinatorTest', 'TextExportTest', 'ModelZipImportTest')
 CORE = ('kotlinJavaAbi', 'waveAndRecordingProtocol', 'recordingRaces', 'resultFiles',
         'nativeResponseProtocol', 'modelRepository', 'privateModelRoot', 'partRecoveryProductionMutant',
         'requestRunner', 'taskCoordinator', 'admissionOwnerBoundary', 'imeSessionPrivacy',

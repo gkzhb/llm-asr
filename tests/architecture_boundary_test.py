@@ -19,6 +19,7 @@ PACKAGE_MAP = {
     'ModelSource': 'model', 'ModelRepository': 'model', 'ModelReadiness': 'model',
     'ModelAccess': 'model', 'ModelResidency': 'model', 'ModelVerification': 'model', 'AndroidModelVerificationIo': 'model',
     'ModelProviderBoundary': 'model', 'SafModelSource': 'model',
+    'FixedModelPackage': 'model', 'ModelZipArchive': 'model', 'ModelZipSource': 'model', 'SafModelZipSource': 'model',
     'FileSafety': 'model',
     'NativeResponse': 'asr', 'NativeTranscription': 'asr', 'JniNativeTranscription': 'asr',
     'InferenceAdapter': 'asr', 'InferencePhase': 'asr', 'InferencePhaseListener': 'asr',
@@ -58,7 +59,7 @@ def references(source):
 def check_model(source):
     forbidden = references(source) & {'ModelManagementState', 'ModelManagementActivity', 'ModelManagementController', 'AppGraph'}
     assert not forbidden, 'model core references presentation/wiring: ' + str(forbidden)
-for name in ['ModelReports', 'ModelRepository', 'ModelReadiness', 'ModelAccess', 'ModelResidency', 'ModelVerification', 'ModelManifest', 'ModelEntry', 'ModelSource']:
+for name in ['ModelReports', 'ModelRepository', 'ModelReadiness', 'ModelAccess', 'ModelResidency', 'ModelVerification', 'ModelManifest', 'ModelEntry', 'ModelSource', 'FixedModelPackage', 'ModelZipArchive', 'ModelZipSource']:
     check_model(path_of(name).read_text())
 check_model('/* ModelManagementState */ String text="https://x/ModelManagementState";')
 for bad in ['ModelManagementState state;', 'org.llmasr.minimal.ModelManagementState.Snapshot s;',

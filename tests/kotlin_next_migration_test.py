@@ -68,6 +68,7 @@ calls++;seen=u;order+="open;";if(fail)throw SENTINEL;return new java.io.ByteArra
 public java.io.InputStream openInputStream(@org.jetbrains.annotations.NotNull android.net.Uri u)throws java.io.IOException{
 calls++;seen=u;order+="open;";if(fail)throw SENTINEL;return stream!=null?stream:new java.io.ByteArrayInputStream(new byte[0]);}}
 ''',
+    'android/net/Uri.java': 'package android.net;public final class Uri {public static Uri parse(String s){return new Uri();}public String getScheme(){return "content";}}',
     'android/content/ComponentCallbacks2.java': 'package android.content; public interface ComponentCallbacks2 {void onConfigurationChanged(android.content.res.Configuration c);void onLowMemory();void onTrimMemory(int level);}',
     'android/content/res/Configuration.java': 'package android.content.res; public class Configuration {}',
     'android/content/Context.java': '''package android.content; public class Context {
@@ -233,7 +234,7 @@ def prepare(directory):
     body, = re.findall(r'^host_classes=\(\n(.*?)^\)', (ROOT / 'scripts/test-minimal-apk.sh').read_text(), re.M | re.S)
     production = [source(name.replace('.', '/')) for name in body.split()]
     production += [source(name) for name in SELECTED if source(name) not in production]
-    production += [source('platform/OperationContext'), source('ime/ImeBackend'), source('model/AndroidModelVerificationIo')]
+    production += [source('platform/OperationContext'), source('ime/ImeBackend'), source('model/AndroidModelVerificationIo'), source('model/SafModelZipSource')]
     for path in production:
         target = directory / 'production' / path.relative_to(ROOT)
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -241,7 +242,7 @@ def prepare(directory):
         sources.append(target)
     migrated = ('MinimalApkTest', 'ResultFilesTest', 'NativeResponseTest', 'ModelOperationControlTest',
                 'ModelRepositoryDeleteTest', 'ModelPrivateRootTest', 'TextExportFatalTest', 'TextExportSafetyTest',
-                'AdmissionBoundaryTest', 'ImeSessionTest', 'InferenceAdapterTest', 'LogExportTest', 'ModelAndroidHelpersTest', 'ModelManagementControllerTest', 'ModelNotificationTest', 'ModelProviderBoundaryTest', 'ModelReadinessTest', 'ModelRepositoryCancelTest', 'ModelRepositoryTest', 'ModelReviewFixTest', 'RecordingRaceTest', 'RequestRunnerTest', 'RuntimeLogCoreTest', 'RuntimeLogStoreErrorTest', 'RuntimeLogWorkerErrorTest', 'TaskCoordinatorTest', 'TextExportTest')
+                'AdmissionBoundaryTest', 'ImeSessionTest', 'InferenceAdapterTest', 'LogExportTest', 'ModelAndroidHelpersTest', 'ModelManagementControllerTest', 'ModelNotificationTest', 'ModelProviderBoundaryTest', 'ModelReadinessTest', 'ModelRepositoryCancelTest', 'ModelRepositoryTest', 'ModelZipImportTest', 'ModelReviewFixTest', 'RecordingRaceTest', 'RequestRunnerTest', 'RuntimeLogCoreTest', 'RuntimeLogStoreErrorTest', 'RuntimeLogWorkerErrorTest', 'TaskCoordinatorTest', 'TextExportTest')
     callers = sorted((ROOT / 'tests').glob('*.java'))
     for name in migrated:
         matches = [ROOT / 'tests' / (name + suffix) for suffix in ('.java', '.kt')

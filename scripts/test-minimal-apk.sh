@@ -26,6 +26,7 @@ host_classes=(
   transcription.AppRequestPolicy transcription.AppState transcription.ResultState
   model.FileSafety
   model.ModelEntry model.ModelManifest model.ModelReports model.ModelSource model.ModelRepository
+  model.FixedModelPackage model.ModelZipArchive model.ModelZipSource
   asr.NativeResponse
   transcription.ResultFiles
   audio.RecordingControl audio.WaveInput audio.AsrText audio.PcmWave
@@ -72,6 +73,7 @@ bash scripts/compile-jvm-sources.sh "$classes" "" "${sources[@]}" \
   tests/ResultFilesTest.kt \
   tests/NativeResponseTest.kt \
   tests/ModelRepositoryTest.kt \
+  tests/ModelZipImportTest.kt \
   tests/ModelPrivateRootTest.kt \
   tests/PartRecoveryTest.java \
   tests/RequestRunnerTest.kt \
@@ -88,6 +90,12 @@ bash scripts/compile-jvm-sources.sh "$classes" "" "${sources[@]}" \
   tests/ModelProviderBoundaryTest.kt
 run() { timeout 45 java -cp "$classes:$KOTLIN_HOME/lib/kotlin-stdlib.jar" "$@"; }
 run KotlinMigrationTest
+# Independent fixed ZIP32/profile and typed SAF picker matrices; original gates/budgets unchanged.
+zip_evidence=$(mktemp -d "$root/.work/build/model-zip-XXXXXX")
+timeout 6600 python3 -B tests/model_zip_import_contract_test.py --evidence-dir "$zip_evidence/ordinary"
+timeout 6600 python3 -O tests/model_zip_import_contract_test.py --evidence-dir "$zip_evidence/optimized"
+timeout 1800 python3 -B tests/model_zip_picker_test.py --evidence-dir "$zip_evidence/picker-ordinary"
+timeout 1800 python3 -O tests/model_zip_picker_test.py --evidence-dir "$zip_evidence/picker-optimized"
 # Selected reverse-direction production contracts, same fresh canonical host dependency.
 k2j_evidence=$(mktemp -d "$root/.work/build/kotlin-to-java-XXXXXX")
 timeout 4200 python3 -B tests/kotlin_to_java_contract_test.py --contracts "$classes" --evidence-dir "$k2j_evidence/ordinary"

@@ -69,6 +69,18 @@ class IdentityTests(unittest.TestCase):
             module_owner.assert_called_once_with(['python3', str(ROOT / 'tests/module_owners_test.py')], check=True)
         self.assertEqual(called, [(build.absolute(), ROOT / '.work/native-session-reuse/sources')])
 
+    def test_zip_owner_definitions_required_in_actual_dex(self):
+        # Use the actual parser over the current APK, remove one owner definition
+        # at the parser seam; no fake ZIP bytes or string grep can satisfy this gate.
+        original = module.defined_classes
+        for name in ('FixedModelPackage', 'ModelZipArchive', 'ModelZipSource', 'SafModelZipSource'):
+            descriptor = ('Lorg/llmasr/minimal/model/' + name + ';').encode()
+            def without_owner(data, descriptor=descriptor):
+                return original(data) - {descriptor}
+            with patch.object(module, 'defined_classes', side_effect=without_owner):
+                with self.assertRaisesRegex(ValueError, 'owner definition missing.*' + name):
+                    module.check_identity(self.apk, self.baseline, self.report)
+
     def test_positive_existing_apk(self):
         module.check_identity(self.apk, self.baseline, self.report)
 

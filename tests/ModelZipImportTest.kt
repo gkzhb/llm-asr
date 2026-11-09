@@ -487,8 +487,14 @@ class ModelZipImportTest {
                     requireThat(failure==null && !archive.exists(),"ZIP stale archive must reclaim before initial space reservation")
                     repo.verifyAll()
                     val sentinel=File(stage,"unknown");sentinel.writeText("keep");archive.writeBytes(byteArrayOf(1))
-                    rejected("ZIP unknown stage still refuses reclaim") {repo.importFrom(source(root,fixtures),null)}
+                    val cleanup=ArrayList<Boolean>()
+                    val progress=object:ModelRepository.Progress {
+                        override fun update(stage:ModelRepository.Stage?,name:String?,i:Int,n:Int,d:Long,t:Long,sd:Long,st:Long,r:Long){}
+                        override fun sourceCleanup(succeeded:Boolean){cleanup.add(succeeded)}
+                    }
+                    rejected("ZIP unknown stage still refuses reclaim") {repo.importFrom(source(root,fixtures),progress)}
                     requireThat(sentinel.readText()=="keep" && archive.exists(),"ZIP unknown staging sentinel and old archive retained")
+                    requireThat(cleanup==listOf(false),"ZIP unknown-stage listing close cannot imply stale archive cleanup")
                     sentinel.delete();archive.delete();val outside=File(root,"outside");outside.writeText("external")
                     Files.createSymbolicLink(archive.toPath(),outside.toPath())
                     rejected("ZIP stale symlink refused") {repo.importFrom(source(root,fixtures),null)}

@@ -41,7 +41,7 @@ public final class ModelManagementActivity extends Activity {
     private AppGraph graph;
     private final ActivityWindow.BackRegistration windowBack = new ActivityWindow.BackRegistration(this, this::onBackPressed);
     private ModelPageSession<Uri> page;
-    private TextView readiness, storage, task, files, busy;
+    private TextView readiness, storage, task, files, busy, importTask;
     private LinearLayout cards, details;
     private String detailModel;
     private Button select;
@@ -93,6 +93,8 @@ public final class ModelManagementActivity extends Activity {
         text(details,"内部存储",20); storage = text(details,"",16);
         text(root,"逻辑文件字节不是物理磁盘分配；可用存储不是 RAM。删除释放量仅为估计。\n云文件提供方可能联网获取模型，优先选择专用本地目录；本应用无网络权限。",15);
         busy = text(root,"",16);
+        importTask = text(root,"",16); // Global discovery has no installation identity yet.
+        cancel = button(root,"取消本页操作", () -> { page.cancelOwn(); invalidation.onChange(); });
         chooseZip = button(root,"选择模型 ZIP 包 / 修复导入",() -> chooseModel(ModelPickerTickets.Mode.ZIP));
         choose = button(root,"选择模型目录 / 修复导入（兼容入口）",this::chooseDirectory);
         text(root,"ZIP 支持旧固定包或受控 v2 七资产变体；导入不自动切换当前模型。目录入口仅修复旧固定部署。先审核后逐文件发布，不是整包回滚；私有 ZIP 另占存储，低空间不删除旧模型。",15);
@@ -115,7 +117,6 @@ public final class ModelManagementActivity extends Activity {
             invalidation.onChange();
         });
         task = text(details,"",16); // No live region / per-block accessibility announcements.
-        cancel = button(details,"取消本页操作", () -> { page.cancelOwn(); invalidation.onChange(); });
         text(details,"逐文件详情",20); files = text(details,"",15); files.setTextIsSelectable(true);
         delete = button(details,"删除内部模型… / 重试删除…",this::confirmDelete);
         text(root,"只删除内部固定清单文件及其 .part；未知文件保留，不递归。不会删除外部源目录、转写文本或导出文件。删除不是安全擦除。\n导入/校验离开前台会请求取消；旋转保留任务。取消需等待 provider 读取与清理结束，不强制释放任务锁。",15);
@@ -230,6 +231,10 @@ public final class ModelManagementActivity extends Activity {
             +"\n"+(storageSnapshot ? ModelUiText.spacePlan(s) : "等待此模型概况检查"));
         busy.setText(ownerBusy ? page.ownsActive() ? "本页任务占用共享任务锁；取消后仍需等待收尾。显示最近快照。"
             : "应用 / 输入法 / 另一管理页正在处理，完成后可管理模型。当前仅显示缓存概况。" : "空闲 · 所有写操作仍会重新检查共享任务锁。");
+        ModelManagementState.Snapshot importing = graph.modelManagement().importSnapshot();
+        importTask.setVisibility(importing == null ? View.GONE : View.VISIBLE);
+        importTask.setText(importing == null ? "" : "最近模型包导入（任务独立于模型详情）\n" + ModelUiText.task(importing)
+            + "\n私有 ZIP 已读取：" + ModelUiText.bytes(graph.modelManagement().importArchiveBytes(importing.activeOperationId)));
         boolean targetSnapshot = boundDetail != null;
         task.setText((targetSnapshot ? ModelUiText.task(s) : "此模型尚无当前操作记录")+(s.inspectBusy ? "\n正在刷新内部概况（最近操作保留）" : "")
             +(s.inspectError == null ? "" : "\n概况刷新："+s.inspectError));
@@ -246,13 +251,14 @@ public final class ModelManagementActivity extends Activity {
         files.setText(detail);
         boolean any = false, completeFile = false;
         for (ModelReports.FileDetail f : detailFiles) { any |= f.present || f.partExists; completeFile |= f.present && f.sizeMatch; }
-        choose.setEnabled(!ownerBusy); chooseZip.setEnabled(!ownerBusy); verify.setEnabled(!ownerBusy && model != null && completeFile); restore.setEnabled(!ownerBusy && model != null); delete.setEnabled(!ownerBusy && model != null && any);
+        choose.setEnabled(!ownerBusy); chooseZip.setEnabled(!ownerBusy); verify.setEnabled(!ownerBusy && model != null && completeFile); restore.setEnabled(!ownerBusy && model != null); delete.setEnabled(!ownerBusy && model != null && (any || !model.policy.trustedLegacy));
         boolean currentModel = false; for (org.llmasr.minimal.model.ModelCatalog.Row row : rows) if (model == row.deployment && row.selected) currentModel = true;
         select.setEnabled(!ownerBusy && model != null && !currentModel);
         select.setText(currentModel ? "当前选用模型" : "选用此模型");
         prepare.setEnabled(!ownerBusy && r.ready() && currentModel);
         release.setEnabled(true);
-        cancel.setVisibility(page.ownsActive() && s.operationKind != ModelManagementState.OperationKind.DELETE ? View.VISIBLE : View.GONE);
+        org.llmasr.minimal.modelmanagement.ModelOperationControl.Operation active = graph.modelManagement().opControl().peekActive();
+        cancel.setVisibility(page.ownsActive() && active != null && active.kind != org.llmasr.minimal.modelmanagement.ModelOperationControl.Kind.DELETE ? View.VISIBLE : View.GONE);
         cancel.setEnabled(page.cancellable());
         if (page.ownsActive() && ownerBusy && unlocked()) getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

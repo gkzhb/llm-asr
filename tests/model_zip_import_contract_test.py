@@ -174,7 +174,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--evidence-dir', required=True, type=Path)
     parser.add_argument('--quick', action='store_true', help='incremental parser/source checkpoint, not final matrix')
-    parser.add_argument('--catalog-cleanup-only', action='store_true', help='three tiny actual catalog ZIP cleanup regressions only')
+    parser.add_argument('--catalog-cleanup-only', action='store_true', help='six tiny actual catalog ZIP cleanup regressions only')
     parser.add_argument('--regressions', action='store_true', help='same fresh snapshot plus original core regression entrypoints')
     args = parser.parse_args()
     out = args.evidence_dir.resolve()
@@ -236,13 +236,18 @@ def main():
             require(result.returncode==0, 'production contract failed '+label+': '+text)
         else:
             require(result.returncode==1 and 'java.lang.AssertionError: '+diagnostic in text, 'not exact compiled production target red '+label+': '+text)
-    green = compile_source('green')
-    if args.catalog_cleanup_only:
-        cp = str(green)+':'+str(stdlib)
+    def catalog_cleanup(classes):
+        cp = str(classes)+':'+str(stdlib)
         for mode in ('remove', 'close', 'blocked', 'cancel-normal', 'cancel-blocked', 'cancel-throw'):
+            counts['jvm'] += 1
+            require(counts['jvm'] <= 64 and time.monotonic()-start < 6600, 'ZIP catalog JVM/total budget')
             result = execute(['java','-Xmx256m','-cp',cp,'ModelZipImportTest','catalog-cleanup',mode,str(out/('catalog-'+mode))], 'catalog-'+mode, 30)
             require(result.returncode==0, 'catalog ZIP cleanup regression '+mode+': '+result.stderr.decode(errors='replace'))
             print(result.stdout.decode(), end='', flush=True)
+    green = compile_source('green')
+    if args.catalog_cleanup_only or not args.quick:
+        catalog_cleanup(green)
+    if args.catalog_cleanup_only:
         guard(out)
         return
     run_suite(green,'green')

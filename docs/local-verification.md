@@ -8,6 +8,8 @@ bash scripts/nix-env.sh apk --cache-only python3 -O tests/model_variants_contrac
 bash scripts/nix-env.sh apk --cache-only python3 -B tests/native_model_graph_policy_test.py --evidence-dir NEW_GRAPH_DIR
 ```
 
+`--catalog-only` 不支持与 `--mutants` 同用：参数解析立即拒绝，尚未创建证据目录或启动编译/JVM。native probe 的未知/缺失/多余 `--case` 参数均失败且不输出 PASS；已知名称恰执行一例，默认执行完整有限清单；ConvTranspose3D 以及 Dilation2D/Conv2DBackPropFilter/Im2Col/Col2Im 的错 union 仅验证生产 guard 精确拒绝，不送入引擎；后四类各有 schema-valid inline Scale 错 union 与合法 Convolution2D 正例，不将 TfQuantized 独立表示强制归入同一 union。
+
 上述仅生产policy/catalog与真实native图guard的合成行为；不加载模型/推理、不写baseline/native预期、不组装APK。graph driver的显式 `--admit-existing` 只用于另授固定四图的只读兼容检查，配对weight仅stat；正式host默认不读本地模型。所有输入/子命令exit/owned退出保留独占证据。新增API/库存适配不授权删除旧bodyguard/compiledmutant/cleanup/预算。当前full与身份采纳后置，真实FP16/INT8/INT4/MIXED推理、质量性能、Android runner/设备/mic/private均不由合成声明证明。
 
 ## llm-asr-7vl 固定 ZIP targeted
@@ -19,7 +21,7 @@ bash scripts/nix-env.sh apk --cache-only python3 -B tests/model_zip_picker_test.
 bash scripts/nix-env.sh apk --cache-only python3 -O tests/model_zip_picker_test.py --evidence-dir NEW_PICKER_OPT_DIR
 ```
 
-微型合成七文件，标准库固定ZipInfo/seekable配方，不读或打包真实权重。新ZIP driver每模式总6600s、≤24 mixed compile/64 JVM；picker1800s、≤6compile/12JVM；每compile≤180s、JVM≤30s/-Xmx256m。原host/full/JUnit45s预算不变。`--quick`仅增量checkpoint，不等完整fault/crash/mutant矩阵。每child owned ledger真实exit后才释放source/dependency；ordinary/-O均显式require，不用可擦除assert判行为。
+微型合成七文件，标准库固定ZipInfo/seekable配方，不读或打包真实权重。新ZIP driver每模式总6600s、≤24 mixed compile/64 JVM；picker1800s、≤6compile/12JVM；每compile≤180s、JVM≤30s/-Xmx256m。原host/full/JUnit45s预算不变。`--quick`仅增量checkpoint，不等完整fault/crash/mutant矩阵。默认非quick（含 `--regressions`）复用首次混编输出执行六个 catalog cleanup：remove/close/blocked/cancel-normal/cancel-blocked/cancel-throw；`--catalog-cleanup-only` 只跑同一六例，不每例复编、不加预算。Activity host harness 另覆盖列表发起全局ZIP discovery/字节/取消等待close、旧archive+未知sentinel在opener前拒绝/目录流真实close前保owner/失败清理摘要重入保留/仅fixture移除sentinel后CRC清理恢复，以及绑定前CRC失败重入、空custom记录重启/删除持久失败/确认重试/未知数据保留；host fake 不是Android运行。每child owned ledger真实exit后才释放source/dependency；ordinary/-O均显式require，不用可擦除assert判行为。
 
 生产路径为完整首遍CEN/LFH/JSON/CRC/可信SHA→既有Repository `.part`逐文件发布→session关闭/cleanup→最终全SHA/proof。typed picker由不可变ticket带模式，Activity无provider IO、Graph固定policy/stage惰性在worker；原目录路径保留。[格式与可重复打包](model-package-format.md)。implementation阶段不改baseline pin、不跑prepareInputs/native/assemble/full，不覆盖旧APK或formal receipt；fresh审、另授identity/full/安全提交后才可交付ZIP APK。主机fakes不是设备SAF/Binder/grant/真实生命周期/性能/掉电/ASR验收。
 

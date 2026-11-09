@@ -4,6 +4,12 @@
 #include <cstring>
 
 namespace {
+const std::pair<const char*, MNN::OpType> convolutionAliases[] = {
+    {"dilation2d", MNN::OpType_Dilation2D},
+    {"conv2d-backprop-filter", MNN::OpType_Conv2DBackPropFilter},
+    {"im2col", MNN::OpType_Im2Col},
+    {"col2im", MNN::OpType_Col2Im}
+};
 void check(bool value, const char* message) {
     if (!value) throw std::runtime_error(message);
 }
@@ -30,6 +36,20 @@ std::vector<uint8_t> graph(const std::string& kind) {
     if (kind == "union") op->type = MNN::OpType_Convolution;
     if (kind == "int8-union") op->type = MNN::OpType_ConvInt8;
     if (kind == "depthwise-union") op->type = MNN::OpType_DepthwiseConvInt8;
+    if (kind == "transpose3d-union") op->type = MNN::OpType_ConvTranspose3D;
+    for (const auto& alias : convolutionAliases) {
+        if (kind == std::string(alias.first) + "-union") {
+            // Valid inline Scale schema, deliberately wrong for this type's consumer.
+            MNN::ScaleT scale; scale.channels = 1; scale.scaleData = {1.0f}; scale.biasData = {0.0f};
+            op->type = alias.second; op->main.Set(std::move(scale));
+        }
+        if (kind == std::string(alias.first) + "-good") {
+            MNN::Convolution2DT convolution; convolution.common.reset(new MNN::Convolution2DCommonT);
+            convolution.common->inputCount = 1; convolution.common->outputCount = 1;
+            convolution.weight = {1.0f}; convolution.bias = {0.0f};
+            op->type = alias.second; op->main.Set(std::move(convolution));
+        }
+    }
     if (kind == "scale-capacity" || kind == "scale-good") {
         MNN::ScaleT scale; scale.channels = 1; scale.external = {0, 4, kind == "scale-capacity" ? 8 : 4};
         op->type = MNN::OpType_Scale; op->main.Set(std::move(scale));
@@ -119,19 +139,38 @@ int main(int argc, char** argv) {
             directory.close();
             std::cout << "ADMITTED " << name << " ops=" << count << " weights=STAT_ONLY\n"; return 0;
         }
-        const std::vector<std::string> cases = {"normal", "range", "scale-good", "where", "where-custom", "path", "relative-path", "subpath", "custom", "union", "gpu", "overflow", "truncated", "scale-capacity", "blob-capacity", "ptq-alpha", "fused-ptq", "int8-union", "depthwise-union", "empty-norm", "empty-rope-norm", "rnn", "tensor-blob", "int64-storage", "tensor-int64-storage"};
+        std::vector<std::string> cases = {"normal", "range", "scale-good", "where", "where-custom", "path", "relative-path", "subpath", "custom", "union", "gpu", "overflow", "truncated", "scale-capacity", "blob-capacity", "ptq-alpha", "fused-ptq", "int8-union", "depthwise-union", "empty-norm", "empty-rope-norm", "rnn", "tensor-blob", "int64-storage", "tensor-int64-storage", "transpose3d-union"};
+        for (const auto& alias : convolutionAliases)
+            for (const auto* suffix : {"-union", "-good"}) cases.push_back(std::string(alias.first) + suffix);
+        const bool selected = argc == 3 && std::string(argv[1]) == "--case";
+        check(argc == 1 || selected, "usage: probe [--case KNOWN_CASE] | --audit DIR LEAF | --admit DIR LEAF");
+        if (selected) check(std::find(cases.begin(), cases.end(), argv[2]) != cases.end(), "unknown --case: expected KNOWN_CASE");
+        size_t executed = 0;
         for (const auto& item : cases) {
             const char* name = item.c_str();
-            if (argc == 3 && std::string(argv[1]) == "--case" && item != argv[2]) continue;
+            if (selected && item != argv[2]) continue;
+            ++executed;
             auto bytes = graph(name); bool accepted = false; std::string diagnostic;
+            flatbuffers::Verifier schema(bytes.data(), bytes.size(), 64, 1000000);
+            bool aliasCase = false, aliasGood = false;
+            for (const auto& alias : convolutionAliases) {
+                aliasCase = aliasCase || item == std::string(alias.first) + "-union" || item == std::string(alias.first) + "-good";
+                aliasGood = aliasGood || item == std::string(alias.first) + "-good";
+            }
+            if (item == "transpose3d-union" || aliasCase) check(MNN::VerifyNetBuffer(schema), "convolution fixture must be valid schema");
             try { llm_asr_graph::Profile(65536).inspect(bytes.data(), bytes.size()); accepted = true; }
             catch (const std::runtime_error& error) { diagnostic = error.what(); }
-            const bool expected = std::strcmp(name, "normal") == 0 || std::strcmp(name, "range") == 0 || std::strcmp(name, "where") == 0 || std::strcmp(name, "scale-good") == 0;
+            const bool expected = std::strcmp(name, "normal") == 0 || std::strcmp(name, "range") == 0 || std::strcmp(name, "where") == 0 || std::strcmp(name, "scale-good") == 0 || aliasGood;
             check(accepted == expected, name);
             if (item == "int64-storage" || item == "tensor-int64-storage")
                 check(diagnostic == "Unsupported external Blob INT64 storage", "INT64 must fail for runtime storage contract");
+            if (item == "transpose3d-union")
+                check(diagnostic == "Graph Conv3D union mismatch", "ConvTranspose3D must fail for union contract before factory");
+            if (aliasCase && !aliasGood)
+                check(diagnostic == "Graph convolution union mismatch", "Conv2D alias must fail for union contract before factory");
             std::cout << "CASE " << name << " " << (accepted ? "ACCEPT" : "REFUSE " + diagnostic) << '\n';
         }
+        check(executed == (selected ? 1 : cases.size()) && executed > 0, "case inventory execution mismatch");
         std::cout << "PASS production graph resource guard tiny fixtures; not inference\n";
         return 0;
     } catch (const std::exception& error) { std::cerr << "FAIL " << error.what() << '\n'; return 1; }

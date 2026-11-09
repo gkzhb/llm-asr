@@ -119,7 +119,9 @@ class Profile {
         auto parameter = value->main_type();
         if (type == MNN::OpType_Convolution || type == MNN::OpType_ConvolutionDepthwise ||
             type == MNN::OpType_Deconvolution || type == MNN::OpType_DeconvolutionDepthwise ||
-            type == MNN::OpType_ConvInt8 || type == MNN::OpType_DepthwiseConvInt8)
+            type == MNN::OpType_ConvInt8 || type == MNN::OpType_DepthwiseConvInt8 ||
+            type == MNN::OpType_Dilation2D || type == MNN::OpType_Conv2DBackPropFilter ||
+            type == MNN::OpType_Im2Col || type == MNN::OpType_Col2Im)
             require(parameter == MNN::OpParameter_Convolution2D, "Graph convolution union mismatch");
         if (type == MNN::OpType_Const || type == MNN::OpType_TrainableParam)
             require(parameter == MNN::OpParameter_Blob, "Graph blob union mismatch");
@@ -127,7 +129,8 @@ class Profile {
         if (type == MNN::OpType_LayerNorm) require(parameter == MNN::OpParameter_LayerNorm, "Graph norm union mismatch");
         if (type == MNN::OpType_FusedLinear) require(parameter == MNN::OpParameter_FusedLinearParam, "Graph fused union mismatch");
         if (type == MNN::OpType_RoPE) require(parameter == MNN::OpParameter_RoPEParam, "Graph rope union mismatch");
-        if (type == MNN::OpType_Convolution3D) require(parameter == MNN::OpParameter_Convolution3D, "Graph Conv3D union mismatch");
+        if (type == MNN::OpType_Convolution3D || type == MNN::OpType_ConvTranspose3D)
+            require(parameter == MNN::OpParameter_Convolution3D, "Graph Conv3D union mismatch");
         if (type == MNN::OpType_GroupNorm) require(parameter == MNN::OpParameter_GroupNorm, "Graph GroupNorm union mismatch");
         const auto& types = MNN::EnumValuesOpType();
         require(std::find(std::begin(types), std::end(types), type) != std::end(types), "Unknown graph operation");

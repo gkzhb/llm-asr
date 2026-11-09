@@ -95,6 +95,8 @@ def main():
     parser.add_argument('--catalog-only', action='store_true', help='finite metadata/recovery contracts; omit synthetic large archive')
     parser.add_argument('--mutants', action='store_true', help='two scoped compileable production guards, exact red then restoration')
     args = parser.parse_args()
+    if args.catalog_only and args.mutants:
+        parser.error('--catalog-only cannot be combined with --mutants; use the complete fixture matrix')
     out = args.evidence_dir.resolve(); out.mkdir(parents=True, exist_ok=False)
     fixture = out / 'fixtures'; fixture.mkdir(); fixtures(fixture, args.catalog_only)
     sources = sorted(p for folder in ('model', 'modelmanagement', 'task', 'diagnostics')

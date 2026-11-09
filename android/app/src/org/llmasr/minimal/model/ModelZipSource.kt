@@ -182,15 +182,15 @@ open class ModelZipSource(
             throw IOException("模型包暂存目录不安全")
         if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) Files.createDirectory(path,
             PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwx------")))
-        var stageCleanupSucceeded = true
         try {
-            withClosed(openStage(stage), { stageCleanupSucceeded = false; check.cleanupFailed() }) { children ->
+            withClosed(openStage(stage), { check.cleanupFailed() }) { children ->
                 for (child in children) if (child.fileName.toString() != archive.name)
                     throw IOException("模型包暂存目录含未知文件，已保留")
             }
         } catch (primary: Throwable) {
-            // This owner can fail before prepare creates an archive or enters its catch.
-            try { progress?.sourceCleanup(stageCleanupSucceeded) } catch (notify: Throwable) { ModelZipArchive.suppress(primary, notify) }
+            // Closing the listing does not reclaim an old archive: validation failed
+            // before that step, so managed cleanup cannot be reported complete.
+            try { progress?.sourceCleanup(false) } catch (notify: Throwable) { ModelZipArchive.suppress(primary, notify) }
             throw primary
         }
         if (Files.exists(archive.toPath(), LinkOption.NOFOLLOW_LINKS)) {

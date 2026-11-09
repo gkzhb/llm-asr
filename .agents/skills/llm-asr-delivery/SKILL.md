@@ -21,6 +21,15 @@ description: 本项目新功能或 bugfix 的 APK 版本递增、派遣开发或
 
 ## 2. 分派：一个 leaf，一个可核验结果
 
+### 派遣入口（用户明确约定）
+
+- **使用 `agents` 工具派遣**：首次单独读 `help`，核实时 runtime/ownership 后，用 `spawn` 创建、`assign` 续接；由宿主通过 tuios window 启动和管理新的 Pi agent。参数与模型/上下文能力按当次工具帮助及宿主配置核实，不臆造字段或默认值。
+- `bg_run` 用于 leaf 的测试、构建等普通长命令；**不得用 `bg_run`/shell 启动 `pi -p` 等 LLM 进程替代 `agents` 派遣**。后台 PID/退出通知不等于受管 agent/window 身份；仅用 `agents list` 查看过列表也不算通过该工具派遣。
+- review 的 `fork:false`/上下文隔离须由实际宿主配置或运行证据确认。独立 CLI 进程、`--no-session` 或未传 `--fork`，都不能直接当作工具 `fork:false` 已生效；不能确认则标 unknown 并协调。工具缺失、模型或隔离能力不可用时停报，不静默改走 shell/provider。
+- 启动后记录工具返回的 target、实际 session/window/pane（宿主提供时）、准确模型、隔离证据与回报渠道；用 `agents` 接收报告和续接。重复 Retry 或补记入口规则不授权重复分派：已有同 scope 执行者保留唯一 ownership，等待/协调其终态；不为“补成正确入口”并发再开一个。
+
+**完成条件**：派遣有真实 `agents` 调用/返回身份及可核验配置；入口或隔离未知时明确阻塞，不把裸进程冒充受管 agent。
+
 发送以下有界交接，使用 `<task-slug>-<role>` 稳定名称；leaf 默认不二级委派。宿主启动后给名称/类型/角色/准确模型/worktree 摘要，父只协调依赖和消费结果，不替 leaf 偷跑构建。
 
 ```text

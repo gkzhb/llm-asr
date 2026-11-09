@@ -210,6 +210,18 @@ public final class ModelManagementState {
         notifyListeners();
     }
 
+    /** Operation-owned presentation only: no model identity, inventory, file results or proof. */
+    public static Snapshot importSummary(Snapshot s) {
+        Builder b = new Builder(empty());
+        b.activeOperationId = s.activeOperationId; b.operationKind = s.operationKind;
+        b.phase = s.phase; b.pageOwnerHeld = s.pageOwnerHeld;
+        b.fileBytesDone = s.fileBytesDone; b.fileBytesTotal = s.fileBytesTotal;
+        b.stageBytesDone = s.stageBytesDone; b.stageBytesTotal = s.stageBytesTotal;
+        b.reusedBytes = s.reusedBytes; b.lastOutcome = s.lastOutcome;
+        b.errorCode = s.errorCode; b.cleanupOutcome = s.cleanupOutcome;
+        return b.build();
+    }
+
     public static Snapshot empty() {
         return new Snapshot(0L, ModelReadiness.State.UNKNOWN, false,
             -1L, -1L, -1L, -1L,

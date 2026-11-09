@@ -4,6 +4,8 @@
 
 | 情境输入 | 按 skill 应动作 | 不得误判 | 定位 |
 |---|---|---|---|
+| 用户要求派 agent 审查/修复，考虑用后台 `pi -p` 启动 | 按 §2 用 `agents` 派遣并记录宿主返回身份/配置，普通测试构建才用 `bg_run` | 独立 CLI、`--no-session`、PID 或仅查询过 agent 列表不证明受管派遣/`fork:false` | §2 派遣入口 |
+| 已有同 scope 后台进程，用户重复 Retry 或要求纠正派遣入口 | 保唯一 ownership，协调已有执行者终态；后续新派遣使用 `agents`，记录旧入口偏差 | 不并发复制工作，不重标旧进程为 tuios 受管 agent；入口不可用停报 | §2 派遣入口 |
 | leaf 普通 final，但 Gradle 后台仍未完、审计未封口 | resume 同 session 接原 chain，保单 writer，等自动终态补齐 handoff | final/completed 不是工程验收，不开第二 full/review | §3；经验 A |
 | 重复等待，但 disk exit/log 完整、原 PID-start 已消失，自动通知缺口 | 依宿主协议一次 exact registry 恢复，记录缺口；成功则收尾 | 不循环 poll、不为等迟到通知重跑成功链 | §3；经验 A |
 | 已消费可信成功后才收到一致 completed | 确认一致，继续后处理/交接，不改已冻结证据 | 不把旧通知当新授权或新构建必要性 | §3；经验 A |

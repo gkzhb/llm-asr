@@ -29,12 +29,24 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
     @Volatile private var snapshotKey: String = ModelDeployment.LEGACY
     @Volatile private var snapshotInstallation: String? = null
     private var boundSnapshot: ModelManagementState.Snapshot? = null
+    @Volatile private var importSummary: ModelManagementState.Snapshot? = null
+    @Volatile private var archiveBytes: Long = -1
+    @Synchronized fun importArchiveBytes(id: String?): Long = if (importSummary?.activeOperationId == id) archiveBytes else -1
+    /** Page-level progress only; never per-model file/proof evidence. Retained across inspections. */
+    fun importSnapshot(): ModelManagementState.Snapshot? = importSummary
     @Synchronized fun snapshotFor(key: String?): ModelManagementState.Snapshot? = if (key != null && key == snapshotKey &&
         (catalog == null || try { catalog!!.require(key).installationId == snapshotInstallation } catch (_: IOException) { false })) boundSnapshot else null
     fun snapshotMatches(key: String?): Boolean = snapshotFor(key) != null
     private fun install(snapshot: ModelManagementState.Snapshot) {
         state.install(snapshot)
         boundSnapshot = snapshot
+        val active = control.peekActive()
+        if (active?.kind == ModelOperationControl.Kind.IMPORT && active.id == snapshot.activeOperationId) {
+            if (importSummary?.activeOperationId != active.id) archiveBytes = -1
+            if (snapshot.phase == ModelManagementState.Phase.COPYING_ARCHIVE || snapshot.phase == ModelManagementState.Phase.CHECKING_ARCHIVE || snapshot.phase == ModelManagementState.Phase.CLEANING_ARCHIVE)
+                archiveBytes = snapshot.fileBytesDone
+            importSummary = ModelManagementState.importSummary(snapshot)
+        }
     }
     fun hasCatalog(): Boolean = catalog != null
     fun bindCatalog(value: ModelCatalog) { catalog = value }
@@ -367,7 +379,7 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
                     ModelManagementState.Phase.CANCELLED else ModelManagementState.Phase.FAILED
                 b.lastOutcome = ModelManagementState.Outcome.valueOf(b.phase.name)
                 b.errorCode = failure?.message
-                b.cleanupOutcome = if (report == null || report.orphanPartBytes > 0 || report.files.any { it.partExists } ||
+                b.cleanupOutcome = if ((report == null && !(catalog != null && snapshotKey.isEmpty() && sourceCleanup == true)) || (report != null && (report.orphanPartBytes > 0 || report.files.any { it.partExists })) ||
                     sourceCleanup == false || modelCleanup == false || (sourceCleanup == null && failure != null && failure.suppressed.isNotEmpty()))
                     ModelManagementState.Outcome.FAILED else ModelManagementState.Outcome.SUCCEEDED
                 if (failure is ModelRepository.ModelFileException) {

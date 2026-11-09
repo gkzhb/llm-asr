@@ -34,6 +34,18 @@ def main():
     if result.returncode:
         raise RuntimeError('tiny guard probe failed: ' + result.stderr.decode())
     print(result.stdout.decode(), end='')
+    cases = [line.split()[1] for line in result.stdout.decode().splitlines() if line.startswith('CASE ')]
+    alias_cases = {name + suffix for name in ('dilation2d', 'conv2d-backprop-filter', 'im2col', 'col2im') for suffix in ('-union', '-good')}
+    if not cases or len(cases) != len(set(cases)) or not alias_cases.union({'transpose3d-union'}).issubset(cases):
+        raise RuntimeError('default guard case inventory missing/duplicate')
+    for index, argv in enumerate([['--case', 'unknown-case'], ['--case'], ['--case', 'normal', 'extra'], ['--wrong'], ['normal']]):
+        rejected = run([str(out / 'probe'), *argv], out, 'selector-bad-' + str(index), 30)
+        diagnostic = rejected.stderr.decode()
+        if rejected.returncode != 1 or ('usage:' not in diagnostic and 'unknown --case:' not in diagnostic) or b'PASS ' in rejected.stdout or b'CASE ' in rejected.stdout:
+            raise RuntimeError('invalid guard selector must reject before cases: ' + repr(argv))
+    selected = run([str(out / 'probe'), '--case', 'normal'], out, 'selector-known', 30)
+    if selected.returncode or selected.stdout.decode().splitlines() != ['CASE normal ACCEPT', 'PASS production graph resource guard tiny fixtures; not inference']:
+        raise RuntimeError('known guard selector must execute exactly one case')
     if args.admit_existing:
         for folder in ['QwenASR', 'models/mnn-v1v-entry-fp16']:
             for name in ['audio.mnn', 'llm.mnn']:

@@ -8,8 +8,24 @@ android = root / 'android/app'
 SRC_ROOT = android / 'src/org/llmasr/minimal'
 ns = '{http://schemas.android.com/apk/res/android}'
 manifest = ET.parse(android / 'AndroidManifest.xml').getroot()
-assert manifest.get(ns+'versionName') == '0.6-debug'
-assert manifest.get(ns+'versionCode') == '6'
+assert manifest.get(ns+'versionName') == '0.7-debug'
+assert manifest.get(ns+'versionCode') == '7'
+def check_version_declarations(source, xml):
+    # AGP owns final package version after staging removes the source attributes.
+    code = re.findall(r'^\s*versionCode\s*=\s*(\d+)\s*$', source, re.M)
+    name = re.findall(r'^\s*versionName\s*=\s*"([^"]+)"\s*$', source, re.M)
+    if code != ['7'] or name != ['0.7-debug'] or code != [xml.get(ns+'versionCode')] or name != [xml.get(ns+'versionName')]:
+        raise AssertionError('App version declarations must agree at 7 / 0.7-debug')
+dsl = (android / 'build.gradle.kts').read_text()
+check_version_declarations(dsl, manifest)
+for before, after in [('versionCode = 7', 'versionCode = 6'), ('versionName = "0.7-debug"', 'versionName = "0.6-debug"')]:
+    assert dsl.count(before) == 1, 'unique version declaration fixture'
+    try:
+        check_version_declarations(dsl.replace(before, after), manifest)
+    except AssertionError as failure:
+        assert str(failure) == 'App version declarations must agree at 7 / 0.7-debug'
+    else:
+        raise AssertionError('version declaration guard accepted independent stale field')
 assert [p.get(ns+'name') for p in manifest.findall('uses-permission')] == ['android.permission.RECORD_AUDIO']
 app = manifest.find('application')
 assert len(app.findall('activity')) == 3

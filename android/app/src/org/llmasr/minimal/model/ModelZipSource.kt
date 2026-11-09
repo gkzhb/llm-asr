@@ -28,9 +28,33 @@ open class ModelZipSource(
     override fun enumerate(expected: MutableCollection<String?>?, maxEntries: Int): MutableMap<String?, ModelSource.UriRef?>? = unsupported()
     override fun open(ref: ModelSource.UriRef?): InputStream? = unsupported()
 
+    class PreparedPackage internal constructor(@JvmField val policy: ModelPackagePolicy, private val session: ModelSource.Session) : ModelSource, AutoCloseable {
+        private var transferred = false
+        private var closed = false
+        override fun enumerate(expected: MutableCollection<String?>?, maxEntries: Int): MutableMap<String?, ModelSource.UriRef?>? = throw IOException("需要模型包会话")
+        override fun open(ref: ModelSource.UriRef?): InputStream? = throw IOException("需要模型包会话")
+        override fun openSession(manifest: ModelManifest, space: ModelRepository.SpaceProvider, progress: ModelRepository.Progress?, cancel: ModelRepository.CancelGate): ModelSource.Session {
+            if (transferred || closed || manifest.entries() != policy.manifest.entries()) throw IOException("模型包会话已转移或身份不符")
+            transferred = true
+            return session
+        }
+        override fun close() {
+            if (transferred || closed) return
+            closed = true // This owner closes once, including when the real close throws.
+            session.close()
+        }
+    }
+    @Throws(IOException::class)
+    fun preparePackage(space: ModelRepository.SpaceProvider, progress: ModelRepository.Progress?, cancel: ModelRepository.CancelGate): PreparedPackage =
+        prepare(null, space, progress, cancel)
+
     @Throws(IOException::class)
     override fun openSession(manifest: ModelManifest, space: ModelRepository.SpaceProvider,
-                             progress: ModelRepository.Progress?, cancel: ModelRepository.CancelGate): ModelSource.Session {
+                             progress: ModelRepository.Progress?, cancel: ModelRepository.CancelGate): ModelSource.Session =
+        prepare(manifest, space, progress, cancel).openSession(manifest, space, progress, cancel)
+
+    private fun prepare(expectedManifest: ModelManifest?, space: ModelRepository.SpaceProvider,
+                        progress: ModelRepository.Progress?, cancel: ModelRepository.CancelGate): PreparedPackage {
         val start = clock.nanos()
         var sourceCleanupSucceeded = true
         val check = object : ModelZipArchive.Check {
@@ -38,12 +62,18 @@ open class ModelZipSource(
                 if (cancel.cancelled()) throw ModelRepository.CancelledException()
                 if (clock.nanos() - start >= DEADLINE_NANOS) throw IOException("模型包处理超时，请重新选择")
             }
+            override fun policyAccepted(policy: ModelPackagePolicy) {
+                run()
+                if (expectedManifest == null && space.usableBytes() < Math.addExact(policy.totalBytes, ModelRepository.SPACE_PAD)) throw IOException("存储空间不足：已审核模型包预留")
+            }
             override fun cleanupFailed() { sourceCleanupSucceeded = false }
         }
         check.run()
         val trusted = policy.get()
-        if (trusted.manifest.entries() != manifest.entries()) throw IOException(FixedModelPackage.FORMAT_ERROR)
-        val reserve = Math.addExact(trusted.totalBytes, ModelRepository.SPACE_PAD)
+        if (expectedManifest != null && trusted.manifest.entries() != expectedManifest.entries()) throw IOException(FixedModelPackage.FORMAT_ERROR)
+        val discover = expectedManifest == null
+        val reserve = if (discover) ModelRepository.SPACE_PAD else Math.addExact(trusted.totalBytes, ModelRepository.SPACE_PAD)
+        val archiveLimit = if (discover) ModelPackagePolicy.MAX_ARCHIVE else trusted.archiveLimit
         check.run()
         val parent = filesDir.get().canonicalFile
         if (!parent.isDirectory) throw IOException("应用内部存储目录不可用")
@@ -55,7 +85,7 @@ open class ModelZipSource(
         var zip: ModelZipArchive? = null
         var created = false
         var count = 0L
-        fun phase(s: ModelRepository.Stage) { progress?.update(s, null, 0, 8, count, trusted.archiveLimit, count, trusted.archiveLimit, 0) }
+        fun phase(s: ModelRepository.Stage) { progress?.update(s, null, 0, 8, count, archiveLimit, count, archiveLimit, 0) }
         try {
             check.run(); phase(ModelRepository.Stage.COPYING_ARCHIVE)
             val out = create(archive)
@@ -73,7 +103,7 @@ open class ModelZipSource(
                         check.run()
                         if (n < 0) break
                         if (n == 0) throw IOException("模型包读取无进展")
-                        if (n > trusted.archiveLimit - count) throw IOException("模型包超过输入上限")
+                        if (n > archiveLimit - count) throw IOException("模型包超过输入上限")
                         val available = space.usableBytes()
                         if (available < reserve || available - reserve < n) throw IOException("存储空间不足：模型包复制")
                         target.write(b, 0, n)
@@ -84,10 +114,12 @@ open class ModelZipSource(
                 check.run()
             }
             check.run(); phase(ModelRepository.Stage.CHECKING_ARCHIVE)
-            zip = ModelZipArchive.prepare(archive, trusted, check, archiveIo())
+            zip = if (discover) ModelZipArchive.discover(archive, trusted, check, archiveIo()) else ModelZipArchive.prepare(archive, trusted, check, archiveIo())
             check.run()
             val prepared = zip
-            return object : ModelSource.Session {
+            val admitted = prepared.policy()
+            val manifest = admitted.manifest
+            val session = object : ModelSource.Session {
                 private var closed = false
                 override fun archiveBytes(): Long = count
                 override fun checkpoint() { check.run() }
@@ -118,6 +150,7 @@ open class ModelZipSource(
                     check.run()
                 }
             }
+            return PreparedPackage(admitted, session)
         } catch (primary: Throwable) {
             var cleanupSucceeded = sourceCleanupSucceeded
             try { zip?.close() } catch (close: Throwable) { cleanupSucceeded = false; ModelZipArchive.suppress(primary, close) }

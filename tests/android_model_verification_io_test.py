@@ -31,7 +31,7 @@ import java.io.*;import java.nio.file.*;import java.util.*;
 public final class Os {
  static final class Handle {String path;RandomAccessFile file;java.nio.channels.FileChannel dir;}
  static final Map<FileDescriptor,Handle> handles=new IdentityHashMap<>();
- public static int opened,closed,renames;public static String fail="";public static RuntimeException primary,closeFailure;
+ public static int opened,closed,renames;public static boolean afterRenameSync;public static String fail="";public static RuntimeException primary,closeFailure;
  public static int live(){return handles.size();}
  public static void fault(String at){if(fail.equals(at))throw primary;}
  public static StructStat lstat(String p)throws ErrnoException{
@@ -46,7 +46,7 @@ public final class Os {
   }catch(IOException e){throw new ErrnoException("open",5);}}
  public static int read(FileDescriptor fd,byte[] b,int o,int n)throws ErrnoException{fault("read");try{int got=handles.get(fd).file.read(b,o,n);return got<0?0:got;}catch(IOException e){throw new ErrnoException("read",5);}}
  public static int write(FileDescriptor fd,byte[] b,int o,int n)throws ErrnoException{fault("write");try{int count=Math.min(n,2);handles.get(fd).file.write(b,o,count);return count;}catch(IOException e){throw new ErrnoException("write",5);}}
- public static void fsync(FileDescriptor fd)throws ErrnoException{fault("fsync");try{Handle h=handles.get(fd);if(h.file!=null)h.file.getFD().sync();else h.dir.force(true);}catch(IOException e){throw new ErrnoException("sync",5);}}
+ public static void fsync(FileDescriptor fd)throws ErrnoException{fault("fsync");if(afterRenameSync&&handles.get(fd).dir!=null){afterRenameSync=false;throw primary;}try{Handle h=handles.get(fd);if(h.file!=null)h.file.getFD().sync();else h.dir.force(true);}catch(IOException e){throw new ErrnoException("sync",5);}}
  public static void close(FileDescriptor fd)throws ErrnoException{Handle h=handles.remove(fd);if(h==null)throw new AssertionError("raw descriptor double close");closed++;try{if(h.file!=null)h.file.close();else h.dir.close();}catch(IOException e){throw new ErrnoException("close",5);}if(closeFailure!=null)throw closeFailure;fault("close");}
  public static void rename(String a,String b)throws ErrnoException{renames++;try{Files.move(Paths.get(a),Paths.get(b),StandardCopyOption.ATOMIC_MOVE,StandardCopyOption.REPLACE_EXISTING);}catch(IOException e){throw new ErrnoException("rename",5);}}
  public static void remove(String p)throws ErrnoException{try{Files.delete(Paths.get(p));}catch(IOException e){throw new ErrnoException("remove",5);}}
@@ -56,7 +56,7 @@ public final class Os {
 CALLER = r'''import android.system.Os;import java.io.*;import java.nio.file.*;import org.llmasr.minimal.model.*;
 public final class AndroidProofIoContract {
  static void require(boolean ok,String text){if(!ok)throw new AssertionError(text);}
- static void reset(){Os.fail="";Os.closeFailure=null;Os.primary=new IllegalStateException("primary");}
+ static void reset(){Os.afterRenameSync=false;Os.fail="";Os.closeFailure=null;Os.primary=new IllegalStateException("primary");}
  static Throwable thrown(Runnable r){try{r.run();}catch(Throwable t){return t;}throw new AssertionError("missing failure");}
  public static void main(String[]args)throws Exception{
   Path base=Files.createTempDirectory("actual-android-proof-io-");
@@ -78,6 +78,16 @@ public final class AndroidProofIoContract {
    reset();Os.fail="read";Os.closeFailure=new IllegalArgumentException("distinct-close");
    Throwable seen=thrown(()->{try{io.read("receipt",16);}catch(IOException e){throw new java.io.UncheckedIOException(e);}});
    require(seen==Os.primary&&seen.getSuppressed().length==1&&seen.getSuppressed()[0]==Os.closeFailure,"read primary plus distinct actual-close suppressed");
+   reset();
+   AndroidModelVerificationIo.Catalog catalog=new AndroidModelVerificationIo.Catalog(()->base.toFile());
+   catalog.writeCatalog(bytes);int beforeRename=Os.renames;
+   Os.afterRenameSync=true;
+   Throwable post=thrown(()->catalog.writeCatalog(new byte[]{9,8,7}));
+   require(post==Os.primary&&Os.renames==beforeRename+1,"actual catalog directory fsync fails AFTER replacement rename");
+   require(java.util.Arrays.equals(catalog.readCatalog(),new byte[]{9,8,7}),"post-rename failure really published bytes");
+   catalog.restoreCatalog(bytes);require(java.util.Arrays.equals(catalog.readCatalog(),bytes),"catalog rollback restores observed bytes durably");
+   catalog.writeRecovery(new byte[]{0});require(catalog.readRecovery()[0]==0,"catalog recovery marker actual IO");catalog.clearRecovery();require(catalog.readRecovery()==null,"catalog recovery marker clear durable");
+   catalog.restoreCatalog(null);require(catalog.readCatalog()==null,"catalog rollback to observed absence");
    reset();require(Os.live()==0&&Os.opened==Os.closed,"raw FD final balance");
    System.out.println("PASS actual AndroidModelVerificationIo raw-FD single owner/partial write/failure/close-before-rename contracts (host fake, not Android)");
   }finally{reset();require(Os.live()==0,"retain inputs if descriptor still active");try(java.util.stream.Stream<Path> ps=Files.walk(base)){for(Path p:(Iterable<Path>)ps.sorted(java.util.Comparator.reverseOrder())::iterator)Files.delete(p);}}

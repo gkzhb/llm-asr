@@ -26,7 +26,7 @@ host_classes=(
   transcription.AppRequestPolicy transcription.AppState transcription.ResultState
   model.FileSafety
   model.ModelEntry model.ModelManifest model.ModelReports model.ModelSource model.ModelRepository
-  model.FixedModelPackage model.ModelZipArchive model.ModelZipSource
+  model.FixedModelPackage model.ModelPackagePolicy model.ModelDeployment model.ModelCatalog model.ModelZipArchive model.ModelZipSource
   asr.NativeResponse
   transcription.ResultFiles
   audio.RecordingControl audio.WaveInput audio.AsrText audio.PcmWave
@@ -96,6 +96,11 @@ timeout 6600 python3 -B tests/model_zip_import_contract_test.py --evidence-dir "
 timeout 6600 python3 -O tests/model_zip_import_contract_test.py --evidence-dir "$zip_evidence/optimized"
 timeout 1800 python3 -B tests/model_zip_picker_test.py --evidence-dir "$zip_evidence/picker-ordinary"
 timeout 1800 python3 -O tests/model_zip_picker_test.py --evidence-dir "$zip_evidence/picker-optimized"
+# Controlled custom variants: production policy/catalog and pre-load graph profile, no ASR/model read.
+timeout 240 python3 -B tests/model_variants_contract_test.py --mutants --evidence-dir "$zip_evidence/variants-ordinary"
+timeout 240 python3 -O tests/model_variants_contract_test.py --mutants --evidence-dir "$zip_evidence/variants-optimized"
+timeout 240 python3 -B tests/native_model_graph_policy_test.py --evidence-dir "$zip_evidence/graph-ordinary"
+timeout 240 python3 -O tests/native_model_graph_policy_test.py --evidence-dir "$zip_evidence/graph-optimized"
 # Selected reverse-direction production contracts, same fresh canonical host dependency.
 k2j_evidence=$(mktemp -d "$root/.work/build/kotlin-to-java-XXXXXX")
 timeout 4200 python3 -B tests/kotlin_to_java_contract_test.py --contracts "$classes" --evidence-dir "$k2j_evidence/ordinary"

@@ -11,7 +11,21 @@ import java.util.UUID
 
 /** Android-private noBackup journal. Supplier and all filesystem work are lazy.
  * Trusted Context parent aliases may resolve; untrusted proof/model leaves may not. */
-class AndroidModelVerificationIo(private val noBackupDirectory: () -> File) : ModelVerification.Io {
+class AndroidModelVerificationIo @JvmOverloads constructor(private val namespace: String? = null, private val noBackupDirectory: () -> File) : ModelVerification.Io {
+    class Catalog(private val noBackup: () -> File) : ModelCatalog.Io {
+        private val metadata = AndroidModelVerificationIo("catalog", noBackup)
+        override fun readCatalog(): ByteArray? = metadata.read("catalog", 65536)
+        override fun writeCatalog(bytes: ByteArray) { metadata.write("catalog", bytes) }
+        override fun readRecovery(): ByteArray? = metadata.read("recovery", 65537)
+        override fun writeRecovery(bytes: ByteArray) { metadata.write("recovery", bytes) }
+        override fun clearRecovery() { metadata.removeCatalog("recovery") }
+        override fun restoreCatalog(bytes: ByteArray?) {
+            if (bytes != null) metadata.write("catalog", bytes) else metadata.removeCatalog("catalog")
+        }
+        override fun proof(key: String): ModelVerification.Io = if (key == ModelDeployment.LEGACY) AndroidModelVerificationIo(noBackupDirectory = noBackup)
+            else AndroidModelVerificationIo(key, noBackup)
+    }
+    init { if (namespace != null && namespace != "catalog" && !namespace.matches(Regex("[0-9a-f]{64}"))) throw IllegalArgumentException("invalid proof namespace") }
     private fun stat(file: File): StructStat? = try { Os.lstat(file.path) }
         catch (failure: ErrnoException) {
             if (failure.errno == OsConstants.ENOENT) null else throw IOException("无法读取模型文件身份", failure)
@@ -30,17 +44,35 @@ class AndroidModelVerificationIo(private val noBackupDirectory: () -> File) : Mo
     private fun directory(create: Boolean): File? {
         val parent = noBackupDirectory().canonicalFile
         checked(parent, true)
-        val root = File(parent, "model-verification")
+        var base = parent
+        if (namespace != null) {
+            base = File(parent, "model-variants")
+            if (stat(base) == null) {
+                if (!create) return null
+                if (!base.mkdir()) throw IOException("无法创建模型证明父目录")
+                syncDirectory(parent)
+            }
+            checked(base, true)
+        }
+        val root = File(base, namespace ?: "model-verification")
         if (stat(root) == null) {
             if (!create) return null
             if (!root.mkdir()) throw IOException("无法创建模型证明目录")
-            syncDirectory(parent)
+            syncDirectory(base)
         }
         checked(root, true)
         return root
     }
+    /** Catalog-only rollback to observed absence; legacy proof protocol is unchanged. */
+    private fun removeCatalog(name: String) {
+        if (namespace != "catalog") throw IOException("非法目录恢复")
+        val root = directory(false) ?: return
+        val file = path(root, name)
+        if (stat(file) != null) { checked(file, false); Os.remove(file.path) }
+        syncDirectory(root)
+    }
     private fun path(root: File, name: String): File {
-        if (name != "anchor" && name != "ledger" && name != "receipt") throw IOException("未知证明文件")
+        if (if (namespace == "catalog") name != "catalog" && name != "recovery" else name != "anchor" && name != "ledger" && name != "receipt") throw IOException("未知证明文件")
         return File(root, name)
     }
     @Throws(IOException::class)
@@ -68,7 +100,7 @@ class AndroidModelVerificationIo(private val noBackupDirectory: () -> File) : Mo
     }
     @Throws(IOException::class)
     override fun write(name: String, bytes: ByteArray) {
-        if (bytes.size > 16384 || (name == "anchor" && bytes.size > 128)) throw IOException("模型证明过大")
+        if (bytes.size > (if (namespace == "catalog") 65537 else 16384) || (name == "anchor" && bytes.size > 128)) throw IOException("模型证明过大")
         val root = directory(true)!!
         val dest = path(root, name)
         if (stat(dest) != null) checked(dest, false)

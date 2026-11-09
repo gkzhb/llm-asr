@@ -171,7 +171,7 @@ class InputTests(unittest.TestCase):
             duplicate.unlink()
 
     def test_zip_sources_missing_drift_duplicate(self):
-        for name in ("FixedModelPackage.kt", "ModelZipArchive.java", "ModelZipSource.kt", "SafModelZipSource.kt"):
+        for name in ("FixedModelPackage.kt", "ModelPackagePolicy.kt", "ModelDeployment.kt", "ModelCatalog.kt", "ModelZipArchive.java", "ModelZipSource.kt", "SafModelZipSource.kt"):
             path = self.root / "android/app/src/org/llmasr/minimal/model" / name
             original = path.read_bytes()
             output = self.root / ("zip-reject-" + name)

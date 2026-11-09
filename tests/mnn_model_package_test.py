@@ -40,6 +40,34 @@ class PackageTest(unittest.TestCase):
         self.save_policy(self.policy)
         self.output = self.root / 'package.zip'
 
+    def test_variant_closed_contract_and_rebound_config(self):
+        # Metadata only: no model files or weights are opened.
+        combined = json.loads(next(line[len('P0_EFFECTIVE_CONFIG '):] for line in
+            (ROOT / 'reports/p0/device-inference-final-patches.txt').read_text().splitlines()
+            if line.startswith('P0_EFFECTIVE_CONFIG ')))
+        base = dict(list(combined.items())[list(combined).index('model_type'):])
+        for bits, label in ((16, 'FP16'), (8, 'INT8'), (4, 'INT4')):
+            config = copy.deepcopy(base)
+            config['tie_embeddings'].update(weight_offset=64, alpha_offset=64 + 151936 * 1024 * bits // 8,
+                alpha_size=0 if bits == 16 else 151936 * 16 * 2, quant_bit=bits)
+            data = json.dumps(config, ensure_ascii=False, indent=4).encode('ascii')
+            policy = {'schema': 2, 'modelId': 'variant-' + label.lower(), 'engine': 'mnn',
+                'architecture': 'qwen3-asr-0.6b', 'runtimePolicy': 'qwen3-asr-mnn-cpu-v2',
+                'precision': label, 'displayName': label, 'files': copy.deepcopy(MODULE.current_policy()['files'])}
+            entry = next(e for e in policy['files'] if e['file'] == 'llm_config.json')
+            entry.update(bytes=len(data), sha256=hashlib.sha256(data).hexdigest())
+            canonical = 'llm-asr-content-v2\nmnn\nqwen3-asr-0.6b\nqwen3-asr-mnn-cpu-v2\n' + ''.join(
+                f"{e['file']}:{e['bytes']}:{e['sha256']}\n" for e in sorted(policy['files'], key=lambda e: e['file']))
+            policy['contentSha256'] = hashlib.sha256(canonical.encode()).hexdigest()
+            self.assertIs(MODULE.validate_variant(policy), policy)
+            MODULE.variant_config(data, policy)
+            config['base_dir'] = '/untrusted'
+            malicious = json.dumps(config, indent=4).encode()
+            entry.update(bytes=len(malicious), sha256=hashlib.sha256(malicious).hexdigest())
+            # A correct self-hash cannot authorize external config fields.
+            with self.assertRaisesRegex(ValueError, 'fixed architecture/template'):
+                MODULE.variant_config(malicious, policy)
+
     def save_policy(self, policy):
         self.manifest.write_text(json.dumps(policy))
 

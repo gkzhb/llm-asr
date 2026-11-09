@@ -13,8 +13,8 @@ import java.util.concurrent.locks.ReentrantLock
 /** Fixed-manifest verification journal. Call only on the shared owner's worker.
  * IO is outside readiness/control monitors. The disk lock serializes direct repository
  * revocation against proof publication; cancellation never takes this lock. */
-class ModelVerification(private val manifest: ModelManifest, private val readiness: ModelReadiness,
-    private val io: Io, private val maintenanceGuard: MaintenanceGuard) : ModelRepository.MutationGuard {
+class ModelVerification @JvmOverloads constructor(private val manifest: ModelManifest, private val readiness: ModelReadiness,
+    private val io: Io, private val maintenanceGuard: MaintenanceGuard, private val deploymentDomain: String = "") : ModelRepository.MutationGuard {
     fun interface MaintenanceLease : AutoCloseable { override fun close() }
     interface MaintenanceGuard {
         @Throws(IOException::class) fun acquire(): MaintenanceLease
@@ -68,7 +68,7 @@ class ModelVerification(private val manifest: ModelManifest, private val readine
     }
     private fun noMutation() { if (mutation != null) throw IOException("模型写入仍在收尾") }
     private val digest = hex(MessageDigest.getInstance("SHA-256").digest(manifest.entries().sortedBy { it.file() }
-        .joinToString("\n", "mnn-verification-policy-1\n") { "${it.file()}:${it.bytes()}:${it.sha256()}" }.toByteArray(Charsets.UTF_8)))
+        .joinToString("\n", if (deploymentDomain.isEmpty()) "mnn-verification-policy-1\n" else "mnn-verification-policy-2\n$deploymentDomain\n") { "${it.file()}:${it.bytes()}:${it.sha256()}" }.toByteArray(Charsets.UTF_8)))
 
     @Throws(IOException::class)
     override fun beforeMutation() {

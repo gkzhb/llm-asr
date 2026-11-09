@@ -31,6 +31,14 @@ def check(source):
     for marker, sha in expected.items():
         assert digest(body(source, marker)) == sha, 'pre-R3 report body changed: ' + marker
 
+def check_graph_admission(source):
+    code = IGNORED.sub(lambda match: ' ' if match.group().startswith(('//', '/*')) else match.group(), source)
+    header = '#include "model_graph_policy.h"'
+    guard = 'llm_asr_graph::inspectDeployment(c);'
+    factory = 'std::unique_ptr<MNN::Transformer::Llm> fresh(LLM_ASR_ENGINE_FACTORY(c));'
+    assert code.count(header) == 1 and code.count(guard) == 1 and code.count(factory) == 1, 'JNI graph admission must be unique and present'
+    assert code.index(guard) < code.index(factory), 'JNI graph admission must precede factory'
+
 if __name__ == '__main__':
     report = JAVA.read_text()
     check(report)
@@ -60,7 +68,17 @@ if __name__ == '__main__':
                       'Java_org_llmasr_minimal_MainActivity_')):
         canonical = canonical.replace(src, dst)
     # B intentionally replaces per-request load/free with explicit prepare and
-    # default-evict warm calls; preserve exact reviewed current pin, not old-body equivalence.
+    # default-evict warm calls. XYH adds only the graph-policy include and
+    # pre-factory admission call, bound by the reviewed native source/provenance.
+    # Preserve this exact explained pin, not a claim of pre-R3 body equivalence.
+    check_graph_admission(cpp)
+    guard = 'llm_asr_graph::inspectDeployment(c);'
+    factory = 'std::unique_ptr<MNN::Transformer::Llm> fresh(LLM_ASR_ENGINE_FACTORY(c));'
+    swapped = cpp.replace(guard, '__GUARD_SWAP__').replace(factory, guard).replace('__GUARD_SWAP__', factory)
+    for bad in [cpp.replace(guard, ''), cpp.replace(guard, '// ' + guard), cpp + '\n' + guard, swapped]:
+        try: check_graph_admission(bad)
+        except AssertionError: pass
+        else: raise AssertionError('JNI graph admission guard accepted missing/comment/duplicate/reordered call')
     assert digest(canonical) == baseline, 'current explained residency JNI source pin differs'
     assert 'EvictUnlessCommitted guard' in cpp and 'resident->clearRequestState()' in cpp
     assert 'prepareNative' in cpp and 'releaseNative' in cpp and 'result << 0.0' in cpp

@@ -1,4 +1,20 @@
-# 固定 MNN 模型 ZIP 包 v1
+# MNN 模型 ZIP：固定 v1 与受控变体 v2
+
+## 受控 v2（llm-asr-xyh，实施中）
+
+旧 v1 的下文可信 tuple、ID 和历史报告不变。v2 仍为相同七资产+model-package.json 的 strict ZIP32，无路径别名/目录/extra/comment/DD/ZIP64。根严格字段为 `schema=2`、`modelId`、`engine=mnn`、`architecture=qwen3-asr-0.6b`、`runtimePolicy=qwen3-asr-mnn-cpu-v2`、`precision`（FP16/INT8/INT4/MIXED）、`displayName`、`contentSha256` 和七条 `files(file,bytes,sha256)`；重复/未知键与超界整数拒绝。modelId 为小写ASCII `[a-z0-9][a-z0-9._-]{0,95}`，不能占用旧ID；名称1–96可打印ASCII，不含引号/反斜线。JSON≤16KiB，SHA小写64hex。
+
+内容指纹为ASCII文本 `llm-asr-content-v2\nmnn\nqwen3-asr-0.6b\nqwen3-asr-mnn-cpu-v2\n` 后接按文件名排序的七行 `file:bytes:sha256\n` 的 SHA256。真实编码使用LF，不含反斜线转义字符。名称/声明精度/ID不是内容指纹，但安装descriptor另绑定全部元信息；同ID不同内容或同内容不同元信息拒绝，不覆盖或静默重命名。
+
+四个图/权重SHA允许随兼容导出变化。tokenizer与config.json保持下文旧固定tuple；llm_config.json仅可改tie_embeddings六字段：weight_offset/alpha_offset/alpha_size/quant_bit/quant_block/alpha_dtype，其余结构/模板必须完全等于批准基线且为规范4空格JSON字节。非零offset限同目录llm.mnn.weight；独立embedding文件不支持。固定H1024/V151936，b16/8/4，block32/64/128/256/512/1024，alpha fp16/fp32；checked范围和精确alpha长度/资源上限校验在native前完成。b16为alpha0/fp16/block64。量化graph与embedding位宽可以不同，声明label不认证所有tensor位宽。
+
+单图≤64MiB，单权重≤1.5GiB，总资产≤1920MiB，archive实际≤1920MiB+1MiB；配置≤16KiB。每次展开按声明总量+清单16KiB限制，CRC与SHA独立校验。先复制有界私有archive，再发现descriptor、审核后创建目标安装，预留完整目标模型+64MiB，不借用旧FP16总量限制所有新变体，不先删旧模型。自定义最多16安装，无自动淘汰。原取消/close/owner/逐文件发布和最终证明顺序保留。
+
+图也属于外部资源面：MNN Op.externalPath 能覆盖配对权重路径。加载前使用固定schema verifier和有限递归资源profile检查，拒外部路径、插件/自定义Extra及不支持的嵌套资源表示，所有支持的external范围必须在配对权重内。外部span同时绑定真实目标容量：Blob按受支持dtype及维度checked字节数，Scale可选bias不能大于scale分配，PTQ FP16 alpha拒绝；ConvInt8/DepthwiseConvInt8别名需正确union，present-empty LayerNorm及未支持RNN资源表示拒绝。内置Where的空Extra版本标记单独识别，不能携带自定义字段。此guard不是任意恶意native图安全沙箱，也不证明架构/数值正确。
+
+用[打包工具](mnn-model-packaging.md)的 `--mode variant-v2 --manifest EXTERNAL`，完整外部v2描述符和源资产均独立复核；不自动转换/下载/改写原配置。v2自报SHA完整性不等可信来源/签名/许可认证。实际量化推理、完整APK与设备验收仍须当批独立证据；目前实现中不交付。
+
+## 固定 v1 历史格式
 
 此格式只包装 APK 内置的 Qwen3-ASR-0.6B MNN FP16 部署清单，不是任意 ZIP/模型平台。目录导入仍保留。模型与 tokenizer 的取得、许可与来源需自行确认；本文不授权下载或再分发，也不会让包内自报 SHA 成为信任锚。`config.json` / `llm_config.json` 是锁定 SHA 的普通资产，不是本包装清单。
 

@@ -1,5 +1,11 @@
 # M3 模块与旧测试覆盖映射
 
+## llm-asr-xyh 受控变体（实施中）
+
+新增纯core `ModelPackagePolicy`/`ModelDeployment`/`ModelCatalog`，既有AndroidModelVerificationIo内嵌catalog adapter不新增runtime owner；app/runtime归属不变，待正式baseline采纳后生产顶级owner预期73。native/apk/model_graph_policy.h只在JNI编译固定schema资源profile，不改578vendor对象或数学。当前baseline/native预期尚未采纳，不以旧class/APK库存冒本轮通过。
+
+独立 `model_variants_contract_test.py` 编译生产policy/catalog/proof接口，合成FP16/INT8/INT4/MIXED声明、正确重绑SHA的恶意配置、身份冲突/持久选择/重装隔离；`native_model_graph_policy_test.py`真实生产header+缓存schema微图正负，不运行ASR。picker继续完整Activity对受控平台fakes，不是Android runner。新增host入口不删旧JUnit/owner/ABI/ZIP/cleanup门槛。全部当前证据待targeted/fresh审/full/输入身份绑定与本地提交，不能以本页声称交付。
+
 ## llm-asr-7vl 固定 ZIP 导入
 
 当前生产owner由66增至70：新增 core `FixedModelPackage.kt`（固定trust/严格JSON）、`ModelZipArchive.java`（有界CEN/LFH/Inflater/CRC）、`ModelZipSource.kt`（私有archive/session）；runtime仅新增 `SafModelZipSource.kt`（净化SAF单stream）。原app8、runtime由6至7、core由52至55；生产测试体不进入release。`ModelVerification`/`AndroidModelVerificationIo`/`ModelAccess`/`ModelResidency`/`ModelOperationControl`只读不变。

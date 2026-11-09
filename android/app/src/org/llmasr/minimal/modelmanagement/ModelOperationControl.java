@@ -9,7 +9,7 @@ import org.llmasr.minimal.model.ModelReadiness;
  * complete releases this slot only during the shared owner's finalization.
  */
 public final class ModelOperationControl {
-    public enum Kind { INSPECT, IMPORT, VERIFY, DELETE }
+    public enum Kind { INSPECT, IMPORT, VERIFY, DELETE, SELECT }
     public static final class Operation {
         public final String id = UUID.randomUUID().toString();
         public final Kind kind;
@@ -35,7 +35,7 @@ public final class ModelOperationControl {
     public synchronized boolean requestCancel(String id) {
         Operation op = active;
         if (op == null || !op.id.equals(id) || op.terminated || op.succeeded || op.proofCommitReserved
-                || op.kind == Kind.DELETE || op.kind == Kind.INSPECT) return false;
+                || op.kind == Kind.DELETE || op.kind == Kind.INSPECT || op.kind == Kind.SELECT) return false;
         op.cancelRequested = true;
         return true;
     }

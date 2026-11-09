@@ -23,6 +23,7 @@ import org.llmasr.minimal.model.FixedModelPackage
 import org.llmasr.minimal.model.SafModelZipSource
 import org.llmasr.minimal.model.ModelSource
 import org.llmasr.minimal.model.ModelAccess
+import org.llmasr.minimal.model.ModelCatalog
 import org.llmasr.minimal.model.ModelResidency
 import org.llmasr.minimal.model.ModelVerification
 import org.llmasr.minimal.model.AndroidModelVerificationIo
@@ -45,7 +46,7 @@ import org.llmasr.minimal.transcription.TextExportController
 class AppGraph private constructor(private val context: OperationContext?, private val coordinator: TaskCoordinator?,
     private val modelRepository: ModelRepository?, private val appState: AppState?,
     private val textExport: TextExportController<android.net.Uri>?, private val asrOperation: AsrOperation?,
-    private val readiness: ModelReadiness?, private val modelAccess: ModelAccess?,
+    private val readiness: ModelReadiness?, private val modelAccess: ModelAccess?, private val catalog: ModelCatalog?,
     private val runtimeLogStore: RuntimeLogStore?, private val runtimeLogWorker: RuntimeLogWorker?,
     inference: InferenceAdapter?) {
     private val modelState = ModelManagementState()
@@ -58,6 +59,7 @@ class AppGraph private constructor(private val context: OperationContext?, priva
         imeBackend = ImeBackend(context, modelRepository, inference, modelAccess!!)
         logExports = LogExportController { target -> context!!.contentResolver()!!.openOutputStream(unchanged<android.net.Uri>(target), "wt") }
         modelManagement = ModelManagementController(coordinator, modelRepository, readiness, modelControl, modelState, runtimeLogStore)
+        if (catalog != null) modelManagement.bindCatalog(catalog)
     }
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun readiness(): ModelReadiness? = readiness
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun modelAccess(): ModelAccess? = modelAccess
@@ -114,9 +116,10 @@ class AppGraph private constructor(private val context: OperationContext?, priva
                     }
                     override fun release() { if (nativeLibraryLoaded) bridge.release() }
                 }, { Thread.currentThread().name == "asr-task-worker" })
-                val verification = ModelVerification(manifest, readiness, AndroidModelVerificationIo { app.noBackupFilesDir }, resident)
-                val repository = ModelRepository.forAppFiles(manifest, opCtx.filesDir(), space, verification)
-                val access = ModelAccess(repository, readiness, resident)
+                val catalog = ModelCatalog(FixedModelPackage.mnn(manifest), opCtx.filesDir()!!, opCtx.cacheDir()!!, space, resident,
+                    AndroidModelVerificationIo.Catalog { app.noBackupFilesDir }, readiness)
+                val repository = catalog.legacy().repository
+                val access = ModelAccess.forCatalog(catalog, resident)
                 val logPersistence = RuntimeLogPersistence(opCtx.filesDir())
                 val logFailure = RuntimeLogPersistence.FailureSink { reason -> logStore.append(RuntimeLogEventKind.LOG_PERSISTENCE_FAILED, RuntimeLogSource.SHARED, null, reason) }
                 val logWorker = RuntimeLogWorker(logStore, logPersistence, logFailure)
@@ -125,7 +128,7 @@ class AppGraph private constructor(private val context: OperationContext?, priva
                     override fun finish(token: Any, success: Boolean) { access.finishRequest(token, success) }
                 })
                 val ops = AsrOperation(opCtx, coordinator, repository, state, textExport, inference, AppReportWriter(opCtx), access)
-                val built = AppGraph(opCtx, coordinator, repository, state, textExport, ops, readiness, access, logStore, logWorker, inference)
+                val built = AppGraph(opCtx, coordinator, repository, state, textExport, ops, readiness, access, catalog, logStore, logWorker, inference)
                 app.registerComponentCallbacks(object : ComponentCallbacks2 {
                     override fun onConfigurationChanged(configuration: Configuration) {}
                     override fun onLowMemory() { ops.startRelease() }

@@ -30,6 +30,7 @@ class NativeTests(unittest.TestCase):
         self.assertIn('native/source-lock.json', inputs)
         self.assertIn('native/cmake/finalize-mnn.cmake', inputs)
         self.assertIn('scripts/verify-native-artifact.py', inputs)
+        self.assertIn('native/apk/model_graph_policy.h', inputs)
         self.assertTrue(all(len(value) == 64 for value in inputs.values()))
 
     def test_real_elf_and_alignment_stack_relro_mutants(self):

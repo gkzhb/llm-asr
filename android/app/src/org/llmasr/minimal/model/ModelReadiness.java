@@ -51,6 +51,8 @@ public final class ModelReadiness {
     private volatile long epoch = 0L;
     private volatile State state = State.UNKNOWN;
     private volatile long verifiedEpoch = -1L;
+    private Snapshot projectionSource;
+    private Object projectionIdentity;
 
     public synchronized Snapshot snapshot() { return new Snapshot(epoch, state, verifiedEpoch); }
     public synchronized long epoch() { return epoch; }
@@ -135,6 +137,21 @@ public final class ModelReadiness {
         epoch++; pending = null; verifiedEpoch = -1; state = State.INVALID;
     }
     public void markInvalid() { markInvalidState(); notifyChange(); }
+
+    /** Presentation-only selected deployment projection; never exposes a verification token. */
+    public void installProjection(Snapshot source, Object identity) {
+        synchronized (this) {
+            if (projectionIdentity == identity && ((source == null && projectionSource == null) ||
+                (source != null && projectionSource != null && source.epoch == projectionSource.epoch &&
+                 source.state == projectionSource.state && source.verifiedEpoch == projectionSource.verifiedEpoch))) return;
+            projectionIdentity = identity; projectionSource = source;
+            epoch++;
+            pending = null;
+            state = source == null ? State.NOT_INSTALLED : source.state;
+            verifiedEpoch = source != null && source.ready() ? epoch : -1L;
+        }
+        notifyChange();
+    }
 
     public void addListener(Listener l) {
         if (l == null) return;

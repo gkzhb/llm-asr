@@ -86,6 +86,12 @@ def verify(build, prepared):
         raise ValueError('Native object/provenance drift')
     if report['jni_source_sha256'] != s.sha(ROOT / 'native/apk/asr_jni.cpp'):
         raise ValueError('JNI source drift')
+    if report.get('graph_policy_sha256') != s.sha(ROOT / 'native/apk/model_graph_policy.h'):
+        raise ValueError('Native graph policy header drift')
+    mnn = prepared / 'mnn'
+    graph_headers = {str(p.relative_to(mnn)): s.sha(p) for p in sorted(list((mnn / 'schema/current').glob('*.h')) + list((mnn / '3rd_party/flatbuffers/include/flatbuffers').glob('*.h')))}
+    if not graph_headers or report.get('graph_schema_headers') != graph_headers:
+        raise ValueError('Native graph schema/include closure drift')
     header = build / 'jni-check/headers/org_llmasr_minimal_asr_JniNativeTranscription.h'
     if report['jni_header_sha256'] != s.sha(header):
         raise ValueError('JNI generated header drift')

@@ -165,6 +165,32 @@ public final class NextAppContractTest {
             failOps.startRelease();check(!rejected.isBusy()&&access.residentSnapshot().getPendingRelease(),"explicit rejected retry bounded");
         } finally {check(jobs.isEmpty(),"resident owner worker exited before remove");delete(root);}
     }
+    static void variantSelectedPaths() throws Exception {
+        Path root=Files.createTempDirectory("variant-selected-path-");List<Runnable> jobs=new ArrayList<>();List<String> nativePaths=new ArrayList<>();
+        try {
+            Path files=Files.createDirectory(root.resolve("files")),cache=Files.createDirectory(root.resolve("cache"));
+            List<ModelEntry> entries=new ArrayList<>();String hash=ModelPackagePolicy.sha(new byte[]{1,2,3});
+            for(int i=0;i<7;i++)entries.add(new ModelEntry("f"+i,3,hash));
+            FixedModelPackage fixed=new FixedModelPackage(new ModelManifest(entries),"selected-fixture","mnn",1048576);
+            final Map<String,Map<String,byte[]>> journals=new HashMap<>();final byte[][] metadata={null};
+            ModelCatalog.Io io=new ModelCatalog.Io(){byte[] recovery;public byte[]readRecovery(){return recovery;}public void writeRecovery(byte[]b){recovery=b.clone();}public void clearRecovery(){recovery=null;}public byte[]readCatalog(){return metadata[0];}public void writeCatalog(byte[]b){metadata[0]=b.clone();}public ModelVerification.Io proof(String key){return new ModelVerification.Io(){public boolean exists(File f){return f.exists();}public String identity(File f,boolean d)throws IOException{return new TreeMap<>(Files.readAttributes(f.toPath(),"unix:dev,ino,mode,size,lastModifiedTime,ctime",LinkOption.NOFOLLOW_LINKS)).toString();}public byte[]read(String n,int l){return journals.getOrDefault(key,Collections.emptyMap()).get(n);}public void write(String n,byte[]b){journals.computeIfAbsent(key,k->new HashMap<>()).put(n,b.clone());}};}};
+            ModelResidency resident=new ModelResidency(new ModelResidency.Native(){public double prepare(String c,String t){nativePaths.add("prepare:"+c);return 0;}public void release(){nativePaths.add("release");}},()->true);
+            ModelReadiness projected=new ModelReadiness();ModelCatalog catalog=new ModelCatalog(fixed,files.toFile(),cache.toFile(),()->Long.MAX_VALUE,resident,io,projected);catalog.load();
+            ModelDeployment model=catalog.selected();Files.createDirectory(files.resolve("model"));for(int i=0;i<7;i++)Files.write(files.resolve("model/f"+i),new byte[]{1,2,3});
+            ModelVerification proof=model.repository.verification();ModelVerification.Token token=proof.begin(model.repository);model.repository.verifyAll();check(proof.commit(model.repository,token,new ModelVerification.CommitGate(){public boolean reserve(ModelReadiness.VerifyToken t){return model.readiness.accepts(t);}public boolean succeed(ModelReadiness.VerifyToken t){return model.readiness.commitVerified(t);}}),"selected actual SHA proof");
+            ModelAccess access=ModelAccess.forCatalog(catalog,resident);TaskCoordinator owner=new TaskCoordinator(jobs::add);
+            PcmWave pcm=new PcmWave();pcm.append(new short[PcmWave.MIN_SAMPLES],PcmWave.MIN_SAMPLES);byte[] wav=pcm.finish();
+            OperationContext context=new OperationContext(){public File filesDir(){return files.toFile();}public File cacheDir(){return cache.toFile();}public InputStream openAsset(String n){return new ByteArrayInputStream(wav);}public android.content.ContentResolver contentResolver(){return new android.content.ContentResolver();}};
+            InferenceAdapter inference=new InferenceAdapter(null,access::requireResidentReady,()->{},(c,w,l,t,p)->{check(c.equals(model.configPath()),"AppIME native path must match selected snapshot");nativePaths.add("infer:"+c);p.onPhase(3);p.onPhase(4);return "0 1 2\npublic".getBytes(java.nio.charset.StandardCharsets.UTF_8);},new InferenceAdapter.Session(){public Object enter()throws IOException{return access.enterRequest();}public void finish(Object t,boolean ok)throws Exception{access.finishRequest(t,ok);}});
+            ModelManifest wrongManifest=new ModelManifest(Arrays.asList(new ModelEntry("a",0,hash)));ModelRepository wrong=ModelRepository.forWorker(wrongManifest,root.resolve("WRONG-LEGACY-CONSTRUCTOR").toFile(),()->Long.MAX_VALUE);
+            AsrOperation operation=new AsrOperation(context,owner,wrong,new AppState(),new TextExportController<android.net.Uri>(u->null,Runnable::run),inference,new AppReportWriter(context),access);
+            check(operation.startPrepare(),"selected prepare admitted");jobs.remove(0).run();check(operation.startSample("auto"),"selected App request admitted");jobs.remove(0).run();
+            ImeBackend backend=new ImeBackend(context,wrong,inference,access);RecordingControl control=new RecordingControl();
+            check(owner.submit(()->{backend.prepare(control,s->{});backend.requireModelReady();RequestContext request=new RequestContext("variant-ime",TaskKind.INFERENCE);try{check(backend.transcribe(request,wav,"auto").equals("public"),"IME selected result");}finally{backend.cleanup(request);}}),"selected IME request admitted");jobs.remove(0).run();
+            check(nativePaths.stream().filter(s->s.equals("infer:"+model.configPath())).count()==2,"both real App and IME infer selected path");
+            check(nativePaths.stream().filter(s->s.startsWith("prepare:")).count()==1,"same selected generation reused single native resident");
+        } finally {check(jobs.isEmpty(),"variant request workers exited");delete(root);}
+    }
     static void service() throws Exception {
         TaskCoordinator owner = new TaskCoordinator(Runnable::run);
         ImeController.Backend backend = new ImeController.Backend() {
@@ -802,6 +828,7 @@ public final class NextAppContractTest {
         if (mode.equals("all") || mode.equals("operation")) operation();
         if (mode.equals("all") || mode.equals("preinput")) preInputAdmission();
         if (mode.equals("all") || mode.equals("resident-owner")) residentOwnerRelease();
+        if (mode.equals("all") || mode.equals("variant-paths")) variantSelectedPaths();
         if (mode.equals("all") || mode.equals("service")) service();
         System.out.println("PASS next real app/controller host contracts " + mode + " " + checks + " checks (NOT Android runtime)");
     }

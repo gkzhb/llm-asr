@@ -25,6 +25,7 @@ import java.util.zip.ZipFile;
 public final class ModelZipArchive implements AutoCloseable {
     public interface Check {
         void run() throws IOException;
+        default void policyAccepted(ModelPackagePolicy policy) throws IOException { }
         default void cleanupFailed() { }
     }
     /** Narrow real-resource close seams; defaults close the exact owned JDK resource. */
@@ -37,7 +38,9 @@ public final class ModelZipArchive implements AutoCloseable {
         public void endInflater(Inflater resource) { resource.end(); }
     }
     private static final String BAD = "模型 ZIP 格式不支持/校验失败";
-    private final FixedModelPackage policy;
+    private ModelPackagePolicy policy;
+    private final FixedModelPackage fixed;
+    private final boolean discover;
     private final Check check;
     private final Map<String, Item> items;
     private final Io io;
@@ -51,26 +54,37 @@ public final class ModelZipArchive implements AutoCloseable {
         long crc, packed, size, offset, data;
     }
 
-    private ModelZipArchive(FixedModelPackage policy, Check check, Map<String, Item> items, Io io) {
-        this.policy = policy; this.check = check; this.items = items; this.io = io;
+    private ModelZipArchive(FixedModelPackage fixed, boolean discover, Check check, Map<String, Item> items, Io io) {
+        this.fixed = fixed; this.policy = ModelPackagePolicy.legacy(fixed); this.discover = discover;
+        this.check = check; this.items = items; this.io = io;
+    }
+    public ModelPackagePolicy policy() { return policy; }
+    public static ModelZipArchive discover(File archive, FixedModelPackage fixed, Check check, Io io) throws IOException {
+        return prepare(archive, fixed, check, io, true);
     }
 
     public static ModelZipArchive prepare(File archive, FixedModelPackage policy, Check check) throws IOException {
         return prepare(archive, policy, check, new Io());
     }
     public static ModelZipArchive prepare(File archive, FixedModelPackage policy, Check check, Io io) throws IOException {
+        return prepare(archive, policy, check, io, false);
+    }
+    private static ModelZipArchive prepare(File archive, FixedModelPackage policy, Check check, Io io, boolean discover) throws IOException {
         Map<String, Item> items;
+        ModelPackagePolicy admitted;
         RandomAccessFile in = io.openRandom(archive);
         Throwable primary = null;
         try {
             check.run();
-            items = structure(in, policy, check);
-            ModelZipArchive prepared = new ModelZipArchive(policy, check, items, io);
+            items = structure(in, policy, check, discover);
+            ModelZipArchive prepared = new ModelZipArchive(policy, discover, check, items, io);
             prepared.firstPass(in);
+            admitted = prepared.policy;
         } catch (IOException | RuntimeException | Error failure) { primary = failure; throw failure; }
         finally { closeOwned(() -> io.closeRandom(in), check, primary); }
         // All first-pass streams and Inflaters are gone before ZipFile is exposed.
-        ModelZipArchive result = new ModelZipArchive(policy, check, items, io);
+        ModelZipArchive result = new ModelZipArchive(policy, discover, check, items, io);
+        result.policy = admitted;
         try {
             result.zip = io.openZip(archive);
             check.run(); result.checkZipView();
@@ -99,11 +113,12 @@ public final class ModelZipArchive implements AutoCloseable {
     private static void signature(byte[] b, long expected) throws IOException {
         if (u32(b, 0) != expected) throw bad();
     }
-    private static String name(byte[] bytes, FixedModelPackage policy) throws IOException {
+    private static String name(byte[] bytes, FixedModelPackage policy, boolean discover) throws IOException {
         if (bytes.length < 1 || bytes.length > 128) throw bad();
         for (byte b : bytes) if (b < 33 || b > 126) throw bad();
         String n = new String(bytes, StandardCharsets.US_ASCII);
         if (n.equals(FixedModelPackage.JSON_NAME)) return n;
+        if (discover && ModelPackagePolicy.NAMES.contains(n)) return n;
         for (ModelEntry e : policy.manifest.entries()) if (e.file().equals(n)) return n;
         throw bad();
     }
@@ -115,9 +130,9 @@ public final class ModelZipArchive implements AutoCloseable {
         int type = (int) ((attrs >>> 16) & 0170000);
         if (host == 3 && type != 0 && type != 0100000) throw bad();
     }
-    private static Map<String, Item> structure(RandomAccessFile in, FixedModelPackage policy, Check check) throws IOException {
+    private static Map<String, Item> structure(RandomAccessFile in, FixedModelPackage policy, Check check, boolean discover) throws IOException {
         long length = in.length();
-        if (length < 22 || length > policy.archiveLimit) throw bad();
+        if (length < 22 || length > (discover ? ModelPackagePolicy.MAX_ARCHIVE : policy.archiveLimit)) throw bad();
         byte[] end = read(in, length - 22, 22, length);
         signature(end, 0x06054b50L);
         if (u16(end, 4) != 0 || u16(end, 6) != 0 || u16(end, 8) != 8 || u16(end, 10) != 8 || u16(end, 20) != 0) throw bad();
@@ -134,13 +149,14 @@ public final class ModelZipArchive implements AutoCloseable {
             names += n; if (names > 1024) throw bad();
             attributes(h);
             Item item = new Item();
-            item.name = name(read(in, add(pos, 46), n, length - 22), policy);
+            item.name = name(read(in, add(pos, 46), n, length - 22), policy, discover);
             item.flags = u16(h, 8); item.method = u16(h, 10);
             if ((item.flags != 0 && item.flags != 0x800) || (item.method != 0 && item.method != 8)) throw bad();
             item.crc = u32(h, 16); item.packed = size32(h, 20); item.size = size32(h, 24); item.offset = size32(h, 42);
             if (item.method == 0 && item.packed != item.size) throw bad();
-            long allowed = item.name.equals(FixedModelPackage.JSON_NAME) ? FixedModelPackage.JSON_LIMIT : policy.manifest.require(item.name).bytes();
-            if (item.size > allowed || (!item.name.equals(FixedModelPackage.JSON_NAME) && item.size != allowed)) throw bad();
+            long allowed = item.name.equals(FixedModelPackage.JSON_NAME) ? FixedModelPackage.JSON_LIMIT :
+                discover ? ModelPackagePolicy.WEIGHT_LIMIT : policy.manifest.require(item.name).bytes();
+            if (item.size > allowed || (!discover && !item.name.equals(FixedModelPackage.JSON_NAME) && item.size != allowed)) throw bad();
             if (result.put(item.name, item) != null) throw bad();
             pos = add(pos, 46 + n);
         }
@@ -155,7 +171,7 @@ public final class ModelZipArchive implements AutoCloseable {
             signature(h, 0x04034b50L);
             int n = u16(h, 26);
             if (n < 1 || n > 128 || u16(h, 28) != 0 || u16(h, 4) > 20) throw bad();
-            String localName = name(read(in, add(item.offset, 30), n, cen), policy);
+            String localName = name(read(in, add(item.offset, 30), n, cen), policy, discover);
             if (!localName.equals(item.name) || u16(h, 6) != item.flags || u16(h, 8) != item.method ||
                 u32(h, 14) != item.crc || size32(h, 18) != item.packed || size32(h, 22) != item.size) throw bad();
             item.data = add(item.offset, 30 + n);
@@ -169,11 +185,21 @@ public final class ModelZipArchive implements AutoCloseable {
     private void firstPass(RandomAccessFile in) throws IOException {
         ByteArrayOutputStream json = new ByteArrayOutputStream();
         inspect(in, items.get(FixedModelPackage.JSON_NAME), json);
-        policy.verifyJson(json.toByteArray());
-        for (ModelEntry entry : policy.manifest.entries()) inspect(in, items.get(entry.file()), null);
+        if (discover) policy = ModelPackagePolicy.parse(json.toByteArray(), fixed);
+        else fixed.verifyJson(json.toByteArray());
+        check.policyAccepted(policy);
+        for (ModelEntry entry : policy.manifest.entries()) {
+            Item item = items.get(entry.file());
+            if (item == null || item.size != entry.bytes()) throw bad();
+            boolean config = entry.file().equals("config.json") || entry.file().equals("llm_config.json");
+            ByteArrayOutputStream content = config && !policy.trustedLegacy ? new ByteArrayOutputStream() : null;
+            inspect(in, item, content);
+            if (content != null) policy.requireConfig(entry.file(), content.toByteArray());
+        }
     }
     private void account(int n, long count, Item item) throws IOException {
-        if (n < 0 || n > item.size - count || n > policy.totalBytes + FixedModelPackage.JSON_LIMIT - outputCount) throw bad();
+        long budget = discover && item.name.equals(FixedModelPackage.JSON_NAME) ? ModelPackagePolicy.MAX_TOTAL : policy.totalBytes;
+        if (n < 0 || n > item.size - count || n > budget + FixedModelPackage.JSON_LIMIT - outputCount) throw bad();
         outputCount += n;
     }
     private void inspect(RandomAccessFile in, Item item, ByteArrayOutputStream json) throws IOException {
@@ -216,7 +242,7 @@ public final class ModelZipArchive implements AutoCloseable {
             check.run();
             if (count != item.size || crc.getValue() != item.crc) throw bad();
             if (inflater != null && (!inflater.finished() || remaining != 0 || inflater.getBytesRead() != item.packed)) throw bad();
-            if (json == null && !hex(sha.digest()).equals(policy.manifest.require(item.name).sha256())) throw bad();
+            if (!item.name.equals(FixedModelPackage.JSON_NAME) && !hex(sha.digest()).equals(policy.manifest.require(item.name).sha256())) throw bad();
         } catch (IOException | RuntimeException | Error failure) { primary = failure; throw failure; }
         finally { if (inflater != null) closeOwned(() -> io.endInflater(inflater), check, primary); }
         check.run();

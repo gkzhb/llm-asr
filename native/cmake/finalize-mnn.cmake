@@ -22,6 +22,7 @@ add_custom_command(
         --mnn-source "${CMAKE_CURRENT_SOURCE_DIR}" --header "${QWEN_JNI_HEADER}"
         --output "${CMAKE_CURRENT_BINARY_DIR}/artifact/libqwen_asr_jni.so"
     DEPENDS ${qwen_objects} "${QWEN_LINK_SCRIPT}" "${QWEN_JNI_SOURCE}" "${QWEN_JNI_HEADER}"
+            "${CMAKE_CURRENT_LIST_DIR}/../apk/model_graph_policy.h"
     VERBATIM)
 add_custom_target(qwen_asr_artifact DEPENDS
     "${CMAKE_CURRENT_BINARY_DIR}/artifact/libqwen_asr_jni.so"

@@ -174,6 +174,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--evidence-dir', required=True, type=Path)
     parser.add_argument('--quick', action='store_true', help='incremental parser/source checkpoint, not final matrix')
+    parser.add_argument('--catalog-cleanup-only', action='store_true', help='three tiny actual catalog ZIP cleanup regressions only')
     parser.add_argument('--regressions', action='store_true', help='same fresh snapshot plus original core regression entrypoints')
     args = parser.parse_args()
     out = args.evidence_dir.resolve()
@@ -236,6 +237,14 @@ def main():
         else:
             require(result.returncode==1 and 'java.lang.AssertionError: '+diagnostic in text, 'not exact compiled production target red '+label+': '+text)
     green = compile_source('green')
+    if args.catalog_cleanup_only:
+        cp = str(green)+':'+str(stdlib)
+        for mode in ('remove', 'close', 'blocked', 'cancel-normal', 'cancel-blocked', 'cancel-throw'):
+            result = execute(['java','-Xmx256m','-cp',cp,'ModelZipImportTest','catalog-cleanup',mode,str(out/('catalog-'+mode))], 'catalog-'+mode, 30)
+            require(result.returncode==0, 'catalog ZIP cleanup regression '+mode+': '+result.stderr.decode(errors='replace'))
+            print(result.stdout.decode(), end='', flush=True)
+        guard(out)
+        return
     run_suite(green,'green')
     if args.regressions:
         for caller in ('ModelRepositoryTest','ModelPrivateRootTest','ModelRepositoryCancelTest','ModelRepositoryDeleteTest','ModelAndroidHelpersTest','ModelManagementControllerTest','ModelProviderBoundaryTest','ModelReadinessTest','ModelOperationControlTest'):
@@ -251,7 +260,7 @@ def main():
             ('type','ModelZipArchive.java','if (host == 3 && type != 0 && type != 0100000) throw bad();','if (false) throw bad();','ZIP CEN symbolic link must be refused before model mutation'),
             ('local','ModelZipArchive.java','!localName.equals(item.name) ||','false ||','ZIP local and central names must agree'),
             ('crc','ModelZipArchive.java','count != item.size || crc.getValue() != item.crc','count != item.size','ZIP bad CRC cannot pass even with trusted SHA'),
-            ('actual','ModelZipSource.kt','if (n > trusted.archiveLimit - count) throw IOException("模型包超过输入上限")','if (false) throw IOException("模型包超过输入上限")','ZIP actual byte budget must stop before overflow write'),
+            ('actual','ModelZipSource.kt','if (n > archiveLimit - count) throw IOException("模型包超过输入上限")','if (false) throw IOException("模型包超过输入上限")','ZIP actual byte budget must stop before overflow write'),
             ('close','ModelRepository.java','if (primary == null) session.close();','if (primary == null) { /* omitted source close */ }','ZIP session cleanup must finish before final SHA and proof commit'),
             ('dirty','ModelRepository.java','            mutationGuard.beforeMutation();\n            gate.beforeMutation();','            /* skipped durable dirty */\n            gate.beforeMutation();','ZIP durable dirty must precede first model mutation'),
             ('owner','ModelManagementController.kt','            b.phase = ModelManagementState.Phase.CANCELLING','            control.complete(control.peekActive(), false)\n            b.phase = ModelManagementState.Phase.CANCELLING','ZIP blocked provider close retains shared owner and archive'),

@@ -73,7 +73,7 @@ class IdentityTests(unittest.TestCase):
         # Use the actual parser over the current APK, remove one owner definition
         # at the parser seam; no fake ZIP bytes or string grep can satisfy this gate.
         original = module.defined_classes
-        for name in ('FixedModelPackage', 'ModelZipArchive', 'ModelZipSource', 'SafModelZipSource'):
+        for name in ('FixedModelPackage', 'ModelPackagePolicy', 'ModelDeployment', 'ModelCatalog', 'ModelZipArchive', 'ModelZipSource', 'SafModelZipSource'):
             descriptor = ('Lorg/llmasr/minimal/model/' + name + ';').encode()
             def without_owner(data, descriptor=descriptor):
                 return original(data) - {descriptor}

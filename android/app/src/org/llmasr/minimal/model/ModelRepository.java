@@ -108,6 +108,7 @@ public class ModelRepository {
     private volatile File modelDir;
     private final File appFilesDir;
     private boolean appRootResolved;
+    private String variantKey;
     private final SpaceProvider space;
     private final MutationGuard mutationGuard;
 
@@ -152,6 +153,15 @@ public class ModelRepository {
         return new ModelRepository(manifest, new File(filesDir, "model"), space, false, filesDir, guard);
     }
 
+    /** Content keys are app-generated SHA identities, never manifest paths. Lazy worker root resolution. */
+    public static ModelRepository forVariant(ModelManifest manifest, File filesDir, String contentKey, SpaceProvider space, MutationGuard guard) throws IOException {
+        if (filesDir == null || contentKey == null || !contentKey.matches("[0-9a-f]{64}") || !(guard instanceof ModelVerification))
+            throw new IOException("invalid variant repository binding");
+        ModelRepository result = new ModelRepository(manifest, new File(new File(filesDir, "model-variants"), contentKey), space, false, filesDir, guard);
+        result.variantKey = contentKey;
+        return result;
+    }
+
     public ModelVerification verification() {
         return mutationGuard instanceof ModelVerification ? (ModelVerification) mutationGuard : null;
     }
@@ -160,7 +170,13 @@ public class ModelRepository {
         if (appFilesDir != null && !appRootResolved) {
             File parent = appFilesDir.getCanonicalFile();
             if (!parent.isDirectory()) throw new IOException("应用内部存储目录不可用");
-            modelDir = new File(parent, "model");
+            if (variantKey == null) modelDir = new File(parent, "model");
+            else {
+                File variants = new File(parent, "model-variants");
+                RootStatus status = checkRoot(variants);
+                if (status != RootStatus.ROOT_OK && status != RootStatus.ROOT_MISSING) throw new IOException("非法 variant 父目录");
+                modelDir = new File(variants, variantKey);
+            }
             appRootResolved = true;
         }
         return checkRoot(modelDir);
@@ -240,6 +256,20 @@ public class ModelRepository {
             for (File f : listed) if (!managed.contains(f.getName())) unexpected.add(f.getName());
         }
         return new InspectReport(details, installed, orphan, expected, space.usableBytes(), unexpected);
+    }
+
+    /** Remove only an empty registered custom leaf after deletion; never recurse unknown data. */
+    public void removeEmptyVariantRoot() throws IOException {
+        if (variantKey == null) return;
+        try (MutationScope scope = mutationGuard.beginMutation()) {
+            RootStatus status = checkedRoot();
+            if (status == RootStatus.ROOT_MISSING) return;
+            if (status != RootStatus.ROOT_OK) throw new IOException("variant 删除根目录不安全");
+            File[] entries = modelDir.listFiles();
+            if (entries == null || entries.length != 0) throw new IOException("模型目录含未知或未删除项，安装记录保留");
+            mutationGuard.beforeMutation();
+            Files.delete(modelDir.toPath());
+        }
     }
 
     /** Shared fail-closed final/part path validation. Does not hash, create or delete. */
@@ -463,6 +493,7 @@ public class ModelRepository {
             checkpoint(gate);
             mutationGuard.beforeMutation();
             gate.beforeMutation();
+            if (variantKey != null) ModelManifest.requireSafeRoot(modelDir.getParentFile());
             ModelManifest.requireSafeRoot(modelDir);
             for (ModelEntry e : manifest.entries()) { checkpoint(gate); reclaimEntryPart(e, progress); }
         }

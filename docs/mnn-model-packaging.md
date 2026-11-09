@@ -2,7 +2,20 @@
 
 入口：[`scripts/package-mnn-model.py`](../scripts/package-mnn-model.py)。仅 Python 标准库，Python ≥3.9、POSIX 本地文件系统（需 `O_NOFOLLOW`、目录 fd 和同目录 hard-link 原子发布）。不下载、不安装、不执行模型代码，不读取录音，不转换模型；不修改 APK、catalog 或可信清单。
 
-**打包成功只证明字节和 ZIP 格式，不证明模型数学、识别质量或设备运行正确。** 任意 MNN 目录不一定恰有七资产；本 CLI 有意只实现[七资产 schema 1](model-package-format.md)，不是任意目录归档器。
+**打包成功只证明字节和 ZIP 格式，不证明模型数学、识别质量或设备运行正确。** 任意 MNN 目录不一定恰有七资产；本 CLI 有意只实现[受控七资产格式](model-package-format.md)，不是任意目录归档器。
+
+## 受控 variant-v2（llm-asr-xyh，当前实施中）
+
+```bash
+python3 scripts/package-mnn-model.py --mode variant-v2 \
+  --manifest /external/complete-v2-descriptor.json \
+  --source /path/to/seven-owned-compatible-assets \
+  --output /path/to/new-variant.zip
+```
+
+外部manifest必须是格式文档定义的完整v2描述符（七个tuple及可复算contentSha256），不是参数信任覆盖。工具独立检查实际SHA/大小、tokenizer与baseconfig固定契约及规范llm_config六布局字段，拒绝源配置自动规范化/改写。非规范配置需在独立自有输出生成：以批准模型结构/模板常量为底，仅填实际导出tie布局，按4空格JSON（无末LF、固定旧key顺序）编码，重新计算该文件tuple，再按文件名排序计算内容指纹；不要猜offset或从别的权重复制。工具本身不生成/转换权重，不替代图guard/native加载或许可审查。
+
+输出标记 `CUSTOM-INTEGRITY-ONLY`，不能称固定可信来源。旧默认current-app与generic NONIMPORTABLE语义保持。真实模型打包/推理/设备和本轮APK交付仍未由此文完成。
 
 ## 1. 默认：当前 APK 固定模型
 

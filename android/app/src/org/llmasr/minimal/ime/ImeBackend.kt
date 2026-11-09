@@ -17,10 +17,12 @@ import org.llmasr.minimal.task.RequestContext
 /** Application-context-only adapter; no Service, View, report or text store. */
 class ImeBackend(private val context: OperationContext?, private val modelRepository: ModelRepository?,
                  private val inference: InferenceAdapter?, private val modelAccess: ModelAccess) : ImeController.Backend {
+    private var modelBinding: ModelAccess.Binding? = null
     @Throws(IOException::class)
     override fun requireModelReady() { modelAccess.requireResidentReady() }
     @Throws(Exception::class)
     override fun prepare(control: RecordingControl, progress: ImeController.Preparation) {
+        modelBinding = modelAccess.pin()
         val gate = object : ModelAccess.PreparationControl {
             private var reserved = false
             override fun cancelled(): Boolean = control.cancelled()
@@ -33,8 +35,8 @@ class ImeBackend(private val context: OperationContext?, private val modelReposi
             override fun succeed(ready: ModelReadiness, token: ModelReadiness.VerifyToken): Boolean =
                 reserved && ready.commitVerified(token)
         }
-        modelAccess.prepareForCapture(gate, File(modelRepository!!.modelDir(), "config.json").absolutePath,
-            context!!.cacheDir()!!.absolutePath) { progress.update(it) }
+        modelAccess.prepareForCapture(gate, modelAccess.configPath(File(modelRepository!!.modelDir(), "config.json").absolutePath),
+            modelAccess.cachePath(context!!.cacheDir()!!.absolutePath)) { progress.update(it) }
     }
     @Throws(IOException::class)
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
@@ -70,17 +72,22 @@ class ImeBackend(private val context: OperationContext?, private val modelReposi
         val targetInference = inference
         val source = RuntimeLogSource.IME
         val requestId = targetRequest.requestId
-        val config = File(modelRepository!!.modelDir(), "config.json").absolutePath
+        val config = modelAccess.configPath(File(modelRepository!!.modelDir(), "config.json").absolutePath)
         val wavPath = targetRequest.inputWav!!.absolutePath
         val selectedLanguage = language
-        val cache = context.cacheDir()!!.absolutePath
+        val cache = modelAccess.cachePath(context.cacheDir()!!.absolutePath)
         val result = targetInference!!.transcribe(source, requestId, config, wavPath, selectedLanguage, cache)
         return result.display
     }
     @Throws(IOException::class)
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     override open fun cleanup(request: RequestContext?) {
-        if (request!!.inputWav != null && request.inputWav!!.exists() && !request.inputWav!!.delete())
-            throw IOException("无法删除临时录音；下次启动将重试清理")
+        try {
+            if (request!!.inputWav != null && request.inputWav!!.exists() && !request.inputWav!!.delete())
+                throw IOException("无法删除临时录音；下次启动将重试清理")
+        } finally {
+            val binding = modelBinding; modelBinding = null
+            try { modelAccess.unpin(binding) } finally { modelAccess.finishSelectionSnapshot() }
+        }
     }
 }

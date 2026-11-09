@@ -29,8 +29,13 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
     @Suppress("UNCHECKED_CAST") private fun <T> unchanged(value: Any?): T = value as T
     private val runner = RequestRunner(coordinator, { ResultFiles.cleanTemporary(context!!.filesDir()) },
         AppRequestPolicy(reports, StateImpl()), { ctx ->
-            if (ctx.inputWav != null && ctx.inputWav!!.exists() && !ctx.inputWav!!.delete()) throw IOException("无法删除请求临时WAV")
+            try {
+                if (ctx.inputWav != null && ctx.inputWav!!.exists() && !ctx.inputWav!!.delete()) throw IOException("无法删除请求临时WAV")
+            } finally {
+                val binding = requestModel; requestModel = null; modelAccess.unpin(binding)
+            }
         })
+    private var requestModel: ModelAccess.Binding? = null
     private val releaseDispatch = java.util.concurrent.atomic.AtomicBoolean()
     init { coordinator!!.addListener { dispatchRelease() } }
     private fun dispatchRelease() {
@@ -55,8 +60,11 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
     }
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun startPrepare(): Boolean = runner.submit(TaskKind.MAINTENANCE, {
-        val load = modelAccess.prepare(File(modelRepository!!.modelDir(), "config.json").absolutePath, context!!.cacheDir()!!.absolutePath)
-        appState!!.setLastStatus(String.format(Locale.ROOT, "模型已显式准备 · 加载 %.2fs；App / 输入法共用内存实例。", load))
+        val binding = modelAccess.pin()
+        try {
+            val load = modelAccess.prepare(modelAccess.configPath(File(modelRepository!!.modelDir(), "config.json").absolutePath), modelAccess.cachePath(context!!.cacheDir()!!.absolutePath))
+            appState!!.setLastStatus(String.format(Locale.ROOT, "模型已显式准备 · 加载 %.2fs；App / 输入法共用内存实例。", load))
+        } finally { modelAccess.unpin(binding) }
     })
     @Volatile private var recording: RecordingControl? = null
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun recording(): RecordingControl? = recording
@@ -64,6 +72,7 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun cancelRecording() { val r = recording; if (r != null) r.cancel() }
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun startSample(language: String?): Boolean = runner.submit(TaskKind.INFERENCE, { ctx ->
+        requestModel = modelAccess.pin()
         modelAccess.requireResidentReady()
         val input = context!!.openAsset("sample.wav")
         var primary: Throwable? = null
@@ -83,6 +92,7 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
     })
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun startWave(uri: Uri?, language: String?): Boolean = runner.submit(TaskKind.INFERENCE, { ctx ->
+        requestModel = modelAccess.pin()
         modelAccess.requireResidentReady()
         val cr = context!!.contentResolver()
         val input = cr!!.openInputStream(unchanged<Uri>(uri))
@@ -107,6 +117,7 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
         return runner.submit(TaskKind.INFERENCE, { ctx ->
             val wav: ByteArray
             try {
+                requestModel = modelAccess.pin()
                 modelAccess.requireResidentReady()
                 wav = ForegroundRecorder.capture(control) { seconds -> appState!!.setLastStatus(String.format(Locale.ROOT,
                     "正在录音 %.1f / 30.0 秒 · 停止后转写，离开界面会取消", seconds)) }
@@ -147,7 +158,7 @@ class AsrOperation(private val context: OperationContext?, private val coordinat
     private fun runInference(ctx: RequestContext, wav: File, seconds: Double, language: String?, source: String) {
         appState!!.setLastStatus("使用已准备模型转写中（CPU）……")
         val r = inference!!.transcribe(RuntimeLogSource.APP, ctx.requestId,
-            File(modelRepository!!.modelDir(), "config.json").absolutePath, wav.absolutePath, language, context!!.cacheDir()!!.absolutePath)
+            modelAccess.configPath(File(modelRepository!!.modelDir(), "config.json").absolutePath), wav.absolutePath, language, modelAccess.cachePath(context!!.cacheDir()!!.absolutePath))
         reports!!.writeSuccess(ctx, r, wav, seconds, language, source)
         ctx.inferenceReported = true
         appState.setLastText(r.display)

@@ -1,6 +1,6 @@
 ---
 name: llm-asr-delivery
-description: 本项目派遣开发或验证 leaf、接续未完后台、组织 fresh 审查及安全本地提交交付时使用；约束单 writer、异步终态、行为负例、当批输入与 APK 绑定和两阶段提交，防止 agent done 冒充验收。
+description: 本项目新功能或 bugfix 的 APK 版本递增、派遣开发或验证 leaf、接续未完后台、fresh 审查及安全本地提交交付时使用；约束单 writer、异步终态、行为负例、当批输入与 APK 绑定和两阶段提交，防止 agent done 冒充验收。
 ---
 
 # llm-asr 证据驱动交付
@@ -52,6 +52,18 @@ stop：归属冲突、需新权限/依赖/scope、身份不符或安全 gate 无
 按当批来源区分 host/JVM、真实编译、parsed DEX/APK 静态、Android runner 与设备：方法库存/checker green 不证明 runner 发现/执行；JVM fake 不冒 Android、Binder/grant/系统生命周期或真实 native。library 静态权限声明不授运行权限。工程负例和故障案例按 [工程经验分支](references/evidence-and-recovery.md) 处理。
 
 输入分 **current build / module / native / external tool / supplemental docs-review-evidence** 域；动态库存逐 SHA 绑定，不将历史输入数或仪器方法数写为永久门槛。说明受审 freeze 与 current 差异，别用旧产物替当前。
+
+### APK 版本门槛（用户明确约定）
+
+**每轮包含新功能或 bugfix 的 APK 交付，必须递增 `versionCode` 并更新 `versionName`；两者均须区别于上一交付版本。** 在冻结构建输入和正式 full 前完成版本变更，同一轮尚未交付的修复/构建重试可共用该轮新版本，不按每次编译递增。仅文档、skill 或独立模型包变化且不交付产品 APK 时，无需为此改 APK 版本。
+
+- 从当前版本声明及最近实际交付记录确定旧版本，记录旧→新；`versionCode` 必须单调递增，`versionName` 按项目现有命名约定更新。版本来源冲突先协调，不能仅改 APK 文件名或沿用旧号掩盖产品变化。
+- 同步当前有效的 Gradle/Manifest 声明、版本校验脚本和测试预期；保留既有版本一致性与包身份检查，历史已冻结报告及旧产物身份不追改。
+- 从本轮实际 APK 解析并核对版本与源码、输入指纹和验证 receipt 一致，提交包含版本变更及必要测试/文档，交付报告列出新版本。若 full 后才补版本，旧 full/APK 证据不覆盖新输入，须重做受影响的构建与验证，再完成新产物绑定。
+
+**完成条件**：旧→新版本可追溯、`versionCode` 增大、`versionName` 已更新、当批 APK 实测版本与提交源码一致；缺一则暂停 APK 交付。
+
+### 其他验证门槛
 
 - 产品变更先必要同源 targeted，fresh 审查与修复接受后，再由唯一验证 leaf 跑必要 full；保旧 host/JNI/native/包/签名安全 gate，不以 fast 代最终验收。
 - 固定 Nix cache-only + Gradle strict/offline，缓存通过不是全新缓存/hermetic；依赖新增/准备或缺 cache 先读 [dependencies skill](../llm-asr-dependencies/SKILL.md)，报 scope，由父另授权。verify 不写锁/metadata、不自行下载补绿。

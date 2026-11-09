@@ -30,6 +30,8 @@ def link(args):
     subprocess.run([str(args.compiler), '-std=c++17', '-O2', '-fPIC', '-c', str(args.source),
                     '-I' + str(args.mnn_source / 'include'),
                     '-I' + str(args.mnn_source / 'transformers/llm/engine/include'),
+                    '-I' + str(args.mnn_source / 'schema/current'),
+                    '-I' + str(args.mnn_source / '3rd_party/flatbuffers/include'),
                     '-include', str(args.header), '-o', str(bridge)], check=True)
     flags = ['-shared', '-static-libstdc++', '-Wl,--no-undefined', '-Wl,-z,max-page-size=16384',
              '-Wl,--gc-sections', '-Wl,--build-id=sha1', '-Wl,-soname,libqwen_asr_jni.so',
@@ -41,6 +43,8 @@ def link(args):
     report = {'schema': 1, 'strategy': 'CMake explicit OBJECT targets + JNI; one DSO/static libc++',
               'object_count': len(objects),
               'objects': {str(p.relative_to(build)): sources.sha(p) for p in objects},
+              'graph_policy_sha256': sources.sha(args.source.parent / 'model_graph_policy.h'),
+              'graph_schema_headers': {str(p.relative_to(args.mnn_source)): sources.sha(p) for p in sorted(list((args.mnn_source / 'schema/current').glob('*.h')) + list((args.mnn_source / '3rd_party/flatbuffers/include/flatbuffers').glob('*.h')))},
               'jni_source_sha256': sources.sha(args.source),
               'jni_header_sha256': sources.sha(args.header),
               'compiler_sha256': sources.sha(args.compiler),

@@ -20,6 +20,7 @@ PACKAGE_MAP = {
     'ModelAccess': 'model', 'ModelResidency': 'model', 'ModelVerification': 'model', 'AndroidModelVerificationIo': 'model',
     'ModelProviderBoundary': 'model', 'SafModelSource': 'model',
     'FixedModelPackage': 'model', 'ModelZipArchive': 'model', 'ModelZipSource': 'model', 'SafModelZipSource': 'model',
+    'ModelPackagePolicy': 'model', 'ModelDeployment': 'model', 'ModelCatalog': 'model',
     'FileSafety': 'model',
     'NativeResponse': 'asr', 'NativeTranscription': 'asr', 'JniNativeTranscription': 'asr',
     'InferenceAdapter': 'asr', 'InferencePhase': 'asr', 'InferencePhaseListener': 'asr',
@@ -59,7 +60,7 @@ def references(source):
 def check_model(source):
     forbidden = references(source) & {'ModelManagementState', 'ModelManagementActivity', 'ModelManagementController', 'AppGraph'}
     assert not forbidden, 'model core references presentation/wiring: ' + str(forbidden)
-for name in ['ModelReports', 'ModelRepository', 'ModelReadiness', 'ModelAccess', 'ModelResidency', 'ModelVerification', 'ModelManifest', 'ModelEntry', 'ModelSource', 'FixedModelPackage', 'ModelZipArchive', 'ModelZipSource']:
+for name in ['ModelReports', 'ModelRepository', 'ModelReadiness', 'ModelAccess', 'ModelResidency', 'ModelVerification', 'ModelManifest', 'ModelEntry', 'ModelSource', 'FixedModelPackage', 'ModelPackagePolicy', 'ModelDeployment', 'ModelCatalog', 'ModelZipArchive', 'ModelZipSource']:
     check_model(path_of(name).read_text())
 check_model('/* ModelManagementState */ String text="https://x/ModelManagementState";')
 for bad in ['ModelManagementState state;', 'org.llmasr.minimal.ModelManagementState.Snapshot s;',
@@ -220,6 +221,9 @@ negatives = [('model', 'ModelManagementState'), ('ime', 'AppState'),
              ('task', 'ModelRepository'), ('task', 'InferenceAdapter'),
              ('platform', 'AppRequestPolicy'), ('diagnostics', 'ImeController')]
 negatives += [(package, 'AppGraph') for package in ALLOWED if package != 'root']
+# Newly registered model owners are subject to the same existing package edge policy.
+negatives += [(package, name) for package in ('task', 'audio', 'platform', 'diagnostics', 'asr')
+              for name in ('ModelPackagePolicy', 'ModelDeployment', 'ModelCatalog')]
 for package, name in negatives:
     try:
         check_package(package, 'class Fixture { ' + name + ' forbidden; }')

@@ -36,7 +36,7 @@ public final class ModelManagementState {
         FAILED
     }
     public enum Outcome { NONE, SUCCEEDED, CANCELLED, FAILED }
-    public enum OperationKind { NONE, INSPECT, IMPORT, VERIFY, DELETE }
+    public enum OperationKind { NONE, INSPECT, IMPORT, VERIFY, DELETE, SELECT }
 
     /** The page snapshot carries an immutable ModelReports.ImportPlan
      *  re-homed from the legacy nested type. Reflective test access and

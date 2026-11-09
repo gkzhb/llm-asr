@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <thread>
 #include <atomic>
+#include <fstream>
 using MNN::Transformer::Llm;using MNN::Transformer::LlmStatus;
 static int creates,loads,releases,responses,cleanups;
 static bool loadBad,responseBad,cleanupBad,cleanupThrow,allocateBad,copyBad,utfBad,pending,callbackBad;
@@ -65,7 +66,15 @@ static void require(bool b,const char*m){if(!b)throw std::runtime_error(m);}
 int main(int argc,char**argv){try{
  require(argc==2,"ARGS");std::string scenario=argv[1];
  JNINativeInterface_ table{};table.ExceptionCheck=exceptionCheck;table.ExceptionClear=exceptionClear;table.GetStringUTFChars=chars;table.ReleaseStringUTFChars=releaseChars;table.FindClass=findClass;table.ThrowNew=throwNew;table.GetObjectClass=getClass;table.GetMethodID=getMethod;table.CallVoidMethodV=callVoid;table.DeleteLocalRef=deleteRef;table.NewByteArray=newBytes;table.SetByteArrayRegion=putBytes;JNIEnv env{&table};
+ char directoryTemplate[]="/tmp/llm-asr-bridge-XXXXXX";
+ char* directory=::mkdtemp(directoryTemplate);require(directory,"SYNTHETIC_GRAPH_DIRECTORY");
+ const std::string graphDirectory(directory);
+ struct FixtureCleanup { std::string path; ~FixtureCleanup(){for(const char* name:{"audio.mnn","llm.mnn","audio.mnn.weight","llm.mnn.weight"})::unlink((path+"/"+name).c_str());::rmdir(path.c_str());} } fixture{graphDirectory};
+ MNN::NetT graph;std::unique_ptr<MNN::OpT> node(new MNN::OpT);node->type=MNN::OpType_Const;MNN::BlobT blob;blob.dataType=MNN::DataType_DT_FLOAT;blob.dims={1};blob.float32s={1.0f};node->main.Set(std::move(blob));graph.oplists.push_back(std::move(node));flatbuffers::FlatBufferBuilder graphBuilder;graphBuilder.Finish(MNN::Net::Pack(graphBuilder,&graph));
+ for(const char* name:{"audio.mnn","llm.mnn"}){std::ofstream output(graphDirectory+"/"+name,std::ios::binary);output.write(reinterpret_cast<const char*>(graphBuilder.GetBufferPointer()),graphBuilder.GetSize());require(output.good(),"SYNTHETIC_GRAPH_WRITE");}
+ for(const char* name:{"audio.mnn.weight","llm.mnn.weight"}){std::ofstream output(graphDirectory+"/"+name,std::ios::binary);output.put('x');require(output.good(),"SYNTHETIC_WEIGHT_WRITE");}
  auto str=[](int id,const char*v){auto s=reinterpret_cast<jstring>(uintptr_t(id));strings[s]=v;return s;};auto c=str(1,"config"),w=str(2,"wav"),lang=str(3,"auto"),cache=str(4,"cache");auto listener=reinterpret_cast<jobject>(uintptr_t(7));
+ strings[c]=graphDirectory+"/config.json";
  argConfig=c;argWav=w;argLanguage=lang;argCache=cache;
  if(scenario.find("reentry-")==0){reentryPhase=scenario[8]-'0';reentry=scenario.substr(10);}
  if(scenario=="thread-serial"){reentry="thread";reentryPhase=3;}

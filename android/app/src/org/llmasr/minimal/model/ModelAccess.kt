@@ -5,18 +5,48 @@ import java.util.concurrent.CancellationException
 
 /** Shared worker admission; only explicit prepareForCapture may restore/hash/load. */
 class ModelAccess @JvmOverloads constructor(private val repository: ModelRepository?, private val readiness: ModelReadiness?,
-    private val residency: ModelResidency? = null) {
+    private val residency: ModelResidency? = null, private val domain: String = "") {
+    private var catalog: ModelCatalog? = null
+    private var pinned: Binding? = null
+    private constructor(catalog: ModelCatalog, residency: ModelResidency) : this(null, null, residency) { this.catalog = catalog }
+    companion object {
+        @JvmStatic fun forCatalog(catalog: ModelCatalog, residency: ModelResidency): ModelAccess = ModelAccess(catalog, residency)
+    }
+    class Binding internal constructor(@JvmField val deployment: ModelDeployment)
+    /** Shared-worker request binding. No selection reread after binding until actual cleanup. */
+    @Throws(IOException::class)
+    fun pin(): Binding? {
+        val models = catalog ?: return null
+        if (pinned != null) throw IOException("模型请求已绑定")
+        return Binding(models.selected()).also { pinned = it }
+    }
+    @Throws(IOException::class)
+    fun unpin(binding: Binding?) {
+        if (binding == null) return
+        if (pinned !== binding) throw IOException("模型请求绑定失效")
+        pinned = null
+        catalog?.publishReadiness()
+    }
+    private fun target(): ModelAccess? = catalog?.let { (pinned?.deployment ?: it.selected()).access }
+    @Throws(IOException::class)
+    fun configPath(fallback: String): String = if (catalog == null) fallback else
+        (pinned?.deployment ?: throw IOException("模型请求尚未绑定")).configPath()
+    @Throws(IOException::class)
+    fun cachePath(fallback: String): String = if (catalog == null) fallback else
+        (pinned?.deployment ?: throw IOException("模型请求尚未绑定")).cache.absolutePath
     @Throws(IOException::class)
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun requireReady() {
+        target()?.let { it.requireReady(); return }
         val repo = repository ?: throw IOException("模型管理尚未初始化")
         val proof = repo.verification() ?: throw IOException("模型未准备，请到模型管理完整校验")
         proof.requireReady(repo)
     }
     @Throws(IOException::class)
     fun readyGeneration(): String {
+        target()?.let { return it.readyGeneration() }
         val repo = repository ?: throw IOException("模型管理尚未初始化")
-        return (repo.verification() ?: throw IOException("缺少持久模型证明")).readyGeneration(repo)
+        return domain + (repo.verification() ?: throw IOException("缺少持久模型证明")).readyGeneration(repo)
     }
     @Throws(IOException::class)
     fun requireResidentReady() {
@@ -25,6 +55,11 @@ class ModelAccess @JvmOverloads constructor(private val repository: ModelReposit
     }
     @Throws(Exception::class)
     fun prepare(config: String, cache: String): Double {
+        target()?.let {
+            val binding = pinned ?: throw IOException("模型请求尚未绑定")
+            catalog!!.prepareCache(binding.deployment)
+            return it.prepare(configPath(config), cachePath(cache))
+        }
         val resident = residency ?: throw IOException("模型内存管理未绑定")
         val g = readyGeneration()
         return resident.prepare(g, config, cache) { if (readyGeneration() != g) throw IOException("模型世代已变化") }
@@ -38,6 +73,11 @@ class ModelAccess @JvmOverloads constructor(private val repository: ModelReposit
     /** Explicit user intent, inside the already-held request owner. Never submits another task. */
     @Throws(Exception::class)
     fun prepareForCapture(control: PreparationControl, config: String, cache: String, progress: (String) -> Unit) {
+        target()?.let {
+            val binding = pinned ?: throw IOException("模型请求尚未绑定")
+            catalog!!.prepareCache(binding.deployment)
+            it.prepareForCapture(control, configPath(config), cachePath(cache), progress); return
+        }
         fun checkpoint() { if (control.cancelled()) throw CancellationException() }
         checkpoint()
         val repo = repository ?: throw IOException("模型管理尚未初始化")
@@ -96,6 +136,7 @@ class ModelAccess @JvmOverloads constructor(private val repository: ModelReposit
     fun requestRelease() { residency?.requestRelease() }
     @Throws(Exception::class)
     fun release() { residency?.drainRelease() }
+    fun finishSelectionSnapshot() { catalog?.publishReadiness() }
     fun residentSnapshot(): ModelResidency.Snapshot? = residency?.snapshot()
     @Throws(IOException::class)
     fun enterRequest(): Any = (residency ?: throw IOException("模型内存管理未绑定")).enter(readyGeneration())
@@ -105,6 +146,7 @@ class ModelAccess @JvmOverloads constructor(private val repository: ModelReposit
     @Throws(IOException::class)
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     open fun restoreFast(): Boolean {
+        catalog?.let { it.load(); return it.selected().access.restoreFast().also { _ -> it.publishReadiness() } }
         val repo = repository ?: throw IOException("模型管理尚未初始化")
         val proof = repo.verification() ?: throw IOException("缺少持久模型证明")
         return proof.restoreFast(repo)

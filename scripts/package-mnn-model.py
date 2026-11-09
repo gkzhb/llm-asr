@@ -117,7 +117,60 @@ def current_policy():
     return validate_policy({'schema': 1, 'modelId': MODEL_ID, 'engine': 'mnn', 'files': entries})
 
 
+def validate_variant(policy):
+    require(isinstance(policy, dict) and set(policy) == {'schema', 'modelId', 'engine', 'architecture', 'runtimePolicy', 'precision', 'displayName', 'contentSha256', 'files'}, 'exact v2 descriptor required')
+    require(type(policy['schema']) is int and policy['schema'] == 2 and policy['engine'] == 'mnn' and policy['architecture'] == 'qwen3-asr-0.6b' and policy['runtimePolicy'] == 'qwen3-asr-mnn-cpu-v2', 'unsupported variant architecture/policy')
+    require(isinstance(policy['modelId'], str) and re.fullmatch('[a-z0-9][a-z0-9._-]{0,95}', policy['modelId']) and policy['modelId'] != MODEL_ID, 'unsafe/reserved variant modelId')
+    require(policy['precision'] in ('FP16', 'INT8', 'INT4', 'MIXED'), 'unsupported declared precision')
+    label = policy['displayName']
+    require(isinstance(label, str) and 1 <= len(label) <= 96 and all(32 <= ord(c) <= 126 and c not in '\\"\\\\' for c in label), 'invalid display name')
+    adapted = {'schema': 1, 'modelId': policy['modelId'], 'engine': 'mnn', 'files': policy['files']}
+    validate_policy(adapted)
+    require({e['file'] for e in policy['files']} == {'audio.mnn', 'audio.mnn.weight', 'llm.mnn', 'llm.mnn.weight', 'tokenizer.txt', 'llm_config.json', 'config.json'}, 'exact variant leaves required')
+    require(sum(e['bytes'] for e in policy['files']) <= 2013265920, 'variant total exceeds 1920MiB')
+    fixed = {e['file']: e for e in current_policy()['files']}
+    for e in policy['files']:
+        if e['file'] in ('tokenizer.txt', 'config.json'):
+            require(e == fixed[e['file']], 'fixed tokenizer/runtime configuration contract required')
+        maximum = 1610612736 if e['file'].endswith('.weight') else 67108864 if e['file'].endswith('.mnn') else 16384 if e['file'] == 'llm_config.json' else fixed[e['file']]['bytes']
+        require(e['bytes'] <= maximum, 'variant asset bound exceeded')
+    canonical = 'llm-asr-content-v2\nmnn\nqwen3-asr-0.6b\nqwen3-asr-mnn-cpu-v2\n' + ''.join(f"{e['file']}:{e['bytes']}:{e['sha256']}\n" for e in sorted(policy['files'], key=lambda e: e['file']))
+    require(policy['contentSha256'] == hashlib.sha256(canonical.encode('ascii')).hexdigest(), 'content identity mismatch')
+    names = ['audio.mnn', 'audio.mnn.weight', 'llm.mnn', 'llm.mnn.weight', 'tokenizer.txt', 'llm_config.json', 'config.json']
+    policy['files'] = sorted(policy['files'], key=lambda e: names.index(e['file']))
+    return policy
+
+
+def variant_config(data, policy):
+    require(len(data) <= JSON_LIMIT, 'llm_config exceeds limit')
+    config = json.loads(data.decode('ascii'), object_pairs_hook=unique_object)
+    lines = [line[len('P0_EFFECTIVE_CONFIG '):] for line in (ROOT / 'reports/p0/device-inference-final-patches.txt').read_text().splitlines() if line.startswith('P0_EFFECTIVE_CONFIG ')]
+    require(len(lines) == 1, 'approved configuration missing')
+    combined = json.loads(lines[0], object_pairs_hook=unique_object)
+    baseline = dict(list(combined.items())[list(combined).index('model_type'):])
+    require(set(config) == set(baseline) and {k: v for k, v in config.items() if k != 'tie_embeddings'} == {k: v for k, v in baseline.items() if k != 'tie_embeddings'}, 'fixed architecture/template contract mismatch')
+    tie = config['tie_embeddings']
+    require(isinstance(tie, dict) and set(tie) == {'weight_offset', 'alpha_offset', 'alpha_size', 'quant_bit', 'quant_block', 'alpha_dtype'}, 'unsupported tie layout fields')
+    for k in ('weight_offset', 'alpha_offset', 'alpha_size', 'quant_bit', 'quant_block'):
+        require(type(tie[k]) is int, 'integer tie layout required')
+    start, alpha, size, bits, block = (tie[k] for k in ('weight_offset', 'alpha_offset', 'alpha_size', 'quant_bit', 'quant_block'))
+    dtype = tie['alpha_dtype']; require(bits in (4, 8, 16) and block in (32, 64, 128, 256, 512, 1024) and dtype in ('fp16', 'fp32'), 'unsupported tie layout')
+    width = 2 if dtype == 'fp16' else 4
+    weight = next(e['bytes'] for e in policy['files'] if e['file'] == 'llm.mnn.weight')
+    require(start > 0 and start % width == 0 and alpha == start + 151936 * 1024 * bits // 8 and 0 <= size <= weight - alpha, 'tie range exceeds paired weight / separate embedding unsupported')
+    if bits == 16:
+        require(size == 0 and dtype == 'fp16' and block == 64, 'invalid FP16 tie layout')
+    else:
+        count = 151936 * (1024 // block)
+        require(size in (count * width, count * width * 2) and size <= 67108864 and size // width * 4 <= 134217728, 'invalid/bounded alpha layout required')
+    baseline['tie_embeddings'] = {k: tie[k] for k in ('weight_offset', 'alpha_offset', 'alpha_size', 'quant_bit', 'quant_block', 'alpha_dtype')}
+    require(data == json.dumps(baseline, ensure_ascii=False, indent=4).encode('ascii'), 'noncanonical llm_config bytes; source is never rewritten')
+
+
 def select_policy(mode, manifest):
+    if mode == 'variant-v2':
+        require(manifest is not None, 'variant-v2 requires complete external --manifest')
+        return validate_variant(load_json(manifest))
     if mode == 'current-app':
         expected = current_policy()
         if manifest is not None:
@@ -132,8 +185,14 @@ def select_policy(mode, manifest):
 
 def json_bytes(policy):
     # Rebuild key order rather than allowing input key ordering to affect identity.
-    ordered = {'schema': 1, 'modelId': policy['modelId'], 'engine': 'mnn',
-               'files': [{k: e[k] for k in ('file', 'bytes', 'sha256')} for e in policy['files']]}
+    ordered = {'schema': policy['schema'], 'modelId': policy['modelId'], 'engine': 'mnn'}
+    if policy['schema'] == 2:
+        ordered.update({k: policy[k] for k in ('architecture', 'runtimePolicy', 'precision', 'displayName', 'contentSha256')})
+    entries = policy['files']
+    if policy['schema'] == 2:
+        names = ['audio.mnn', 'audio.mnn.weight', 'llm.mnn', 'llm.mnn.weight', 'tokenizer.txt', 'llm_config.json', 'config.json']
+        entries = sorted(entries, key=lambda e: names.index(e['file']))
+    ordered['files'] = [{k: e[k] for k in ('file', 'bytes', 'sha256')} for e in entries]
     data = (json.dumps(ordered, ensure_ascii=True, separators=(',', ':')) + '\n').encode('ascii')
     require(len(data) <= JSON_LIMIT, 'package JSON too large')
     return data
@@ -247,6 +306,9 @@ def package(source, output, policy, manifest, mode):
     data = json_bytes(policy)
     with directory(source) as (source_fd, _), directory(output.parent) as (out_fd, _):
         source_names(source_fd, policy['files'])
+        if mode == 'variant-v2':
+            with regular(source_fd, 'llm_config.json') as config:
+                variant_config(config.read(JSON_LIMIT + 1), policy)
         # Reject even dangling symlinks and do not spend a full read on an existing output.
         require(output.name not in os.listdir(out_fd), 'output exists; refusing clobber')
         for entry in policy['files']:
@@ -266,7 +328,7 @@ def package(source, output, policy, manifest, mode):
             os.unlink(temporary, dir_fd=out_fd)
     result.update({'output': str(output), 'mode': mode, 'modelId': policy['modelId'], 'engine': 'mnn',
                    'files': policy['files'], 'tuple_sha256': fingerprint(policy['files']),
-                   'compatibility': 'CURRENT-APP-TUPLE-MATCH' if mode == 'current-app' else 'GENERIC-NOT-IMPORTABLE',
+                   'compatibility': 'CURRENT-APP-TUPLE-MATCH' if mode == 'current-app' else 'CUSTOM-INTEGRITY-ONLY' if mode == 'variant-v2' else 'GENERIC-NOT-IMPORTABLE',
                    'model_numerical_validation': 'NOT RUN (packaging only)'})
     return result
 
@@ -275,7 +337,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, required=True, help='directory containing exactly seven assets')
     parser.add_argument('--output', type=Path, required=True, help='new seekable ZIP outside source; parent must exist')
-    parser.add_argument('--mode', choices=['current-app', 'generic'], default='current-app')
+    parser.add_argument('--mode', choices=['current-app', 'generic', 'variant-v2'], default='current-app')
     parser.add_argument('--manifest', type=Path, help='EXTERNAL trusted policy JSON; required for generic mode')
     args = parser.parse_args()
     try:

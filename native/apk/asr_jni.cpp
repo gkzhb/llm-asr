@@ -1,5 +1,6 @@
 #include <jni.h>
 #include "llm/llm.hpp"
+#include "model_graph_policy.h"
 #include <chrono>
 #include <memory>
 #include <mutex>
@@ -108,6 +109,7 @@ Java_org_llmasr_minimal_asr_JniNativeTranscription_prepareNative(JNIEnv* env, jc
         PhaseNotifier notifier(env, listener);
         const auto begin=std::chrono::steady_clock::now();
         notifier.phase(PHASE_MODEL_LOAD_STARTED);
+        llm_asr_graph::inspectDeployment(c); // Before factory/config parsing may open graph-selected resources.
         std::unique_ptr<MNN::Transformer::Llm> fresh(LLM_ASR_ENGINE_FACTORY(c));
         if (!fresh) throw std::runtime_error("createLLM failed");
         const std::string settings="{\"async\":false,\"sampler_type\":\"greedy\",\"max_new_tokens\":128,"

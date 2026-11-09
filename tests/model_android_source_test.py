@@ -34,6 +34,7 @@ PACKAGE_MAP = {
     'ModelSource': 'model', 'ModelRepository': 'model', 'ModelReadiness': 'model',
     'ModelAccess': 'model', 'ModelResidency': 'model', 'ModelVerification': 'model', 'AndroidModelVerificationIo': 'model',
     'ModelProviderBoundary': 'model', 'SafModelSource': 'model',
+    'ModelPackagePolicy': 'model', 'ModelDeployment': 'model', 'ModelCatalog': 'model',
     'FixedModelPackage': 'model', 'ModelZipArchive': 'model', 'ModelZipSource': 'model', 'SafModelZipSource': 'model',
     'FileSafety': 'model',
     'NativeResponse': 'asr', 'NativeTranscription': 'asr', 'JniNativeTranscription': 'asr',
@@ -67,15 +68,18 @@ graph = java('AppGraph')
 graph_kotlin = (SRC_ROOT / 'AppGraph.kt').is_file()
 assert ('AppState()' if graph_kotlin else 'new AppState()') in graph
 assert 'state::notifyChange' not in graph
-assert ('ModelAccess(repository, readiness, resident)' if graph_kotlin else 'new ModelAccess(repository, readiness)') in graph
+assert 'ModelAccess.forCatalog(catalog, resident)' in graph
 assert ('ModelManagementController(coordinator, modelRepository, readiness, modelControl, modelState, runtimeLogStore)' if graph_kotlin else 'new ModelManagementController(coordinator, modelRepository, readiness, modelControl, modelState, runtimeLogStore)') in graph
 assert 'RuntimeLogStore' in graph
 assert 'runtimeLogStore' in graph
 assert 'RuntimeLogPersistence' in graph
 assert 'RuntimeLogWorker' in graph
-assert 'ModelRepository.forAppFiles(manifest, opCtx.filesDir(), space, verification)' in graph
-assert 'AndroidModelVerificationIo { app.noBackupFilesDir }' in graph
-assert 'ModelVerification(manifest, readiness,' in graph
+assert 'ModelCatalog(FixedModelPackage.mnn(manifest)' in graph
+assert 'AndroidModelVerificationIo.Catalog { app.noBackupFilesDir }' in graph
+assert 'ModelRepository.forAppFiles(policy.manifest, files, space, verification)' in java('ModelCatalog')
+assert 'ModelVerification(policy.manifest, ready, io.proof(key), resident, domain)' in java('ModelCatalog')
+assert 'modelAccess.pin()' in java('AsrOperation') and 'modelAccess.pin()' in java('ImeBackend')
+assert 'modelAccess.configPath(' in java('AsrOperation') and 'modelAccess.configPath(' in java('ImeBackend')
 assert 'startRestore()' in java('ModelManagementController')
 assert '快速恢复已校验证明（不做 SHA）' in java('ModelManagementActivity')
 assert java('AsrOperation').count('modelAccess.requireResidentReady()') == 3

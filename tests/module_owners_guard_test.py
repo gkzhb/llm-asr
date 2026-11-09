@@ -53,7 +53,7 @@ class OwnersTests(unittest.TestCase):
         path = self.root / "gradle/baseline-inputs.json"
         import json
         pins = json.loads(path.read_text())
-        for name in ("FixedModelPackage.kt", "ModelZipArchive.java", "ModelZipSource.kt", "SafModelZipSource.kt"):
+        for name in ("FixedModelPackage.kt", "ModelPackagePolicy.kt", "ModelDeployment.kt", "ModelCatalog.kt", "ModelZipArchive.java", "ModelZipSource.kt", "SafModelZipSource.kt"):
             pins["files"].pop("android/app/src/org/llmasr/minimal/model/" + name)
         path.write_text(json.dumps(pins))
         with self.assertRaisesRegex(AssertionError, "inventory changed"):

@@ -121,11 +121,18 @@ public android.view.inputmethod.InputConnection getCurrentInputConnection(){retu
     'android/widget/Spinner.java': 'package android.widget; public class Spinner extends android.view.View {public Spinner(android.content.Context c){} public void setAdapter(ArrayAdapter<?> a){} public Object getSelectedItem(){return "Chinese";}public void setEnabled(boolean b){}}',
     'org/json/JSONException.java': 'package org.json; public class JSONException extends Exception {public JSONException(String s){super(s);}}',
     'org/json/JSONObject.java': '''package org.json; public class JSONObject {
-public JSONObject(String s)throws JSONException{} public JSONArray getJSONArray(String n)throws JSONException{return new JSONArray();}
-public String getString(String n)throws JSONException{return n.equals("file")?"a":"0000000000000000000000000000000000000000000000000000000000000000";}
-public long getLong(String n)throws JSONException{return 0;}}
+private int index;public JSONObject(String s)throws JSONException{}public JSONObject(int i){index=i;}public JSONArray getJSONArray(String n)throws JSONException{return new JSONArray();}
+public String getString(String n)throws JSONException{String[][] rows={
+{"audio.mnn","cd6237e0c02003345ba035e0fa6e67fe8658f270978ca8fbd4a60bf27ad5e825"},
+{"audio.mnn.weight","1456a76d7039681fbfdd94ffdac486545da62859f80a58b43a6f527f42a72382"},
+{"llm.mnn","3ce4f4d93e0fc1d2adb10d834421ae98f421913d85f5238abb6929d7a65ebb5b"},
+{"llm.mnn.weight","001a7838a2420182f0c6855657920d5a45c7b8b0999a7e045ef7ef0955a22ab4"},
+{"tokenizer.txt","70e5e435679b6520af2b8f5fd400e30023600321b09ab6153f7215b659b68c07"},
+{"llm_config.json","8e548c5393334616cffb6e8a751603ad8314d01293aa29765f1f507f0b412b85"},
+{"config.json","fd4127baf9ff5c45aaa2224f65db36e9110088d2aa7223e4853238d31be84e9d"}};return rows[index][n.equals("file")?0:1];}
+public long getLong(String n)throws JSONException{return new long[]{2989192,373185600,1628400,1192493056,3194212,1104,617}[index];}}
 ''',
-    'org/json/JSONArray.java': 'package org.json; public class JSONArray {public int length(){return 1;}public JSONObject getJSONObject(int n)throws JSONException{return new JSONObject("");}}',
+    'org/json/JSONArray.java': 'package org.json; public class JSONArray {public int length(){return 7;}public JSONObject getJSONObject(int n)throws JSONException{return new JSONObject(n);}}',
     'org/llmasr/minimal/MainActivity.java': 'package org.llmasr.minimal; public class MainActivity {}',
     'org/llmasr/minimal/ModelManagementActivity.java': 'package org.llmasr.minimal; public class ModelManagementActivity {}',
     'org/llmasr/minimal/audio/ForegroundRecorder.java': '''package org.llmasr.minimal.audio; public class ForegroundRecorder {

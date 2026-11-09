@@ -13,11 +13,62 @@ import java.io.IOException
 import java.nio.file.Files
 import java.security.MessageDigest
 import java.util.function.Supplier
+import org.llmasr.minimal.diagnostics.RuntimeLogStore
 
 /** Synthetic fixed-seven fixture using the real JSON/archive/session/repository implementations. */
 class ModelZipImportTest {
     companion object {
     private fun requireThat(ok: Boolean, message: String) { if (!ok) throw AssertionError(message) }
+    /** Catalog PreparedPackage discovery and actual cleanup ownership, tiny valid ZIP. */
+    private fun catalogCleanup(args: Array<String>) {
+      fun check(v:Boolean,s:String)=requireThat(v,s)
+  val mode=args[0];val root=File(args[1]);root.mkdir();val files=File(root,"files");files.mkdir();val cache=File(root,"cache");cache.mkdir()
+  val entries=(0..6).map{ModelEntry("f$it",1,ModelPackagePolicy.sha(byteArrayOf(it.toByte())))};val fixed=FixedModelPackage(ModelManifest(entries),"repair-fixture","mnn")
+  val io=object:ModelCatalog.Io{
+   var bytes:ByteArray?=null;var recovery:ByteArray?=null;val journals=HashMap<String,HashMap<String,ByteArray>>()
+   override fun readCatalog()=bytes;override fun writeCatalog(b:ByteArray){bytes=b.clone()}
+   override fun readRecovery()=recovery;override fun writeRecovery(b:ByteArray){recovery=b.clone()};override fun clearRecovery(){recovery=null};override fun restoreCatalog(b:ByteArray?){bytes=b?.clone()}
+   override fun proof(key:String)=object:ModelVerification.Io{
+    override fun identity(f:File,d:Boolean)=f.absolutePath+":"+f.length()+":"+f.lastModified()
+    override fun exists(f:File)=f.exists();override fun read(n:String,l:Int)=journals[key]?.get(n)
+    override fun write(n:String,b:ByteArray){journals.getOrPut(key){HashMap()}[n]=b.clone()}
+   }
+  }
+  val resident=ModelResidency(object:ModelResidency.Native{override fun prepare(c:String,t:String)=0.0;override fun release(){}},{true})
+  val projected=ModelReadiness();val catalog=ModelCatalog(fixed,files,cache,{Long.MAX_VALUE},resident,io,projected);catalog.load();val model=catalog.legacy()
+  val zip=File(root,"tiny.zip");java.util.zip.ZipOutputStream(zip.outputStream()).use{out->
+   fun put(n:String,b:ByteArray){val e=java.util.zip.ZipEntry(n);e.method=0;e.size=b.size.toLong();e.compressedSize=e.size;e.crc=java.util.zip.CRC32().also{it.update(b)}.value;out.putNextEntry(e);out.write(b);out.closeEntry()}
+   put("model-package.json",ModelPackagePolicy.legacy(fixed).json());for(i in 0..6)put("f$i",byteArrayOf(i.toByte()))
+  }
+  val entered=CountDownLatch(1);val release=CountDownLatch(1);val thread=AtomicReference<Thread>();val error=AtomicReference<Throwable>()
+  val owner=TaskCoordinator{job->Thread({try{job.run()}catch(t:Throwable){error.set(t)}},"repair-worker").also{thread.set(it);it.start()}}
+  val state=ModelManagementState();val control=ModelOperationControl();val logs=RuntimeLogStore();val controller=ModelManagementController(owner,model.repository,model.readiness,control,state,logs);controller.bindCatalog(catalog)
+  val pretransfer=mode.startsWith("cancel-");val closeCount=java.util.concurrent.atomic.AtomicInteger();val cancelObserved=java.util.concurrent.atomic.AtomicBoolean()
+  val listener=ModelManagementState.Listener {
+   val s=state.current()
+   if(pretransfer&&s.operationKind==ModelManagementState.OperationKind.IMPORT&&controller.snapshotMatches(ModelDeployment.LEGACY)&&cancelObserved.compareAndSet(false,true))controller.requestCancel(s.activeOperationId)
+  };state.addListener(listener)
+  val source=object:ModelZipSource(Opener{zip.inputStream()},Supplier{files},Supplier{fixed}){
+   override fun remove(file:File){if(mode=="remove")throw IOException("remove archive after finals");super.remove(file)}
+   override fun archiveIo()=object:ModelZipArchive.Io(){override fun closeZip(z:java.util.zip.ZipFile){super.closeZip(z);closeCount.incrementAndGet();if(mode=="blocked"||mode=="cancel-blocked"){entered.countDown();check(release.await(5,TimeUnit.SECONDS),"close gate timeout")};if(mode=="close"||mode=="blocked"||mode=="cancel-throw"||mode=="cancel-blocked")throw IOException("after real ZIP close")}}
+  }
+  check(controller.startImport(source),"catalog ZIP admitted");val id=state.current().activeOperationId
+  try{if(mode=="blocked"||mode=="cancel-blocked"){check(entered.await(5,TimeUnit.SECONDS),"actual untransferred archive close must run before terminal");check(owner.isBusy()&&control.isBusy&&!model.readiness.isReady&&!controller.startVerify()&&!state.current().isTerminalPhase,"blocked actual close must retain owner and no proof")}}
+  finally{release.countDown();thread.get().join(10000)}
+  check(!thread.get().isAlive&&error.get()==null&&!owner.isBusy(),"actual worker exited before cleanup")
+  if(pretransfer){
+   check(cancelObserved.get(),"cancel triggered at bound IMPORT listener")
+   check(closeCount.get()==1,"untransferred prepared ZIP must close exactly once before terminal")
+   check(state.current().phase==ModelManagementState.Phase.CANCELLED&&state.current().cleanupOutcome==(if(mode=="cancel-normal")ModelManagementState.Outcome.SUCCEEDED else ModelManagementState.Outcome.FAILED),"pretransfer cancellation cleanup truth before terminal phase=${state.current().phase} cleanup=${state.current().cleanupOutcome} error=${state.current().errorCode} parts=${state.current().orphanPartBytes}")
+  }else check(state.current().phase==ModelManagementState.Phase.FAILED&&state.current().cleanupOutcome==ModelManagementState.Outcome.FAILED,"catalog source cleanup must be FAILED")
+  check(!model.readiness.isReady,"failed source close must not publish proof")
+  check(File(files,"model-zip-staging/archive.part").exists()==(mode=="remove"),"retained archive truth")
+  check(logs.snapshot().count{it.requestId==id}==2,"one import terminal event")
+  state.removeListener(listener)
+  val retry=ModelZipSource(ModelZipSource.Opener{zip.inputStream()},Supplier{files},Supplier{fixed});check(controller.startImport(retry),"retry accepted");thread.get().join(10000)
+  check(!thread.get().isAlive&&error.get()==null&&!owner.isBusy()&&model.readiness.isReady,"retry succeeds after actual cleanup failure")
+  println("PASS A1 production catalog ZIP $mode stickycleanup/proof/owner/retry")
+    }
     private fun mJson(entries:List<ModelEntry>):String="{\"files\":["+entries.joinToString(","){"{\"sha256\":\"${it.sha256()}\",\"bytes\":${it.bytes()},\"file\":\"${it.file()}\"}"}+"],\"engine\":\"mnn\",\"modelId\":\"fixture\",\"schema\":1}"
     private fun manifest(): ModelManifest = ModelManifest((0..6).map { i ->
         val data = ByteArray(3+i) { (65+i).toByte() }
@@ -30,6 +81,7 @@ class ModelZipImportTest {
     }
     @JvmStatic fun main(args: Array<String>?) {
         if (args == null || args.isEmpty()) { smoke(); return }
+        if(args[0]=="catalog-cleanup"){catalogCleanup(args.copyOfRange(1,args.size));return}
         val fixtures = File(args[0])
         if(args.getOrNull(1)?.startsWith("exit-")==true){cleanupExit(fixtures,args[1]);return}
         if(args.getOrNull(1)?.startsWith("u1-")==true){u1(fixtures,args[1]);return}

@@ -1,5 +1,15 @@
 # P1-A 本地分层验证契约
 
+## llm-asr-xyh 受控变体 targeted（实施中）
+
+```bash
+bash scripts/nix-env.sh apk --cache-only python3 -B tests/model_variants_contract_test.py --evidence-dir NEW_VARIANTS_DIR
+bash scripts/nix-env.sh apk --cache-only python3 -O tests/model_variants_contract_test.py --evidence-dir NEW_VARIANTS_OPT_DIR
+bash scripts/nix-env.sh apk --cache-only python3 -B tests/native_model_graph_policy_test.py --evidence-dir NEW_GRAPH_DIR
+```
+
+上述仅生产policy/catalog与真实native图guard的合成行为；不加载模型/推理、不写baseline/native预期、不组装APK。graph driver的显式 `--admit-existing` 只用于另授固定四图的只读兼容检查，配对weight仅stat；正式host默认不读本地模型。所有输入/子命令exit/owned退出保留独占证据。新增API/库存适配不授权删除旧bodyguard/compiledmutant/cleanup/预算。当前full与身份采纳后置，真实FP16/INT8/INT4/MIXED推理、质量性能、Android runner/设备/mic/private均不由合成声明证明。
+
 ## llm-asr-7vl 固定 ZIP targeted
 
 ```bash

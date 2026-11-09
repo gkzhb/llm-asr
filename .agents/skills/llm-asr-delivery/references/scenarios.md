@@ -11,7 +11,8 @@
 | reviewer 静态发现 R1：open 前已有 PENDING，测试却要求空历史 | 先报告父接受；原 writer 最小修精确断言，targeted 与定点回审 | 不改生产迁就测试，不把静态发现称 Android 运行 red | §5；经验 C |
 | 新 module 缺依赖/cache，原 scope 仅 verify | 停报，读 dependencies skill；父另授权隔离 prepare，旧锁/metadata SHA 保护 | 缺 cache 不是行为 red，主树不 deactivate/write-locks | §4；经验 D |
 | 受审 freeze 与当前/staged 候选 SHA 漂移 | 暂停提交，父解释 delta/授权修复、必要重验审；再比较全 cached diff/blob | 不自动 rehash freeze 或夹带未知 index | §6；经验 E |
-| 纯文档导航/skill 变化，产品输入/receipt/三 APK SHA 保持 | 做结构链接/情境/安全 diff 与不变证明，报告无新产品验收 | 不为旧 pending 或文档批启动 full/prepare | §4、§6；经验 E |
+| 新功能或 bugfix 准备交付 APK | 按版本门槛核旧→新版本，正式 full 前更新声明/有效校验预期，核实际 APK 版本与源码/receipt 一致 | 改文件名、同版本重打包或旧 full 证据不能替代版本递增与新输入验证 | §4 APK 版本门槛 |
+| 纯文档导航/skill 变化，产品输入/receipt/三 APK SHA 保持 | 做结构链接/情境/安全 diff 与不变证明，报告无新产品验收；无需仅为此递增 APK 版本 | 不为旧 pending 或文档批启动 full/prepare | §4、§6；经验 E |
 | worker cancel 标志出现，但 provider open 仍阻塞 | 保 owner，解除测试阻塞后有界等待真实终态，再清理 | 不删活 IO 目录，不将取消标志当已释放 | §4；经验 C |
 | 坏 checksum mutant 因编译/网络错误 exit1 | 诊断并恢复，只有目标 expected/actual 拒绝才算 red | 非零不等预期安全负例成立 | §4；经验 C |
 | 既有行为 driver 固定写旧 owner 域 | 父明确授权一个新随机子目录，保护旧域、复制新证据 | 不用 symlink 绕过、不覆盖旧证据 | §2、§4；经验 D |

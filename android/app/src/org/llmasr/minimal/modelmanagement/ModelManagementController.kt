@@ -13,6 +13,9 @@ import org.llmasr.minimal.model.ModelRepository
 import org.llmasr.minimal.model.ModelSource
 import org.llmasr.minimal.model.ModelVerification
 import org.llmasr.minimal.model.ModelAccess
+import org.llmasr.minimal.model.ModelCatalog
+import org.llmasr.minimal.model.ModelDeployment
+import org.llmasr.minimal.model.ModelZipSource
 import org.llmasr.minimal.task.RequestRunner
 import org.llmasr.minimal.task.TaskCoordinator
 import org.llmasr.minimal.task.TaskKind
@@ -21,10 +24,50 @@ import org.llmasr.minimal.task.TaskKind
 class ModelManagementController(coordinator: TaskCoordinator?, repository: ModelRepository?,
     readiness: ModelReadiness?, control: ModelOperationControl?, state: ModelManagementState?,
     private val logStore: RuntimeLogStore?) {
-    private val readiness: ModelReadiness
+    private var catalog: ModelCatalog? = null
+    @Volatile private var detailKey: String = ModelDeployment.LEGACY
+    @Volatile private var snapshotKey: String = ModelDeployment.LEGACY
+    @Volatile private var snapshotInstallation: String? = null
+    private var boundSnapshot: ModelManagementState.Snapshot? = null
+    @Synchronized fun snapshotFor(key: String?): ModelManagementState.Snapshot? = if (key != null && key == snapshotKey &&
+        (catalog == null || try { catalog!!.require(key).installationId == snapshotInstallation } catch (_: IOException) { false })) boundSnapshot else null
+    fun snapshotMatches(key: String?): Boolean = snapshotFor(key) != null
+    private fun install(snapshot: ModelManagementState.Snapshot) {
+        state.install(snapshot)
+        boundSnapshot = snapshot
+    }
+    fun hasCatalog(): Boolean = catalog != null
+    fun bindCatalog(value: ModelCatalog) { catalog = value }
+    fun catalogRows(): List<ModelCatalog.Row> = catalog?.rows() ?: emptyList()
+    fun detailKey(): String = detailKey
+    fun showDetail(key: String) {
+        if (detailKey == key) { refreshInspect(); return }
+        detailKey = key
+        refreshInspect()
+    }
+    fun detail(): ModelDeployment? = detail(detailKey)
+    fun detail(key: String?): ModelDeployment? = try { if (key == null) null else catalog?.require(key) } catch (_: IOException) { null }
+    fun confirmation(): String? = confirmation(detailKey)
+    fun confirmation(key: String?): String? = try { if (key == null) null else catalog?.confirmation(key) } catch (_: IOException) { null }
+    private fun matches(key: String, installation: String): Boolean = detail(key)?.installationId == installation
+    fun startVerify(key: String, installation: String): Boolean = matches(key, installation) && submit(ModelOperationControl.Kind.VERIFY, null, -1, targetKey = key)
+    fun startRestore(key: String, installation: String): Boolean = matches(key, installation) && submit(ModelOperationControl.Kind.INSPECT, null, -1, true, key)
+    fun startDeleteIdentity(key: String, installation: String, expected: String?, epoch: Long): Boolean =
+        matches(key, installation) && expected != null && confirmation(key) == expected && submit(ModelOperationControl.Kind.DELETE, null, epoch, targetKey = key)
+    fun startDeleteIdentity(expected: String?, confirmEpoch: Long): Boolean {
+        if (catalog != null && (expected == null || confirmation() != expected)) return false
+        return startDelete(confirmEpoch, true)
+    }
+    fun detailCachedFiles(): List<ModelReports.FileDetail> = detailCachedFiles(detailKey)
+    fun detailCachedFiles(key: String?): List<ModelReports.FileDetail> {
+        val model = detail(key) ?: return emptyList()
+        return catalog?.rows()?.firstOrNull { it.deployment === model }?.files ?: emptyList()
+    }
+    fun startSelect(key: String): Boolean = submit(ModelOperationControl.Kind.SELECT, null, -1, targetKey = key)
+    private var readiness: ModelReadiness
     private val control: ModelOperationControl
     private val state: ModelManagementState
-    private val repository: ModelRepository
+    private var repository: ModelRepository
     private val runner: RequestRunner
     constructor(coordinator: TaskCoordinator?, repository: ModelRepository?, readiness: ModelReadiness?,
         control: ModelOperationControl?, state: ModelManagementState?) : this(coordinator, repository, readiness, control, state, null)
@@ -58,15 +101,20 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
             if (!id!!.equals(b.activeOperationId)) return
             b.phase = ModelManagementState.Phase.CANCELLING
             b.errorCode = "正在取消，等待文件读取/清理结束"
-            state.install(b.build())
+            install(b.build())
         }
         state.notifyListeners()
     }
-    private fun submit(kind: ModelOperationControl.Kind, source: ModelSource?, confirmEpoch: Long, restore: Boolean = false): Boolean {
+    private fun submit(kind: ModelOperationControl.Kind, source: ModelSource?, confirmEpoch: Long, restore: Boolean = false, targetKey: String = detailKey): Boolean {
+        val installation = try { catalog?.require(targetKey)?.installationId } catch (_: IOException) {
+            if (kind != ModelOperationControl.Kind.IMPORT) return false
+            null
+        }
+        val confirmation = if (kind == ModelOperationControl.Kind.DELETE) catalog?.confirmation(targetKey) else null
         val ref = AtomicReference<ModelOperationControl.Operation>()
         try {
-            return runner.submit(TaskKind.MAINTENANCE, { run(ref.get(), source, confirmEpoch, restore) }, {
-                if (kind == ModelOperationControl.Kind.DELETE && readiness.epoch() != confirmEpoch)
+            return runner.submit(TaskKind.MAINTENANCE, { runTarget(ref.get(), source, confirmEpoch, restore, targetKey, installation, confirmation) }, {
+                if (kind == ModelOperationControl.Kind.DELETE && (catalog?.require(targetKey)?.readiness ?: readiness).epoch() != confirmEpoch)
                     throw IllegalStateException("模型已变化，请重新确认")
                 val op = control.tryBegin(kind) ?: throw IllegalStateException("模型任务仍在收尾")
                 ref.set(op)
@@ -74,7 +122,63 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
             }, { finish(ref.get()) })
         } catch (rejected: IllegalStateException) { return false }
     }
-    private fun run(op: ModelOperationControl.Operation?, source: ModelSource?, confirmEpoch: Long, restore: Boolean) {
+    private fun runTarget(op: ModelOperationControl.Operation?, source: ModelSource?, confirmEpoch: Long, restore: Boolean, key: String, installation: String?, confirmation: String?) {
+        val models = catalog
+        if (models == null) { run(op, source, confirmEpoch, restore); return }
+        var prepared: ModelZipSource.PreparedPackage? = null
+        val cleanup = arrayOfNulls<Boolean>(1)
+        try {
+            models.load()
+            if (op!!.kind == ModelOperationControl.Kind.SELECT) {
+                models.select(key)
+                control.trySucceed(op, readiness, null)
+                bindTarget(models.require(key), op)
+                terminal(op, repository.inspect(ModelRepository.NEVER_CANCEL), null, true, null, null, null)
+                return
+            }
+            if (op.kind == ModelOperationControl.Kind.DELETE && models.confirmation(key) != confirmation) throw IOException("删除确认已过期")
+            var model = if (op.kind == ModelOperationControl.Kind.IMPORT) models.legacy() else models.require(key)
+            if (op.kind != ModelOperationControl.Kind.IMPORT && model.installationId != installation) throw IOException("模型安装已变化，请重新操作")
+            if (source is ModelZipSource) {
+                prepared = source.preparePackage(model.repository.space(), object : ModelRepository.Progress {
+                    override fun update(stage: ModelRepository.Stage?, file: String?, index: Int, count: Int, done: Long, total: Long, sd: Long, st: Long, reused: Long) {
+                        progress(op, stage, file, index, count, done, total, sd, st, reused)
+                    }
+                    override fun sourceCleanup(succeeded: Boolean) { cleanup[0] = cleanup[0] != false && succeeded }
+                }, object : ModelRepository.CancelGate {
+                    override fun cancelled(): Boolean = control.isCancelled(op)
+                    override fun reservePublish(): Boolean = control.tryReservePublish(op)
+                })
+                if (control.isCancelled(op)) throw ModelRepository.CancelledException()
+                model = models.admit(prepared.policy)
+            }
+            bindTarget(model, op)
+            run(op, prepared ?: source, confirmEpoch, restore, { models.deleted(model) }, cleanup)
+        } catch (failure: Exception) {
+            try { prepared?.close() } catch (close: Exception) {
+                cleanup[0] = false
+                if (close !== failure) failure.addSuppressed(close)
+            }
+            terminal(op, null, null, false, failure, cleanup[0], null)
+        } finally { models.refresh(); state.notifyListeners() }
+    }
+    private fun bindTarget(model: ModelDeployment, op: ModelOperationControl.Operation) {
+        synchronized(this) {
+            val same = snapshotKey == model.key && snapshotInstallation == model.installationId
+            val previous = state.current()
+            val b = if (same) builder() else ModelManagementState.Builder(ModelManagementState.empty())
+            b.inspectBusy = previous.inspectBusy
+            if (op.kind != ModelOperationControl.Kind.INSPECT) {
+                b.activeOperationId = op.id; b.operationKind = ModelManagementState.OperationKind.valueOf(op.kind.name)
+                b.phase = ModelManagementState.Phase.INSPECTING; b.pageOwnerHeld = true
+            }
+            repository = model.repository; readiness = model.readiness
+            snapshotKey = model.key; snapshotInstallation = model.installationId
+            applyReadiness(b); install(b.build())
+        }
+        state.notifyListeners()
+    }
+    private fun run(op: ModelOperationControl.Operation?, source: ModelSource?, confirmEpoch: Long, restore: Boolean, afterDelete: (() -> Unit)? = null, sourceFacts: Array<Boolean?>? = null) {
         val token = arrayOfNulls<ModelReadiness.VerifyToken>(1)
         var proofToken: ModelVerification.Token? = null
         var sourceCleanup: Boolean? = null
@@ -110,6 +214,7 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
                 if (readiness.epoch() != confirmEpoch) throw IOException("模型已变化，请重新确认")
                 readiness.invalidate()
                 deletion = repository.deleteAll(progress)
+                if (deletion.failed.isEmpty()) afterDelete?.invoke() // Catalog durability is part of delete success, not later telemetry.
             } else if (op.kind == ModelOperationControl.Kind.IMPORT) repository.importFrom(source, progress, gate)
             else if (op.kind == ModelOperationControl.Kind.VERIFY) {
                 if (verification == null) token[0] = readiness.beginVerify()
@@ -118,6 +223,21 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
             } else if (restore) ModelAccess(repository, readiness).restoreFast()
         } catch (e: Exception) { failure = e }
         catch (e: LinkageError) { failure = e }
+        // importFrom can fail before openSession (notably cancellation after bind).
+        // Close only the still-untransferred owner here, before inspect/proof/terminal.
+        // PreparedPackage.close is a no-op once Repository owns the session.
+        if (source is ModelZipSource.PreparedPackage) {
+            try { source.close() }
+            catch (close: Exception) {
+                // Session may throw cancellation at its final checkpoint AFTER reporting
+                // actual cleanup success. Preserve that fact; missing/false stays failure.
+                if (sourceFacts?.get(0) != true) sourceCleanup = false
+                if (failure == null) failure = close else if (failure !== close) failure.addSuppressed(close)
+            } catch (close: LinkageError) {
+                if (sourceFacts?.get(0) != true) sourceCleanup = false
+                if (failure == null) failure = close else if (failure !== close) failure.addSuppressed(close)
+            }
+        }
         if (failure != null) {
             readiness.finishUnverified(token[0])
             if (failure is ModelRepository.InvalidModelException) readiness.markInvalid()
@@ -151,7 +271,7 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
             readiness.finishUnverified(token[0])
             if (proofToken != null) readiness.finishUnverified(proofToken!!.epoch)
         }
-        terminal(op, report, deletion, success, failure, sourceCleanup, modelCleanup)
+        terminal(op, report, deletion, success, failure, if (sourceCleanup == false || sourceFacts?.get(0) == false) false else sourceCleanup ?: sourceFacts?.get(0), modelCleanup)
         readiness.notifyChange()
     }
     private fun pending(op: ModelOperationControl.Operation) {
@@ -159,18 +279,20 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
         synchronized(this) {
             if (op.kind == ModelOperationControl.Kind.INSPECT) {
                 val b = builder(); b.inspectBusy = true; b.inspectError = null
-                state.install(b.build())
+                install(b.build())
             } else {
                 startKind = if (op.kind == ModelOperationControl.Kind.IMPORT) RuntimeLogEventKind.MODEL_IMPORT_STARTED
                     else if (op.kind == ModelOperationControl.Kind.DELETE) RuntimeLogEventKind.MODEL_DELETE_STARTED
-                    else RuntimeLogEventKind.MODEL_VERIFY_STARTED
+                    else if (op.kind == ModelOperationControl.Kind.VERIFY) RuntimeLogEventKind.MODEL_VERIFY_STARTED else null
+                if (catalog != null) { snapshotKey = ""; snapshotInstallation = null }
                 val b = ModelManagementState.Builder(ModelManagementState.empty())
                 val prev = state.current()
                 b.expectedBytes = prev.expectedBytes; b.installedBytes = prev.installedBytes
-                b.orphanPartBytes = prev.orphanPartBytes; b.availableBytes = prev.availableBytes; b.files = prev.files
+                if (catalog == null) { b.orphanPartBytes = prev.orphanPartBytes; b.availableBytes = prev.availableBytes; b.files = prev.files }
+                else { b.expectedBytes = -1; b.installedBytes = -1; b.orphanPartBytes = -1; b.availableBytes = -1 }
                 b.activeOperationId = op.id; b.operationKind = ModelManagementState.OperationKind.valueOf(op.kind.name)
                 b.phase = ModelManagementState.Phase.INSPECTING; b.pageOwnerHeld = true
-                applyReadiness(b); state.install(b.build())
+                applyReadiness(b); install(b.build())
             }
         }
         if (startKind != null) safeLog(startKind, op.id, "ok")
@@ -190,7 +312,7 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
             b.fileName = file; b.fileIndex = index; b.fileCount = count
             b.fileBytesDone = done; b.fileBytesTotal = total; b.stageBytesDone = sd; b.stageBytesTotal = st
             if (stage != ModelRepository.Stage.FINAL_VERIFY) b.reusedBytes = reused
-            state.install(b.build())
+            install(b.build())
         }
         state.notifyListeners()
     }
@@ -198,7 +320,7 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
         synchronized(this) {
             if (control.peekActive() !== op || op!!.isTerminated) return
             val b = builder(); b.importPlan = plan; b.reusedBytes = plan!!.reusedBytes
-            state.install(b.build())
+            install(b.build())
         }
         state.notifyListeners()
     }
@@ -206,7 +328,7 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
         synchronized(this) {
             if (control.peekActive() !== op || op!!.isTerminated) return
             val b = builder(); b.fileResults = java.util.LinkedHashMap(b.fileResults)
-            b.fileResults.put(file, outcome); state.install(b.build())
+            b.fileResults.put(file, outcome); install(b.build())
         }
         state.notifyListeners()
     }
@@ -214,7 +336,7 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
         synchronized(this) {
             if (control.peekActive() !== op || op!!.isTerminated) return
             val b = builder(); b.deleteSucceeded = succeeded; b.deleteFailed = failed!!.size
-            b.failedFiles = failed; state.install(b.build())
+            b.failedFiles = failed; install(b.build())
         }
         state.notifyListeners()
     }
@@ -239,7 +361,7 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
             control.decideTerminal(op)
             if (isInspect) {
                 b.inspectError = if (failure == null) null else "内部概况读取失败，请检查模型存储后重试"
-                state.install(b.build())
+                install(b.build())
             } else {
                 b.phase = if (success) ModelManagementState.Phase.SUCCEEDED else if (control.isCancelled(op))
                     ModelManagementState.Phase.CANCELLED else ModelManagementState.Phase.FAILED
@@ -259,7 +381,7 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
                     b.deleteFreedBytes = deletion.freedBytes; b.failedFiles = deletion.failed; b.unexpectedFiles = deletion.unexpected
                     if (deletion.failed.isNotEmpty()) b.errorCode = "部分删除"
                 }
-                state.install(b.build())
+                install(b.build())
                 if (logStore != null) {
                     if (b.phase == ModelManagementState.Phase.SUCCEEDED) {
                         terminalKind = if (op.kind == ModelOperationControl.Kind.IMPORT) RuntimeLogEventKind.MODEL_IMPORT_COMPLETED
@@ -304,12 +426,12 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
                     b.errorCode = "任务未启动或异常终止"
                     fallbackKind = if (op.kind == ModelOperationControl.Kind.IMPORT) RuntimeLogEventKind.MODEL_IMPORT_FAILED
                         else if (op.kind == ModelOperationControl.Kind.DELETE) RuntimeLogEventKind.MODEL_DELETE_FAILED
-                        else RuntimeLogEventKind.MODEL_VERIFY_FAILED
+                        else if (op.kind == ModelOperationControl.Kind.VERIFY) RuntimeLogEventKind.MODEL_VERIFY_FAILED else null
                 }
                 b.pageOwnerHeld = false
             }
             control.decideTerminal(op)
-            state.install(b.build())
+            install(b.build())
             succeeded = op.isSucceeded
         }
         try {

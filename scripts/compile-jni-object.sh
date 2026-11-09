@@ -27,6 +27,7 @@ test -f "$header" || { echo "FATAL JNI header not generated in $out/headers" >&2
 # The generated header also makes C++ compilation check the Java-derived signatures.
 "$compiler" -std=c++17 -O2 -fPIC -c native/apk/asr_jni.cpp \
   -I"$source/include" -I"$source/transformers/llm/engine/include" \
+  -I"$source/schema/current" -I"$source/3rd_party/flatbuffers/include" \
   -include "$header" -o "$out/asr_jni.o"
 python3 scripts/check-jni-symbols.py "$out/classes" "$out/asr_jni.o"
 printf 'PASS Android arm64 JNI object compile (not linked or executed)\n'

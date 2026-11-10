@@ -50,14 +50,16 @@ class LogsActivity : Activity() {
         scroll = ScrollView(this); scroll!!.setFillViewport(true)
         scroll!!.setBackgroundColor(Color.rgb(248, 250, 252)); scroll!!.addView(root); setContentView(scroll)
         ActivityWindow.configure(this, scroll)
-        button(root, "‹ 返回", this::finish)
+        button(root, "返回", this::onBackPressed)
         text(root, "运行日志", 24)
-        text(root, "App / 语音输入法共用日志。日期、毫秒、时区及阶段耗时可见。\n仅保存固定事件，不包含转写正文、录音、外部路径或原始异常。保留最近 1000 条；突然结束进程可能丢失未刷盘日志。", 14)
-        export = button(root, "导出日志文件（UTF-8 TXT）", this::beginExport)
+        val explanation = text(root, "App / 输入法共用固定事件日志，不含转写正文、录音、外部路径或原始异常。保留最近1000条；进程突然结束可能丢失未刷盘日志。时间含毫秒、时区及阶段耗时。", 14)
+        explanation.visibility = View.GONE
+        button(root, "日志说明") { explanation.visibility = if (explanation.visibility == View.VISIBLE) View.GONE else View.VISIBLE }
+        export = button(root, "导出", this::beginExport)
         status = text(root, if (saved == null) "" else "页面重建，旧选择已失效，请重新导出。", 15)
         text(root, "导出到您选择的位置；云文件提供方可能联网同步。导出失败可能留下不完整外部文件，不会自动重试或删除该文件。", 14)
         summary = text(root, "", 14)
-        button(root, "查看最新日志（底部）") { scroll!!.post { scroll!!.fullScroll(View.FOCUS_DOWN) } }
+        button(root, "最新") { scroll!!.post { scroll!!.fullScroll(View.FOCUS_DOWN) } }
         body = text(root, "", 13); body!!.setTextIsSelectable(true)
     }
     private fun dp(n: Int): Int = Math.round(n * resources.displayMetrics.density)
@@ -67,7 +69,14 @@ class LogsActivity : Activity() {
     }
     private fun button(root: LinearLayout, title: String, action: Runnable): Button {
         val b = Button(this); b.setText(title); b.setAllCaps(false); b.setMinHeight(dp(48))
+        b.contentDescription = title
         b.setTextColor(Color.rgb(17, 24, 39)); b.setOnClickListener { action.run() }; root.addView(b); return b
+    }
+    @Suppress("OVERRIDE_DEPRECATION", "NON_FINAL_MEMBER_IN_FINAL_CLASS")
+    open override fun onBackPressed() {
+        page?.destroy() // Revoke unsubmitted picker; actual provider writes retain their owner.
+        if (isTaskRoot) startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        finish()
     }
     private fun beginExport() {
         if (!visible || page == null) return

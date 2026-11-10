@@ -44,9 +44,12 @@ def check_pages(pages, manifest):
             raise ValueError(name + ' resize policy missing')
     main = pages['MainActivity']
     back = main[main.index('    @Override public void onBackPressed()'):main.index('    @Override protected void onDestroy()')]
-    if not (back.index('r.cancel()') < back.index('coordinator().isBusy()') < back.rindex('super.onBackPressed()')):
-        raise ValueError('recording cancellation/busy/default order changed')
-    if 'page.cancelOwn(); finish();' not in pages['ModelManagementActivity']:
+    if not (back.index('guardCapture(() ->') < back.index('coordinator().isBusy()') < back.rindex('super.onBackPressed()')):
+        raise ValueError('recording guard/busy/default order changed')
+    guard = main[main.index('    private void guardCapture('):main.index('    private void reportCancellation(')]
+    if 'setNegativeButton("继续录音",null)' not in guard or 'r.stop()' not in guard or 'reportCancellation(r.cancel()); action.run()' not in guard:
+        raise ValueError('capture navigation requires explicit three-choice arbitration')
+    if 'page.cancelOwn(); returnHome();' not in pages['ModelManagementActivity']:
         raise ValueError('model cancel confirmation must retain real owner cleanup')
 
 

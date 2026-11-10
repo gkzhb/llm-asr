@@ -56,7 +56,8 @@ public final class Uri { public static Uri parse(String ignored){return new Uri(
     'android/content/Intent.java': '''package android.content;
 import android.net.Uri;
 public class Intent {
-public static final String ACTION_CREATE_DOCUMENT="create",CATEGORY_OPENABLE="open",EXTRA_TITLE="title";
+public static final String ACTION_CREATE_DOCUMENT="create",CATEGORY_OPENABLE="open",EXTRA_TITLE="title";public static final int FLAG_ACTIVITY_CLEAR_TOP=2;
+public Intent(android.app.Activity a,Class<?> c){}public Intent addFlags(int f){return this;}
 public String action,type,category,title; private Uri data;
 public Intent(){} public Intent(String a){action=a;}
 public Intent setType(String t){type=t;return this;}
@@ -76,7 +77,9 @@ public class Resources {public android.util.DisplayMetrics getDisplayMetrics(){r
 ''',
     'android/view/View.java': '''package android.view;
 public class View {
-public static final int FOCUS_DOWN=130;
+public static final int FOCUS_DOWN=130,VISIBLE=0,GONE=8;private int visibility;
+public int getVisibility(){return visibility;}public void setVisibility(int n){visibility=n;}
+private CharSequence description;public CharSequence getContentDescription(){return description;}public void setContentDescription(CharSequence s){description=s;}
 public interface OnClickListener {void onClick(View v);}
 public void setPadding(int l,int t,int r,int b){} public void setBackgroundColor(int c){}
 public boolean post(Runnable r){r.run();return true;}
@@ -125,7 +128,7 @@ private boolean finishing,destroyed;
 protected void onCreate(Bundle saved){} protected void onResume(){} protected void onPause(){}
 protected void onDestroy(){destroyed=true;}
 protected void onActivityResult(int request,int result,Intent data){}
-public void onBackPressed(){finish();} public void finish(){finishing=true;}
+public boolean isTaskRoot(){return false;}public void startActivity(Intent i){}public void onBackPressed(){finish();} public void finish(){finishing=true;}
 public boolean isFinishing(){return finishing;} public boolean isDestroyed(){return destroyed;}
 public Object getApplicationContext(){return this;}
 public android.content.res.Resources getResources(){return new android.content.res.Resources();}
@@ -142,6 +145,7 @@ public BackRegistration(android.app.Activity a,Runnable action){}
 public void resumed(){} public void paused(){}
 }}
 ''',
+    'org/llmasr/minimal/MainActivity.java': 'package org.llmasr.minimal;public class MainActivity {}',
     'org/llmasr/minimal/AppGraph.java': '''package org.llmasr.minimal;
 import org.llmasr.minimal.diagnostics.*;
 public final class AppGraph {
@@ -190,10 +194,10 @@ check(persist.ran==0 && persist.work.size()==1,"persistence queue never run/no d
 check(io.work.isEmpty(),"no queued export at cleanup");persist.work.clear();AppGraph.current=null;}
 }
 static LinearLayout root(LogsActivity a){return (LinearLayout)((ScrollView)a.content).child;}
-static Button button(LogsActivity a){Button b=(Button)root(a).children.get(3);
-check(b.getText().toString().equals("导出日志文件（UTF-8 TXT）"),"locate actual export button");return b;}
-static String status(LogsActivity a){return ((TextView)root(a).children.get(4)).getText().toString();}
-static String body(LogsActivity a){return ((TextView)root(a).children.get(8)).getText().toString();}
+static Object ui(LogsActivity a,String name){try{java.lang.reflect.Field f=LogsActivity.class.getDeclaredField(name);f.setAccessible(true);return f.get(a);}catch(Exception e){throw new AssertionError(e);}}
+static Button button(LogsActivity a){Button b=(Button)ui(a,"export");check(b.getVisibility()==android.view.View.VISIBLE&&b.getText().toString().equals("导出"),"locate actual visible export button");return b;}
+static String status(LogsActivity a){return ((TextView)ui(a,"status")).getText().toString();}
+static String body(LogsActivity a){return ((TextView)ui(a,"body")).getText().toString();}
 static void tick(){int before=Handler.delayed;Handler.tick();
 check(Handler.pending.size()==1 && Handler.delay==1000 && Handler.delayed==before+1,"real refresh reschedules once at 1000ms");}
 static int code(LogsActivity a){return a.requests.get(a.requests.size()-1);}

@@ -134,6 +134,12 @@ timeout 1440 python3 tests/runtime_log_enum_mutant_test.py --ports
 timeout 1440 python3 tests/runtime_log_enum_mutant_test.py --phase
 timeout 2700 python3 tests/runtime_log_enum_mutant_test.py --batch
 # 11 fresh compile/run cases * (270s + 45s + bounded owned teardown) < 3900s.
+# BVA bounded host contracts: each invocation owns a fresh evidence tree.
+bva_evidence=$(mktemp -d "$root/.work/build/bva-ui-XXXXXX")
+timeout 4200 python3 -B tests/app_navigation_contract_test.py --evidence-dir "$bva_evidence/navigation-ordinary"
+timeout 4200 python3 -O tests/app_navigation_contract_test.py --evidence-dir "$bva_evidence/navigation-optimized"
+timeout 4200 python3 -B tests/ime_ui_contract_test.py --evidence-dir "$bva_evidence/ime-ordinary"
+timeout 4200 python3 -O tests/ime_ui_contract_test.py --evidence-dir "$bva_evidence/ime-optimized"
 timeout 3900 python3 -B tests/kotlin_next_migration_test.py
 timeout 2700 python3 -B tests/kotlin_next_migration_test.py --compat-only
 # Independent IME slice: 9 fresh compile/run routes; legacy budgets above unchanged.

@@ -1,0 +1,271 @@
+{
+  "schema": 1,
+  "task": "llm-asr-bva",
+  "state": "full/binding/protection passed; pending safety review and local commit; not APK delivery",
+  "tested_base": "8165e26238c37e4ab68cb093f71c0e14406b5b57",
+  "tested_object": "precommit dirtyfreeze, no future commit tested",
+  "reviewed_C27_freeze": {
+    "path": ".work/bva-full-execution/final-input-freeze.json",
+    "sha256": "6947f93f89ec8e9f28a13583eaf4408673cd60e667bda6b01aba34691560c3b4"
+  },
+  "C27_acceptance_freeze": {
+    "path": ".work/bva-identity/freeze-C.json",
+    "sha256": "92da96278a32df80eff73398187aecaeec12b56c3d444e5eb5fa0f0f230ce77b"
+  },
+  "source_candidates27": [
+    {
+      "path": "android/app/src/org/llmasr/minimal/MainActivity.java",
+      "sha256": "bb0317613688d7d3abf8ea8f97bae81273a095b78c312345d1ef802f9d7d9091",
+      "bytes": 25227,
+      "mode": "0o100644",
+      "blob": "6647a21743e55bed0403b384380b471e7e7f9579"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ModelManagementActivity.java",
+      "sha256": "d50a4213cde48a1c1166bff63d95d38a8851210b39567583ddc99ad258f22a56",
+      "bytes": 26580,
+      "mode": "0o100644",
+      "blob": "86f1bf15012fbd641b85f1bf1623cfa1e0a94c18"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/LogsActivity.kt",
+      "sha256": "c64ddb5a6e3a365275b47ce1140122206709fcbe6647286394e79bb565726c13",
+      "bytes": 7840,
+      "mode": "0o100644",
+      "blob": "3bf093ea819d7df841f92f83438d46aa55ff6e5e"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/AsrImeService.kt",
+      "sha256": "07d8e763ede9bf06c3ec607a08e5995ae14187a747e6e04c593db1536900fc1a",
+      "bytes": 20706,
+      "mode": "0o100644",
+      "blob": "3ca13addf7f56432a71d4f89b897d6dec7687765"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ime/ImeController.kt",
+      "sha256": "1d5918fec02e56b2009361de1a15731bbf2d2a0a898425db6cd3ebc5b7e52c2f",
+      "bytes": 10200,
+      "mode": "0o100644",
+      "blob": "a78f1ecc0dd826f9d0cf374a8087d6d7d5dd2aa2"
+    },
+    {
+      "path": "android/app/AndroidManifest.xml",
+      "sha256": "75b10957805fc9d45125a4c750d437aed6b61155090ec068822c19c542b142f0",
+      "bytes": 1895,
+      "mode": "0o100644",
+      "blob": "e6a7c899eaced0a5657e82491dfaa0c0e97811b2"
+    },
+    {
+      "path": "android/app/build.gradle.kts",
+      "sha256": "434f521973f48617e622ac7831bca130992b57ad29d0e52a7e94dd7b87fcb2fc",
+      "bytes": 7683,
+      "mode": "0o100644",
+      "blob": "59e03ad50a2ce23b949141dc9396a86e6f4961cb"
+    },
+    {
+      "path": "scripts/check-minimal-apk.py",
+      "sha256": "4f79c2bf743120eb941258907c4b9da38e1b8664297ae40c1048df3d6eebdb59",
+      "bytes": 5866,
+      "mode": "0o100644",
+      "blob": "689fa70e6ec1f8e685c73e149bf9ebd40180444a"
+    },
+    {
+      "path": "scripts/verify-gradle-apk.py",
+      "sha256": "84506973e7e92ffbdaad22d0d702655f8637fef933242331b63b34c7ac70c149",
+      "bytes": 13261,
+      "mode": "0o100644",
+      "blob": "6661a87b5cb299b4d8820762bcf45363544da512"
+    },
+    {
+      "path": "tests/model_android_source_test.py",
+      "sha256": "915017b224b94256e0f4e51a46751bd5552c59e0acb178cd56b322fb0a926d40",
+      "bytes": 13805,
+      "mode": "0o100644",
+      "blob": "dbd5f7b6b94bc719eefcdf109fdda79c4eeee83b"
+    },
+    {
+      "path": "tests/apk_report_binding_test.py",
+      "sha256": "c0109f4a914af0e7dc923a35f5156208d2a712a08bf7e41de750b3bceaa1f98c",
+      "bytes": 7813,
+      "mode": "0o100644",
+      "blob": "137ef41ce916d7c3848cdb2480afe36d16c180f6"
+    },
+    {
+      "path": "tests/model_zip_picker_test.py",
+      "sha256": "02240b391c05c6b8eb511915167de4527a0004fc98ff15528b9bb151bf4cc637",
+      "bytes": 51882,
+      "mode": "0o100644",
+      "blob": "1823644e5eab8b0886667a6eb17e5dc5c49a76aa"
+    },
+    {
+      "path": "tests/logs_activity_picker_test.py",
+      "sha256": "526e64b690dc2ee190edbcf733e5453722afba190feccd9493419e302ed3dfd8",
+      "bytes": 39254,
+      "mode": "0o100644",
+      "blob": "70dbb70d06659f9c0c190c586b3759e9048b6b6d"
+    },
+    {
+      "path": "tests/kotlin_next_migration_test.py",
+      "sha256": "da13b0479d8630b5dd5cf873b725ec5a0ffc9743ea0c1d9d3cfc4520c8ca341e",
+      "bytes": 54355,
+      "mode": "0o100644",
+      "blob": "15cb1594e711785a6284a17f91ebeecd99a6e6d8"
+    },
+    {
+      "path": "tests/fixtures/kotlin-next/NextAppContractTest.java",
+      "sha256": "54a3d350aeb738dade335d128ae038f007aeccbf24183d09d7d11aba2785df3c",
+      "bytes": 84511,
+      "mode": "0o100644",
+      "blob": "38fc62696e21037fef90bc5dc482b20d00bdd296"
+    },
+    {
+      "path": "tests/activity_window_source_test.py",
+      "sha256": "f84903953a611c9fad74fcea704260137c207481ab26f4646e7ede0bfbeb083a",
+      "bytes": 7000,
+      "mode": "0o100644",
+      "blob": "e853c7c5107944f33480e0401bc126fafba4fb47"
+    },
+    {
+      "path": "tests/text_export_source_test.py",
+      "sha256": "2bae8e4b675ac95a9cdaa87d2a4480fa6d590248f20c097b082a73a8430ed9eb",
+      "bytes": 2704,
+      "mode": "0o100644",
+      "blob": "430cbfd2da1ef040a93d074674857e614f2a35ce"
+    },
+    {
+      "path": "scripts/test-minimal-apk.sh",
+      "sha256": "33e347e14bd8f3647e66118e75619e312d8372443a9becc54b77c49115125bf7",
+      "bytes": 14218,
+      "mode": "0o100755",
+      "blob": "452ea4580b8f0b32e65399d0cc6c8a34c9428b2d"
+    },
+    {
+      "path": "scripts/check-maintained-text.py",
+      "sha256": "7358f73a9c9dd8004e2cbe0aa76028698e6e6254f1c9e7cd135668aa3d417ccf",
+      "bytes": 9369,
+      "mode": "0o100644",
+      "blob": "c551c03c46bcbf6b5040a52e4fe578def4df5e83"
+    },
+    {
+      "path": "docs/model-management.md",
+      "sha256": "0122860311197030e1244a8ca9e33301a5fe32a4ed94e42299b18a4825f82fc2",
+      "bytes": 10623,
+      "mode": "0o100644",
+      "blob": "c7d49ed1e51b99c188aead52a12a22ac8913af31"
+    },
+    {
+      "path": "docs/runtime-logs.md",
+      "sha256": "8649ec2c41d48fda7a2f5218bcb706e94f77242d11bc44073ad8dd1958193d0a",
+      "bytes": 5042,
+      "mode": "0o100644",
+      "blob": "f2c357890cc4824c71ab423bd9a302af24cfec1a"
+    },
+    {
+      "path": "docs/voice-ime.md",
+      "sha256": "e502fb370ea506930b1f67f058579f2ebf717b65e3370b4202e7767f41dc58f6",
+      "bytes": 10038,
+      "mode": "0o100644",
+      "blob": "5da901613d39a4b44736593eb4724ab9fdfcb720"
+    },
+    {
+      "path": "tests/app_navigation_contract_test.py",
+      "sha256": "bf058409b855e2a0b22c03187242c3b06ebea49873460f291206ed538fe03bbf",
+      "bytes": 46209,
+      "mode": "0o100644",
+      "blob": "c4297f563e24ee626dfadbc1a175df0bb7175222"
+    },
+    {
+      "path": "tests/ime_ui_contract_test.py",
+      "sha256": "04690e176221c9562da0f3499a4052081ed2fea72261015f2dfa5cf985301cca",
+      "bytes": 16295,
+      "mode": "0o100644",
+      "blob": "a52e0b0a65508dc8506b089b0dad25f87e920857"
+    },
+    {
+      "path": "docs/app-navigation.md",
+      "sha256": "692ed008694b52bf8442e79e8b0ffc183cea84405c725f9b8066034dd784d1c6",
+      "bytes": 5165,
+      "mode": "0o100644",
+      "blob": "970cd0a197bd488d6a1717e0647f04096c69be78"
+    },
+    {
+      "path": "tests/ime_readiness_cleanup_test.py",
+      "sha256": "a221179a2dad4e092b6d056d50492f0a1e9f7beb75acc341c31d2fb93d67b7dc",
+      "bytes": 10038,
+      "mode": "0o100644",
+      "blob": "e3320f7c8391e8eb5a1235a36718244c9254d2be"
+    },
+    {
+      "path": "gradle/baseline-inputs.json",
+      "sha256": "eb892730fb4ba59a11e7aeb66bfeb261c2546b312a6a324c6c755369951deff3",
+      "bytes": 18164,
+      "mode": "0o100644",
+      "git_mode": "100644",
+      "blob": "9acae20180ece93a2e5d856e287f69f3fdbe82d4"
+    }
+  ],
+  "new_report_paths6": [
+    "reports/ui-navigation-bva/targeted.md",
+    "reports/ui-navigation-bva/review.md",
+    "reports/ui-navigation-bva/inputs.json",
+    "reports/ui-navigation-bva/full.md",
+    "reports/ui-navigation-bva/full-inputs.json",
+    "reports/ui-navigation-bva/status.md"
+  ],
+  "candidate_count_expected": 33,
+  "review_authority_refs": [
+    {
+      "path": ".planning/llm-asr-bva-supervision/fresh-review-disposition.md",
+      "sha256": "c62cd9f56d949af09c12e4bda9a3c38e440eeacb386206ca4d6ac0cdc104df7f"
+    },
+    {
+      "path": ".planning/llm-asr-bva-supervision/repair-fresh-result-and-dialog-disposition.md",
+      "sha256": "4667aa46667c3af619f03cc935b3db59b3cdc8b02c72f2a13bb6c4ec2c87a3d6"
+    },
+    {
+      "path": ".planning/llm-asr-bva-supervision/platform-dismiss-disposition.md",
+      "sha256": "c3b031adce2977e3433322faafd803a840db9b5758e6979f766d01abcacc3099"
+    },
+    {
+      "path": ".planning/llm-asr-bva-supervision/dismiss-test-proof-disposition.md",
+      "sha256": "b3df88d61999c022ba4540083ddf112d4943de8ba0dacf452b11e25050ca0c07"
+    },
+    {
+      "path": ".planning/llm-asr-bva-supervision/final-review-and-pin-grant.md",
+      "sha256": "f468c6636260628a8540e14f1fb96315f3f9b8319d1f4f4ac192ffb70ea0dc9e"
+    },
+    {
+      "path": ".planning/llm-asr-bva-supervision/c-review-and-full-grant.md",
+      "sha256": "4feaee0451b7845b15034429338725da7f3f8797fb9064ae82cd12fec4a1f929"
+    },
+    {
+      "path": ".planning/llm-asr-bva-supervision/full-execution-grant.md",
+      "sha256": "d330a1a70460a9e7d1e959ae62a423d25aa7b58179a0874a0675e16ce36c2f5a"
+    }
+  ],
+  "baseline": {
+    "path": "gradle/baseline-inputs.json",
+    "sha256": "eb892730fb4ba59a11e7aeb66bfeb261c2546b312a6a324c6c755369951deff3",
+    "historical_source_commit": "82a5563",
+    "six_existing_pins_and_revision_scope_only": "C semantic7leaves;86inventory80others preserved"
+  },
+  "artifact_binding": {
+    "path": ".work/bva-full-execution/execution/binding.json",
+    "sha256": "054930ca88ffb9d2dc2753d7aa08015cac3eb41ea306ec4152242f647df520b3"
+  },
+  "protection": {
+    "path": ".work/bva-full-execution/execution/protection-after-full.json",
+    "sha256": "b7f9bac32068e0204c6ef9e88e361ba52962fb81e7679799297c863f7d63dddd"
+  },
+  "version": {
+    "product_code": 8,
+    "product_name": "0.8-debug",
+    "testhost_code": 1,
+    "testhost_name": "p1b-testhost"
+  },
+  "not_run": [
+    "local commit/APK delivery",
+    "Android runner/device/mic/systemSAFIME/TalkBack/native inference/quality/performance"
+  ],
+  "privacy": "only non-sensitive source/manifest/hash summaries; no APK/weights/audio/private transcripts/key/cache/agent session bodies"
+}

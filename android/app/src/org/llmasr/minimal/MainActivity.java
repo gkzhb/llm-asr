@@ -4,6 +4,7 @@ import android.app.*;
 import android.content.*;
 import android.net.Uri;
 import android.os.*;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.*;
 import java.io.*;
@@ -11,6 +12,7 @@ import java.util.*;
 import org.llmasr.minimal.audio.RecordingControl;
 import org.llmasr.minimal.platform.ActivityWindow;
 import org.llmasr.minimal.model.ModelReadiness;
+import org.llmasr.minimal.modelmanagement.ModelManagementState;
 import org.llmasr.minimal.modelmanagement.ModelUiText;
 import org.llmasr.minimal.task.TaskCoordinator;
 import org.llmasr.minimal.transcription.AppState;
@@ -18,273 +20,345 @@ import org.llmasr.minimal.transcription.ResultState;
 import org.llmasr.minimal.transcription.TextExportController;
 import org.llmasr.minimal.transcription.TextExportPage;
 
+/** Three bounded logical pages; asynchronous owners remain in the shared graph. */
 public final class MainActivity extends Activity {
-    private static final int AUDIO_FILE=11, MIC_PERMISSION=12;
+    private static final int MIC_PERMISSION=12, WAVE_FIRST=20, WAVE_LAST=99;
+    private static int waveHighWater=WAVE_FIRST-1;
+    private enum Page { HOME, TRANSCRIBE, IME_SETTINGS }
+    private Page page=Page.HOME;
+    private LinearLayout home, transcriptionPage, imeSettings;
     private TextExportPage<Uri> exportPage;
     private volatile boolean foreground;
-    private Button stopRecording, cancelRecording;
+    private boolean pendingHome;
+    private long captureDialogGeneration;
+    private AlertDialog captureDialog;
+    private int wavePending;
+    private Uri waveDeferred;
+    private boolean waveInvalid;
+    private Button stopRecording, cancelRecording, exportTXT, microphonePermission;
     private final ArrayList<Button> buttons=new ArrayList<>();
-    private TextView status, result, modelSummary, exportStatus;
-    private Button exportTXT;
-    private boolean navigateAfterRecording;
+    private TextView status, result, modelSummary, exportStatus, globalTask, globalExportStatus;
     private Spinner language;
     private AppGraph graph;
     private final ActivityWindow.BackRegistration windowBack = new ActivityWindow.BackRegistration(this, this::onBackPressed);
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
-        if (graph == null) {
-            try { AppGraph.install(getApplicationContext()); }
-            catch (IOException ioe) {
-                TextView failure = new TextView(this);
-                failure.setText("初始化失败：" + ioe.getMessage() + "\n请重新安装完整APK后重试。");
-                setContentView(failure);
-                ActivityWindow.configure(this, failure);
-                return; // No graph: do not enable inference or dereference the failed install.
-            }
-            graph = AppGraph.get();
+        try { AppGraph.install(getApplicationContext()); graph=AppGraph.get(); }
+        catch (IOException ioe) {
+            TextView failure=new TextView(this); failure.setText("初始化失败，请重新安装完整应用。");
+            setContentView(failure); ActivityWindow.configure(this, failure); return;
         }
-        exportPage = new TextExportPage<>(graph.textExport());
-        LinearLayout root=new LinearLayout(this); root.setOrientation(LinearLayout.VERTICAL);
-        int pad=(int)(16*getResources().getDisplayMetrics().density); root.setPadding(pad,pad,pad,pad);
+        restoreUi(state);
+        exportPage=new TextExportPage<>(graph.textExport());
+        LinearLayout root=column(); int pad=dp(16); root.setPadding(pad,pad,pad,pad);
         ScrollView scroll=new ScrollView(this); scroll.setFillViewport(true); scroll.addView(root); setContentView(scroll);
         ActivityWindow.configure(this, scroll);
-        TextView title=new TextView(this); title.setText("Qwen3-ASR · 最小离线原型"); title.setTextSize(22); root.addView(title);
-        TextView note=new TextView(this);
-        note.setText("arm64 CPU / FP16 权重 · 推理约 3.1 GiB 内存。\n本App不联网；分享接收方或导出到云存储的提供方可能联网同步。录音仅在授权后由您点击开始，离开界面取消；最长30秒。文件仅支持 16kHz 单声道 PCM16 WAV（0.1–30 秒）。模型管理在独立页面；每次转写重新加载模型。静音可能幻觉输出，本版无 VAD。模型导入后占用应用内部存储。"); root.addView(note);
-        addButton(root,"输入法：授予麦克风权限（不开始录音）", () -> {
-            if(checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)!=android.content.pm.PackageManager.PERMISSION_GRANTED)
-                requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO},MIC_PERMISSION);
-            else Toast.makeText(this,"麦克风已授权，请手动切换输入法后点击录音。",Toast.LENGTH_LONG).show();
+        globalTask=text(root,"",16);
+        globalExportStatus=text(root,"",16);
+        home=column(); transcriptionPage=column(); imeSettings=column();
+        root.addView(home); root.addView(transcriptionPage); root.addView(imeSettings);
+        text(home,"离线语音转写",24);
+        modelSummary=text(home,"",16);
+        navigation(home,"转写",() -> requestPage(Page.TRANSCRIBE));
+        navigation(home,"模型",this::openModelManagement);
+        navigation(home,"输入法",() -> requestPage(Page.IME_SETTINGS));
+        navigation(home,"日志",this::openLogs);
+        disclosure(home,"使用说明","本应用不联网；模型与推理共享内存实例。CPU 推理需要较多内存，存储空间不是 RAM。无 VAD，静音可能产生幻觉。系统可能在离开后结束进程，不保证后台持续运行。");
+        buildTranscribe(); buildImeSettings();
+        if(state!=null) {
+            String saved=state.getString("language");
+            language.setSelection("English".equals(saved)?1:"auto".equals(saved)?2:0);
+        }
+        displayPage();
+    }
+    private void restoreUi(Bundle state) {
+        if(state==null)return;
+        try { page=Page.valueOf(state.getString("page","HOME")); }
+        catch(IllegalArgumentException | NullPointerException e) { page=Page.HOME; }
+        int high=state.getInt("waveHighWater",WAVE_FIRST-1);
+        synchronized(MainActivity.class) {
+            if(high<WAVE_FIRST-1 || high>WAVE_LAST) waveInvalid=true;
+            else waveHighWater=Math.max(waveHighWater,high);
+        }
+    }
+    private int dp(int n) { return Math.round(n*getResources().getDisplayMetrics().density); }
+    private LinearLayout column() { LinearLayout c=new LinearLayout(this); c.setOrientation(LinearLayout.VERTICAL); return c; }
+    private TextView text(LinearLayout root,String value,int size) {
+        TextView t=new TextView(this); t.setText(value); t.setTextSize(size); root.addView(t); return t;
+    }
+    private Button navigation(LinearLayout root,String label,Runnable action) {
+        Button b=new Button(this); b.setText(label); b.setAllCaps(false); b.setMinHeight(dp(48));
+        b.setContentDescription(label); b.setOnClickListener(v -> action.run()); root.addView(b); return b;
+    }
+    private void disclosure(LinearLayout root,String label,String value) {
+        TextView note=text(root,value,15); note.setVisibility(View.GONE);
+        navigation(root,label,() -> note.setVisibility(note.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE));
+    }
+    private void addButton(LinearLayout root,String label,Runnable action) { buttons.add(navigation(root,label,action)); }
+    private void buildTranscribe() {
+        navigation(transcriptionPage,"返回首页",this::onBackPressed); text(transcriptionPage,"转写 · 最长30秒",22);
+        language=new Spinner(this); language.setMinimumHeight(dp(48)); language.setContentDescription("转写语言");
+        language.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"中文","英语","自动"}));
+        transcriptionPage.addView(language);
+        addButton(transcriptionPage,"录音",this::requestRecording);
+        stopRecording=navigation(transcriptionPage,"停止并转写",() -> { RecordingControl r=graph.asrOperation().recording(); if(r!=null)r.stop(); });
+        cancelRecording=navigation(transcriptionPage,"丢弃录音",() -> {
+            RecordingControl r=graph.asrOperation().recording(); if(r!=null) reportCancellation(r.cancel()); refresh();
         });
-        addButton(root,"输入法：打开系统启用设置", () -> {
+        addButton(transcriptionPage,"选文件",() -> guardCapture(this::chooseWave));
+        addButton(transcriptionPage,"示例",() -> { if(canTranscribe())graph.asrOperation().startSample(selectedLanguage()); });
+        status=text(transcriptionPage,"",16);
+        result=text(transcriptionPage,"",20); result.setTextIsSelectable(true);
+        addButton(transcriptionPage,"复制",() -> {
+            ((ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("ASR",result.getText()));
+            toast("已复制");
+        });
+        addButton(transcriptionPage,"编辑",this::editResult);
+        addButton(transcriptionPage,"分享",() -> guardCapture(this::shareText));
+        Button exportBtn=navigation(transcriptionPage,"导出 TXT",() -> guardCapture(this::beginTextExport));
+        exportTXT=exportBtn; // Independent of the ASR busy button collection.
+        exportStatus=text(transcriptionPage,"",16);
+        text(transcriptionPage,"已开始的外部写入不能撤回；失败可能留下不完整文件。",15);
+        addButton(transcriptionPage,"清除结果…",() -> new AlertDialog.Builder(this).setTitle("清除应用内结果？")
+            .setMessage("清除结果、编辑文本和遗留临时录音，撤销尚未开始的 TXT 写入。已开始的外部写入不能撤回；不删除模型、外部文件或剪贴板。删除不是安全擦除。")
+            .setNegativeButton("保留",null).setPositiveButton("清除",(d,w) -> graph.asrOperation().clearResults()).show());
+        disclosure(transcriptionPage,"格式与隐私","WAV：16kHz、单声道、PCM16，0.1–30秒。分享接收方或云存储提供方可能联网同步。TXT 保存当次快照；编辑但未导出的内容不持久化。离开转写页会撤销未提交的文件选择和 TXT 写入。");
+    }
+    private void buildImeSettings() {
+        navigation(imeSettings,"返回首页",this::onBackPressed); text(imeSettings,"输入法",22);
+        text(imeSettings,"授权不开始录音；启用和选择由您在系统中决定。",16);
+        microphonePermission=navigation(imeSettings,"授权麦克风",() -> guardCapture(() -> {
+            if(!permitted())requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO},MIC_PERMISSION);
+            else toast("麦克风已授权");
+        }));
+        navigation(imeSettings,"启用输入法",() -> guardCapture(() -> {
             try { startActivity(new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS)); }
-            catch(ActivityNotFoundException e) { Toast.makeText(this,"请在系统设置中手动启用Qwen ASR语音输入法。",Toast.LENGTH_LONG).show(); }
-        });
-        addButton(root,"输入法：选择 / 切换键盘", () -> {
+            catch(ActivityNotFoundException e) { toast("请在系统设置中手动启用语音输入法。"); }
+        }));
+        navigation(imeSettings,"切换键盘",() -> guardCapture(() -> {
             android.view.inputmethod.InputMethodManager imm=(android.view.inputmethod.InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
             if(imm!=null)imm.showInputMethodPicker();
-        });
-        modelSummary=new TextView(this); modelSummary.setTextSize(16); root.addView(modelSummary);
-        Button models=new Button(this); models.setText("模型管理"); models.setMinHeight((int)(48*getResources().getDisplayMetrics().density));
-        models.setOnClickListener(v -> openModelManagement()); root.addView(models); // Always available, even while owner is busy.
-        Button logs=new Button(this); logs.setText("运行日志"); logs.setMinHeight((int)(48*getResources().getDisplayMetrics().density));
-        logs.setOnClickListener(v -> openLogs()); root.addView(logs);
-        language=new Spinner(this);
-        language.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"Chinese","English","auto"}));
-        root.addView(language);
-        addButton(root,"转写内置中文示例", () -> graph.asrOperation().startSample(language.getSelectedItem().toString()));
-        addButton(root,"选择 WAV 文件转写", () -> {
-            Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT); intent.setType("*/*"); intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); startActivityForResult(intent,AUDIO_FILE);
-        });
-        addButton(root,"开始录音（最多30秒）", () -> requestRecording());
-        stopRecording=new Button(this); stopRecording.setText("停止录音并转写");
-        stopRecording.setOnClickListener(v -> { RecordingControl r=graph.asrOperation().recording(); if(r!=null)r.stop(); }); root.addView(stopRecording);
-        cancelRecording=new Button(this); cancelRecording.setText("取消录音并丢弃");
-        cancelRecording.setOnClickListener(v -> {
-            RecordingControl r=graph.asrOperation().recording();
-            if(r!=null) graph.appState().setLastStatus(r.cancel() ? "正在取消录音，等待麦克风释放……" : "已进入转写，无法取消native推理。");
-        }); root.addView(cancelRecording);
-        addButton(root,"复制转写文本", () -> {
-            ((android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("ASR",result.getText()));
-            Toast.makeText(this,"已复制",Toast.LENGTH_SHORT).show();
-        });
-        addButton(root,"编辑转写文本", () -> editResult());
-        addButton(root,"分享文本（由您选择接收应用）", () -> {
-            if(graph.appState().lastText().isEmpty()) { graph.appState().setLastStatus("暂无文本可分享。"); return; }
-            Intent share=new Intent(Intent.ACTION_SEND); share.setType("text/plain"); share.putExtra(Intent.EXTRA_TEXT,graph.appState().lastText());
-            try { startActivity(Intent.createChooser(share,"分享当前文本")); }
-            catch(ActivityNotFoundException e) { graph.appState().setLastStatus("没有可接收文本的应用。"); }
-        });
-        Button exportBtn = new Button(this); exportBtn.setText("导出 TXT"); exportBtn.setAllCaps(false);
-        exportBtn.setMinHeight((int)(48*getResources().getDisplayMetrics().density));
-        exportBtn.setOnClickListener(v -> {
-            TextExportController.Ticket ticket = exportPage.begin(graph.appState().resultState());
-            if (ticket == null) { Toast.makeText(this,"另一次导出尚未结束、文本为空或超过上限，请重试。",Toast.LENGTH_LONG).show(); return; }
-            Intent save=new Intent(Intent.ACTION_CREATE_DOCUMENT); save.setType("text/plain"); save.addCategory(Intent.CATEGORY_OPENABLE);
-            save.putExtra(Intent.EXTRA_TITLE,"qwen-asr-"+System.currentTimeMillis()+".txt");
-            try { startActivityForResult(save,ticket.requestCode); }
-            catch(ActivityNotFoundException e) { exportPage.onResult(ticket.requestCode, null); Toast.makeText(this,"系统没有可用的文件选择器。",Toast.LENGTH_LONG).show(); }
-        });
-        root.addView(exportBtn);
-        exportTXT = exportBtn;
-        exportStatus=new TextView(this); root.addView(exportStatus);
-        TextView exportNote=new TextView(this);
-        exportNote.setText("TXT保存快照：清除结果可撤销尚未开始的写入；已经开始的外部写入不能撤回。云存储提供方可能联网同步。"); root.addView(exportNote);
-        addButton(root,"清除结果 / 临时录音", () -> new AlertDialog.Builder(this).setTitle("清除应用内结果？")
-            .setMessage("删除本应用最后一次结果、编辑文本和遗留临时录音，并撤销尚未开始的TXT写入。已经开始的外部写入不能撤回；不会删除模型、外部导出文件或系统剪贴板；删除不是安全擦除。")
-            .setNegativeButton("取消",null).setPositiveButton("清除",(dialog,which) -> graph.asrOperation().clearResults()).show());
-        status=new TextView(this); root.addView(status);
-        result=new TextView(this); result.setTextSize(20); result.setTextIsSelectable(true); root.addView(result);
+        }));
+        disclosure(imeSettings,"首次使用与隐私","1. 授权麦克风；2. 在系统设置启用；3. 切换到本输入法后手动录音。敏感输入框不可录音；临时预览需确认才输入。缺少模型时，返回首页→模型。");
     }
-
-    private void addButton(LinearLayout root,String text,Runnable action) {
-        Button b=new Button(this); b.setText(text); b.setAllCaps(false); b.setOnClickListener(v -> action.run()); root.addView(b); buttons.add(b);
+    private boolean permitted() { return checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)==android.content.pm.PackageManager.PERMISSION_GRANTED; }
+    private boolean canTranscribe() { return foreground && page==Page.TRANSCRIBE && !graph.coordinator().isBusy(); }
+    private String selectedLanguage() { int n=language.getSelectedItemPosition(); return n==1?"English":n==2?"auto":"Chinese"; }
+    private void requestPage(Page target) { if(page!=target)guardCapture(() -> changePage(target)); }
+    private void changePage(Page target) {
+        if(target==Page.HOME)revokeCaptureDialog();
+        if(page==target)return;
+        if(page==Page.TRANSCRIBE) {
+            revokeWave(); exportPage.destroy(); exportPage=new TextExportPage<>(graph.textExport());
+        }
+        page=target; exportPage.foreground(foreground && page==Page.TRANSCRIBE); displayPage(); refresh();
     }
-
+    private void displayPage() {
+        home.setVisibility(page==Page.HOME?View.VISIBLE:View.GONE);
+        transcriptionPage.setVisibility(page==Page.TRANSCRIBE?View.VISIBLE:View.GONE);
+        imeSettings.setVisibility(page==Page.IME_SETTINGS?View.VISIBLE:View.GONE);
+    }
+    /** Voluntary navigation guards before leaving; platform pause always cancels capture. */
+    private void guardCapture(Runnable action) {
+        RecordingControl r=graph.asrOperation().recording();
+        if(r==null || r.committed()) { action.run(); return; }
+        if(r.cancelled()) { graph.appState().setLastStatus("录音已取消，等待收尾。"); action.run(); return; }
+        revokeCaptureDialog();
+        if(captureDialogGeneration==Long.MAX_VALUE)return; // Never reuse an exhausted dialog capability.
+        final long generation=captureDialogGeneration;
+        captureDialog=new AlertDialog.Builder(this).setTitle("结束录音？")
+            .setMessage("停止并转写会留在转写页；丢弃后继续此动作。取消需等待麦克风真实释放。")
+            .setNegativeButton("继续录音",null)
+            .setNeutralButton("停止并转写",(d,w) -> {
+                if(!consumeCaptureDialog(generation,r))return;
+                if(r.committed())graph.appState().setLastStatus("已开始转写，将继续。"); else r.stop();
+                changePage(Page.TRANSCRIBE); refresh();
+            })
+            .setPositiveButton("丢弃并继续",(d,w) -> {
+                if(!consumeCaptureDialog(generation,r))return;
+                reportCancellation(r.cancel()); action.run(); refresh();
+            }).create();
+        captureDialog.setOnDismissListener(dialog -> { if(generation==captureDialogGeneration)revokeCaptureDialog(); });
+        try { captureDialog.show(); }
+        catch(RuntimeException unavailable) { revokeCaptureDialog(); }
+    }
+    private boolean consumeCaptureDialog(long generation,RecordingControl expected) {
+        if(generation!=captureDialogGeneration || captureDialog==null || !captureDialog.isShowing() || !foreground || isDestroyed() || isFinishing()
+            || graph.asrOperation().recording()!=expected || expected.cancelled())return false;
+        revokeCaptureDialog(); // Consume before stop/cancel/navigation or any external callback.
+        return true;
+    }
+    private void revokeCaptureDialog() {
+        if(captureDialogGeneration!=Long.MAX_VALUE)captureDialogGeneration++;
+        AlertDialog old=captureDialog; captureDialog=null;
+        if(old!=null)try { old.dismiss(); } catch(RuntimeException ignored) { /* Token is already invalid. */ }
+    }
+    private void reportCancellation(boolean accepted) {
+        graph.appState().setLastStatus(accepted?"正在取消录音，等待麦克风释放……":"已开始转写，将继续；本次操作未取消推理。");
+    }
+    private void openModelManagement() { if(page==Page.HOME)guardCapture(() -> startActivity(new Intent(this,ModelManagementActivity.class))); }
+    private void openLogs() { if(page==Page.HOME)guardCapture(() -> startActivity(new Intent(this,LogsActivity.class))); }
+    private void shareText() {
+        if(page!=Page.TRANSCRIBE || !foreground)return;
+        if(graph.appState().lastText().isEmpty()) { graph.appState().setLastStatus("暂无文本可分享。"); return; }
+        Intent share=new Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT,graph.appState().lastText());
+        try { startActivity(Intent.createChooser(share,"分享当前文本")); }
+        catch(ActivityNotFoundException e) { graph.appState().setLastStatus("没有可接收文本的应用。"); }
+    }
+    private void beginTextExport() {
+        if(page!=Page.TRANSCRIBE || !foreground)return;
+        TextExportController.Ticket ticket=exportPage.begin(graph.appState().resultState());
+        if(ticket==null) { toast("导出尚未结束、文本为空或超过上限，请重试。"); return; }
+        Intent save=new Intent(Intent.ACTION_CREATE_DOCUMENT).setType("text/plain").addCategory(Intent.CATEGORY_OPENABLE);
+        save.putExtra(Intent.EXTRA_TITLE,"qwen-asr-"+System.currentTimeMillis()+".txt");
+        try { startActivityForResult(save,ticket.requestCode); }
+        catch(RuntimeException e) { exportPage.onResult(ticket.requestCode,null); toast("系统没有可用的文件选择器。"); }
+    }
+    private void chooseWave() {
+        if(!canTranscribe() || wavePending!=0 || waveDeferred!=null)return;
+        synchronized(MainActivity.class) {
+            if(waveInvalid || waveHighWater>=WAVE_LAST) { toast("文件选择次数已达上限，请重启应用。"); return; }
+            wavePending=++waveHighWater;
+        }
+        Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try { startActivityForResult(intent,wavePending); }
+        catch(RuntimeException e) { revokeWave(); toast("无法打开文件选择器。"); }
+    }
+    private void revokeWave() { wavePending=0; waveDeferred=null; }
+    private void consumeWave() {
+        if(!foreground || page!=Page.TRANSCRIBE || waveDeferred==null)return;
+        Uri uri=waveDeferred; revokeWave();
+        if(!graph.coordinator().isBusy())graph.asrOperation().startWave(uri,selectedLanguage());
+        else toast("任务处理中；未转写，请稍后重新选择。");
+    }
     private void refresh() {
-        AppState s = graph.appState();
-        modelSummary.setText(graph.coordinator().isBusy() ? "模型：处理中（共享任务锁占用，可进入模型管理查看）"
-            : "模型：" + ModelUiText.readiness(graph.readiness().state()));
-        status.setText(s.lastStatus());
-        result.setText(s.lastText());
-        setBusy(graph.coordinator().isBusy());
-        // TXT button follows export/result availability, NOT ASR busy.
-        if (exportTXT != null) {
-            TextExportController.State exportState = graph.textExport().state();
-            exportTXT.setEnabled(foreground && !s.lastText().isEmpty() && !exportState.busy());
+        AppState s=graph.appState();
+        boolean busy=graph.coordinator().isBusy(); RecordingControl r=graph.asrOperation().recording();
+        ModelManagementState.Snapshot importing=graph.modelManagement().importSnapshot();
+        org.llmasr.minimal.modelmanagement.ModelOperationControl.Operation modelOp=graph.modelManagement().opControl().peekActive();
+        String active=r!=null && !r.committed() ? r.cancelled()?"正在取消录音，等待麦克风释放":"录音中 · 最长30秒"
+            : modelOp!=null?"模型处理中" : busy?"任务处理中，任务继续":"";
+        ModelManagementState.Snapshot modelState=graph.modelManagement().state().current();
+        String modelNotice=modelState.phase==ModelManagementState.Phase.FAILED || modelState.cleanupOutcome==ModelManagementState.Outcome.FAILED
+            ? "\n模型最近状态："+ModelUiText.task(modelState) : "";
+        globalTask.setText(active+(importing==null?"":"\n模型导入："+ModelUiText.task(importing))+modelNotice+"\n转写最近状态："+s.lastStatus());
+        String modelName="未选用";
+        for(org.llmasr.minimal.model.ModelCatalog.Row row:graph.modelManagement().catalogRows())if(row.selected)modelName=row.deployment.policy.displayName;
+        modelSummary.setText("模型："+modelName+" · "+ModelUiText.readiness(graph.readiness().state()));
+        microphonePermission.setText(permitted()?"已授权":"授权麦克风");
+        status.setText(s.lastStatus()); result.setText(s.lastText()); setBusy(busy);
+        TextExportController.State exportState=graph.textExport().state();
+        globalExportStatus.setText(exportState.phase==TextExportController.Phase.IDLE ? "" : "TXT："+TextExportController.statusText(exportState)
+            +"\n已开始的外部写入不能撤回；失败可能留下不完整文件。");
+        if(exportTXT!=null) {
+            exportTXT.setEnabled(foreground && page==Page.TRANSCRIBE && !s.lastText().isEmpty() && !exportState.busy());
             exportStatus.setText(TextExportController.statusText(exportState));
-            // Final write admission intentionally invokes no arbitrary observer
-            // before provider open. Foreground-only bounded refresh observes it.
             appStateListener.whileExportBusy(foreground && exportState.busy());
         }
-        if (navigateAfterRecording && graph.asrOperation().recording() == null) {
-            navigateAfterRecording=false;
-            startActivity(new Intent(this,ModelManagementActivity.class));
-        }
     }
-
-    private final UiRefresh appStateListener = new UiRefresh(this);
-    private static final class UiRefresh implements AppState.Listener, ModelReadiness.Listener, TaskCoordinator.Listener, TextExportController.Listener, Runnable {
-        private final java.lang.ref.WeakReference<MainActivity> target;
-        private final Handler main = new Handler(Looper.getMainLooper());
-        UiRefresh(MainActivity activity) { target = new java.lang.ref.WeakReference<>(activity); }
-        @Override public synchronized void onChange() { main.removeCallbacks(this); main.post(this); }
-        synchronized void whileExportBusy(boolean busy) {
-            main.removeCallbacks(this);
-            if (busy) main.postDelayed(this, 250L); // At most one foreground refresh.
-        }
-        synchronized void detach() { main.removeCallbacks(this); }
-        @Override public void run() {
-            MainActivity activity = target.get();
-            if (activity != null && activity.foreground && !activity.isDestroyed() && !activity.isFinishing())
-                activity.refresh();
-        }
-    }
-
-    @Override protected void onResume() {
-        super.onResume();
-        windowBack.resumed();
-        foreground=true;
-        if (graph == null) return;
-        graph.appState().addListener(appStateListener);
-        graph.coordinator().addListener(appStateListener);
-        graph.readiness().addListener(appStateListener);
-        graph.textExport().addListener(appStateListener);
-        exportPage.foreground(true);
-        refresh();
-    }
-    @Override protected void onPause() {
-        windowBack.paused();
-        foreground=false;
-        if (graph != null) {
-            navigateAfterRecording=false;
-            graph.appState().removeListener(appStateListener);
-            graph.coordinator().removeListener(appStateListener);
-            graph.readiness().removeListener(appStateListener);
-            graph.textExport().removeListener(appStateListener);
-            exportPage.foreground(false);
-            appStateListener.detach();
-            graph.asrOperation().cancelRecording();
-        }
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        super.onPause();
-    }
-
-    private void openModelManagement() {
-        RecordingControl recording=graph.asrOperation().recording();
-        if(recording == null || recording.committed()) {
-            startActivity(new Intent(this,ModelManagementActivity.class)); return;
-        }
-        new AlertDialog.Builder(this).setTitle("先结束录音？")
-            .setMessage("停止后转写：留在此页等采集交接完成，再打开模型管理查看；也可明确丢弃录音并离开。不会静默取消。")
-            .setNegativeButton("留在此页",null)
-            .setNeutralButton("停止并等待",(d,w) -> { recording.stop(); navigateAfterRecording=true; refresh(); })
-            .setPositiveButton("取消并离开",(d,w) -> { recording.cancel(); startActivity(new Intent(this,ModelManagementActivity.class)); }).show();
-    }
-
-    /** Inference may continue while viewing logs; active capture needs explicit consent. */
-    private void openLogs() {
-        RecordingControl recording = graph.asrOperation().recording();
-        if (recording == null || recording.committed()) {
-            startActivity(new Intent(this, LogsActivity.class)); return;
-        }
-        new AlertDialog.Builder(this).setTitle("录音尚未结束")
-            .setMessage("打开日志会离开录音页面。请先停止并转写，或明确丢弃本次录音后查看日志。")
-            .setNegativeButton("继续录音",null)
-            .setNeutralButton("停止并留在此页",(d,w) -> recording.stop())
-            .setPositiveButton("丢弃并查看日志",(d,w) -> {
-                recording.cancel(); startActivity(new Intent(this, LogsActivity.class));
-            }).show();
-    }
-
-    private void requestRecording() {
-        if(graph.coordinator().isBusy() || !foreground)return;
-        if(checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)!=android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO},MIC_PERMISSION); return;
-        }
-        if(!graph.readiness().snapshot().ready()) {
-            graph.appState().setLastStatus("模型未准备，请打开模型管理完整校验或快速恢复已校验证明。"); return;
-        } // Worker admission rechecks the shared proof before microphone access.
-        graph.asrOperation().startRecording(language.getSelectedItem().toString());
-    }
-
-    @Override public void onRequestPermissionsResult(int request,String[] permissions,int[] grants) {
-        super.onRequestPermissionsResult(request,permissions,grants);
-        if(request==MIC_PERMISSION) {
-            boolean allowed=grants.length>0 && grants[0]==android.content.pm.PackageManager.PERMISSION_GRANTED;
-            graph.appState().setLastStatus(allowed ? "已授权麦克风；请点击开始录音。" : "麦克风权限未授予。仍可选择WAV；若已禁止再次询问，可在系统应用权限中手动开启。");
-        }
-    }
-
     private void setBusy(boolean value) {
         for(Button b:buttons)b.setEnabled(!value); language.setEnabled(!value);
         RecordingControl r=graph.asrOperation().recording();
-        if(stopRecording != null) stopRecording.setEnabled(value && r!=null && !r.stopped());
-        if(cancelRecording != null) cancelRecording.setEnabled(value && r!=null && !r.cancelled() && !r.committed());
+        stopRecording.setEnabled(value && r!=null && !r.stopped() && !r.cancelled() && !r.committed());
+        cancelRecording.setEnabled(value && r!=null && !r.cancelled() && !r.committed());
         if(value)getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
-
+    private void requestRecording() {
+        if(!canTranscribe())return;
+        if(!permitted()) { guardCapture(() -> requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO},MIC_PERMISSION)); return; }
+        if(!graph.readiness().snapshot().ready()) {
+            graph.appState().setLastStatus("模型未准备，请返回首页→模型，校验或恢复证明。"); return;
+        }
+        graph.asrOperation().startRecording(selectedLanguage());
+    }
+    @Override public void onRequestPermissionsResult(int request,String[] permissions,int[] grants) {
+        super.onRequestPermissionsResult(request,permissions,grants);
+        if(request==MIC_PERMISSION && graph!=null)graph.appState().setLastStatus(grants.length>0 && grants[0]==android.content.pm.PackageManager.PERMISSION_GRANTED
+            ?"已授权麦克风；请手动点击录音。":"麦克风未授权；仍可选 WAV，可在系统应用权限中开启。");
+    }
     private void editResult() {
-        final ResultState.Snapshot original = graph.appState().resultState().begin();
+        final ResultState.Snapshot original=graph.appState().resultState().begin();
         if(original.isEmpty()) { graph.appState().setLastStatus("暂无文本可编辑。"); return; }
         EditText editor=new EditText(this); editor.setText(original.text); editor.setMinLines(4);
         editor.setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(100000)});
         new AlertDialog.Builder(this).setTitle("编辑结果（原始推理报告保留）").setView(editor)
             .setNegativeButton("取消",null).setPositiveButton("应用",(d,w) -> {
-                final String edited=editor.getText().toString();
-                graph.asrOperation().editResult(original.revision, edited);
+                final String edited=editor.getText().toString(); graph.asrOperation().editResult(original.revision,edited);
             }).show();
     }
-
+    private void toast(String value) { Toast.makeText(this,value,Toast.LENGTH_LONG).show(); }
     @Override protected void onActivityResult(int request,int code,Intent data) {
         super.onActivityResult(request,code,data);
-        // Foreign-callback rejection: the page only accepts a request code
-        // that matches its active ticket. Replay of old request codes is
-        // ignored.
-        if (exportPage != null) {
-            Uri target = (code == RESULT_OK && data != null) ? data.getData() : null;
-            if (exportPage.onResult(request, target)) return;
+        if(page==Page.TRANSCRIBE && exportPage!=null) {
+            Uri target=(code==RESULT_OK && data!=null)?data.getData():null;
+            if(exportPage.onResult(request,target))return;
         }
-        if(code != RESULT_OK || data == null || data.getData() == null) return;
-        final Uri uri = data.getData();
-        if(request == AUDIO_FILE) {
-            graph.asrOperation().startWave(uri, language.getSelectedItem().toString());
-        }
+        if(request!=wavePending || wavePending==0 || page!=Page.TRANSCRIBE)return;
+        wavePending=0; // Consume before any callback/foreground transition; never reuse this code.
+        Uri uri=code==RESULT_OK && data!=null && data.getClipData()==null?data.getData():null;
+        if(uri!=null && "content".equals(uri.getScheme()))waveDeferred=uri;
+        consumeWave();
     }
-
-    @Override public void onBackPressed() {
-        if (graph == null) { super.onBackPressed(); return; }
+    @Override protected void onNewIntent(Intent intent) { super.onNewIntent(intent); revokeCaptureDialog(); pendingHome=true; }
+    private void consumeHomeEntry() {
+        if(!pendingHome)return;
+        pendingHome=false;
         RecordingControl r=graph.asrOperation().recording();
-        if(r!=null && r.cancel()) { graph.appState().setLastStatus("正在取消录音，等待麦克风释放……"); return; }
-        if(graph.coordinator().isBusy()) { Toast.makeText(this,"任务执行中；本版不支持安全中断，请等待完成。",Toast.LENGTH_LONG).show(); return; }
-        super.onBackPressed();
+        if(r!=null && r.cancelled())graph.appState().setLastStatus("录音已取消，等待收尾。");
+        else if(r!=null && r.committed())graph.appState().setLastStatus("已开始转写，将继续。");
+        else if(graph.coordinator().isBusy())graph.appState().setLastStatus("任务继续，等待实际收尾。");
+        changePage(Page.HOME);
+    }
+    @Override protected void onSaveInstanceState(Bundle out) {
+        out.putString("page",page.name()); if(language!=null)out.putString("language",selectedLanguage());
+        synchronized(MainActivity.class) { out.putInt("waveHighWater",waveInvalid?-1:waveHighWater); }
+        super.onSaveInstanceState(out);
+    }
+    @Override public void onBackPressed() {
+        if(graph==null) { super.onBackPressed(); return; }
+        guardCapture(() -> {
+            if(page!=Page.HOME) { if(graph.coordinator().isBusy())toast("任务继续，结果稍后可查看。"); changePage(Page.HOME); }
+            else if(graph.coordinator().isBusy() || graph.textExport().state().busy())new AlertDialog.Builder(this).setTitle("离开应用？")
+                .setMessage("任务将继续；离开后系统可能结束进程。")
+                .setNegativeButton("留在首页",null).setPositiveButton("离开",(d,w) -> MainActivity.super.onBackPressed()).show();
+            else super.onBackPressed();
+        });
+    }
+    @Override protected void onResume() {
+        super.onResume(); windowBack.resumed(); foreground=true;
+        if(graph==null)return;
+        graph.appState().addListener(appStateListener); graph.coordinator().addListener(appStateListener);
+        graph.readiness().addListener(appStateListener); graph.textExport().addListener(appStateListener);
+        graph.modelManagement().state().addListener(appStateListener);
+        consumeHomeEntry(); // Before picker/queued admission: a new App entry cannot revive the old page.
+        exportPage.foreground(page==Page.TRANSCRIBE); consumeWave(); refresh();
+    }
+    @Override protected void onPause() {
+        windowBack.paused(); foreground=false; revokeCaptureDialog();
+        if(graph!=null) {
+            graph.appState().removeListener(appStateListener); graph.coordinator().removeListener(appStateListener);
+            graph.readiness().removeListener(appStateListener); graph.textExport().removeListener(appStateListener);
+            graph.modelManagement().state().removeListener(appStateListener);
+            exportPage.foreground(false); appStateListener.detach(); graph.asrOperation().cancelRecording();
+        }
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); super.onPause();
     }
     @Override protected void onDestroy() {
-        if (graph != null && exportPage != null) exportPage.destroy();
-        appStateListener.detach();
-        super.onDestroy();
+        revokeCaptureDialog(); revokeWave(); if(exportPage!=null)exportPage.destroy(); appStateListener.detach(); super.onDestroy();
+    }
+    private final UiRefresh appStateListener=new UiRefresh(this);
+    private static final class UiRefresh implements AppState.Listener, ModelReadiness.Listener, TaskCoordinator.Listener, TextExportController.Listener, ModelManagementState.Listener, Runnable {
+        private final java.lang.ref.WeakReference<MainActivity> target;
+        private final Handler main=new Handler(Looper.getMainLooper());
+        UiRefresh(MainActivity a) { target=new java.lang.ref.WeakReference<>(a); }
+        @Override public synchronized void onChange() { main.removeCallbacks(this); main.post(this); }
+        synchronized void whileExportBusy(boolean busy) { main.removeCallbacks(this); if(busy)main.postDelayed(this,250L); }
+        synchronized void detach() { main.removeCallbacks(this); }
+        @Override public void run() {
+            MainActivity a=target.get(); if(a!=null && a.foreground && !a.isDestroyed() && !a.isFinishing())a.refresh();
+        }
     }
 }

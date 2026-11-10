@@ -254,7 +254,9 @@ public final class NextAppContractTest {
             service.manager.event=()->events.add("picker");
         }
         android.widget.Button button(String label) {return findButton(root,label);}
-        void click(String label) {check(button(label).performClick(),"actual enabled button: "+label);}
+        void click(String label) {check(button(label)!=null&&button(label).isEnabled()&&button(label).performClick(),"actual enabled button: "+label);
+            if(label.equals("录音") && String.valueOf(button(label).getContentDescription()).equals("确认丢弃预览并录音"))button(label).performClick();}
+
         void stale() throws Exception {
             check(!original.valid()&&original.preview().isEmpty()&&field(service,"session")==null,
                 "external switch must invalidate before platform request");
@@ -270,8 +272,18 @@ public final class NextAppContractTest {
         }
     }
     static android.widget.Button findButton(android.widget.LinearLayout root,String label) {
+        if(!root.isVisibleForHost())return null;
         for(android.view.View child:root.children) {
-            if(child instanceof android.widget.Button&&((android.widget.Button)child).getText().toString().equals(label)) return (android.widget.Button)child;
+            if(!child.isVisibleForHost())continue;
+            if(child instanceof android.widget.Button) {
+                android.widget.Button b=(android.widget.Button)child;
+                String d=String.valueOf(b.getContentDescription());
+                boolean match=d.equals(label) || label.equals("录音")&&(d.equals("开始录音")||d.equals("重新录音")||d.equals("重试录音")||d.equals("确认丢弃预览并录音"))
+                    || label.equals("停止")&&d.equals("停止录音并转写") || label.equals("确认输入")&&d.equals("输入预览文本")
+                    || label.equals("丢弃 / 重新开始")&&Arrays.asList("取消准备并丢弃","取消录音并丢弃","丢弃本次结果，转写继续","正在取消，等待任务释放","清除失败并重新开始","丢弃预览","重新开始会话").contains(d)
+                    || label.equals("切换键盘")&&d.equals("选择输入法") || label.equals("App")&&d.equals("打开App");
+                if(match)return b;
+            }
             if(child instanceof android.widget.LinearLayout) {
                 android.widget.Button b=findButton((android.widget.LinearLayout)child,label);if(b!=null)return b;
             }
@@ -279,6 +291,28 @@ public final class NextAppContractTest {
         return null;
     }
     static void imeVisibility() throws Exception {
+        try(ImeFixture f=new ImeFixture()) {
+            android.widget.Button tool=f.button("App");check(tool!=null&&tool.isVisibleForHost()&&tool.isEnabled(),"Next selector requires visible enabled external tool");
+            android.widget.Button action=f.button("录音");check(action!=null&&action.isVisibleForHost()&&action.isEnabled(),"Next selector requires visible enabled primary action");
+        }
+        try(ImeFixture f=new ImeFixture()) {
+            f.button("录音").performClick();android.widget.Button discard=f.button("丢弃 / 重新开始");
+            check(discard==field(f.service,"cancel"),"pending rerecord discard selector must target actual cancel");
+            int captures=f.captures,writes=f.writes;discard.performClick();
+            check(!f.original.valid()&&f.original.preview().isEmpty()&&f.captures==captures&&f.writes==writes,"pending rerecord discard invalidates without capture or commit");
+        }
+        for(String invalid:Arrays.asList("permission","shown"))try(ImeFixture f=new ImeFixture()) {
+            f.button("录音").performClick();check(field(f.service,"rerecordFor")!=null,"pending confirmation starts without capture");
+            if(invalid.equals("permission"))f.service.permission=1;else f.service.shown=false;
+            renderIme(f.service);check(field(f.service,"rerecordFor")==null,"observed permission or shown loss revokes rerecord confirmation");
+            f.service.permission=0;f.service.shown=true;renderIme(f.service);f.button("录音").performClick();
+            check(f.captures==1&&field(f.service,"rerecordFor")!=null,"restored eligibility first click only asks again");
+        }
+        try(ImeFixture f=new ImeFixture()) {
+            f.button("录音").performClick();check(String.valueOf(f.button("录音").getContentDescription()).equals("确认丢弃预览并录音")&&f.captures==1,"preview re-record asks explicit inline confirmation");
+            f.service.info.fieldId++;f.service.onStartInputView(f.service.info,false);
+            check(field(f.service,"rerecordFor")==null&&String.valueOf(f.button("录音").getContentDescription()).equals("开始录音")&&f.captures==1&&!f.owner.isBusy(),"late re-record confirmation cannot start new editor session");
+        }
         android.inputmethodservice.InputMethodService direct=new android.inputmethodservice.InputMethodService();direct.visibilityModel=true;
         check(direct.switchToPreviousInputMethod()&&direct.previousVisible,"model direct previous keeps show intent");
         android.inputmethodservice.InputMethodService hidden=new android.inputmethodservice.InputMethodService();hidden.visibilityModel=true;
@@ -322,7 +356,7 @@ public final class NextAppContractTest {
         }
     }
     static void imeHideFailure() throws Exception {
-        for(String label:new String[]{"切换键盘","设置 / 授权","模型管理"}) for(boolean failHide:new boolean[]{false,true}) try(ImeFixture f=new ImeFixture()) {
+        for(String label:new String[]{"切换键盘","App"}) for(boolean failHide:new boolean[]{false,true}) try(ImeFixture f=new ImeFixture()) {
             f.service.hideChangesShown=true;
             if(failHide)f.service.hideFailure=new IllegalStateException("hide sentinel");
             try{f.click(label);}catch(RuntimeException ignored){/* Assert observable attempt outside listener. */}
@@ -393,7 +427,7 @@ public final class NextAppContractTest {
             android.widget.LinearLayout destroyedRoot=(android.widget.LinearLayout)f.service.onCreateInputView();
             check(!findButton(destroyedRoot,"丢弃 / 重新开始").isEnabled(),"destroyed service cannot restart");
         }
-        for(String label:new String[]{"设置 / 授权","模型管理"})try(ImeFixture f=new ImeFixture()) {f.click(label);f.stale();check(f.service.hides==1,"old external actions retain hide");}
+        for(String label:new String[]{"App"})try(ImeFixture f=new ImeFixture()) {f.click(label);f.stale();check(f.service.hides==1,"old external actions retain hide");}
         try(ImeFixture f=new ImeFixture()) {
             f.service.hideChangesShown=true;f.click("返回上一输入法");f.service.shown=true;
             f.service.onStartInputView(f.service.info,false);
@@ -499,7 +533,8 @@ public final class NextAppContractTest {
             service.onStartInputView(service.info,false);view=(android.widget.LinearLayout)service.onCreateInputView();
         }
         android.widget.Button button(String label){return findButton(view,label);}
-        void click()throws Exception{check(button("录音").performClick(),"record click enabled");}
+        void click()throws Exception{check(button("录音").performClick(),"record click enabled");
+            if(String.valueOf(button("录音").getContentDescription()).equals("确认丢弃预览并录音"))button("录音").performClick();}
         void run()throws Exception{check(jobs.size()==1,"exactly one owned transaction");jobs.remove(0).run();check(!owner.isBusy(),"owner released after real work");}
         void threaded()throws Exception{
             Runnable task=jobs.remove(0);worker=new Thread(()->{try{task.run();}catch(Throwable t){workerFailure.set(t);}},"first-use-test");worker.start();
@@ -540,7 +575,7 @@ public final class NextAppContractTest {
         for(String damage:Arrays.asList("missing","hash"))try(FirstUse f=new FirstUse()) {
             if(damage.equals("missing"))Files.delete(f.root.resolve("models/config.json"));else Files.write(f.root.resolve("models/config.json"),new byte[]{3,2,1});
             f.click();f.run();check(f.captures[0]==0&&f.loads[0]==0&&!f.ready.isReady(),"bad or missing model capture zero");
-            check(((ImeSession)field(f.service,"session")).status().contains("导入 / 修复"),"missing model repair guidance");
+            check(((ImeSession)field(f.service,"session")).status().contains("返回首页→模型"),"missing model repair guidance");
         }
         for(String stage:Arrays.asList("恢复","SHA-256：","加载 / 复用"))try(FirstUse f=new FirstUse()) {
             f.onStage=()->{if(!f.stages.isEmpty()&&f.stages.get(f.stages.size()-1).contains(stage))f.controller.invalidate();};
@@ -617,7 +652,7 @@ public final class NextAppContractTest {
             String[] shown={null},expected={null};
             f.onLoad=()->{try{renderIme(f.service);shown[0]=imeStatusText(f.service);expected[0]=((ImeSession)field(f.service,"session")).status();}catch(Exception e){throw new AssertionError(e);}};
             f.click();f.run();
-            check(shown[0]!=null&&shown[0].equals(expected[0]),"owned IME task must retain session progress while resident active");
+            check(shown[0]!=null&&expected[0]!=null&&!expected[0].isEmpty()&&shown[0].endsWith("\n"+expected[0]),"owned IME task must retain session progress while resident active");
         }
     }
     static String imeStatusText(AsrImeService service)throws Exception{return ((android.widget.TextView)field(service,"status")).getText().toString();}

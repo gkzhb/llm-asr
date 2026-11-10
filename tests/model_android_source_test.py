@@ -8,22 +8,22 @@ android = root / 'android/app'
 SRC_ROOT = android / 'src/org/llmasr/minimal'
 ns = '{http://schemas.android.com/apk/res/android}'
 manifest = ET.parse(android / 'AndroidManifest.xml').getroot()
-assert manifest.get(ns+'versionName') == '0.7-debug'
-assert manifest.get(ns+'versionCode') == '7'
+assert manifest.get(ns+'versionName') == '0.8-debug'
+assert manifest.get(ns+'versionCode') == '8'
 def check_version_declarations(source, xml):
     # AGP owns final package version after staging removes the source attributes.
     code = re.findall(r'^\s*versionCode\s*=\s*(\d+)\s*$', source, re.M)
     name = re.findall(r'^\s*versionName\s*=\s*"([^"]+)"\s*$', source, re.M)
-    if code != ['7'] or name != ['0.7-debug'] or code != [xml.get(ns+'versionCode')] or name != [xml.get(ns+'versionName')]:
-        raise AssertionError('App version declarations must agree at 7 / 0.7-debug')
+    if code != ['8'] or name != ['0.8-debug'] or code != [xml.get(ns+'versionCode')] or name != [xml.get(ns+'versionName')]:
+        raise AssertionError('App version declarations must agree at 8 / 0.8-debug')
 dsl = (android / 'build.gradle.kts').read_text()
 check_version_declarations(dsl, manifest)
-for before, after in [('versionCode = 7', 'versionCode = 6'), ('versionName = "0.7-debug"', 'versionName = "0.6-debug"')]:
+for before, after in [('versionCode = 8', 'versionCode = 7'), ('versionName = "0.8-debug"', 'versionName = "0.7-debug"')]:
     assert dsl.count(before) == 1, 'unique version declaration fixture'
     try:
         check_version_declarations(dsl.replace(before, after), manifest)
     except AssertionError as failure:
-        assert str(failure) == 'App version declarations must agree at 7 / 0.7-debug'
+        assert str(failure) == 'App version declarations must agree at 8 / 0.8-debug'
     else:
         raise AssertionError('version declaration guard accepted independent stale field')
 assert [p.get(ns+'name') for p in manifest.findall('uses-permission')] == ['android.permission.RECORD_AUDIO']
@@ -97,7 +97,7 @@ assert 'ModelVerification(policy.manifest, ready, io.proof(key), resident, domai
 assert 'modelAccess.pin()' in java('AsrOperation') and 'modelAccess.pin()' in java('ImeBackend')
 assert 'modelAccess.configPath(' in java('AsrOperation') and 'modelAccess.configPath(' in java('ImeBackend')
 assert 'startRestore()' in java('ModelManagementController')
-assert '快速恢复已校验证明（不做 SHA）' in java('ModelManagementActivity')
+assert '恢复证明不重新计算 SHA' in java('ModelManagementActivity')
 assert java('AsrOperation').count('modelAccess.requireResidentReady()') == 3
 assert 'backend.requireModelReady()' in java('ImeController')
 # Only the explicit user-intent preparation helper may hash; ordinary adapter gates remain light.
@@ -118,10 +118,9 @@ assert 'MODEL_TREE' not in java('MainActivity')
 assert 'setVerified(true)' not in '\n'.join(p.read_text() for p in (android/'src').rglob('*') if p.suffix in {'.java', '.kt'})
 ime = java('AsrImeService')
 ime_kotlin = (SRC_ROOT / 'AsrImeService.kt').is_file()
-if ime_kotlin:
-    assert re.search(r'"模型管理"\) \{ leaveForExternalUi \{ startActivity\(Intent\(this, ModelManagementActivity::class.java\).addFlags\(Intent.FLAG_ACTIVITY_NEW_TASK\)', ime)
-else:
-    assert re.search(r'"模型管理", \(\) -> leaveForExternalUi\(\(\) ->\s*startActivity\(new Intent\(this, ModelManagementActivity.class\).addFlags\(Intent.FLAG_ACTIVITY_NEW_TASK\)', ime)
+assert 'ModelManagementActivity' not in ime, 'IME App entry must not bypass HOME'
+assert 'MainActivity::class.java' in ime and 'Intent.FLAG_ACTIVITY_CLEAR_TOP' in ime
+assert 'leaveForExternalUi' in ime
 activity = java('ModelManagementActivity')
 assert 'takePersistableUriPermission' not in activity
 assert 'Intent.EXTRA_ALLOW_MULTIPLE,false' in activity and 'Intent.ACTION_OPEN_DOCUMENT)' in activity
@@ -196,8 +195,9 @@ for old, replacement in [(queue, queue.replace('(1)', '(2)')), (codec, 'bytesWit
         raise AssertionError('log export guard accepted target mutation')
 assert ('runtimeLogStore()!!.snapshot()' if log_kotlin else 'runtimeLogStore().snapshot()') in log_page and 'RuntimeLogText.export(state)' in log_page
 assert 'refresh.stop()' in log_page and ('WeakReference(a)' if log_kotlin else 'WeakReference<LogsActivity>') in log_page
-assert 'recording.cancel(); startActivity(new Intent(this, LogsActivity.class))' in java('MainActivity')
-assert 'if (page.ownsActive())' in activity
+assert 'if(page==Page.HOME)guardCapture(() -> startActivity(new Intent(this,LogsActivity.class)))' in java('MainActivity')
+assert 'reportCancellation(r.cancel()); action.run()' in java('MainActivity')
+assert 'LogsActivity' not in activity and 'page.cancelOwn(); returnHome();' in activity
 # Isolate weakening of just the LogsActivity node, leaving the model page intact.
 log_node = fixture[fixture.index('    E: activity\n      A: android:name="org.llmasr.minimal.LogsActivity"'):]
 for bad_node in [log_node.replace('=false', '=true'),

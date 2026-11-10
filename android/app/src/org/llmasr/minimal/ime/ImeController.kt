@@ -27,6 +27,30 @@ class ImeController(private val coordinator: TaskCoordinator?, private val backe
     }
     enum class Phase { IDLE, PREPARING, CAPTURING, TRANSCRIBING }
     private var phase = Phase.IDLE
+    enum class UiState { IDLE, PREPARING, RECORDING, TRANSCRIBING, CANCELLING, ERROR, OTHER_BUSY, UNAVAILABLE }
+    data class Presentation(val state: UiState, val busy: Boolean, val ownsTask: Boolean,
+                            val hasPreview: Boolean, val detail: String, val discarded: Boolean)
+    private var failed = false
+    private var taskSession: ImeSession? = null
+    /** One typed snapshot; never infer a phase or failure from translated status text. */
+    @Synchronized fun presentation(): Presentation {
+        val owned = recording != null
+        val busy = owned || coordinator!!.isBusy()
+        val active = current?.takeIf { it.valid }
+        val state = when {
+            owned && recording!!.cancelled() -> UiState.CANCELLING
+            owned && phase == Phase.PREPARING -> UiState.PREPARING
+            owned && phase == Phase.CAPTURING -> UiState.RECORDING
+            owned && phase == Phase.TRANSCRIBING -> UiState.TRANSCRIBING
+            busy -> UiState.OTHER_BUSY
+            active == null -> UiState.UNAVAILABLE
+            failed -> UiState.ERROR
+            else -> UiState.IDLE
+        }
+        return Presentation(state, busy, owned, active != null && active.preview.isNotEmpty(),
+            if (!owned || active === taskSession) active?.status ?: "" else "",
+            owned && active !== taskSession)
+    }
     fun interface Commit { fun write(text: String?): Boolean }
     private var current: ImeSession? = null
     private var recording: RecordingControl? = null
@@ -44,6 +68,7 @@ class ImeController(private val coordinator: TaskCoordinator?, private val backe
         val session = current
         if (session != null) { session.valid = false; session.preview = ""; session.status = "" }
         current = null
+        failed = false
         recording?.cancel()
         notifyChanged()
     }
@@ -67,6 +92,9 @@ class ImeController(private val coordinator: TaskCoordinator?, private val backe
     @Synchronized private fun status(session: ImeSession, rev: Long, text: String) {
         if (live(session, rev)) { session.status = text; notifyChanged() }
     }
+    @Synchronized private fun failure(session: ImeSession, rev: Long, text: String) {
+        if (live(session, rev)) { failed = true; status(session, rev, text) }
+    }
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     @Synchronized open fun start(session: ImeSession?, language: String?): Boolean = start(session, language, CaptureIntent { true })
     @Synchronized fun start(session: ImeSession?, language: String?, intent: CaptureIntent): Boolean {
@@ -76,11 +104,11 @@ class ImeController(private val coordinator: TaskCoordinator?, private val backe
         val rev = session.revision + 1
         val policy = object : RequestRunner.Lifecycle {
             override fun admitted(ctx: RequestContext) { status(session, rev, "正在准备模型，可丢弃取消；尚未录音……") }
-            override fun rejected(ctx: RequestContext) { status(session, rev, "任务执行器已关闭，无法启动新任务。") }
+            override fun rejected(ctx: RequestContext) { failure(session, rev, "任务执行器已关闭，无法启动新任务。") }
             override fun cancelled(ctx: RequestContext) { status(session, rev, "已取消录音，音频已丢弃。") }
-            override fun failed(ctx: RequestContext, failure: Throwable) { status(session, rev, "失败：" + failure.message + "；模型缺失或损坏请打开模型管理导入 / 修复。") }
+            override fun failed(ctx: RequestContext, failure: Throwable) { failure(session, rev, "失败：" + failure.message + "；模型缺失或损坏请返回首页→模型。") }
             override fun cleanupFailed(ctx: RequestContext, failure: Throwable) {
-                synchronized(this@ImeController) { status(session, rev, session.status + "\n临时文件清理失败：" + failure.message) }
+                synchronized(this@ImeController) { failure(session, rev, session.status + "\n临时文件清理失败：" + failure.message) }
             }
         }
         val cleanupBackend = backend!! // Java bound method reference dereferences before runner construction.
@@ -112,12 +140,14 @@ class ImeController(private val coordinator: TaskCoordinator?, private val backe
             }
         }, {
             session.revision = rev
+            failed = false
+            taskSession = session
             session.preview = ""
             session.consumed = false
             recording = control
             phase = Phase.PREPARING
         }, {
-            synchronized(this@ImeController) { if (recording === control) { recording = null; phase = Phase.IDLE } }
+            synchronized(this@ImeController) { if (recording === control) { recording = null; taskSession = null; phase = Phase.IDLE } }
             notifyChanged()
         })
     }
@@ -131,6 +161,7 @@ class ImeController(private val coordinator: TaskCoordinator?, private val backe
         var success = false
         try { success = connection != null && connection.write(text) }
         catch (ignored: RuntimeException) { /* Never retry an uncertain editor write. */ }
+        failed = !success
         session.status = if (success) "已提交。可以录制下一句。" else "目标未确认接收，未自动重试；请检查输入框。"
         notifyChanged()
         return success

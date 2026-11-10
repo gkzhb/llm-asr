@@ -41,7 +41,7 @@ def case(module, *, primary=None, ledger='valid', restore_failure=None, probe_fa
         target = root / 'evidence/AsrImeService.kt'
         original = (b' && !busy && wired)\n'
                     b'service.isInputViewShown && service.permitted()\n'
-                    b'else if (busy && controller!!.ownsTask()) session!!.status()\n')
+                    b'stage + (if (allowed && presentation.detail.isNotEmpty()) "\\n" + presentation.detail else "")\n')
         calls = []
         active = False
         restored = 0

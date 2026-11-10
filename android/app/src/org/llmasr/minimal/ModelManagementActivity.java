@@ -42,7 +42,9 @@ public final class ModelManagementActivity extends Activity {
     private final ActivityWindow.BackRegistration windowBack = new ActivityWindow.BackRegistration(this, this::onBackPressed);
     private ModelPageSession<Uri> page;
     private TextView readiness, storage, task, files, busy, importTask;
-    private LinearLayout cards, details;
+    private LinearLayout cards, details, listActions;
+    private TextView detailRisk;
+    private boolean filesExpanded;
     private String detailModel;
     private Button select;
     private Button choose, chooseZip, verify, restore, delete, cancel, prepare, release;
@@ -70,20 +72,15 @@ public final class ModelManagementActivity extends Activity {
         ScrollView scroll = new ScrollView(this); scroll.setFillViewport(true); scroll.setBackgroundColor(Color.rgb(248,250,252)); scroll.addView(root);
         setContentView(scroll);
         ActivityWindow.configure(this, scroll);
-        button(root, "‹ 返回 · 模型管理", this::onBackPressed);
+        button(root, "返回", this::onBackPressed);
         text(root,"模型管理",24);
         text(root,"兼容 Qwen3-ASR-0.6B · MNN · CPU。自定义模型精度为导入者声明，不代表数学验证或可信来源认证。",16);
         cards = new LinearLayout(this); cards.setOrientation(LinearLayout.VERTICAL); root.addView(cards);
         detailModel = saved == null ? null : saved.getString("detailModel");
-        button(root, "运行日志（独立页面）", () -> {
-            if (page.ownsActive()) {
-                toast("请等待本页模型操作结束，或先取消并等待收尾，再查看日志。"); return;
-            }
-            startActivity(new Intent(this, LogsActivity.class));
-        });
-        details = new LinearLayout(this); details.setOrientation(LinearLayout.VERTICAL); root.addView(details);
-        button(details,"‹ 返回模型列表",() -> { detailModel = null; invalidation.onChange(); });
-        select = button(details,"选用此模型",() -> {
+        listActions = new LinearLayout(this); listActions.setOrientation(LinearLayout.VERTICAL); root.addView(listActions);
+        details = new LinearLayout(this); details.setOrientation(LinearLayout.VERTICAL); details.setVisibility(View.GONE); root.addView(details);
+        button(details,"返回模型列表",this::onBackPressed);
+        select = button(details,"选用",() -> {
             if (detailModel != null && !graph.modelManagement().startSelect(detailModel)) rejected();
             invalidation.onChange();
         });
@@ -91,35 +88,42 @@ public final class ModelManagementActivity extends Activity {
         TextView metadata = text(details, "逐文件预期 SHA-256 与检查结果见下方",14); metadata.setTextIsSelectable(true); metadata.setVisibility(View.GONE);
         button(details,"展开 / 收起清单说明", () -> metadata.setVisibility(metadata.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE));
         text(details,"内部存储",20); storage = text(details,"",16);
-        text(root,"逻辑文件字节不是物理磁盘分配；可用存储不是 RAM。删除释放量仅为估计。\n云文件提供方可能联网获取模型，优先选择专用本地目录；本应用无网络权限。",15);
+        detailRisk = text(details,"",15);
         busy = text(root,"",16);
         importTask = text(root,"",16); // Global discovery has no installation identity yet.
-        cancel = button(root,"取消本页操作", () -> { page.cancelOwn(); invalidation.onChange(); });
-        chooseZip = button(root,"选择模型 ZIP 包 / 修复导入",() -> chooseModel(ModelPickerTickets.Mode.ZIP));
-        choose = button(root,"选择模型目录 / 修复导入（兼容入口）",this::chooseDirectory);
-        text(root,"ZIP 支持旧固定包或受控 v2 七资产变体；导入不自动切换当前模型。目录入口仅修复旧固定部署。先审核后逐文件发布，不是整包回滚；私有 ZIP 另占存储，低空间不删除旧模型。",15);
-        restore = button(details,"快速恢复已校验证明（不做 SHA）", () -> {
+        cancel = button(root,"取消操作", () -> { page.cancelOwn(); invalidation.onChange(); });
+        chooseZip = button(listActions,"导入 ZIP",() -> chooseModel(ModelPickerTickets.Mode.ZIP));
+        LinearLayout compatibility = new LinearLayout(this); compatibility.setOrientation(LinearLayout.VERTICAL); listActions.addView(compatibility); compatibility.setVisibility(View.GONE);
+        button(listActions,"兼容入口",() -> compatibility.setVisibility(compatibility.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE));
+        choose = button(compatibility,"兼容目录…",this::chooseDirectory);
+        text(listActions,"导入不自动切换模型；云来源可能联网。取消需等待读取与清理结束。",15);
+        TextView explanation = text(listActions,"ZIP 支持固定包或受控七资产变体。目录仅修复旧部署。先审核再逐文件发布，不是整包回滚；私有 ZIP 另占存储。可用存储不是 RAM。",15); explanation.setVisibility(View.GONE);
+        button(listActions,"导入说明",() -> explanation.setVisibility(explanation.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE));
+        LinearLayout maintenance = new LinearLayout(this); maintenance.setOrientation(LinearLayout.VERTICAL); details.addView(maintenance); maintenance.setVisibility(View.GONE);
+        button(details,"维护与说明",() -> maintenance.setVisibility(maintenance.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE));
+        text(maintenance,"恢复证明不重新计算 SHA；启动仅恢复文件证明。准备后 App 与输入法共享内存实例，释放忙时延后。",15);
+        restore = button(maintenance,"恢复证明", () -> {
             org.llmasr.minimal.model.ModelDeployment target = visibleModel();
             if (target == null || !graph.modelManagement().startRestore(target.key,target.installationId)) rejected();
             invalidation.onChange();
         });
-        text(root,"正常启动仅恢复文件证明，不加载内存模型。完整校验或恢复后，请显式准备；App 与输入法共用同一内存实例。释放忙时等待真实任务收尾。",15);
-        prepare = button(details,"显式准备模型（加载到内存）", () -> {
+        prepare = button(details,"准备", () -> {
             if (!graph.asrOperation().startPrepare()) rejected();
             invalidation.onChange();
         });
-        release = button(details,"释放内存模型（忙时延后）", () -> {
+        release = button(details,"释放",  () -> {
             graph.asrOperation().startRelease(); invalidation.onChange();
         });
-        verify = button(details,"完整 SHA 校验 / 重新校验", () -> {
+        verify = button(details,"校验",  () -> {
             org.llmasr.minimal.model.ModelDeployment target = visibleModel();
             if (target != null && graph.modelManagement().startVerify(target.key,target.installationId)) page.adoptStarted(); else rejected();
             invalidation.onChange();
         });
-        task = text(details,"",16); // No live region / per-block accessibility announcements.
-        text(details,"逐文件详情",20); files = text(details,"",15); files.setTextIsSelectable(true);
-        delete = button(details,"删除内部模型… / 重试删除…",this::confirmDelete);
-        text(root,"只删除内部固定清单文件及其 .part；未知文件保留，不递归。不会删除外部源目录、转写文本或导出文件。删除不是安全擦除。\n导入/校验离开前台会请求取消；旋转保留任务。取消需等待 provider 读取与清理结束，不强制释放任务锁。",15);
+        task = text(root,"",16); // Shared status remains visible in list and detail, never file evidence.
+        button(details,"文件详情",() -> { filesExpanded=!filesExpanded; files.setVisibility(filesExpanded?View.VISIBLE:View.GONE); });
+        files = text(details,"",15); files.setTextIsSelectable(true); files.setVisibility(View.GONE);
+        delete = button(details,"删除… / 重试删除…",this::confirmDelete);
+        text(details,"只删除受管清单与 .part；未知项保留、不递归，删除不是安全擦除。删除继续时不可撤销。",15);
         if (saved != null) toast("页面已重建；旧目录选择结果失效，如有需要请重新选择。");
     }
     private int dp(int n) { return Math.round(n*getResources().getDisplayMetrics().density); }
@@ -131,7 +135,7 @@ public final class ModelManagementActivity extends Activity {
         Button b = new Button(this); b.setText(title); b.setTextSize(16); b.setAllCaps(false);
         b.setMinHeight(dp(48)); b.setMinimumHeight(dp(48)); b.setSingleLine(false);
         b.setTextColor(new ColorStateList(new int[][]{new int[]{-android.R.attr.state_enabled}, new int[]{}}, new int[]{Color.rgb(90,97,108),Color.rgb(17,24,39)}));
-        b.setOnClickListener(v -> action.run()); root.addView(b, new LinearLayout.LayoutParams(-1,-2)); return b;
+        b.setContentDescription(title); b.setOnClickListener(v -> action.run()); root.addView(b, new LinearLayout.LayoutParams(-1,-2)); return b;
     }
     private boolean unlocked() {
         KeyguardManager key = (KeyguardManager)getSystemService(KEYGUARD_SERVICE);
@@ -216,6 +220,8 @@ public final class ModelManagementActivity extends Activity {
             card.setContentDescription(summary);
         }
         if (rows.isEmpty()) text(cards,"正在读取模型目录……",16);
+        if (detailModel != null && graph.modelManagement().detail(detailModel) == null) { detailModel=null; toast("模型已变化，请重新选择。"); }
+        listActions.setVisibility(detailModel == null ? View.VISIBLE : View.GONE);
         details.setVisibility(detailModel == null ? View.GONE : View.VISIBLE);
         cards.setVisibility(detailModel == null ? View.VISIBLE : View.GONE);
         org.llmasr.minimal.model.ModelDeployment model = visibleModel();
@@ -236,8 +242,10 @@ public final class ModelManagementActivity extends Activity {
         importTask.setText(importing == null ? "" : "最近模型包导入（任务独立于模型详情）\n" + ModelUiText.task(importing)
             + "\n私有 ZIP 已读取：" + ModelUiText.bytes(graph.modelManagement().importArchiveBytes(importing.activeOperationId)));
         boolean targetSnapshot = boundDetail != null;
-        task.setText((targetSnapshot ? ModelUiText.task(s) : "此模型尚无当前操作记录")+(s.inspectBusy ? "\n正在刷新内部概况（最近操作保留）" : "")
-            +(s.inspectError == null ? "" : "\n概况刷新："+s.inspectError));
+        ModelManagementState.Snapshot shownTask = detailModel == null ? graph.modelManagement().state().current() : s;
+        task.setText((detailModel == null ? "最近模型操作\n"+ModelUiText.task(shownTask) : targetSnapshot ? ModelUiText.task(shownTask) : "此模型尚无当前操作记录")
+            +(shownTask.inspectBusy ? "\n正在刷新内部概况（最近操作保留）" : "")
+            +(shownTask.inspectError == null ? "" : "\n概况刷新："+shownTask.inspectError));
         StringBuilder detail = new StringBuilder();
         boolean snapshotMatches = boundDetail != null;
         java.util.List<ModelReports.FileDetail> detailFiles = snapshotMatches ? s.files : graph.modelManagement().detailCachedFiles(detailModel);
@@ -249,12 +257,13 @@ public final class ModelManagementActivity extends Activity {
         if (detailFiles.isEmpty()) detail.append("尚未取得文件快照。\n");
         if (snapshotMatches && !s.unexpectedFiles.isEmpty()) detail.append("内部目录有 ").append(s.unexpectedFiles.size()).append(" 项未知文件/目录：保留、不递归删除。");
         files.setText(detail);
+        detailRisk.setText(snapshotMatches ? ModelUiText.task(s) + (s.unexpectedFiles.isEmpty()?"":"\n未知项 "+s.unexpectedFiles.size()+"：保留、不递归删除") : "等待此模型检查");
         boolean any = false, completeFile = false;
         for (ModelReports.FileDetail f : detailFiles) { any |= f.present || f.partExists; completeFile |= f.present && f.sizeMatch; }
         choose.setEnabled(!ownerBusy); chooseZip.setEnabled(!ownerBusy); verify.setEnabled(!ownerBusy && model != null && completeFile); restore.setEnabled(!ownerBusy && model != null); delete.setEnabled(!ownerBusy && model != null && (any || !model.policy.trustedLegacy));
         boolean currentModel = false; for (org.llmasr.minimal.model.ModelCatalog.Row row : rows) if (model == row.deployment && row.selected) currentModel = true;
         select.setEnabled(!ownerBusy && model != null && !currentModel);
-        select.setText(currentModel ? "当前选用模型" : "选用此模型");
+        select.setText(currentModel ? "已选用" : "选用");
         prepare.setEnabled(!ownerBusy && r.ready() && currentModel);
         release.setEnabled(true);
         org.llmasr.minimal.modelmanagement.ModelOperationControl.Operation active = graph.modelManagement().opControl().peekActive();
@@ -306,8 +315,15 @@ public final class ModelManagementActivity extends Activity {
         if (page != null && page.cancellable()) {
             new AlertDialog.Builder(this).setTitle("取消操作并离开？")
                 .setMessage("已发布的完整文件保留；取消等待文件读取与清理结束，任务锁不会提前释放。")
-                .setNegativeButton("留在页面",null).setPositiveButton("取消并离开",(d,w) -> { page.cancelOwn(); finish(); }).show();
-        } else super.onBackPressed();
+                .setNegativeButton("留在此页",null).setPositiveButton("取消并返回",(d,w) -> { page.cancelOwn(); returnHome(); }).show();
+        } else if (page != null && page.ownsActive()) {
+            new AlertDialog.Builder(this).setTitle("返回首页？").setMessage("操作继续；删除不可撤销，取消仍需等待真实收尾。")
+                .setNegativeButton("留在此页",null).setPositiveButton("返回",(d,w) -> returnHome()).show();
+        } else returnHome();
+    }
+    private void returnHome() {
+        if (isTaskRoot()) startActivity(new Intent(this,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        finish();
     }
     @Override protected void onDestroy() {
         if (page != null) page.destroy(); invalidation.detach(); super.onDestroy();

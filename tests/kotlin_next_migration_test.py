@@ -54,7 +54,7 @@ public static void rename(String a,String b)throws ErrnoException {try{java.nio.
 public static void remove(String p)throws ErrnoException {try{java.nio.file.Files.delete(java.nio.file.Paths.get(p));}catch(java.io.IOException e){throw new ErrnoException("unlink",5);}}
 }''',
     'android/Manifest.java': 'package android; public final class Manifest { public static class permission {public static final String RECORD_AUDIO="mic";} }',
-    'android/R.java': 'package android; public final class R {public static class style {public static final int Theme_Material_Light_NoActionBar=1;} public static class layout {public static final int simple_spinner_dropdown_item=1;} }',
+    'android/R.java': 'package android; public final class R {public static class attr {public static final int state_enabled=1;} public static class style {public static final int Theme_Material_Light_NoActionBar=1;} public static class layout {public static final int simple_spinner_dropdown_item=1;} }',
     'android/content/pm/PackageManager.java': 'package android.content.pm; public class PackageManager {public static final int PERMISSION_GRANTED=0;}',
     'android/content/res/AssetManager.java': '''package android.content.res; public class AssetManager {
 public static java.io.InputStream stream;
@@ -190,7 +190,7 @@ public static void drain(){for(Runnable r:pending.toArray(new Runnable[0]))if(pe
     result['android/app/Activity.java'] = '''package android.app; public class Activity extends android.content.Context {
 public android.view.Window getWindow(){return new android.view.Window();}
 public android.window.OnBackInvokedDispatcher getOnBackInvokedDispatcher(){return new android.window.OnBackInvokedDispatcher();}
-public void setContentView(android.view.View v){} public void finish(){}public boolean isFinishing(){return false;}public boolean isDestroyed(){return false;}
+public boolean isTaskRoot(){return false;}public void setContentView(android.view.View v){} public void finish(){}public boolean isFinishing(){return false;}public boolean isDestroyed(){return false;}
 protected void onCreate(android.os.Bundle b){} protected void onResume(){}protected void onPause(){}protected void onDestroy(){}
 protected void onActivityResult(int a,int b,android.content.Intent i){} public void onBackPressed(){} public static final int RESULT_OK=-1;
 public void startActivityForResult(android.content.Intent i,int c){} }
@@ -202,35 +202,54 @@ public void registerOnBackInvokedCallback(int n,OnBackInvokedCallback c){}
 public void unregisterOnBackInvokedCallback(@org.jetbrains.annotations.NotNull OnBackInvokedCallback c){calls++;seen=c;throw SENTINEL;}}
 '''
     result['android/content/Intent.java'] = '''package android.content; public class Intent {
-public static final String ACTION_CREATE_DOCUMENT="create",CATEGORY_OPENABLE="open",EXTRA_TITLE="title";public static final int FLAG_ACTIVITY_NEW_TASK=1;
+public static final String ACTION_CREATE_DOCUMENT="create",CATEGORY_OPENABLE="open",EXTRA_TITLE="title";public static final int FLAG_ACTIVITY_NEW_TASK=1,FLAG_ACTIVITY_CLEAR_TOP=2;
 public Intent(String a){}public Intent(Context c,Class<?> t){}public Intent addFlags(int f){return this;}
 public Intent setType(String t){return this;}public Intent addCategory(String c){return this;}public Intent putExtra(String k,String v){return this;}
 public android.net.Uri getData(){return null;}}
 '''
     result['android/graphics/Color.java'] = 'package android.graphics; public class Color {public static final int TRANSPARENT=0,WHITE=-1;public static int rgb(int a,int b,int c){return 0;}}'
     result['android/view/View.java'] = result['android/view/View.java'].replace('public class View {', '''public class View {
-public static final int FOCUS_DOWN=130;public interface OnClickListener{void onClick(View v);}
+public static final int FOCUS_DOWN=130,VISIBLE=0,GONE=8;private int visibility;
+public android.view.View parent;
+public int getVisibility(){return visibility;}public void setVisibility(int n){visibility=n;}
+public boolean isVisibleForHost(){return visibility==VISIBLE&&(parent==null||parent.isVisibleForHost());}
+public interface OnClickListener{void onClick(View v);}
 public android.content.Context getContext(){return new android.content.Context();}public void setBackgroundColor(int c){}
 public boolean post(Runnable r){return true;}
+private CharSequence description="",tooltip="";public int minimumWidth,minimumHeight;
+public void setContentDescription(CharSequence s){description=s;}public CharSequence getContentDescription(){return description;}
+public void setTooltipText(CharSequence s){tooltip=s;}public CharSequence getTooltipText(){return tooltip;}
+public void setMinimumWidth(int n){minimumWidth=n;}public void setMinimumHeight(int n){minimumHeight=n;}
 ''')
     result['android/widget/TextView.java'] = '''package android.widget; public class TextView extends android.view.View {
 private String text="";public TextView(android.content.Context c){}public void setText(CharSequence s){text=s.toString();}public CharSequence getText(){return text;}public void setTextSize(float n){}public void setTextColor(int n){}public void setTextIsSelectable(boolean v){} }
 '''
     result['android/widget/Button.java'] = '''package android.widget; public class Button extends TextView {
-public Button(android.content.Context c){super(c);}public void setAllCaps(boolean v){}public void setMinHeight(int v){}
+public android.graphics.drawable.Drawable icon;
+public Button(android.content.Context c){super(c);}public void setAllCaps(boolean v){}public void setMinHeight(int v){minimumHeight=v;}
+public void setCompoundDrawables(android.graphics.drawable.Drawable l,android.graphics.drawable.Drawable t,android.graphics.drawable.Drawable r,android.graphics.drawable.Drawable b){icon=t;}
 private android.view.View.OnClickListener listener;private boolean enabled=true;
-public void setMinWidth(int v){}public void setMinimumWidth(int v){}public void setOnClickListener(android.view.View.OnClickListener l){listener=l;}public void setEnabled(boolean b){enabled=b;}
-public boolean isEnabled(){return enabled;}public boolean performClick(){if(!enabled)return false;listener.onClick(this);return true;} }
+public void setMinWidth(int v){minimumWidth=v;}public void setMinimumWidth(int v){minimumWidth=v;}public void setOnClickListener(android.view.View.OnClickListener l){listener=l;}public void setEnabled(boolean b){enabled=b;}
+public boolean isEnabled(){return enabled;}public boolean performClick(){if(!enabled||!isVisibleForHost())return false;listener.onClick(this);return true;} }
 '''
     result['android/widget/LinearLayout.java'] = '''package android.widget; public class LinearLayout extends android.view.View {
 public static final int VERTICAL=1;public final java.util.List<android.view.View> children=new java.util.ArrayList<>();
 public LinearLayout(android.content.Context c){}public void setOrientation(int n){}
-public void addView(android.view.View v){children.add(v);}public void addView(android.view.View v,LayoutParams p){children.add(v);}
+public void addView(android.view.View v){v.parent=this;children.add(v);}public void addView(android.view.View v,LayoutParams p){v.parent=this;children.add(v);}
 public static class LayoutParams {public LayoutParams(int w,int h){}public LayoutParams(int w,int h,float f){}} }
 '''
     result['android/widget/ScrollView.java'] = '''package android.widget;public class ScrollView extends android.view.View {
-public ScrollView(android.content.Context c){}public void addView(android.view.View v){}public void setFillViewport(boolean b){}public boolean fullScroll(int n){return true;}}
+public ScrollView(android.content.Context c){}public void addView(android.view.View v){v.parent=this;}public void setFillViewport(boolean b){}public boolean fullScroll(int n){return true;}}
 '''
+    result.update({
+        'android/graphics/Rect.java': 'package android.graphics;public class Rect {public int left,top,right,bottom;public int width(){return right-left;}public int height(){return bottom-top;}}',
+        'android/graphics/ColorFilter.java': 'package android.graphics;public class ColorFilter {}',
+        'android/graphics/PixelFormat.java': 'package android.graphics;public class PixelFormat {public static final int TRANSLUCENT=-3;}',
+        'android/graphics/Paint.java': 'package android.graphics;public class Paint {public static final int ANTI_ALIAS_FLAG=1;public enum Style {STROKE}private int color,alpha;private float width;private Style style;private ColorFilter filter;public Paint(int n){}public void setColor(int n){color=n;}public int getColor(){return color;}public void setStrokeWidth(float n){width=n;}public float getStrokeWidth(){return width;}public void setStyle(Style s){style=s;}public Style getStyle(){return style;}public void setAlpha(int n){alpha=n;}public int getAlpha(){return alpha;}public void setColorFilter(ColorFilter c){filter=c;}public ColorFilter getColorFilter(){return filter;}}',
+        'android/graphics/Path.java': 'package android.graphics;public class Path {public void moveTo(float x,float y){}public void lineTo(float x,float y){}}',
+        'android/graphics/Canvas.java': 'package android.graphics;public class Canvas {public int commands;public int save(){return 1;}public void restoreToCount(int n){}public void translate(float x,float y){}public void scale(float x,float y){}public void drawRoundRect(float a,float b,float c,float d,float e,float f,Paint p){commands++;}public void drawArc(float a,float b,float c,float d,float e,float f,boolean b1,Paint p){commands++;}public void drawLine(float a,float b,float c,float d,Paint p){commands++;}public void drawRect(float a,float b,float c,float d,Paint p){commands++;}public void drawPoint(float a,float b,Paint p){commands++;}public void drawPath(Path path,Paint p){commands++;}}',
+        'android/graphics/drawable/Drawable.java': 'package android.graphics.drawable;public abstract class Drawable {private final android.graphics.Rect bounds=new android.graphics.Rect();public android.graphics.Rect getBounds(){return bounds;}public void setBounds(int a,int b,int c,int d){bounds.left=a;bounds.top=b;bounds.right=c;bounds.bottom=d;}public void invalidateSelf(){}public boolean isStateful(){return false;}protected boolean onStateChange(int[] s){return false;}public boolean setState(int[] s){return onStateChange(s);}public abstract void draw(android.graphics.Canvas c);public abstract void setAlpha(int a);public abstract void setColorFilter(android.graphics.ColorFilter c);public abstract int getOpacity();}',
+    })
     return result
 
 
@@ -460,7 +479,7 @@ def ime_return_suite(directory):
         ('ImeController', 'ime-hide',
          'try { hide!!.run() } catch (ignored: RuntimeException) { /* Best-effort hide must not suppress the explicit action. */ }',
          'hide!!.run()', 'hide failure must not suppress external attempt'),
-        ('AsrImeService', 'ime-restart', 'cancel!!.setEnabled(alive && controller != null)', 'cancel!!.setEnabled(allowed)',
+        ('AsrImeService', 'ime-restart', 'cancel!!.setEnabled(alive && controller != null && state != ImeController.UiState.CANCELLING)', 'cancel!!.setEnabled(allowed)',
          'visible failed switch must allow manual fresh restart'),
     ]
     primary = None
@@ -555,8 +574,8 @@ def ime_model_ready_suite(directory, service_source=None, expect_red=False, muta
          'first-use record must be enabled without proof or resident'),
         ('stale-click-admission', 'service.isInputViewShown && service.permitted()', 'true',
          'permission change during prepare must prevent capture'),
-        ('own-busy-priority', 'else if (busy && controller!!.ownsTask()) session!!.status()',
-         'else if (busy && controller!!.ownsTask()) "模型未准备，请打开模型管理。"',
+        ('own-busy-priority', 'stage + (if (allowed && presentation.detail.isNotEmpty()) "\\n" + presentation.detail else "")',
+         '"模型未准备，请返回首页→模型。"',
          'owned IME task must retain session progress while resident active'),
     ]
     if transaction_mutants:

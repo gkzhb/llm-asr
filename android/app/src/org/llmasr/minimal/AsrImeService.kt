@@ -44,6 +44,12 @@ class AsrImeService : InputMethodService() {
     private var cancel: Button? = null
     private var commit: Button? = null
     private var language: Spinner? = null
+    private var historyPanel: LinearLayout? = null
+    private var historyScroll: ScrollView? = null
+    private var historyButton: Button? = null
+    private var historyOpen = false
+    private var historyEpoch = 0L
+    private val historyMain = Handler(Looper.getMainLooper())
     private var visible = false
     private var alive = false
     private var setupError = "初始化失败，请打开主App检查模型。"
@@ -53,7 +59,7 @@ class AsrImeService : InputMethodService() {
         super.onCreate(); alive = true
         try {
             AppGraph.install(applicationContext); graph = AppGraph.get()
-            controller = ImeController(graph!!.coordinator(), graph!!.imeBackend(), refresh::onChange)
+            controller = ImeController(graph!!.coordinator(), graph!!.imeBackend(), refresh::onChange, graph!!.imeHistory())
             graph!!.coordinator()!!.addListener(refresh)
             graph!!.readiness()!!.addListener(refresh)
         } catch (e: Exception) { setupError = "初始化失败，请打开主App检查安装。" }
@@ -84,6 +90,11 @@ class AsrImeService : InputMethodService() {
         button(tools, "App", "打开App", Icon.APP) { leaveForExternalUi { startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)) } }
         button(tools, "上一键盘", "返回上一输入法", Icon.PREVIOUS, this::returnToPreviousInputMethod)
         button(tools, "键盘", "选择输入法", Icon.KEYBOARD) { leaveForExternalUi(this::showKeyboardPicker) }
+        historyButton = button(tools, "历史", "查看最近50条文字", Icon.HISTORY) { toggleHistory() }
+        historyPanel = LinearLayout(ui); historyPanel!!.setOrientation(LinearLayout.VERTICAL)
+        historyScroll = ScrollView(ui); historyScroll!!.addView(historyPanel)
+        root.addView(historyScroll, LinearLayout.LayoutParams(-1, dp(160)))
+        closeHistory()
         render(); return root
     }
     private fun leaveForExternalUi(launch: Runnable) {
@@ -124,7 +135,7 @@ class AsrImeService : InputMethodService() {
         b.setCompoundDrawables(null, drawable, null, null); b.setOnClickListener { action.run() }
         row.addView(b, LinearLayout.LayoutParams(0, -2, 1f)); return b
     }
-    private enum class Icon { MIC, STOP, CROSS, CHECK, APP, PREVIOUS, KEYBOARD }
+    private enum class Icon { MIC, STOP, CROSS, CHECK, APP, PREVIOUS, KEYBOARD, HISTORY }
     /** Font-independent 24dp symbols; normal Button background retains pressed/disabled feedback. */
     private class ActionIcon(private val icon: Icon) : Drawable() {
         private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.rgb(31, 41, 55); strokeWidth = 2f; style = Paint.Style.STROKE }
@@ -134,6 +145,7 @@ class AsrImeService : InputMethodService() {
                 canvas.translate(bounds.left.toFloat(), bounds.top.toFloat()); canvas.scale(bounds.width() / 24f, bounds.height() / 24f)
                 when (icon) {
                     Icon.MIC -> { canvas.drawRoundRect(9f, 2f, 15f, 15f, 3f, 3f, paint); canvas.drawArc(6f, 7f, 18f, 19f, 0f, 180f, false, paint); canvas.drawLine(12f, 19f, 12f, 22f, paint); canvas.drawLine(8f, 22f, 16f, 22f, paint) }
+                    Icon.HISTORY -> { canvas.drawArc(3f, 3f, 21f, 21f, 0f, 360f, false, paint); path(canvas, floatArrayOf(12f, 5f, 12f, 12f, 17f, 15f)) }
                     Icon.STOP -> canvas.drawRect(5f, 5f, 19f, 19f, paint)
                     Icon.CROSS -> { canvas.drawLine(5f, 5f, 19f, 19f, paint); canvas.drawLine(19f, 5f, 5f, 19f, paint) }
                     Icon.CHECK -> path(canvas, floatArrayOf(3f, 12f, 9f, 18f, 21f, 5f))
@@ -158,7 +170,7 @@ class AsrImeService : InputMethodService() {
         override fun setColorFilter(filter: ColorFilter?) { paint.colorFilter = filter; invalidateSelf() }
         @Suppress("OVERRIDE_DEPRECATION") override fun getOpacity(): Int = PixelFormat.TRANSLUCENT
     }
-    private fun invalidate() { rerecordFor = null; if (controller != null) controller!!.invalidate(); session = null }
+    private fun invalidate() { closeHistory(); rerecordFor = null; if (controller != null) controller!!.invalidate(); session = null }
     private fun renewSession() {
         invalidate()
         val info = currentInputEditorInfo
@@ -189,6 +201,7 @@ class AsrImeService : InputMethodService() {
     }
     private fun startRecording() {
         if (!eligible() || !isInputViewShown || !permitted() || graph?.modelAccess() == null) { render(); return }
+        closeHistory()
         val expected = session!!
         if (expected.preview().isNotEmpty() && rerecordFor !== expected) {
             rerecordFor = expected; render(); return // Inline confirmation: Service has no Activity dialog token.
@@ -208,13 +221,17 @@ class AsrImeService : InputMethodService() {
     }
     private fun render() {
         if (status == null) return
-        val allowed = eligible(); val presentation = controller?.presentation(); val busy = presentation?.busy == true
+        if (session != null && (!eligible() || !isInputViewShown || (!permitted() && controller?.ownsTask() == true))) invalidate()
+        val allowed = eligible()
+        if (!allowed || !isInputViewShown || controller?.busy() == true) closeHistory()
+        historyButton?.isEnabled = allowed && isInputViewShown && controller?.busy() == false
+        val presentation = controller?.presentation(); val busy = presentation?.busy == true
         val wired = graph?.modelAccess() != null
         val state = presentation?.state ?: ImeController.UiState.UNAVAILABLE
         if (!allowed || !permitted() || !isInputViewShown || busy || presentation?.hasPreview != true || rerecordFor !== session) rerecordFor = null
         val confirmRerecord = rerecordFor != null
         val stage = if (confirmRerecord) "丢弃此预览并重录？再次点麦克风确认；点勾保留并输入。" else when (state) {
-            ImeController.UiState.PREPARING -> "准备模型，尚未录音"
+            ImeController.UiState.PREPARING -> "准备模型 · 录音结束后等待转写"
             ImeController.UiState.RECORDING -> "录音中 · 最长30秒"
             ImeController.UiState.TRANSCRIBING -> if (presentation?.discarded == true) "结果已丢弃，转写继续" else "转写中，完成后预览"
             ImeController.UiState.CANCELLING -> "正在取消，等待收尾"
@@ -242,6 +259,60 @@ class AsrImeService : InputMethodService() {
             else -> if (presentation?.hasPreview == true) "丢弃预览" else "重新开始会话"
         })
         language!!.setEnabled(!busy)
+    }
+    private fun closeHistory() {
+        historyOpen = false; historyEpoch++
+        historyPanel?.removeAllViews(); historyPanel?.visibility = View.GONE
+        historyScroll?.visibility = View.GONE
+    }
+    private fun toggleHistory() {
+        if (historyOpen) { closeHistory(); return }
+        if (!eligible() || !isInputViewShown || controller?.busy() != false) return
+        historyOpen = true; historyPanel?.visibility = View.VISIBLE; historyScroll?.visibility = View.VISIBLE
+        requestHistory(null)
+    }
+    private fun requestHistory(deleteId: String?) {
+        val store = graph?.imeHistory() ?: return
+        val expected = session ?: return
+        val revision = expected.revision()
+        if (!historyOpen || !eligible() || !isInputViewShown || controller?.busy() != false) { closeHistory(); return }
+        val epoch = ++historyEpoch
+        historyPanel?.removeAllViews()
+        val weak = WeakReference(this)
+        val main = historyMain
+        val callback = org.llmasr.minimal.ime.ImeHistoryStore.Callback { snapshot ->
+            main.post {
+                val service = weak.get() ?: return@post
+                if (!service.historyValid(expected, revision, epoch)) return@post
+                service.showHistory(snapshot, expected, revision, epoch)
+            }
+        }
+        val accepted = when (deleteId) {
+            null -> store.snapshot(callback)
+            "" -> store.clear(callback)
+            else -> store.delete(deleteId, callback)
+        }
+        if (!accepted) historyPanel?.addView(TextView(this).apply { text = "历史繁忙，请稍后重新打开。" })
+    }
+    private fun historyValid(expected: ImeSession, revision: Long, epoch: Long): Boolean =
+        alive && historyOpen && historyEpoch == epoch && session === expected && expected.revision() == revision &&
+            eligible() && isInputViewShown && controller?.busy() == false
+    private fun showHistory(snapshot: org.llmasr.minimal.ime.ImeHistoryStore.Snapshot, expected: ImeSession, revision: Long, epoch: Long) {
+        val panel = historyPanel ?: return
+        panel.removeAllViews()
+        if (!snapshot.available) { panel.addView(TextView(panel.context).apply { text = "历史暂不可用；已保留原文件。" }); return }
+        val tools = LinearLayout(panel.context); panel.addView(tools)
+        button(tools, "清空", "清空文字历史", Icon.CROSS) { if (historyValid(expected, revision, epoch)) requestHistory("") }
+        button(tools, "关闭", "关闭文字历史", Icon.CROSS) { closeHistory() }
+        if (snapshot.records.isEmpty()) panel.addView(TextView(panel.context).apply { text = "暂无文字历史" })
+        for (entry in snapshot.records) {
+            val row = LinearLayout(panel.context); panel.addView(row)
+            val label = if (entry.originalText.length > 120) entry.originalText.take(120) + "…" else entry.originalText
+            button(row, label, "恢复此条到预览", Icon.CHECK) {
+                if (historyValid(expected, revision, epoch) && controller!!.restoreHistory(expected, revision, entry)) { closeHistory(); render() }
+            }
+            button(row, "删除", "删除此条文字历史", Icon.CROSS) { if (historyValid(expected, revision, epoch)) requestHistory(entry.id) }
+        }
     }
     /** Main-thread snapshot of the actual editor/visibility/permission after slow preparation.
      * Weak target only; a timed-out queued gate can never authorize late capture. */

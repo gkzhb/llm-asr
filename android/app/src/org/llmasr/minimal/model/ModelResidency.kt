@@ -83,6 +83,14 @@ class ModelResidency(private val native: Native, private val worker: Worker) : M
         requireReady(expected)
         start()
     }
+    /** File-qualified IME capture may precede native loading, but never a release/maintenance winner. */
+    fun captureEpoch(): Long = synchronized(monitor) { releaseEpoch }
+    @Throws(IOException::class)
+    fun startEarlyCapture(epoch: Long, start: () -> Boolean): Boolean = synchronized(monitor) {
+        if (epoch != releaseEpoch || pending || maintenance != 0 || state == State.ACTIVE || state == State.EVICTING)
+            throw IOException("模型正在释放或维护")
+        start()
+    }
     /** Lease remains owned until adapter parsing and native cleanup have really returned. */
     @Throws(IOException::class)
     fun enter(expected: String): Any = synchronized(monitor) {

@@ -212,7 +212,19 @@ def self_test():
             else:
                 raise RuntimeError('T5 XML negative accepted: ' + tag)
         ET.ElementTree(good).write(p); fixture.xml_result(p)
-    print('PASS T5 same-checker source/duplicate/body/role/root/compiler/host/XML negatives; explicit raises under -O')
+    with tempfile.TemporaryDirectory(prefix='t5-closure-') as temporary:
+        root = Path(temporary); work = root / 'work'; work.mkdir()
+        helper = root / 'android/app/src/org/llmasr/minimal/ime/ImeCapture.kt'
+        helper.parent.mkdir(parents=True); helper.write_text('internal class ImeCapture\n')
+        captured, originals = slice_helpers(root, 'ime/ImeController.kt', work)
+        identities = input_identities(captured)
+        verify_input_identities(captured, identities)
+        rejected(lambda: verify_input_identities([], identities), 'slice input SHA/inventory mismatch')
+        captured[0].write_text('internal class ImeCapture // drift\n')
+        rejected(lambda: verify_input_identities(captured, identities), 'slice input SHA/inventory mismatch')
+        helper.unlink()
+        rejected(lambda: slice_helpers(root, 'ime/ImeController.kt', work), 'slice helper missing/symlink')
+    print('PASS T5 same-checker source/duplicate/body/role/root/compiler/host/XML/closure-omission-drift negatives; explicit raises under -O')
 
 
 def execution(work, label, argv, timeout, dependency):
@@ -224,11 +236,33 @@ def execution(work, label, argv, timeout, dependency):
     return result
 
 
-def contracts(classpath, evidence):
+def input_identities(sources):
+    require(all(p.is_file() and not p.is_symlink() for p in sources), 'T5 slice input missing/symlink')
+    return {str(p): sha(p) for p in sources}
+
+
+def verify_input_identities(sources, expected):
+    require(input_identities(sources) == expected, 'T5 slice input SHA/inventory mismatch')
+
+
+def slice_helpers(root, relative, work):
+    if relative != 'ime/ImeController.kt':
+        return [], {}
+    source = root / 'android/app/src/org/llmasr/minimal/ime/ImeCapture.kt'
+    require(source.is_file() and not source.is_symlink(), 'T5 slice helper missing/symlink')
+    target = work / source.name
+    target.write_bytes(source.read_bytes())
+    return [target], input_identities([source])
+
+
+def contracts(classpath, evidence, module_regression=False):
     import mixed_compiler_lifecycle as life
     require(evidence is not None, 'T5 fresh evidence directory required')
     evidence.mkdir(parents=True, exist_ok=False)
     dependency = classpath.resolve(strict=True); life.guard(dependency)
+    dependency_files = sorted(p for p in dependency.rglob('*') if p.is_file())
+    dependency_identity = input_identities(dependency_files)
+    (evidence / 'dependency-inputs.json').write_text(json.dumps(dependency_identity, indent=2) + '\n')
     stdlib = Path(os.environ['KOTLIN_HOME']) / 'lib/kotlin-stdlib.jar'
     caller = evidence / 'T5Contracts.java'
     caller.write_text('public class T5Contracts { public static void main(String[] a) throws Exception { '
@@ -247,15 +281,32 @@ def contracts(classpath, evidence):
          'connection != null && run { connection.write(text); connection.write(text) }', 'commit', 'single confirmation only'))
     records = []
     for index, (relative, old, new, method, diagnostic) in enumerate(mutations):
+        if module_regression and relative != 'ime/ImeController.kt':
+            continue
         source = ROOT / 'android/app/src/org/llmasr/minimal' / relative
         original = source.read_bytes(); text = original.decode()
         require(text.count(old) == 1, 'T5 unique real production mutant anchor: ' + relative)
         for phase, content in (('green', original), ('red', text.replace(old, new, 1).encode()), ('restored', original)):
             work = evidence / (str(index) + '-' + phase); work.mkdir()
             target = work / source.name; target.write_bytes(content); classes = work / 'classes'
+            helpers, helper_originals = slice_helpers(ROOT, relative, work)
+            sources = [target, caller, ROOT / paths()['FakePorts'], ROOT / paths()['FixtureChecks'], *helpers]
+            identities = input_identities(sources)
+            (work / 'inputs.json').write_text(json.dumps({'sources': identities, 'helper_originals': helper_originals,
+                'dependency': str(dependency), 'driver_sha256': sha(Path(__file__)),
+                'wrapper_sha256': sha(ROOT / 'scripts/compile-jvm-sources.sh')}, indent=2) + '\n')
+            verify_input_identities(sources, identities)
+            if module_regression and phase == 'green':
+                # Reproduce the exact failed separate-module omission, not a behavioral red.
+                omitted = [p for p in sources if p not in helpers]
+                compiler_red = execution(work, 'omitted-helper-compile', ['bash', str(ROOT / 'scripts/compile-jvm-sources.sh'),
+                    str(work / 'omitted-classes'), str(dependency), *map(str, omitted)], 270, dependency)
+                require(compiler_red.returncode != 0 and b'ImeCapture' in compiler_red.stderr and
+                        b'it is internal in file' in compiler_red.stderr, 'T5 exact separate-module compiler regression missing')
             compiled = execution(work, 'compile', ['bash', str(ROOT / 'scripts/compile-jvm-sources.sh'),
-                str(classes), str(dependency), str(target), str(caller),
-                str(ROOT / paths()['FakePorts']), str(ROOT / paths()['FixtureChecks'])], 270, dependency)
+                str(classes), str(dependency), *map(str, sources)], 270, dependency)
+            verify_input_identities(sources, identities)
+            verify_input_identities([Path(p) for p in helper_originals], helper_originals)
             require(compiled.returncode == 0, 'T5 production mutant compile failure NOT target red: ' + relative)
             ran = execution(work, 'run', ['java', '-cp', str(classes) + ':' + str(dependency) + ':' + str(stdlib),
                                          'T5Contracts', method], 45, dependency)
@@ -263,13 +314,16 @@ def contracts(classpath, evidence):
             require((ran.returncode == 1 and 'java.lang.AssertionError: ' + diagnostic in output) if phase == 'red'
                     else (ran.returncode == 0 and 'PASS T5 external' in output),
                     'T5 exact external production result missing: ' + relative + '/' + phase + '\n' + output)
+            verify_input_identities(sources, identities)
+            verify_input_identities([Path(p) for p in helper_originals], helper_originals)
             require(source.read_bytes() == original, 'T5 production original drift')
             records.append({'owner': relative, 'phase': phase, 'compile_exit': compiled.returncode, 'run_exit': ran.returncode,
                             'source_sha256': hashlib.sha256(content).hexdigest(), 'caller_sha256': sha(caller),
                             'diagnostic': diagnostic, 'not_Android': True})
             (evidence / 'routes.json').write_text(json.dumps(records, indent=2) + '\n')
         print('PASS T5 production compile0/exact red1/restored0', relative, method, flush=True)
-    require(len(records) == 9, 'T5 exactly nine production routes')
+    verify_input_identities(dependency_files, dependency_identity)
+    require(len(records) == (3 if module_regression else 9), 'T5 exact production route inventory')
 
 
 # External Java consumer only; no copied production/fixture implementation body.
@@ -417,6 +471,7 @@ def main():
     group.add_argument('--self-test', action='store_true')
     group.add_argument('--contracts', type=Path)
     group.add_argument('--faults', type=Path)
+    group.add_argument('--module-regression', type=Path, help='same real Controller slice compiler omission and behavioral restoration')
     parser.add_argument('--evidence-dir', type=Path)
     args = parser.parse_args()
     if args.source:
@@ -425,6 +480,8 @@ def main():
         self_test()
     elif args.contracts is not None:
         contracts(args.contracts, args.evidence_dir)
+    elif args.module_regression is not None:
+        contracts(args.module_regression, args.evidence_dir, module_regression=True)
     else:
         faults(args.faults, args.evidence_dir)
 

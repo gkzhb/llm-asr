@@ -30,6 +30,7 @@ PACKAGE_MAP = {
     'AsrOperation': 'transcription', 'AppRequestPolicy': 'transcription',
     'AppReportWriter': 'transcription', 'ResultFiles': 'transcription',
     'ImeSession': 'ime', 'ImeFieldPolicy': 'ime', 'ImeController': 'ime', 'ImeBackend': 'ime',
+    'ImeCapture': 'ime', 'ImeHistory': 'ime', 'ImeHistoryStore': 'ime',
     'ModelOperationControl': 'modelmanagement', 'ModelManagementState': 'modelmanagement',
     'ModelManagementController': 'modelmanagement', 'ModelPageSession': 'modelmanagement',
     'ModelPickerTickets': 'modelmanagement', 'ModelUiText': 'modelmanagement',

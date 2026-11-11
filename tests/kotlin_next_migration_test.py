@@ -136,10 +136,10 @@ public long getLong(String n)throws JSONException{return new long[]{2989192,3731
     'org/llmasr/minimal/MainActivity.java': 'package org.llmasr.minimal; public class MainActivity {}',
     'org/llmasr/minimal/ModelManagementActivity.java': 'package org.llmasr.minimal; public class ModelManagementActivity {}',
     'org/llmasr/minimal/audio/ForegroundRecorder.java': '''package org.llmasr.minimal.audio; public class ForegroundRecorder {
-public static Runnable beforeStart=()->{};public static int starts;public static int calls;public interface Progress{void update(double s);} public static byte[] capture(RecordingControl c,Progress p)throws java.io.IOException {
+public static Runnable beforeStart=()->{},afterStart=()->{};public static int starts;public static int calls;public interface Progress{void update(double s);} public static byte[] capture(RecordingControl c,Progress p)throws java.io.IOException {
 return capture(c,p,null);}
 public static byte[] capture(RecordingControl c,Progress p,RecordingControl.StartGate gate)throws java.io.IOException {
-calls++;try{beforeStart.run();boolean started=gate==null?c.start(()->{starts++;}):gate.start(()->{starts++;});if(!started)throw new java.util.concurrent.CancellationException();c.stop();PcmWave wave=new PcmWave();wave.append(new short[PcmWave.MIN_SAMPLES],PcmWave.MIN_SAMPLES);return wave.finish();}finally{c.captureReleased();}}}
+calls++;try{beforeStart.run();boolean started=gate==null?c.start(()->{starts++;}):gate.start(()->{starts++;});if(!started)throw new java.util.concurrent.CancellationException();afterStart.run();c.stop();PcmWave wave=new PcmWave();wave.append(new short[PcmWave.MIN_SAMPLES],PcmWave.MIN_SAMPLES);return wave.finish();}finally{c.captureReleased();}}}
 ''',
     'org/llmasr/minimal/transcription/AppReportWriter.java': '''package org.llmasr.minimal.transcription;
 import org.llmasr.minimal.task.RequestContext; import org.llmasr.minimal.asr.NativeResponse;
@@ -234,7 +234,7 @@ public boolean isEnabled(){return enabled;}public boolean performClick(){if(!ena
 '''
     result['android/widget/LinearLayout.java'] = '''package android.widget; public class LinearLayout extends android.view.View {
 public static final int VERTICAL=1;public final java.util.List<android.view.View> children=new java.util.ArrayList<>();
-public LinearLayout(android.content.Context c){}public void setOrientation(int n){}
+public LinearLayout(android.content.Context c){}public void setOrientation(int n){}public void removeAllViews(){children.clear();}
 public void addView(android.view.View v){v.parent=this;children.add(v);}public void addView(android.view.View v,LayoutParams p){v.parent=this;children.add(v);}
 public static class LayoutParams {public LayoutParams(int w,int h){}public LayoutParams(int w,int h,float f){}} }
 '''
@@ -573,7 +573,7 @@ def ime_model_ready_suite(directory, service_source=None, expect_red=False, muta
         ('proof-only-render', ' && !busy && wired)', ' && !busy && wired && graph?.readiness()?.snapshot()?.ready() == true)',
          'first-use record must be enabled without proof or resident'),
         ('stale-click-admission', 'service.isInputViewShown && service.permitted()', 'true',
-         'permission change during prepare must prevent capture'),
+         'permission change during prepare must prevent publication'),
         ('own-busy-priority', 'stage + (if (allowed && presentation.detail.isNotEmpty()) "\\n" + presentation.detail else "")',
          '"模型未准备，请返回首页→模型。"',
          'owned IME task must retain session progress while resident active'),
@@ -581,7 +581,7 @@ def ime_model_ready_suite(directory, service_source=None, expect_red=False, muta
     if transaction_mutants:
         mutations = [
             ('omit-preparation', 'backend!!.prepare(control) { stage -> status(session, rev, stage) }',
-             'backend!! // MUTANT: no explicit prepare', 'automatic SHA durable proof then prepare then capture'),
+             'backend!! // MUTANT: no explicit prepare', 'automatic SHA durable proof then capture with native prepare'),
             ('repeat-restore', 'val current = try { requireReady(); true } catch (unverified: IOException) { false }',
              'val current = false', 'valid current proof reuses resident without restore or SHA'),
             ('premature-capturing', 'phase = Phase.PREPARING', 'phase = Phase.CAPTURING', 'preparing is not capturing'),

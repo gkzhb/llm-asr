@@ -200,7 +200,7 @@ def verify(apk_dir, report_dir, native_build):
     (report / 'build-input-sha256.json').write_text(json.dumps(fingerprints, indent=2) + '\n')
     result = {
         'schema': 1, 'artifact': str(apk.relative_to(ROOT)), 'bytes': apk.stat().st_size,
-        'sha256': sha(apk), 'package': 'org.llmasr.minimal', 'version': '0.8-debug', 'version_code': 8,
+        'sha256': sha(apk), 'package': 'org.llmasr.minimal', 'version': '0.9-debug', 'version_code': 9,
         'signing_certificate_sha256': baseline['signing_certificate_sha256'],
         'native_sha256': baseline['native']['sha256'], 'product_baseline': baseline['source_commit'],
         'inputs_checked': len(fingerprints), 'device_verified': False,

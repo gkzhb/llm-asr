@@ -54,6 +54,11 @@ class AppGraph private constructor(private val context: OperationContext?, priva
     private val modelManagement: ModelManagementController
     private val pickerTickets = ModelPickerTickets()
     private val imeBackend: ImeBackend
+    // Lazy supplier: constructing the graph performs no history filesystem access.
+    private var imeHistoryDirectory: (() -> java.io.File)? = null
+    private var imeHistory = org.llmasr.minimal.ime.ImeHistoryStore {
+        (imeHistoryDirectory ?: throw IOException("历史存储尚未初始化")).invoke()
+    }
     private val logExports: LogExportController<android.net.Uri>
     init {
         imeBackend = ImeBackend(context, modelRepository, inference, modelAccess!!)
@@ -76,6 +81,7 @@ class AppGraph private constructor(private val context: OperationContext?, priva
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun textExport(): TextExportController<android.net.Uri>? = textExport
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun asrOperation(): AsrOperation? = asrOperation
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun imeBackend(): ImeController.Backend = imeBackend
+    fun imeHistory(): org.llmasr.minimal.ime.ImeHistoryStore = imeHistory
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun logExports(): LogExportController<android.net.Uri> = logExports
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun runtimeLogStore(): RuntimeLogStore? = runtimeLogStore
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS") open fun runtimeLogWorker(): RuntimeLogWorker? = runtimeLogWorker
@@ -129,6 +135,7 @@ class AppGraph private constructor(private val context: OperationContext?, priva
                 })
                 val ops = AsrOperation(opCtx, coordinator, repository, state, textExport, inference, AppReportWriter(opCtx), access)
                 val built = AppGraph(opCtx, coordinator, repository, state, textExport, ops, readiness, access, catalog, logStore, logWorker, inference)
+                built.imeHistoryDirectory = { java.io.File(app.noBackupFilesDir, "ime-private") }
                 app.registerComponentCallbacks(object : ComponentCallbacks2 {
                     override fun onConfigurationChanged(configuration: Configuration) {}
                     override fun onLowMemory() { ops.startRelease() }

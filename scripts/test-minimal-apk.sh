@@ -30,7 +30,7 @@ host_classes=(
   asr.NativeResponse
   transcription.ResultFiles
   audio.RecordingControl audio.WaveInput audio.AsrText audio.PcmWave
-  ime.ImeFieldPolicy ime.ImeSession ime.ImeController
+  ime.ImeFieldPolicy ime.ImeSession ime.ImeController ime.ImeCapture ime.ImeHistory ime.ImeHistoryStore
   model.ModelReadiness model.ModelVerification model.ModelResidency
   modelmanagement.ModelOperationControl modelmanagement.ModelManagementState modelmanagement.ModelManagementController
   model.ModelAccess modelmanagement.ModelPickerTickets modelmanagement.ModelPageSession modelmanagement.ModelUiText
@@ -159,6 +159,22 @@ timeout 2400 python3 -O tests/kotlin_next_migration_test.py --ime-first-use-only
 ime_start_evidence=$(mktemp -d "$root/.work/build/ime-start-XXXXXX")
 timeout 2400 python3 -B tests/ime_start_boundary_test.py --evidence-dir "$ime_start_evidence/ordinary"
 timeout 2400 python3 -O tests/ime_start_boundary_test.py --evidence-dir "$ime_start_evidence/optimized"
+# History + actual parallel capture: 7 mixed compiles <=270s + 7 JVM <=45s, independent old matrix.
+# BEGIN IME_HISTORY_PROVENANCE (finite harness extracts these exact maintained bytes).
+timeout 30 python3 -B "$root/tests/ime_history_provenance_test.py"
+timeout 30 python3 -O "$root/tests/ime_history_provenance_test.py"
+ime_history_evidence=$(mktemp -d "$root/.work/build/ime-history-XXXXXX")
+ime_history_args=()
+if [ -n "${LLM_ASR_VERIFY_RUN_ID:-}" ]; then ime_history_args=(--run-id "$LLM_ASR_VERIFY_RUN_ID"); fi
+timeout 2400 python3 -B "$root/tests/ime_history_contract_test.py" --evidence-dir "$ime_history_evidence/ordinary" "${ime_history_args[@]}"
+if [ -n "${LLM_ASR_VERIFY_RUN_ID:-}" ]; then
+  python3 -B "$root/tests/ime_history_contract_test.py" --evidence-dir "$ime_history_evidence/ordinary" "${ime_history_args[@]}" --emit-marker
+fi
+timeout 2400 python3 -O "$root/tests/ime_history_contract_test.py" --evidence-dir "$ime_history_evidence/optimized" "${ime_history_args[@]}"
+if [ -n "${LLM_ASR_VERIFY_RUN_ID:-}" ]; then
+  python3 -B "$root/tests/ime_history_contract_test.py" --evidence-dir "$ime_history_evidence/optimized" "${ime_history_args[@]}" --emit-marker
+fi
+# END IME_HISTORY_PROVENANCE
 # Independent verification: each mode <=9 mixed compile(180s), <=20 JVM(30s), unchanged legacy gates.
 verification_evidence=$(mktemp -d .work/model-verification-contracts-XXXXXX)
 timeout 2400 python3 -B tests/model_verification_contract_test.py --contracts "$classes" --evidence-dir "$verification_evidence/ordinary"

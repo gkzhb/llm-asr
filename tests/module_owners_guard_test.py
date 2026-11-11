@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Exercise actual module-owner checker using copies of current compiled outputs."""
+import hashlib
 import shutil
 import tempfile
 import unittest
 from pathlib import Path
-from module_owners_test import check, ROOT
+from module_owners_test import check, ROOT, source_inventory
 
 APP = Path('android/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes')
 RUNTIME = Path('android/asr-runtime/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes')
@@ -25,6 +26,26 @@ class OwnersTests(unittest.TestCase):
         baseline = self.root / 'gradle/baseline-inputs.json'
         baseline.parent.mkdir()
         shutil.copyfile(ROOT / 'gradle/baseline-inputs.json', baseline)
+        # Validate the exact reviewed set and each regular, no-symlink source/hash
+        # before copying; arbitrary baseline paths must never expand fixture access.
+        for relative in source_inventory(ROOT):
+            destination = self.root / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / relative, destination)
+        source_inventory(self.root)
+
+    def test_source_omission(self):
+        (self.root / 'android/app/src/org/llmasr/minimal/ime/ImeHistory.java').unlink()
+        with self.assertRaisesRegex(AssertionError, 'production source input drift: .*ImeHistory.java'):
+            check(self.root)
+
+    def test_source_hash_drift(self):
+        path = self.root / 'android/app/src/org/llmasr/minimal/ime/ImeHistory.java'
+        original = path.read_bytes()
+        path.write_bytes(original + b'\n// synthetic source drift\n')
+        self.assertNotEqual(hashlib.sha256(original).hexdigest(), hashlib.sha256(path.read_bytes()).hexdigest())
+        with self.assertRaisesRegex(AssertionError, 'production source input drift: .*ImeHistory.java'):
+            check(self.root)
 
     def test_current_positive(self):
         check(self.root)

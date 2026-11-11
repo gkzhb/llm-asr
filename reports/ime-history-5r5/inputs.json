@@ -1,0 +1,215 @@
+{
+  "schema": 1,
+  "tested_base": "dc0a88749b63fda22e211e388b46be25437c60ad",
+  "tested_state": "dirty approved frozen sources, not a future commit object",
+  "candidate34_sha256": "c75c608439b12a647685f3ca75feda10911622261c2305d33b4a29f960323e0b",
+  "files": [
+    {
+      "path": "android/app/AndroidManifest.xml",
+      "mode": "0o644",
+      "bytes": 1895,
+      "sha256": "eff82056e787936c417d5b08ba96b22e0e7a4c94881bdfc1e680e7e7fa5c60b7"
+    },
+    {
+      "path": "android/app/build.gradle.kts",
+      "mode": "0o644",
+      "bytes": 7683,
+      "sha256": "3c47fd1e79c42596f8908287a65b0ab83883d86be8b84682e6c956c7026ac58c"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/AppGraph.kt",
+      "mode": "0o644",
+      "bytes": 12419,
+      "sha256": "366b77d6f0f87be9fc462a8f117b9bacacdab13f19fa9da57a141f53489619a2"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/AsrImeService.kt",
+      "mode": "0o644",
+      "bytes": 25233,
+      "sha256": "45707949775e64e0330a0a4f8f81ec8b07aa16aec3a88b750faf0a348c60e009"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ime/ImeBackend.kt",
+      "mode": "0o644",
+      "bytes": 5834,
+      "sha256": "2f7d046de1e86bd300341aab769fd587003bb619edf9be72175e5161dcecd0cb"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ime/ImeCapture.kt",
+      "mode": "0o644",
+      "bytes": 1617,
+      "sha256": "bbf7827ab75853dffc8b0d290dc880ef8c4877862df8d0e15be6030b9e7d2f34"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ime/ImeController.kt",
+      "mode": "0o644",
+      "bytes": 12622,
+      "sha256": "50f7f35126e0ef76f3eed0d3019fae5935f286083a39c77f524b8cad3e9eeb9b"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ime/ImeHistory.java",
+      "mode": "0o644",
+      "bytes": 654,
+      "sha256": "05d1a238dd26bbcd1498f665174e8bc2ea6d606768df8d3aba0197271b749851"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ime/ImeHistoryStore.java",
+      "mode": "0o644",
+      "bytes": 9082,
+      "sha256": "c391ec5c0e26d4433856e8ce959861c2e5ae1ccca87a4deae2b2ccd39ad2950d"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ime/ImeSession.java",
+      "mode": "0o644",
+      "bytes": 771,
+      "sha256": "0a56201367aa6f5a5be9b84ba0b54c2e979c83611089d61127b75a45b2e60659"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelAccess.kt",
+      "mode": "0o644",
+      "bytes": 9367,
+      "sha256": "efd1e7e8072469aecfe08ff5db4e19677817293c25589862b37f07b180d1b89e"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/model/ModelResidency.kt",
+      "mode": "0o644",
+      "bytes": 7487,
+      "sha256": "169573456d6aea24da07eae3c3eec373ae671112f39c3f34ecf4842f9ad93c8a"
+    },
+    {
+      "path": "docs/voice-ime.md",
+      "mode": "0o644",
+      "bytes": 13223,
+      "sha256": "7733c08f3ba36deb2c33fd23bfe32816d395593206067ffa21f7d9225fbfdb43"
+    },
+    {
+      "path": "scripts/check-maintained-text.py",
+      "mode": "0o644",
+      "bytes": 9662,
+      "sha256": "7b61d49f1575bc2123b43a7fef41133ecc59c98b7497a22ce0438da2501ad0d8"
+    },
+    {
+      "path": "scripts/check-minimal-apk.py",
+      "mode": "0o644",
+      "bytes": 5866,
+      "sha256": "dc93e1d0d93c6e0eb2eed04430e24ce638ab9b24a535038af33ad64455538512"
+    },
+    {
+      "path": "scripts/test-minimal-apk.sh",
+      "mode": "0o755",
+      "bytes": 15477,
+      "sha256": "1d0c991b64b0df4defd0a1313f54ae0028f492271c8cb6fa77557a649aa61dd9"
+    },
+    {
+      "path": "scripts/verify-gradle-apk.py",
+      "mode": "0o644",
+      "bytes": 13261,
+      "sha256": "ae1cdffad59205663d2c49e0716724c3b8def60766f3108231aae5d1a8504e8e"
+    },
+    {
+      "path": "tests/ImeSessionTest.kt",
+      "mode": "0o644",
+      "bytes": 18074,
+      "sha256": "724a9eab1efed73bdbfb254ce7ea93be48e0f9ac2c16a71e42e4ea83bf52b365"
+    },
+    {
+      "path": "tests/apk_report_binding_test.py",
+      "mode": "0o644",
+      "bytes": 7813,
+      "sha256": "050643e0f7b71ba6477a89bd71f92fd4fd1e185d84e1a630e24c94bab89020c7"
+    },
+    {
+      "path": "tests/architecture_boundary_test.py",
+      "mode": "0o644",
+      "bytes": 15551,
+      "sha256": "9e3276dcc46d8ae180a1228e16387b988c8bd0d8c3966e75c776f1d5b1c5d9f7"
+    },
+    {
+      "path": "tests/fixtures/kotlin-next/ImeHistoryContractTest.java",
+      "mode": "0o644",
+      "bytes": 27135,
+      "sha256": "83bdbe140b874e1fca87451104560ddae78eefefbf84c71c3d57192a5166b201"
+    },
+    {
+      "path": "tests/fixtures/kotlin-next/NextAppContractTest.java",
+      "mode": "0o644",
+      "bytes": 90356,
+      "sha256": "eb396bb93b8291fee6ee45d6b0bfd4d344257192dac86bc0180d151f0b4f61e5"
+    },
+    {
+      "path": "tests/ime_history_contract_test.py",
+      "mode": "0o644",
+      "bytes": 21584,
+      "sha256": "35c049d4d2f8e8c1f596e325c530ddaac0575546da0ba61f89ea1e707a2162b5"
+    },
+    {
+      "path": "tests/ime_readiness_cleanup_test.py",
+      "mode": "0o644",
+      "bytes": 10042,
+      "sha256": "78727ef65977256201b01386ad5397d272ee18c34ccc0b761c47210787374cf8"
+    },
+    {
+      "path": "tests/ime_start_boundary_test.py",
+      "mode": "0o644",
+      "bytes": 5194,
+      "sha256": "8cfd390314a7e79cfa6030d3c00bd0d7b425662be96ba7efda748bb2ea741c23"
+    },
+    {
+      "path": "tests/ime_ui_contract_test.py",
+      "mode": "0o644",
+      "bytes": 16466,
+      "sha256": "86c892fb3fa6396bae96e4efa84d628158ab5542790cf2e2d974bf3f40fd36fb"
+    },
+    {
+      "path": "tests/kotlin_next_migration_test.py",
+      "mode": "0o644",
+      "bytes": 54448,
+      "sha256": "0ba7a6f8f37cb7f35f24ebb26bde2112322d507337b00c9322fea4c941f111bb"
+    },
+    {
+      "path": "tests/model_android_source_test.py",
+      "mode": "0o644",
+      "bytes": 14097,
+      "sha256": "fe453b4b4d5bac06140afec6fb60d40642203dc87d09f2cd821cd5d38881b703"
+    },
+    {
+      "path": "gradle/baseline-inputs.json",
+      "mode": "0o644",
+      "bytes": 19521,
+      "sha256": "2c46183b9a1e49742118499d8c2c9399deafedd0741149ca752cac0b07860ee1"
+    },
+    {
+      "path": "tests/kotlin_testhost_migration_test.py",
+      "mode": "0o644",
+      "bytes": 35898,
+      "sha256": "cef9338920c2c7d9a97e543ea992f8459ae08f1a3e3dbe87b00f2a4675d10bd9"
+    },
+    {
+      "path": "tests/fixtures/kotlin-runtime/RuntimeContractTest.java",
+      "mode": "0o644",
+      "bytes": 27544,
+      "sha256": "d08a5de2ce863eb9c7ce2a5acc9f0cf62a3234069561af8b6ad9c67f30267feb"
+    },
+    {
+      "path": "tests/module_owners_test.py",
+      "mode": "0o644",
+      "bytes": 15068,
+      "sha256": "7550f7ab880168a3da73971671172af14838e15ce4547ad2351e8026152c66a0"
+    },
+    {
+      "path": "tests/ime_history_provenance_test.py",
+      "mode": "0o644",
+      "bytes": 9795,
+      "sha256": "9ed96976517121695ea8c9537a7339c5c4c2fe3a27c897c99e672cba8467e833"
+    },
+    {
+      "path": "tests/module_owners_guard_test.py",
+      "mode": "0o644",
+      "bytes": 9319,
+      "sha256": "c662323232ff166d3b5e98975f08683d109005c808753cdc2c28c9a7858df9e1"
+    }
+  ],
+  "review": "same-model isolated inline accepted; no disk receipt",
+  "commit": "PENDING separate safety review/authorization",
+  "device": "NOT RUN"
+}

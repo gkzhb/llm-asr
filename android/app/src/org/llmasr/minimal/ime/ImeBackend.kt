@@ -18,10 +18,13 @@ import org.llmasr.minimal.task.RequestContext
 class ImeBackend(private val context: OperationContext?, private val modelRepository: ModelRepository?,
                  private val inference: InferenceAdapter?, private val modelAccess: ModelAccess) : ImeController.Backend {
     private var modelBinding: ModelAccess.Binding? = null
+    private var generation: String? = null
+    private var captureEpoch = 0L
+    private var preparation: ModelAccess.PreparationControl? = null
     @Throws(IOException::class)
     override fun requireModelReady() { modelAccess.requireResidentReady() }
     @Throws(Exception::class)
-    override fun prepare(control: RecordingControl, progress: ImeController.Preparation) {
+    override fun qualify(control: RecordingControl, progress: ImeController.Preparation) {
         modelBinding = modelAccess.pin()
         val gate = object : ModelAccess.PreparationControl {
             private var reserved = false
@@ -35,8 +38,17 @@ class ImeBackend(private val context: OperationContext?, private val modelReposi
             override fun succeed(ready: ModelReadiness, token: ModelReadiness.VerifyToken): Boolean =
                 reserved && ready.commitVerified(token)
         }
-        modelAccess.prepareForCapture(gate, modelAccess.configPath(File(modelRepository!!.modelDir(), "config.json").absolutePath),
+        preparation = gate
+        modelAccess.qualifyCapture(gate) { progress.update(it) }
+        generation = modelAccess.readyGeneration()
+        captureEpoch = modelAccess.captureEpoch()
+    }
+    @Throws(Exception::class)
+    override fun prepare(control: RecordingControl, progress: ImeController.Preparation) {
+        modelAccess.loadForCapture(preparation ?: throw IOException("模型资格尚未核验"),
+            modelAccess.configPath(File(modelRepository!!.modelDir(), "config.json").absolutePath),
             modelAccess.cachePath(context!!.cacheDir()!!.absolutePath)) { progress.update(it) }
+        if (generation != modelAccess.readyGeneration()) throw IOException("模型世代已变化")
     }
     @Throws(IOException::class)
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
@@ -46,14 +58,15 @@ class ImeBackend(private val context: OperationContext?, private val modelReposi
     }
     @Throws(IOException::class)
     override fun captureWithStart(control: RecordingControl, progress: ImeController.Progress, gate: RecordingControl.StartGate): ByteArray? {
-        val generation = modelAccess.readyGeneration() // Worker-only file identity check.
         return ForegroundRecorder.capture(control, { seconds -> progress.update(seconds) }, RecordingControl.StartGate { hardware ->
-            gate.start { modelAccess.startCapture(generation) { hardware.run(); true } }
+            gate.start { modelAccess.startEarlyCapture(captureEpoch) { hardware.run(); true } }
         })
     }
     @Throws(Exception::class)
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS", "PLATFORM_CLASS_MAPPED_TO_KOTLIN")
     override open fun transcribe(request: RequestContext?, wav: ByteArray?, language: String?): String? {
+        if (generation != modelAccess.readyGeneration()) throw IOException("模型世代已变化")
+        modelAccess.requireResidentReady()
         val targetRequest = request
         val files = context!!.filesDir()
         val inputWav = File(files, "input-" + targetRequest!!.requestId + ".wav")
@@ -86,6 +99,7 @@ class ImeBackend(private val context: OperationContext?, private val modelReposi
             if (request!!.inputWav != null && request.inputWav!!.exists() && !request.inputWav!!.delete())
                 throw IOException("无法删除临时录音；下次启动将重试清理")
         } finally {
+            generation = null; preparation = null
             val binding = modelBinding; modelBinding = null
             try { modelAccess.unpin(binding) } finally { modelAccess.finishSelectionSnapshot() }
         }

@@ -8,22 +8,22 @@ android = root / 'android/app'
 SRC_ROOT = android / 'src/org/llmasr/minimal'
 ns = '{http://schemas.android.com/apk/res/android}'
 manifest = ET.parse(android / 'AndroidManifest.xml').getroot()
-assert manifest.get(ns+'versionName') == '0.8-debug'
-assert manifest.get(ns+'versionCode') == '8'
+assert manifest.get(ns+'versionName') == '0.9-debug'
+assert manifest.get(ns+'versionCode') == '9'
 def check_version_declarations(source, xml):
     # AGP owns final package version after staging removes the source attributes.
     code = re.findall(r'^\s*versionCode\s*=\s*(\d+)\s*$', source, re.M)
     name = re.findall(r'^\s*versionName\s*=\s*"([^"]+)"\s*$', source, re.M)
-    if code != ['8'] or name != ['0.8-debug'] or code != [xml.get(ns+'versionCode')] or name != [xml.get(ns+'versionName')]:
-        raise AssertionError('App version declarations must agree at 8 / 0.8-debug')
+    if code != ['9'] or name != ['0.9-debug'] or code != [xml.get(ns+'versionCode')] or name != [xml.get(ns+'versionName')]:
+        raise AssertionError('App version declarations must agree at 9 / 0.9-debug')
 dsl = (android / 'build.gradle.kts').read_text()
 check_version_declarations(dsl, manifest)
-for before, after in [('versionCode = 8', 'versionCode = 7'), ('versionName = "0.8-debug"', 'versionName = "0.7-debug"')]:
+for before, after in [('versionCode = 9', 'versionCode = 8'), ('versionName = "0.9-debug"', 'versionName = "0.8-debug"')]:
     assert dsl.count(before) == 1, 'unique version declaration fixture'
     try:
         check_version_declarations(dsl.replace(before, after), manifest)
     except AssertionError as failure:
-        assert str(failure) == 'App version declarations must agree at 8 / 0.8-debug'
+        assert str(failure) == 'App version declarations must agree at 9 / 0.9-debug'
     else:
         raise AssertionError('version declaration guard accepted independent stale field')
 assert [p.get(ns+'name') for p in manifest.findall('uses-permission')] == ['android.permission.RECORD_AUDIO']
@@ -99,14 +99,17 @@ assert 'modelAccess.configPath(' in java('AsrOperation') and 'modelAccess.config
 assert 'startRestore()' in java('ModelManagementController')
 assert '恢复证明不重新计算 SHA' in java('ModelManagementActivity')
 assert java('AsrOperation').count('modelAccess.requireResidentReady()') == 3
-assert 'backend.requireModelReady()' in java('ImeController')
+assert 'modelAccess.requireResidentReady()' in java('ImeBackend')
 # Only the explicit user-intent preparation helper may hash; ordinary adapter gates remain light.
 access = java('ModelAccess')
 prepare = access.index('fun prepareForCapture(')
 release = access.index('    fun requestRelease()', prepare)
 assert 'repo.verifyAll' in access[prepare:release]
 assert 'repo.verifyAll' not in access[:prepare] + access[release:]
-assert 'modelAccess.prepareForCapture' in java('ImeBackend')
+assert 'modelAccess.qualifyCapture' in java('ImeBackend') and 'modelAccess.loadForCapture' in java('ImeBackend')
+assert 'modelAccess.startEarlyCapture' in java('ImeBackend')
+assert 'backend!!.qualify(control)' in java('ImeController')
+assert java('ImeController').index('capture.start()') < java('ImeController').index('backend!!.prepare(control)')
 assert 'backend!!.prepare(control)' in java('ImeController')
 assert 'access::requireResidentReady' in graph
 assert 'object : InferenceAdapter.Session' in graph

@@ -186,7 +186,7 @@ public final class NextAppContractTest {
             AsrOperation operation=new AsrOperation(context,owner,wrong,new AppState(),new TextExportController<android.net.Uri>(u->null,Runnable::run),inference,new AppReportWriter(context),access);
             check(operation.startPrepare(),"selected prepare admitted");jobs.remove(0).run();check(operation.startSample("auto"),"selected App request admitted");jobs.remove(0).run();
             ImeBackend backend=new ImeBackend(context,wrong,inference,access);RecordingControl control=new RecordingControl();
-            check(owner.submit(()->{backend.prepare(control,s->{});backend.requireModelReady();RequestContext request=new RequestContext("variant-ime",TaskKind.INFERENCE);try{check(backend.transcribe(request,wav,"auto").equals("public"),"IME selected result");}finally{backend.cleanup(request);}}),"selected IME request admitted");jobs.remove(0).run();
+            check(owner.submit(()->{backend.qualify(control,s->{});backend.prepare(control,s->{});backend.requireModelReady();RequestContext request=new RequestContext("variant-ime",TaskKind.INFERENCE);try{check(backend.transcribe(request,wav,"auto").equals("public"),"IME selected result");}finally{backend.cleanup(request);}}),"selected IME request admitted");jobs.remove(0).run();
             check(nativePaths.stream().filter(s->s.equals("infer:"+model.configPath())).count()==2,"both real App and IME infer selected path");
             check(nativePaths.stream().filter(s->s.startsWith("prepare:")).count()==1,"same selected generation reused single native resident");
         } finally {check(jobs.isEmpty(),"variant request workers exited");delete(root);}
@@ -195,8 +195,9 @@ public final class NextAppContractTest {
         TaskCoordinator owner = new TaskCoordinator(Runnable::run);
         ImeController.Backend backend = new ImeController.Backend() {
             public void requireModelReady() { /* Explicit synthetic prepared policy. */ }
-            public byte[] capture(RecordingControl control, ImeController.Progress progress) {
-                control.start(() -> {}); control.stop(); control.captureReleased(); return new byte[]{1};
+            public byte[] capture(RecordingControl control, ImeController.Progress progress) { throw new AssertionError("gated capture required"); }
+            public byte[] captureWithStart(RecordingControl control, ImeController.Progress progress, RecordingControl.StartGate gate) {
+                gate.start(() -> {}); control.stop(); control.captureReleased(); return new byte[]{1};
             }
             public String transcribe(RequestContext request, byte[] wav, String language) { return "synthetic preview"; }
             public void cleanup(RequestContext request) {}
@@ -218,11 +219,13 @@ public final class NextAppContractTest {
     }
     static final class ImeFixture implements AutoCloseable {
         final TaskCoordinator owner = new TaskCoordinator(Runnable::run);
-        int captures, writes; final List<String> events = new ArrayList<>();
+        int captures, writes, hardwareStarts; Thread hardwareThread;
+        final List<String> events = new ArrayList<>();
         final ImeController controller = new ImeController(owner, new ImeController.Backend() {
             public void requireModelReady() { /* Explicit synthetic prepared policy. */ }
-            public byte[] capture(RecordingControl c, ImeController.Progress p) {
-                captures++; c.start(() -> {}); c.stop(); c.captureReleased(); return new byte[]{1};
+            public byte[] capture(RecordingControl c, ImeController.Progress p) { throw new AssertionError("gated capture required"); }
+            public byte[] captureWithStart(RecordingControl c, ImeController.Progress p, RecordingControl.StartGate gate) {
+                captures++; gate.start(() -> {hardwareStarts++; hardwareThread=Thread.currentThread();}); c.stop(); c.captureReleased(); return new byte[]{1};
             }
             public String transcribe(RequestContext c, byte[] w, String l) { return "synthetic preview"; }
             public void cleanup(RequestContext c) {}
@@ -254,8 +257,49 @@ public final class NextAppContractTest {
             service.manager.event=()->events.add("picker");
         }
         android.widget.Button button(String label) {return findButton(root,label);}
-        void click(String label) {check(button(label)!=null&&button(label).isEnabled()&&button(label).performClick(),"actual enabled button: "+label);
-            if(label.equals("录音") && String.valueOf(button(label).getContentDescription()).equals("确认丢弃预览并录音"))button(label).performClick();}
+        void click(String label) throws Exception {
+            android.widget.Button target=button(label);
+            check(target!=null&&target.isEnabled(),"actual enabled button: "+label);
+            if(!label.equals("录音")) {
+                check(target.performClick(),"actual enabled button: "+label);
+                return;
+            }
+            // This finite fake uses a direct coordinator executor. Let the host main pump
+            // the real Service capture gate while the synchronous test click owns its worker.
+            int beforeCaptures=captures, beforeStarts=hardwareStarts;
+            Thread main=Thread.currentThread();
+            check(android.os.Looper.myLooper()==android.os.Looper.getMainLooper(),"fixture record pump runs on host main");
+            java.util.concurrent.atomic.AtomicReference<Throwable> failure=new java.util.concurrent.atomic.AtomicReference<>();
+            Thread worker=new Thread(()->{
+                try {
+                    check(target.performClick(),"actual enabled button: "+label);
+                    if(String.valueOf(target.getContentDescription()).equals("确认丢弃预览并录音"))target.performClick();
+                } catch(Throwable caught) {failure.set(caught);}
+            },"ime-fixture-record-click");
+            worker.start();
+            try {
+                long deadline=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(5);
+                while(worker.isAlive()&&System.nanoTime()<deadline){android.os.Handler.drain();worker.join(5);}
+                check(!worker.isAlive(),"record click and actual main capture gate complete");
+            } finally {
+                if(worker.isAlive())controller.invalidate();
+                try {android.os.Handler.drain();}
+                finally {
+                    try {worker.join(5000);}
+                    finally {
+                        retainRoot=worker.isAlive();
+                        check(!retainRoot,"record click finally actual worker exit");
+                    }
+                }
+            }
+            Throwable caught=failure.get();
+            if(caught instanceof Error)throw (Error)caught;
+            if(caught instanceof Exception)throw (Exception)caught;
+            if(caught!=null)throw new AssertionError("record click worker failure",caught);
+            if(captures>beforeCaptures)check(hardwareStarts==beforeStarts+1&&hardwareThread==main,
+                "manual recording actual hardware callback executes once on host main");
+            renderIme(service); // No-op fixture observer does not schedule production UI refresh.
+        }
 
         void stale() throws Exception {
             check(!original.valid()&&original.preview().isEmpty()&&field(service,"session")==null,
@@ -264,6 +308,7 @@ public final class NextAppContractTest {
                 "external switch never commits old preview");
         }
         public void close() throws Exception {
+            check(!retainRoot,"unconfirmed record worker retains fixture inputs: "+graphRoot);
             service.onDestroy();android.os.Handler.pending.clear();android.widget.Toast.failure=null;android.widget.Toast.fatal=null;check(!owner.isBusy(),"IME fixture actual owner exit");
             graph.coordinator().awaitFree(); graph.runtimeLogWorker().close();
             java.util.concurrent.ExecutorService executor=(java.util.concurrent.ExecutorService)field(graph.runtimeLogWorker(),"executor");
@@ -301,12 +346,31 @@ public final class NextAppContractTest {
             int captures=f.captures,writes=f.writes;discard.performClick();
             check(!f.original.valid()&&f.original.preview().isEmpty()&&f.captures==captures&&f.writes==writes,"pending rerecord discard invalidates without capture or commit");
         }
-        for(String invalid:Arrays.asList("permission","shown"))try(ImeFixture f=new ImeFixture()) {
-            f.button("录音").performClick();check(field(f.service,"rerecordFor")!=null,"pending confirmation starts without capture");
-            if(invalid.equals("permission"))f.service.permission=1;else f.service.shown=false;
-            renderIme(f.service);check(field(f.service,"rerecordFor")==null,"observed permission or shown loss revokes rerecord confirmation");
-            f.service.permission=0;f.service.shown=true;renderIme(f.service);f.button("录音").performClick();
-            check(f.captures==1&&field(f.service,"rerecordFor")!=null,"restored eligibility first click only asks again");
+        try(ImeFixture f=new ImeFixture()) {
+            f.button("录音").performClick();check(field(f.service,"rerecordFor")!=null,"permission: pending confirmation starts without capture");
+            f.service.permission=1;
+            renderIme(f.service);check(field(f.service,"rerecordFor")==null,"permission: observed loss revokes rerecord confirmation");
+            f.service.permission=0;renderIme(f.service);f.button("录音").performClick();
+            check(f.captures==1&&field(f.service,"rerecordFor")!=null,"permission: restored eligibility first click only asks again");
+        }
+        try(ImeFixture f=new ImeFixture()) {
+            f.button("录音").performClick();check(field(f.service,"rerecordFor")!=null,"shown: pending confirmation starts without capture");
+            f.service.shown=false;renderIme(f.service);
+            check(!f.original.valid()&&f.original.preview().isEmpty()&&field(f.service,"session")==null&&field(f.service,"rerecordFor")==null,
+                "shown loss must discard old session and preview before restore");
+            check(((android.widget.LinearLayout)field(f.service,"historyPanel")).getVisibility()==android.view.View.GONE&&
+                ((android.view.View)field(f.service,"historyScroll")).getVisibility()==android.view.View.GONE,"shown: history panel and outer scroll hidden");
+            f.service.shown=true;renderIme(f.service);f.button("录音").performClick();
+            check(field(f.service,"session")==null&&field(f.service,"rerecordFor")==null&&f.captures==1&&f.writes==0,
+                "shown: restore never revives preview or automatically records or commits");
+            check(!f.controller.commit(f.original,"fixture:1:field:1:0",1,0,text->{f.writes++;return true;}),"shown: stale confirmation cannot write");
+            f.button("丢弃 / 重新开始").performClick();ImeSession fresh=(ImeSession)field(f.service,"session");
+            check(fresh!=null&&fresh!=f.original&&fresh.valid()&&fresh.preview().isEmpty()&&f.captures==1&&f.writes==0,
+                "shown: explicit fresh session is empty with no automatic action");
+            f.click("录音");
+            check(f.captures==2&&f.writes==0&&!fresh.preview().isEmpty(),"shown: only manual fresh recording produces a preview");
+            renderIme(f.service);f.button("确认输入").performClick();f.button("确认输入").performClick();
+            check(f.writes==1&&!f.original.valid()&&f.original.preview().isEmpty(),"shown: fresh preview confirms at most once and old preview never returns");
         }
         try(ImeFixture f=new ImeFixture()) {
             f.button("录音").performClick();check(String.valueOf(f.button("录音").getContentDescription()).equals("确认丢弃预览并录音")&&f.captures==1,"preview re-record asks explicit inline confirmation");
@@ -444,7 +508,8 @@ public final class NextAppContractTest {
             ImeController controller=new ImeController(owner,new ImeController.Backend(){
                 void block(){entered.countDown();try{if(!release.await(5,java.util.concurrent.TimeUnit.SECONDS))throw new AssertionError("return worker deadline");}catch(InterruptedException x){throw new AssertionError(x);}}
                 public void requireModelReady(){}
-                public byte[] capture(RecordingControl c,ImeController.Progress p){control.set(c);c.start(()->{});try{if(stage.equals("capture"))block();}finally{c.captureReleased();}return new byte[]{1};}
+                public byte[] capture(RecordingControl c,ImeController.Progress p){throw new AssertionError("gated capture required");}
+                public byte[] captureWithStart(RecordingControl c,ImeController.Progress p,RecordingControl.StartGate gate){control.set(c);gate.start(()->{});try{if(stage.equals("capture"))block();}finally{c.captureReleased();}return new byte[]{1};}
                 public String transcribe(RequestContext c,byte[] w,String l){if(stage.equals("native"))block();return "late private preview";}
                 public void cleanup(RequestContext c){if(stage.equals("cleanup"))block();}
             },()->{});
@@ -518,8 +583,11 @@ public final class NextAppContractTest {
             ImeBackend real=new ImeBackend(context,repo,null,access);
             controller=new ImeController(owner,new ImeController.Backend(){
                 public void requireModelReady()throws IOException{real.requireModelReady();}
+                public void qualify(RecordingControl c,ImeController.Preparation p)throws Exception {
+                    real.qualify(c,s->{stages.add(s);if(s.contains("SHA-256："))hashUpdates[0]++;p.update(s);onStage.run();});
+                }
                 public void prepare(RecordingControl c,ImeController.Preparation p)throws Exception {
-                    real.prepare(c,s->{stages.add(s);if(s.contains("SHA-256："))hashUpdates[0]++;p.update(s);onStage.run();});
+                    real.prepare(c,s->{stages.add(s);p.update(s);onStage.run();});
                 }
                 public byte[] capture(RecordingControl c,ImeController.Progress p)throws IOException{captures[0]++;return real.capture(c,p);}
                 public byte[] captureWithStart(RecordingControl c,ImeController.Progress p,RecordingControl.StartGate gate)throws IOException{captures[0]++;return real.captureWithStart(c,p,gate);}
@@ -535,7 +603,12 @@ public final class NextAppContractTest {
         android.widget.Button button(String label){return findButton(view,label);}
         void click()throws Exception{check(button("录音").performClick(),"record click enabled");
             if(String.valueOf(button("录音").getContentDescription()).equals("确认丢弃预览并录音"))button("录音").performClick();}
-        void run()throws Exception{check(jobs.size()==1,"exactly one owned transaction");jobs.remove(0).run();check(!owner.isBusy(),"owner released after real work");}
+        void run()throws Exception{check(jobs.size()==1,"exactly one owned transaction");threaded();pumpJoin();check(!owner.isBusy(),"owner released after real work");}
+        void pumpJoin()throws Exception {
+            long until=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(5);
+            while(worker!=null&&worker.isAlive()&&System.nanoTime()<until){android.os.Handler.drain();worker.join(5);}
+            join();
+        }
         void threaded()throws Exception{
             Runnable task=jobs.remove(0);worker=new Thread(()->{try{task.run();}catch(Throwable t){workerFailure.set(t);}},"first-use-test");worker.start();
         }
@@ -556,7 +629,7 @@ public final class NextAppContractTest {
             f.click();check(f.controller.phase()==ImeController.Phase.PREPARING&&!f.button("停止").isEnabled(),"preparing is not capturing");
             check(f.owner.isBusy()&&!f.controller.start((ImeSession)field(f.service,"session"),"Chinese"),"double click shares single owner");
             check(!f.owner.submit(()->{throw new AssertionError("foreign app overlap");}),"App and IME mutually exclusive during prepare");
-            f.run();check(f.ready.isReady()&&f.hashUpdates[0]>0&&f.writes[0]>=3&&f.loads[0]==1&&f.captures[0]==1,"automatic SHA durable proof then prepare then capture");
+            f.run();check(f.ready.isReady()&&f.hashUpdates[0]>0&&f.writes[0]>=3&&f.loads[0]==1&&f.captures[0]==1,"automatic SHA durable proof then capture with native prepare");
             check(((ImeSession)field(f.service,"session")).preview().equals("manual preview"),"preview remains manual");
             int reads=f.reads[0],writes=f.writes[0],hash=f.hashUpdates[0];
             renderIme(f.service);f.click();f.run();
@@ -577,10 +650,10 @@ public final class NextAppContractTest {
             f.click();f.run();check(f.captures[0]==0&&f.loads[0]==0&&!f.ready.isReady(),"bad or missing model capture zero");
             check(((ImeSession)field(f.service,"session")).status().contains("返回首页→模型"),"missing model repair guidance");
         }
-        for(String stage:Arrays.asList("恢复","SHA-256：","加载 / 复用"))try(FirstUse f=new FirstUse()) {
+        for(String stage:Arrays.asList("恢复","SHA-256："))try(FirstUse f=new FirstUse()) {
             f.onStage=()->{if(!f.stages.isEmpty()&&f.stages.get(f.stages.size()-1).contains(stage))f.controller.invalidate();};
             f.click();f.run();check(f.captures[0]==0&&f.loads[0]==0,"cancel at prepare stage never captures or loads");
-            check(f.ready.isReady()==stage.equals("加载 / 复用"),"only completed proof survives preparation cancellation");
+            check(!f.ready.isReady(),"incomplete proof cannot survive qualification cancellation");
         }
         // Cancellation can lose durable-proof publication but can never authorize the microphone.
         try(FirstUse f=new FirstUse()) {
@@ -597,7 +670,7 @@ public final class NextAppContractTest {
         }
         try(FirstUse f=new FirstUse()) {
             f.onLoad=f.controller::stop;f.click();f.run();
-            check(f.captures[0]==1&&((ImeSession)field(f.service,"session")).preview().equals("manual preview"),"stop during PREPARING cannot pre-stop future recording");
+            check(f.captures[0]==1&&((ImeSession)field(f.service,"session")).preview().equals("manual preview"),"stop during native prepare finishes prior actual capture");
         }
         imePrepareRestoreCancel();imePrepareNativeCancel();imePrepareIntent();imeReadyActive();
         ImeSessionTest.main(new String[0]);
@@ -620,30 +693,33 @@ public final class NextAppContractTest {
             f.onLoad=()->{entered.countDown();try{if(!release.await(5,java.util.concurrent.TimeUnit.SECONDS))throw new AssertionError("load deadline");}catch(InterruptedException e){throw new AssertionError(e);}};
             f.click();f.threaded();
             try{
-                check(entered.await(5,java.util.concurrent.TimeUnit.SECONDS),"native prepare entered");renderIme(f.service);
-                check(f.controller.phase()==ImeController.Phase.PREPARING&&!f.button("停止").isEnabled(),"native load remains PREPARING");
+                long until=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(5);
+                while(entered.getCount()!=0&&System.nanoTime()<until){android.os.Handler.drain();entered.await(5,java.util.concurrent.TimeUnit.MILLISECONDS);}
+                check(entered.getCount()==0,"native prepare entered");renderIme(f.service);
+                check(f.controller.phase()==ImeController.Phase.CAPTURING&&f.captures[0]==1,"native load overlaps completed or active capture");
                 f.controller.stop();
                 if(cancel.equals("hidden"))f.service.onWindowHidden();else if(cancel.equals("field")){f.service.info.fieldId++;f.service.onStartInput(f.service.info,false);}else f.controller.invalidate();
-                check(f.owner.isBusy()&&f.controller.ownsTask()&&f.captures[0]==0&&!f.owner.submit(()->{}),"cancel retains owner until actual native return");
-            }finally{release.countDown();f.join();}
-            check(f.captures[0]==0&&!f.owner.isBusy()&&!f.controller.ownsTask(),"cancelled native preparation cannot open microphone late");
+                check(f.owner.isBusy()&&f.controller.ownsTask()&&f.captures[0]==1&&!f.owner.submit(()->{}),"cancel retains owner until actual native return");
+            }finally{release.countDown();f.pumpJoin();}
+            check(f.captures[0]==1&&!f.owner.isBusy()&&!f.controller.ownsTask(),"cancelled preparation drains already-started capture without late preview");
         }
     }
     static void imePrepareIntent()throws Exception{
         for(String change:Arrays.asList("permission","shown","field","sensitive"))try(FirstUse f=new FirstUse()){
             f.onLoad=()->{if(change.equals("permission"))f.service.permission=1;else if(change.equals("shown"))f.service.shown=false;else if(change.equals("field"))f.service.info.fieldId++;else f.service.info.inputType=129;};
             f.click();f.run();
-            check(f.captures[0]==0,change.equals("permission")?"permission change during prepare must prevent capture":"editor visibility or field change prevents capture");
+            check(f.captures[0]==1&&((ImeSession)field(f.service,"session")).preview().isEmpty(),change.equals("permission")?"permission change during prepare must prevent publication":"editor visibility or field change prevents publication");
         }
         // Exercise the worker->main Handler handshake (not an Android framework test).
         try(FirstUse f=new FirstUse()){
+            int beforeStarts=org.llmasr.minimal.audio.ForegroundRecorder.starts;
             f.click();android.os.Handler.posted.drainPermits();f.threaded();
             try{
                 check(android.os.Handler.posted.tryAcquire(5,java.util.concurrent.TimeUnit.SECONDS),"final intent posted to main");
                 check(f.captures[0]==0&&f.owner.isBusy(),"worker waits for actual main intent gate");
                 f.service.permission=1;android.os.Handler.drain();
             }finally{android.os.Handler.drain();f.join();}
-            check(f.captures[0]==0,"main thread permission gate refuses late microphone");
+            check(org.llmasr.minimal.audio.ForegroundRecorder.starts==beforeStarts,"main thread permission gate refuses late microphone");
         }
     }
     static void imeReadyActive() throws Exception {

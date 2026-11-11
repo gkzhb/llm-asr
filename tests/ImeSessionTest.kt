@@ -23,10 +23,12 @@ class ImeSessionTest {
         var audio = byteArrayOf(1, 2, 3)
         var modelReady = true; var admissions = 0
         override fun requireModelReady() { admissions++; if (!modelReady) throw IOException("model not prepared") }
-        override fun capture(control: RecordingControl?, progress: ImeController.Progress?): ByteArray {
+        override fun capture(control: RecordingControl?, progress: ImeController.Progress?): ByteArray =
+            captureWithStart(control!!, progress!!, RecordingControl.StartGate { control.start(it) })
+        override fun captureWithStart(control: RecordingControl, progress: ImeController.Progress, gate: RecordingControl.StartGate): ByteArray {
             captures++; this.control = control
             try {
-                if (!control!!.start {}) throw CancellationException()
+                if (!gate.start {}) throw CancellationException()
                 duringCapture.run(); progress!!.update(1.0)
                 if (fail) throw IOException("fake capture failure")
                 return audio
@@ -70,9 +72,11 @@ class ImeSessionTest {
                 }
                 val backend = object : ImeController.Backend {
                     override fun requireModelReady() { /* Explicit synthetic prepared fixture. */ }
-                    override fun capture(control: RecordingControl?, progress: ImeController.Progress?): ByteArray {
+                    override fun capture(control: RecordingControl?, progress: ImeController.Progress?): ByteArray =
+                        captureWithStart(control!!, progress!!, RecordingControl.StartGate { control.start(it) })
+                    override fun captureWithStart(control: RecordingControl, progress: ImeController.Progress, gate: RecordingControl.StartGate): ByteArray {
                         activeControl.set(control)
-                        control!!.start {}; try { if (stage == "capture") block() }
+                        gate.start {}; try { if (stage == "capture") block() }
                         finally { control.captureReleased() }; return byteArrayOf(1)
                     }
                     override fun transcribe(request: RequestContext?, wav: ByteArray?, language: String?): String {

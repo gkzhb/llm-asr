@@ -48,8 +48,8 @@ def suite(directory):
          'if (service == null || service.session !== expected || !service.eligible() ||\n                    !service.isInputViewShown || !service.permitted()) return false',
          'if (service == null) return false', 'start-intent', 'R1 post-gate invalidation must reject actual microphone start'),
         ('resident', 'ModelResidency',
-         'fun startCapture(expected: String, start: () -> Boolean): Boolean = synchronized(monitor) {\n        requireReady(expected)',
-         'fun startCapture(expected: String, start: () -> Boolean): Boolean = synchronized(monitor) {\n        // MUTANT omit final resident admission',
+         'if (epoch != releaseEpoch || pending || maintenance != 0 || state == State.ACTIVE || state == State.EVICTING)',
+         'if (maintenance != 0 || state == State.ACTIVE || state == State.EVICTING)',
          'start-resident', 'R2 pending release must reject actual microphone start'),
     ]
     primary = None

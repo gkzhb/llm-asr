@@ -85,7 +85,7 @@ def case(module, *, primary=None, ledger='valid', restore_failure=None, probe_fa
             if label == 'proof-only-render-red-run' and primary is not None and fail_at_run:
                 raise primary
             diagnostic = {'proof-only-render': 'first-use record must be enabled without proof or resident',
-                          'stale-click-admission': 'permission change during prepare must prevent capture',
+                          'stale-click-admission': 'permission change during prepare must prevent publication',
                           'own-busy-priority': 'owned IME task must retain session progress while resident active'}
             red = label.endswith('-red-run')
             errors = ('java.lang.AssertionError: ' + diagnostic[label[:-8]]).encode() if red else b''

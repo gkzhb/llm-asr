@@ -1,0 +1,14 @@
+# Review disposition — engineering source scope closed
+
+Same-model context-isolated reviewer: `newapi/gpt-6.1-sol`, xhigh, reviewer profile share_context:false; parent accepted actual inline dispositions. **No disk review receipt exists or is fabricated.** This is not a cross-model-family review and not a delivery safety/commit approval.
+
+- Product R1: explicit legacy three-argument ImeController constructor preserves Kotlin trailing-lambda/Java callers; real compiler regression red/green plus runtime consumers.
+- Product R2: bounded no-follow orphan temporary text recovery, fail-closed unknown/link/provider failures; outer history ScrollView hiding, docs and interrupt/Error transaction tests closed at host/source level.
+- Identity: reviewed eight existing SHA pins and three new core owner pins adopted, native/sample/certificate/source-commit identities kept.
+- Formal failure1 T5: driver now compiles internal ImeCapture in the same real module, with source closure/identity omission-drift negatives; no public API/friendpath/Metadata bypass.
+- Shown fixture: old-session invalidation accepted safety contract; manual fresh-session recovery and shared test main-pump with actual hardware witness/owned finally join closed. Runtime real proof/resident setup keeps admitted argument-order/null/Throwable oracles.
+- Owner A: exact reviewed76 source paths/hashes and actual class module/duplicate/platform gates passed review. Guard input closure subsequently reviewed separately; original18 test bodies unchanged plus2 source negatives, full pure gate preflight passed.
+- Provenance B: strict dedicated launchUUID/host success marker/direct evidence path/result+inputs+attempted+tool inventory/actual owned route protocol closed. R1 classpath reviewer found prefix-only validator gap (STATIC, prior actual argv correct). Actual incoming validator accepted3 bad classpaths; repaired exact two-entry classpath with independently controlled Nix stdlib path/bytes/SHA and35 rejects per mode. New compatibility helper checks this run's exact path, not prior result.
+- Latest guard focused review CLOSED/PASS accepted in `guard-review-and-fifth-full-grant.md`; all34 maintained inputs frozen before fifth formal. Review references are parent grants under `.planning/llm-asr-5r5-supervision/` (local ignored evidence), not forged reviewer output files.
+
+Residual boundaries: Android `unix:nlink`/fileKey provider behavior and orphan recovery on actual device remain NOTRUN; unsupported providers safely report unavailable, not recovery success. Full click-seam cleanup-fault interleavings are not exhaustively injected. System IME/InputConnection, microphone, Android runner, actual native ASR and quality/performance remain NOTRUN. History/private text not included in logs/reports/Git. Final candidate safety review and local commit still require parent's separate authorization.

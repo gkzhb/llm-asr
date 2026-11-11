@@ -10,9 +10,13 @@ import org.llmasr.minimal.task.TaskCoordinator
 import org.llmasr.minimal.task.TaskKind
 
 /** Private voice IME transaction. Worker results retain editor and request identity. */
-class ImeController(private val coordinator: TaskCoordinator?, private val backend: Backend?, private val changed: Runnable?) {
+class ImeController(private val coordinator: TaskCoordinator?, private val backend: Backend?, private val changed: Runnable?,
+    private val history: ImeHistoryStore?) {
+    /** Keep the original Kotlin trailing-lambda and Java three-argument source contract. */
+    constructor(coordinator: TaskCoordinator?, backend: Backend?, changed: Runnable?) : this(coordinator, backend, changed, null)
     interface Backend {
         @Throws(IOException::class) fun requireModelReady()
+        @Throws(Exception::class) fun qualify(control: RecordingControl, progress: Preparation) { requireModelReady() }
         @Throws(Exception::class) fun prepare(control: RecordingControl, progress: Preparation) {}
         @Throws(IOException::class) fun capture(control: RecordingControl?, progress: Progress?): ByteArray?
         @Throws(IOException::class) fun captureWithStart(control: RecordingControl, progress: Progress, gate: RecordingControl.StartGate): ByteArray? = capture(control, progress)
@@ -40,6 +44,7 @@ class ImeController(private val coordinator: TaskCoordinator?, private val backe
         val state = when {
             owned && recording!!.cancelled() -> UiState.CANCELLING
             owned && phase == Phase.PREPARING -> UiState.PREPARING
+            owned && phase == Phase.CAPTURING && recording!!.released() -> UiState.PREPARING
             owned && phase == Phase.CAPTURING -> UiState.RECORDING
             owned && phase == Phase.TRANSCRIBING -> UiState.TRANSCRIBING
             busy -> UiState.OTHER_BUSY
@@ -83,7 +88,7 @@ class ImeController(private val coordinator: TaskCoordinator?, private val backe
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     @Synchronized open fun ownsTask(): Boolean = recording != null
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
-    @Synchronized open fun capturing(): Boolean = phase == Phase.CAPTURING && recording != null && !recording!!.committed() && !recording!!.cancelled()
+    @Synchronized open fun capturing(): Boolean = phase == Phase.CAPTURING && recording != null && !recording!!.stopped() && !recording!!.released() && !recording!!.committed() && !recording!!.cancelled()
     @Synchronized fun phase(): Phase = phase
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     @Synchronized open fun stop() { if (capturing()) recording?.stop() }
@@ -96,12 +101,14 @@ class ImeController(private val coordinator: TaskCoordinator?, private val backe
         if (live(session, rev)) { failed = true; status(session, rev, text) }
     }
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
-    @Synchronized open fun start(session: ImeSession?, language: String?): Boolean = start(session, language, CaptureIntent { true })
-    @Synchronized fun start(session: ImeSession?, language: String?, intent: CaptureIntent): Boolean {
-        if (session == null || session !== current || !session.valid || coordinator!!.isBusy()) return false
-        if (language != "Chinese" && language != "English" && language != "auto") return false
+    open fun start(session: ImeSession?, language: String?): Boolean = start(session, language, CaptureIntent { true })
+    fun start(session: ImeSession?, language: String?, intent: CaptureIntent): Boolean {
+        if (session == null || (language != "Chinese" && language != "English" && language != "auto")) return false
+        val rev = synchronized(this) {
+            if (session !== current || !session.valid || coordinator!!.isBusy()) return false
+            session.revision + 1
+        }
         val control = RecordingControl()
-        val rev = session.revision + 1
         val policy = object : RequestRunner.Lifecycle {
             override fun admitted(ctx: RequestContext) { status(session, rev, "正在准备模型，可丢弃取消；尚未录音……") }
             override fun rejected(ctx: RequestContext) { failure(session, rev, "任务执行器已关闭，无法启动新任务。") }
@@ -113,43 +120,79 @@ class ImeController(private val coordinator: TaskCoordinator?, private val backe
         }
         val cleanupBackend = backend!! // Java bound method reference dereferences before runner construction.
         val runner = RequestRunner(coordinator, { 0 }, policy, { request -> cleanupBackend.cleanup(request) })
-        return runner.submit(TaskKind.INFERENCE, { ctx ->
-            if (control.cancelled()) throw CancellationException()
-            backend!!.prepare(control) { stage -> status(session, rev, stage) }
-            backend.requireModelReady()
-            // The Service gate runs on its main thread, outside this monitor. Invalidation
-            // may win afterwards; RecordingControl.start still arbitrates actual hardware start.
-            if (!intent.allowed()) control.cancel()
+        return runner.submit(TaskKind.INFERENCE, { ctx -> runRequest(ctx, session, rev, control, language, intent) }, {
             synchronized(this@ImeController) {
-                if (!live(session, rev) || control.cancelled()) throw CancellationException()
-                phase = Phase.CAPTURING
+                if (session !== current || !session.valid || session.revision + 1 != rev) control.cancel()
+                session.revision = rev
+                failed = false
+                taskSession = session
+                session.preview = ""
+                session.consumed = false
+                recording = control
+                phase = Phase.PREPARING
             }
-            status(session, rev, "正在录音，停止后转写……")
-            val wav = backend!!.captureWithStart(control, Progress { seconds -> status(session, rev, String.format(Locale.ROOT, "录音 %.1f / 30 秒", seconds)) },
-                RecordingControl.StartGate { hardware -> intent.start { if (!control.start(hardware)) throw CancellationException() } })
-            if (!control.tryCommitInference()) throw CancellationException()
-            synchronized(this@ImeController) { phase = Phase.TRANSCRIBING }
-            status(session, rev, "正在转写，请稍候……")
-            val text = backend.transcribe(ctx, wav, language)
-            synchronized(this@ImeController) {
-                if (live(session, rev)) {
-                    session.preview = text ?: ""
-                    session.status = if (session.preview.isEmpty()) "未识别到文本，请重新录音。" else "请检查预览，点击确认输入。"
-                    notifyChanged()
-                }
-            }
-        }, {
-            session.revision = rev
-            failed = false
-            taskSession = session
-            session.preview = ""
-            session.consumed = false
-            recording = control
-            phase = Phase.PREPARING
         }, {
             synchronized(this@ImeController) { if (recording === control) { recording = null; taskSession = null; phase = Phase.IDLE } }
             notifyChanged()
         })
+    }
+    private fun runRequest(ctx: RequestContext, session: ImeSession, rev: Long, control: RecordingControl, language: String?, intent: CaptureIntent) {
+        if (control.cancelled()) throw CancellationException()
+        backend!!.qualify(control) { stage -> status(session, rev, stage) }
+        if (!intent.allowed()) control.cancel()
+        synchronized(this) {
+            if (!live(session, rev) || control.cancelled()) throw CancellationException()
+            phase = Phase.CAPTURING
+        }
+        status(session, rev, "正在录音，停止后转写……")
+        val wav = captureAndPrepare(session, rev, control, intent)
+        if (!intent.allowed()) control.cancel()
+        synchronized(this) { if (!live(session, rev)) control.cancel() }
+        if (!control.tryCommitInference()) throw CancellationException()
+        synchronized(this) { phase = Phase.TRANSCRIBING }
+        status(session, rev, "正在转写，请稍候……")
+        val text = backend.transcribe(ctx, wav, language)
+        val publishAllowed = intent.allowed()
+        synchronized(this) {
+            if (publishAllowed && live(session, rev)) {
+                session.preview = text ?: ""
+                if (session.preview.isNotEmpty()) history?.append(session.preview)
+                session.status = if (session.preview.isEmpty()) "未识别到文本，请重新录音。" else "请检查预览，点击确认输入。"
+                notifyChanged()
+            }
+        }
+    }
+    private fun captureAndPrepare(session: ImeSession, rev: Long, control: RecordingControl, intent: CaptureIntent): ByteArray? {
+        val capture = ImeCapture(control) { started ->
+            backend!!.captureWithStart(control, Progress { seconds -> status(session, rev, String.format(Locale.ROOT, "录音 %.1f / 30 秒", seconds)) },
+                RecordingControl.StartGate { hardware -> intent.start {
+                    if (!control.start { started.start(hardware) }) throw CancellationException()
+                } })
+        }
+        capture.start()
+        var wav: ByteArray? = null
+        var primary: Throwable? = null
+        try {
+            capture.awaitStart()
+            if (control.cancelled()) { capture.finish(); throw CancellationException() }
+            backend!!.prepare(control) { stage -> status(session, rev, stage) } // Backend validates resident/generation before returning.
+        } catch (caught: Throwable) { primary = caught; control.cancel(); throw caught }
+        finally {
+            try { wav = capture.finish() }
+            catch (caught: Throwable) { if (primary == null) throw caught else if (primary !== caught) primary.addSuppressed(caught) }
+        }
+        return wav
+    }
+    /** A selected record is only a preview; no host write and no history append. */
+    @Synchronized fun restoreHistory(session: ImeSession?, revision: Long, record: ImeHistory): Boolean {
+        if (session == null || !live(session, revision) || coordinator!!.isBusy()) return false
+        session.revision++
+        session.preview = record.originalText
+        session.consumed = false
+        session.status = "历史已恢复到预览，请检查后确认输入。"
+        failed = false
+        notifyChanged()
+        return true
     }
     @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
     @Synchronized open fun commit(session: ImeSession?, key: String?, type: Int, options: Int, connection: Commit?): Boolean {

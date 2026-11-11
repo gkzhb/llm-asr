@@ -70,14 +70,16 @@ class ModelAccess @JvmOverloads constructor(private val repository: ModelReposit
         fun reserve(ready: ModelReadiness, token: ModelReadiness.VerifyToken): Boolean
         fun succeed(ready: ModelReadiness, token: ModelReadiness.VerifyToken): Boolean
     }
-    /** Explicit user intent, inside the already-held request owner. Never submits another task. */
+    /** Existing App callers keep proof-before-native preparation. */
     @Throws(Exception::class)
     fun prepareForCapture(control: PreparationControl, config: String, cache: String, progress: (String) -> Unit) {
-        target()?.let {
-            val binding = pinned ?: throw IOException("模型请求尚未绑定")
-            catalog!!.prepareCache(binding.deployment)
-            it.prepareForCapture(control, configPath(config), cachePath(cache), progress); return
-        }
+        qualifyCapture(control, progress)
+        loadForCapture(control, config, cache, progress)
+    }
+    /** Worker-only file qualification; deliberately does not require or load a resident. */
+    @Throws(Exception::class)
+    fun qualifyCapture(control: PreparationControl, progress: (String) -> Unit) {
+        target()?.let { it.qualifyCapture(control, progress); return }
         fun checkpoint() { if (control.cancelled()) throw CancellationException() }
         checkpoint()
         val repo = repository ?: throw IOException("模型管理尚未初始化")
@@ -123,12 +125,19 @@ class ModelAccess @JvmOverloads constructor(private val repository: ModelReposit
             }
         }
         checkpoint()
-        progress("正在加载 / 复用模型到内存；取消将等待加载实际结束……")
-        checkpoint()
-        prepare(config, cache) // Synchronous native return owns the worker until real completion.
-        checkpoint()
+    }
+    @Throws(Exception::class)
+    fun loadForCapture(control: PreparationControl, config: String, cache: String, progress: (String) -> Unit) {
+        if (control.cancelled()) throw CancellationException()
+        progress("正在加载 / 复用模型到内存；录音可先停止，取消等待实际收尾……")
+        if (control.cancelled()) throw CancellationException()
+        prepare(config, cache) // Native stays on the sole shared worker.
+        if (control.cancelled()) throw CancellationException()
         requireResidentReady()
     }
+    fun captureEpoch(): Long = (residency ?: throw IOException("模型内存管理未绑定")).captureEpoch()
+    fun startEarlyCapture(epoch: Long, start: () -> Boolean): Boolean =
+        (residency ?: throw IOException("模型内存管理未绑定")).startEarlyCapture(epoch, start)
     /** Generation is resolved on worker before dispatch; no filesystem IO at hardware start. */
     @Throws(IOException::class)
     fun startCapture(generation: String, start: () -> Boolean): Boolean =

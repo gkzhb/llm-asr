@@ -1,12 +1,93 @@
 package org.llmasr.minimal.modelmanagement
 
+import java.util.Collections
 import java.util.Locale
+import org.llmasr.minimal.model.ModelCatalog
+import org.llmasr.minimal.model.ModelPackagePolicy
+import org.llmasr.minimal.model.ModelResidency
 import org.llmasr.minimal.model.ModelReadiness
 import org.llmasr.minimal.model.ModelReports
 
 /** Snapshot-only presentation, with fixed storage-error sanitization. */
 class ModelUiText private constructor() {
+    /** Display values only. No deployment, repository, live readiness or operation authority escapes. */
+    class Card internal constructor(@JvmField val key: String, @JvmField val text: String)
+    class DetailPresentation internal constructor(
+        @JvmField val readinessText: String, @JvmField val storageText: String,
+        @JvmField val taskText: String, @JvmField val filesText: String, @JvmField val riskText: String,
+        @JvmField val selected: Boolean, @JvmField val canVerify: Boolean,
+        @JvmField val canDelete: Boolean, @JvmField val canPrepare: Boolean)
+    class PagePresentation internal constructor(cards: List<Card>,
+        @JvmField val detail: DetailPresentation?, @JvmField val taskText: String,
+        @JvmField val importText: String) {
+        @JvmField val cards: List<Card> = Collections.unmodifiableList(ArrayList(cards))
+    }
+    /** Internal in-memory inputs, retained only while projecting; existing immutable snapshots are shared. */
+    internal class DetailFacts(val policy: ModelPackagePolicy, val readiness: ModelReadiness.Snapshot,
+        val selected: Boolean, val cachedFiles: List<ModelReports.FileDetail>, val bound: ModelManagementState.Snapshot?) {
+        val files: List<ModelReports.FileDetail> get() = bound?.files ?: cachedFiles
+    }
     companion object {
+        internal fun card(row: ModelCatalog.Row, ready: ModelReadiness.Snapshot): Card {
+            val policy = row.deployment.policy
+            val verified = if (ready.ready() && ready.epoch == row.epoch) row.verifiedCount else 0
+            return Card(row.deployment.key, policy.displayName + " · " + policy.precision +
+                (if (policy.trustedLegacy) "" else "（声明）") + "\n" + bytes(policy.totalBytes) +
+                (if (row.selected) " · 当前选用" else "") + "\n" + readiness(ready.state) + " · 已校验 " + verified + "/7")
+        }
+        internal fun page(cards: List<Card>, target: DetailFacts?, latest: ModelManagementState.Snapshot,
+            importing: ModelManagementState.Snapshot?, archiveBytes: Long, resident: ModelResidency.Snapshot?): PagePresentation {
+            val detail = target?.let { detail(it, resident) }
+            val importText = importing?.let { "最近模型包导入（任务独立于模型详情）\n" + task(it) +
+                "\n私有 ZIP 已读取：" + bytes(archiveBytes) } ?: ""
+            return PagePresentation(cards, detail, detail?.taskText ?: taskStatus(latest, "最近模型操作\n" + task(latest)), importText)
+        }
+        private fun detail(facts: DetailFacts, resident: ModelResidency.Snapshot?): DetailPresentation {
+            val any = facts.files.any { it.present || it.partExists }
+            val completeFile = facts.files.any { it.present && it.sizeMatch }
+            val bound = facts.bound
+            val taskText = if (bound == null) "此模型尚无当前操作记录" else taskStatus(bound, task(bound))
+            val risk = if (bound == null) "等待此模型检查" else task(bound) +
+                (if (bound.unexpectedFiles.isEmpty()) "" else "\n未知项 " + bound.unexpectedFiles.size + "：保留、不递归删除")
+            return DetailPresentation(readinessText(facts, resident), storageText(facts), taskText, fileDetails(facts), risk,
+                facts.selected, completeFile, any || !facts.policy.trustedLegacy, facts.readiness.ready() && facts.selected)
+        }
+        private fun readinessText(facts: DetailFacts, resident: ModelResidency.Snapshot?): String =
+            facts.policy.displayName + "\n" + (if (facts.policy.trustedLegacy) "内置固定可信清单" else "完整性按导入者提供清单；非可信来源认证 · 精度仅声明") +
+                "\n文件：" + readiness(facts.readiness.state) + "\nepoch " + facts.readiness.epoch +
+                "\n内存：" + (resident?.state?.name ?: "未绑定") + (if (resident?.pendingRelease == true) " · 等待释放" else "")
+        private fun storageText(facts: DetailFacts): String {
+            val bound = facts.bound
+            return "预期模型：" + bytes(facts.policy.totalBytes) + "\n内部正式文件：" + bytes(bound?.installedBytes ?: -1) +
+                "\n临时残片：" + bytes(bound?.orphanPartBytes ?: -1) + "\n可用存储（最近检查）：" + bytes(bound?.availableBytes ?: -1) +
+                "\n" + (if (bound == null) "等待此模型概况检查" else spacePlan(bound))
+        }
+        private fun taskStatus(snapshot: ModelManagementState.Snapshot, text: String): String = text +
+            (if (snapshot.inspectBusy) "\n正在刷新内部概况（最近操作保留）" else "") +
+            (snapshot.inspectError?.let { "\n概况刷新：" + it } ?: "")
+        private fun fileDetails(facts: DetailFacts): String {
+            val text = StringBuilder()
+            for (file in facts.files) {
+                text.append(file.name).append("\n").append(fileEvidence(facts, file)).append("\n")
+                    .append(if (facts.bound == null) "最近目录快照；未运行新校验" else fileResult(facts.bound, file.name))
+                    .append(" · ").append(bytes(file.actualBytes)).append("\n预期：").append(bytes(file.expectedBytes))
+                    .append(if (file.partExists) "\n有受管 .part 残片" else "")
+                    .append("\nSHA-256: ").append(expectedHash(facts.policy, file.name)).append("\n\n")
+            }
+            if (facts.files.isEmpty()) text.append("尚未取得文件快照。\n")
+            val unexpected = facts.bound?.unexpectedFiles ?: emptyList()
+            if (unexpected.isNotEmpty()) text.append("内部目录有 ").append(unexpected.size).append(" 项未知文件/目录：保留、不递归删除。")
+            return text.toString()
+        }
+        private fun fileEvidence(facts: DetailFacts, file: ModelReports.FileDetail): String = when {
+            !file.present -> "缺失"
+            !file.sizeMatch -> "大小不符"
+            facts.readiness.ready() && (facts.bound == null || facts.readiness.epoch == facts.bound.modelEpoch) -> "SHA 已通过"
+            else -> "大小匹配 / 尚无当前 SHA 证明"
+        }
+        private fun expectedHash(policy: ModelPackagePolicy, file: String?): String =
+            try { policy.manifest.require(file).sha256() } catch (_: java.io.IOException) { "未知" }
+
         @Suppress("NON_FINAL_MEMBER_IN_OBJECT")
         @JvmStatic open fun bytes(n: Long): String = if (n < 0) "未知（尚未取得快照）" else String.format(Locale.ROOT, "%.2f MiB（%d bytes）", n / 1048576.0, n)
         @Suppress("NON_FINAL_MEMBER_IN_OBJECT")

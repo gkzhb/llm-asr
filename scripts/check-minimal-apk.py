@@ -46,7 +46,7 @@ with zipfile.ZipFile(ROOT/'dist/qwen-asr-minimal-debug.apk') as z:
 permissions=(report/'permissions.txt').read_text()
 assert re.findall(r"uses-permission[^\n]*name='([^']+)'",permissions)==['android.permission.RECORD_AUDIO'], permissions
 badging=(report/'badging.txt').read_text()
-for text in ["package: name='org.llmasr.minimal'", "versionCode='9'", "versionName='0.9-debug'", "minSdkVersion:'29'", "targetSdkVersion:'35'", "native-code: 'arm64-v8a'"]:
+for text in ["package: name='org.llmasr.minimal'", "versionCode='10'", "versionName='0.10-debug'", "minSdkVersion:'29'", "targetSdkVersion:'35'", "native-code: 'arm64-v8a'"]:
     assert text in badging, text
 # IME service must show up as a 'provides-component: ime' entry in badging,
 # and the manifest tree must contain the AsrImeService node with the
@@ -92,4 +92,4 @@ assert 'E: intent-filter' not in page and 'android:process' not in page
 assert 'E: intent-filter' not in log_page and 'android:process' not in log_page
 method = (report/'ime-method-tree.txt').read_text()
 assert 'E: input-method' in method and 'E: subtype' in method and 'voice' in method
-print('PASS signed APK archive, one combined arm64 DSO, exact assets, RECORD_AUDIO-only permission, API29/35, IME service declared (0.9-debug)')
+print('PASS signed APK archive, one combined arm64 DSO, exact assets, RECORD_AUDIO-only permission, API29/35, IME service declared (0.10-debug)')

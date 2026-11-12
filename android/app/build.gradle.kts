@@ -55,8 +55,8 @@ android {
         applicationId = "org.llmasr.minimal"
         minSdk = 29
         targetSdk = 35
-        versionCode = 9
-        versionName = "0.9-debug"
+        versionCode = 10
+        versionName = "0.10-debug"
         ndk { abiFilters += "arm64-v8a" }
     }
     sourceSets.named("main") {

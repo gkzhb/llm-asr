@@ -1,0 +1,236 @@
+{
+  "schema": 1,
+  "task": "llm-asr-w05",
+  "base": "326c9be5c367e4d33fe88fc21729cce4cb5ee9bd",
+  "candidate16": [
+    {
+      "path": "android/app/AndroidManifest.xml",
+      "mode": "0o644",
+      "bytes": 1897,
+      "sha256": "0b18cdefb412287308d87020597693d1c0427ce50c881d75b2ac16c151d563e9",
+      "git_mode": "100644",
+      "git_blob": "43380a22f54e73853d2e946434c200496e5ee503"
+    },
+    {
+      "path": "android/app/build.gradle.kts",
+      "mode": "0o644",
+      "bytes": 7685,
+      "sha256": "164a4626ddd0a50daf2d4ecbdfab2160262d8777fcbf12963488c348cc81588b",
+      "git_mode": "100644",
+      "git_blob": "7e352f71b99cb8e00d435b8a4bad5dfb0a1fc35c"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/ModelManagementActivity.java",
+      "mode": "0o644",
+      "bytes": 21908,
+      "sha256": "e16ac0967f02c5a7da0fc6de729e5dac68ae03a13acf189cc229d0996b465e73",
+      "git_mode": "100644",
+      "git_blob": "914841cc85565ee5e1bfae6b3abc95e788cbe2f2"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/modelmanagement/ModelManagementController.kt",
+      "mode": "0o644",
+      "bytes": 30744,
+      "sha256": "82b6fbd7a85697b266ab6382327ceb5c0ef3748abc21578a082d756b5f1cbefa",
+      "git_mode": "100644",
+      "git_blob": "6ab1cd390a16e50d4ac7e47b83de7957ec6f3e10"
+    },
+    {
+      "path": "android/app/src/org/llmasr/minimal/modelmanagement/ModelUiText.kt",
+      "mode": "0o644",
+      "bytes": 15825,
+      "sha256": "d020514deab2fa50b9d73e86f788ba1e09de85adcd050d9718fd99cf4cf60478",
+      "git_mode": "100644",
+      "git_blob": "e07aeb3cde4136c6480b705795f299634766adbe"
+    },
+    {
+      "path": "docs/local-verification.md",
+      "mode": "0o644",
+      "bytes": 52547,
+      "sha256": "0f9466aafb60d06d3ba9fbc62030e68e502f9d062deacaad27dd86ecc0d916d3",
+      "git_mode": "100644",
+      "git_blob": "21feb65445d1d0962af85340efcf931bf24fe1a9"
+    },
+    {
+      "path": "docs/module-test-map.md",
+      "mode": "0o644",
+      "bytes": 24259,
+      "sha256": "d8e51f23659875f2d7767315dc1c6f1a295d0113a9a31932f808361ba804c442",
+      "git_mode": "100644",
+      "git_blob": "6346e8d9d0dc24057d78b025557a4d8b88b159b1"
+    },
+    {
+      "path": "gradle/baseline-inputs.json",
+      "mode": "0o644",
+      "bytes": 20438,
+      "sha256": "cca6a68b97e90693511d164509dd59a393b82be0d3f2d44a7dcb0234f012b6b6",
+      "git_mode": "100644",
+      "git_blob": "1d9340d5355e9567b193205aec26a34ab065087d"
+    },
+    {
+      "path": "scripts/check-minimal-apk.py",
+      "mode": "0o644",
+      "bytes": 5869,
+      "sha256": "5daa75dd673786f1f1c4bf4d1261baeda3bd9a1a540e067e0573f51cf7813f03",
+      "git_mode": "100644",
+      "git_blob": "b8d89adbea09bf0d10e162c5d9ba5e56bfba10d1"
+    },
+    {
+      "path": "scripts/verify-gradle-apk.py",
+      "mode": "0o644",
+      "bytes": 13263,
+      "sha256": "7ad0b92896109053ed91f9d6fc106266ef89de1c2e7234a9e47520cd06d7a13e",
+      "git_mode": "100644",
+      "git_blob": "3a24193484095964098bc4a500a35973f02f43e7"
+    },
+    {
+      "path": "tests/ModelAndroidHelpersTest.kt",
+      "mode": "0o644",
+      "bytes": 31098,
+      "sha256": "aad2c9ce91107bf129ed46aa8f2da857abd55284f7592fc5f27bde908a559640",
+      "git_mode": "100644",
+      "git_blob": "92d3188cebf470ad76c86b5912e9ceb07f0402e1"
+    },
+    {
+      "path": "tests/apk_report_binding_test.py",
+      "mode": "0o644",
+      "bytes": 7817,
+      "sha256": "b249d11b9cbe98f4cc48e74903e75be3bfaeacbbc94d905ab3263079ebac6eab",
+      "git_mode": "100644",
+      "git_blob": "5d5f59f18abaa3f935ad5b7c43d0eaf2597300ef"
+    },
+    {
+      "path": "tests/app_navigation_contract_test.py",
+      "mode": "0o644",
+      "bytes": 46422,
+      "sha256": "4cb2ddf5da5ade9efaf6c8e743a056b824940101baa04514d1ff4602b3cb417c",
+      "git_mode": "100644",
+      "git_blob": "60339a236fdf93a233f1fbfa3ea0cf8da5cf3621"
+    },
+    {
+      "path": "tests/model_android_source_test.py",
+      "mode": "0o644",
+      "bytes": 14107,
+      "sha256": "f17ab458bee82f4d37b02abdc2e7e1285b2921d6edb97465e01c32bf3072a4d2",
+      "git_mode": "100644",
+      "git_blob": "687f8d6ec89bf0993a9a0c9c13e0c0ba8860b984"
+    },
+    {
+      "path": "tests/model_verification_contract_test.py",
+      "mode": "0o644",
+      "bytes": 11007,
+      "sha256": "7902423b6fc98b1fe2b736e4b1b740f56d0e0f489b078cfbca3ce00044c56c66",
+      "git_mode": "100644",
+      "git_blob": "fb7dafcd8283899ff77952aee7fbc87f459a45f7"
+    },
+    {
+      "path": "tests/model_zip_picker_test.py",
+      "mode": "0o644",
+      "bytes": 57618,
+      "sha256": "0636119884f952d76c14247c6a160da689c3da48deca63942af30a4eb84af713",
+      "git_mode": "100644",
+      "git_blob": "db780db97d3f703cdad959d11218ef70c65e68dc"
+    }
+  ],
+  "role": "reports are post-build supplemental evidence, not retroactive product APK inputs",
+  "full_run_uuid": "97e15c20ec1246019d930000dfc4054f",
+  "evidence": [
+    {
+      "path": ".work/w05-metrics/metrics-report.md",
+      "bytes": 42442,
+      "sha256": "c991a500a984ba343679da53b7130b50d25f8ede697d8e7698318a2b9d887ce5"
+    },
+    {
+      "path": ".work/w05-metrics/current/execution.json",
+      "bytes": 21042,
+      "sha256": "cdd2e070076fa34a3c8033e661d5b97133f41a5db4d96fb707654735b9a7aaa7"
+    },
+    {
+      "path": ".work/w05-metrics/current/sources.json",
+      "bytes": 66878,
+      "sha256": "431a5560b95c576718d1ad0d7a8312c5b0eeb1bf3005c400d90dddb6c3b330e1"
+    },
+    {
+      "path": ".work/w05-a-implement/candidate.json",
+      "bytes": 26458,
+      "sha256": "1b12993b152e90e6cd0e22e4e2cb966a479e789dd0d2b4d7bd0779ce7013bea1"
+    },
+    {
+      "path": ".work/w05-a-implement/same-caller-freeze.json",
+      "bytes": 13733,
+      "sha256": "61c8d1e83613222f2dc862e61085e85b5b69499406c13fadaf1da8015710696e"
+    },
+    {
+      "path": ".work/w05-a-implement/complexity-manual.md",
+      "bytes": 6082,
+      "sha256": "58938d4495337aaa79764f42af71417745950545ecb69fbe0f7d495979639ecf"
+    },
+    {
+      "path": ".work/w05-identity/candidate.json",
+      "bytes": 6259,
+      "sha256": "ff5850837c041c2d673611607e9a84a99529b6c03f0387c75e0dce9f169a7b5a"
+    },
+    {
+      "path": ".work/w05-full/failure-audit.json",
+      "bytes": 11338,
+      "sha256": "cb51f83964a13873c934f8aa0066ded2d7f691a0b06c67f4b8ec8ae966f44f93"
+    },
+    {
+      "path": ".work/w05-corefault-repair/candidate.json",
+      "bytes": 18428,
+      "sha256": "91db8a33401159cff72746fed47b2e3ba146e26b4138ca3feb7f12775c2ba852"
+    },
+    {
+      "path": ".work/w05-corefault-repair/closure-inventory.md",
+      "bytes": 7713,
+      "sha256": "1c45f94c0f4f87281ee03ad0e71d3ad435b0e00e8ddb1bbe3b78061b262922bf"
+    },
+    {
+      "path": ".work/w05-corefault-repair/complexity-manual.md",
+      "bytes": 2191,
+      "sha256": "124b8fbcfad4676bfc8c45fe4879d6229dd308df68ac0f27959208ac5dfd1d52"
+    },
+    {
+      "path": ".work/w05-full-rerun/admission.json",
+      "bytes": 450,
+      "sha256": "129bc7ddcf53dbf37c79f129bafe2099635769b6eb29ed7a3191e0871d86a344"
+    },
+    {
+      "path": ".work/w05-full-rerun/backup-map.json",
+      "bytes": 1264757,
+      "sha256": "f92becec81db5cc6375932f304cdf0eaa61e4e347732c35a886ec5a51ddec479"
+    },
+    {
+      "path": ".work/w05-full-rerun/recordlock.json",
+      "bytes": 454,
+      "sha256": "5829a08bf21266a709567a204a094571476646f983e9156455691ee6a94ff692"
+    },
+    {
+      "path": ".work/w05-full-rerun/input-freeze.json",
+      "bytes": 201952,
+      "sha256": "0481c54660d6e08219c097e6fc63491f4695b8b8868234f5496d7453655dc8a8"
+    },
+    {
+      "path": ".work/w05-full-rerun/launch-manifest.json",
+      "bytes": 1378,
+      "sha256": "e529c415831586c150a59fc1ef964ef9729f5e1fb5baf20bb611940b18ddc856"
+    },
+    {
+      "path": ".work/w05-full-rerun/launch-tool-inputs.json",
+      "bytes": 5370,
+      "sha256": "707f1d348457f50ef476031849c4525ef7c8f2f0ccdfb7f1718c6bb0b0e34a40"
+    },
+    {
+      "path": ".work/w05-full-rerun/full-result.json",
+      "bytes": 272,
+      "sha256": "f73627207c9b961acd9035e55d8269565a6847c9803116b6d2d20dacc22500d2"
+    },
+    {
+      "path": ".work/w05-full-rerun/binding.json",
+      "bytes": 18888,
+      "sha256": "8f52419bcd86cce5805c12d7394486f182126ec5b1ff5381196b23f2bdfc91cb"
+    }
+  ],
+  "device": "NOT RUN",
+  "commit": "pending separate authorization"
+}

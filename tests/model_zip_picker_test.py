@@ -90,7 +90,31 @@ static String visibleText(android.view.View root){if(root.getVisibility()==andro
 static Button find(android.view.View root,String text){if(root.getVisibility()==android.view.View.GONE)return null;if(root instanceof Button&&((Button)root).getText().toString().contains(text))return(Button)root;if(root instanceof LinearLayout)for(android.view.View v:((LinearLayout)root).children){Button b=find(v,text);if(b!=null)return b;}return null;}
 static Button button(ModelManagementActivity a,String text){Button found=find(((ScrollView)a.content).child,text);if(found==null)throw new AssertionError(text);return found;}
 static String text(ModelManagementActivity a){return visibleText(((ScrollView)a.content).child);}
-static void render(ModelManagementActivity a)throws Exception{java.lang.reflect.Method m=ModelManagementActivity.class.getDeclaredMethod("render");m.setAccessible(true);m.invoke(a);}
+static Path renderRoot;
+@SuppressWarnings("removal") static class RenderIoGuard extends SecurityManager {
+ public void checkPermission(java.security.Permission p){}
+ private void file(String path){if(renderRoot!=null&&Paths.get(path).toAbsolutePath().normalize().startsWith(renderRoot))throw new AssertionError("render must not read/write model files");}
+ public void checkRead(String path){file(path);}public void checkWrite(String path){file(path);}public void checkDelete(String path){file(path);}
+}
+@SuppressWarnings("removal") static void render(ModelManagementActivity a)throws Exception{java.lang.reflect.Method m=ModelManagementActivity.class.getDeclaredMethod("render");m.setAccessible(true);int providers=ContentResolver.calls;SecurityManager previous=System.getSecurityManager();System.setSecurityManager(new RenderIoGuard());try{m.invoke(a);}finally{System.setSecurityManager(previous);}check(ContentResolver.calls==providers,"render must not call provider");}
+static Object field(Object o,String name)throws Exception{java.lang.reflect.Field f=o.getClass().getDeclaredField(name);f.setAccessible(true);return f.get(o);}
+static void set(Object o,String name,Object value)throws Exception{java.lang.reflect.Field f=o.getClass().getDeclaredField(name);f.setAccessible(true);f.set(o,value);}
+static void bind(ModelManagementController c,ModelDeployment m,ModelManagementState.Snapshot s)throws Exception{set(c,"snapshotKey",m.key);set(c,"snapshotInstallation",m.installationId);set(c,"boundSnapshot",s);}
+static void epochUi(ModelManagementActivity a,ModelManagementController c,ModelCatalog catalog,Queue q)throws Exception{
+ ModelDeployment m=catalog.legacy();Files.createDirectories(m.repository.modelDir().toPath());for(ModelEntry entry:m.policy.manifest.entries())Files.write(m.repository.modelDir().toPath().resolve(entry.file()),new byte[]{1});
+ m.readiness.markVerified(m.readiness.beginVerify());catalog.refresh();c.refreshInspect();q.run();
+ // The row was observed before this newer proof epoch. No listener refresh is emitted.
+ m.readiness.invalidateState();m.readiness.commitVerified(m.readiness.beginVerify());
+ ModelManagementState.Builder b=new ModelManagementState.Builder(ModelManagementState.empty());b.modelEpoch=m.readiness.epoch()-1;b.files=catalog.rows().get(0).files;b.activeOperationId="epoch-history";b.operationKind=ModelManagementState.OperationKind.VERIFY;b.phase=ModelManagementState.Phase.FAILED;b.errorCode="epoch marker";bind(c,m,b.build());
+ render(a);check(text(a).contains("已校验 0/7")&&!text(a).contains("已校验 7/7"),"row proof epoch mismatch must not display verified count");
+ set(a,"detailModel",m.key);render(a);button(a,"文件详情").performClick();
+ check(!text(a).contains("SHA 已通过")&&text(a).contains("大小匹配 / 尚无当前 SHA 证明")&&text(a).contains("epoch marker"),"detail proof epoch mismatch must not display SHA success");
+ check(button(a,"校验").isEnabled()&&!button(a,"已选用").isEnabled()&&button(a,"准备").isEnabled(),"model presentation buttons agree with selected live readiness not old evidence");
+ m.readiness.invalidateState();set(c,"snapshotKey","");render(a);
+ check(text(a).contains("最近目录快照；未运行新校验")&&!text(a).contains("epoch-history")&&!text(a).contains("epoch marker")&&!text(a).contains("SHA 已通过")&&!button(a,"准备").isEnabled(),"unbound cached rows must not inherit operation evidence");
+ check(text(a).contains(m.policy.manifest.require("f0").sha256())&&button(a,"校验").isEnabled(),"cached file expected SHA and verify eligibility stay available");
+ button(a,"文件详情").performClick();a.onBackPressed();render(a);
+}
 static void drain(Queue q,ModelManagementActivity a)throws Exception{render(a);for(int n=0;q.task!=null&&n<5;n++){q.run();render(a);}check(q.task==null,"finite inspect drain");}
 static byte[] tinyZip(FixedModelPackage fixed)throws Exception{
  ByteArrayOutputStream bytes=new ByteArrayOutputStream();try(java.util.zip.ZipOutputStream out=new java.util.zip.ZipOutputStream(bytes)){
@@ -147,7 +171,7 @@ static void importUi(Path root,String mode)throws Exception{
  a.onPause();a.onDestroy();System.out.println("PASS actual Activity global import "+mode+" host fake NOT Android");
 }
 public static void main(String[]args)throws Exception {
-Path root=Files.createTempDirectory("zip-picker-");Queue q=new Queue();TaskCoordinator owner=new TaskCoordinator(q);
+Path root=Files.createTempDirectory("zip-picker-");renderRoot=root.toAbsolutePath().normalize();Queue q=new Queue();TaskCoordinator owner=new TaskCoordinator(q);
 ModelManifest manifest=new ModelManifest(Arrays.asList(new ModelEntry("a",0,"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")));
 ModelRepository repo=new ModelRepository(manifest,root.resolve("model").toFile(),()->Long.MAX_VALUE);ModelReadiness ready=new ModelReadiness();ModelManagementController c=new ModelManagementController(owner,repo,ready,new ModelOperationControl(),new ModelManagementState());
 AppGraph.current=new AppGraph(c,repo,ready,owner);
@@ -176,6 +200,7 @@ ModelCatalog catalog=new ModelCatalog(catalogFixed,catalogFiles.toFile(),catalog
 ModelManagementController managed=new ModelManagementController(owner,catalog.legacy().repository,catalog.legacy().readiness,new ModelOperationControl(),new ModelManagementState());managed.bindCatalog(catalog);
 AppGraph.current=new AppGraph(managed,catalog.legacy().repository,projected,owner);ModelManagementActivity cards=new ModelManagementActivity();cards.onCreate(null);cards.onResume();if(q.task!=null)q.run();java.lang.reflect.Method actualRender=ModelManagementActivity.class.getDeclaredMethod("render");actualRender.setAccessible(true);actualRender.invoke(cards);
 String compact=visibleText(((ScrollView)cards.content).child);check(compact.contains("0/7")&&!compact.contains("f0")&&!compact.contains("SHA-256:"),"compact model card only verification count no file list");
+epochUi(cards,managed,catalog,q);if(q.task!=null)q.run();render(cards);
 button(cards,"0/7").performClick();if(q.task!=null)q.run();actualRender.invoke(cards);button(cards,"文件详情").performClick();String detailed=visibleText(((ScrollView)cards.content).child);check(!button(cards,"已选用").isEnabled(),"current model selection action disabled");check(detailed.contains("f0")&&detailed.contains("f6")&&detailed.contains("SHA-256:"),"click actual details shows all seven files and hashes");
 cards.onBackPressed();actualRender.invoke(cards);check(!visibleText(((ScrollView)cards.content).child).contains("SHA-256:"),"detail back returns compact list");
 // Second genuine custom identity. Deliberately missing assets distinguish it from legacy history.
@@ -187,7 +212,7 @@ ModelDeployment second=catalog.admit(ModelPackagePolicy.parse(descriptor.getByte
 // Queue A inspection, browse B while A owns worker, then complete A. View/action remains B.
 managed.showDetail(ModelDeployment.LEGACY);button(cards,"Qwen3-ASR 固定部署").performClick();cards.onBackPressed();actualRender.invoke(cards);button(cards,"SECOND MODEL").performClick();check(owner.isBusy(),"A inspect still owns worker");q.run();actualRender.invoke(cards);
 check(managed.detailKey().equals(second.key),"older admitted worker must not overwrite newer detail key");check(!managed.snapshotMatches(second.key),"A snapshot must not be retagged to B");check(managed.snapshotFor(second.key)==null,"identity-bound storage snapshot not available for B until B inspected");
-String secondText=visibleText(((ScrollView)cards.content).child);check(secondText.contains("SECOND MODEL")&&!secondText.contains("f0\\n")&&!secondText.contains("f6\\n"),"B detail must not render A cached files/history: "+secondText);
+render(cards);String secondText=visibleText(((ScrollView)cards.content).child);check(secondText.contains("SECOND MODEL")&&!secondText.contains("f0\\n")&&!secondText.contains("f6\\n")&&!secondText.contains("epoch marker")&&secondText.contains("此模型尚无当前操作记录")&&!button(cards,"校验").isEnabled()&&button(cards,"删除… / 重试删除…").isEnabled(),"B detail must not render A cached files/history");
 button(cards,"维护与说明").performClick();button(cards,"恢复证明").performClick();if(q.task!=null)q.run();actualRender.invoke(cards);check(managed.detailKey().equals(second.key),"restore targets visible B");
 // Actual dialog callback must capture B; a later navigation cannot delete A instead.
 Files.createDirectories(second.repository.modelDir().toPath());Files.write(second.repository.modelDir().toPath().resolve("audio.mnn"),new byte[]{1});managed.refreshInspect();q.run();actualRender.invoke(cards);
@@ -197,7 +222,7 @@ ModelManagementController reconstructed=new ModelManagementController(owner,cata
 // Same-model inspect preserves explicit failed verification history; different target does not inherit it.
 check(button(recreated,"校验").performClick(),"visible B verification button admitted");if(q.task!=null)q.run();actualRender.invoke(recreated);check(reconstructed.state().current().phase==ModelManagementState.Phase.FAILED,"B verification failed on incomplete own assets: phase="+reconstructed.state().current().phase+" enabled="+button(recreated,"校验").isEnabled()+" error="+reconstructed.state().current().errorCode);String failureId=reconstructed.state().current().activeOperationId;reconstructed.refreshInspect();q.run();actualRender.invoke(recreated);check(failureId.equals(reconstructed.state().current().activeOperationId)&&reconstructed.state().current().phase==ModelManagementState.Phase.FAILED,"same model INSPECT retains its own explicit history");
 button(recreated,"删除… / 重试删除…").performClick();android.app.AlertDialog.Click oldInstallation=android.app.AlertDialog.positive;oldInstallation.click(null,0);if(q.task!=null)q.run();check(!Files.exists(second.repository.modelDir().toPath().resolve("audio.mnn"))&&!owner.isBusy(),"actual dialog deletes explicitly visible B after confirmed identity");
-ModelDeployment reinstalled=catalog.admit(ModelPackagePolicy.parse(descriptor.getBytes(java.nio.charset.StandardCharsets.US_ASCII),secondFixed));Files.createDirectories(reinstalled.repository.modelDir().toPath());Files.write(reinstalled.repository.modelDir().toPath().resolve("audio.mnn"),new byte[]{2});actualRender.invoke(recreated);oldInstallation.click(null,0);check(!owner.isBusy()&&Files.readAllBytes(reinstalled.repository.modelDir().toPath().resolve("audio.mnn"))[0]==2,"old installation dialog callback cannot mutate reinstalled visible content key");
+ModelDeployment reinstalled=catalog.admit(ModelPackagePolicy.parse(descriptor.getBytes(java.nio.charset.StandardCharsets.US_ASCII),secondFixed));Files.createDirectories(reinstalled.repository.modelDir().toPath());Files.write(reinstalled.repository.modelDir().toPath().resolve("audio.mnn"),new byte[]{2});render(recreated);check(reconstructed.snapshotFor(reinstalled.key)==null&&!text(recreated).contains(failureId)&&!text(recreated).contains("本次任务："),"same content key new installation must not inherit old history");oldInstallation.click(null,0);check(!owner.isBusy()&&Files.readAllBytes(reinstalled.repository.modelDir().toPath().resolve("audio.mnn"))[0]==2,"old installation dialog callback cannot mutate reinstalled visible content key");
 final boolean[] notified={false};ModelManagementState.Listener reentrant=()->{if(!notified[0]){notified[0]=true;reconstructed.showDetail(ModelDeployment.LEGACY);}};reconstructed.state().addListener(reentrant);reconstructed.showDetail(reinstalled.key);if(q.task!=null)q.run();reconstructed.state().removeListener(reentrant);check(notified[0]&&reconstructed.detailKey().equals(ModelDeployment.LEGACY),"reentrant explicit navigation not overwritten by earlier worker");recreated.onPause();recreated.onDestroy();AppGraph.current=new AppGraph(c,repo,ready,owner);
 // Actual runtime adapter: one resolver stream, no metadata query, sanitized open/read/close faults.
 java.util.List<ModelEntry> seven=new java.util.ArrayList<>();for(int i=0;i<7;i++)seven.add(new ModelEntry("f"+i,0,"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"));ModelManifest sevenManifest=new ModelManifest(seven);FixedModelPackage policy=new FixedModelPackage(sevenManifest,"fixture","mnn",22);
@@ -279,6 +304,33 @@ def main():
             primary.add_note('typed restoration refused; retained input: '+repr(cleanup))
     require(hashlib.sha256(page.read_bytes()).digest()==hashlib.sha256(original).digest(),'typed source exact restore')
     route('typed-restored')
+    projection=out/'src/org/llmasr/minimal/modelmanagement/ModelManagementController.kt'
+    original=projection.read_bytes()
+    anchor='key != null && key == snapshotKey && model?.installationId == snapshotInstallation'
+    require(original.decode().count(anchor)==1,'unique page projection identity mutation')
+    mutant=original.decode().replace(anchor,'key != null').encode()
+    (out/'identity-mutation.json').write_text(json.dumps({'owner':str(projection),'before_sha256':hashlib.sha256(original).hexdigest(),'mutant_sha256':hashlib.sha256(mutant).hexdigest(),'before':anchor,'after':'key != null','diagnostic':'unbound cached rows must not inherit operation evidence'},indent=2)+'\n')
+    primary=None
+    try:
+        projection.write_bytes(mutant)
+        route('identity-mutant','unbound cached rows must not inherit operation evidence')
+    except BaseException as failure:
+        primary=failure
+        raise
+    finally:
+        try:
+            guard(out)
+            for label in attempted:
+                state=json.loads((out/(label+'.json')).read_text())
+                require(state.get('owned_exited') is True and state.get('root_reaped') is True,'retain projection mutant with absent/unknown actual exit '+label)
+            projection.write_bytes(original)
+        except BaseException as cleanup:
+            if primary is None:
+                raise
+            primary.add_note('projection restoration refused; retained input: '+repr(cleanup))
+    require(projection.read_bytes()==original,'projection source exact restore')
+    route('identity-restored')
+    require(len([a for a in attempted if a.endswith('-compile')])<=6 and len([a for a in attempted if a.endswith('-jvm')])<=12,'original picker compile/JVM budgets')
     require(time.monotonic()-start<1800,'picker deadline exceeded')
     guard(out)
     print('PASS production ZIP picker',flush=True)

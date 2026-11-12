@@ -266,6 +266,55 @@ class ModelAndroidHelpersTest {
             } finally { release.countDown(); thread.join(4000) }
             require(!thread.isAlive && error.get()==null, "fixture actual worker exit before cleanup")
         }
+        private fun presentation() {
+            PersistentFixture().use { f ->
+                val files = Files.createDirectories(f.base.resolve("page-files")); val cache = Files.createDirectories(f.base.resolve("page-cache"))
+                val forbidIo = AtomicBoolean(); val calls = AtomicInteger()
+                fun io() { require(!forbidIo.get(), "presentation performed IO"); calls.incrementAndGet() }
+                val metadata = object : ModelCatalog.Io {
+                    override fun readCatalog(): ByteArray? { io(); return null }
+                    override fun writeCatalog(bytes: ByteArray) { io() }
+                    override fun readRecovery(): ByteArray? { io(); return null }
+                    override fun writeRecovery(bytes: ByteArray) { io() }
+                    override fun clearRecovery() { io() }
+                    override fun proof(key: String) = object : ModelVerification.Io {
+                        override fun exists(file: File): Boolean { io(); return file.exists() }
+                        override fun identity(file: File, directory: Boolean): String { io(); return file.path }
+                        override fun read(name: String, limit: Int): ByteArray? { io(); return null }
+                        override fun write(name: String, bytes: ByteArray) { io() }
+                    }
+                }
+                val manifest = ModelManifest((0..6).map { ModelEntry("f$it", 1, ModelPackagePolicy.sha(byteArrayOf(1))) })
+                val fixed = FixedModelPackage(manifest, "page-fixture", "mnn")
+                val resident = ModelResidency(object : ModelResidency.Native {
+                    override fun prepare(config: String, cache: String): Double = throw AssertionError("page native load")
+                    override fun release(): Unit = throw AssertionError("page native release")
+                }, { true })
+                val catalog = ModelCatalog(fixed, files.toFile(), cache.toFile(), { io(); Long.MAX_VALUE }, resident, metadata, ModelReadiness())
+                catalog.load(); val model = catalog.legacy()
+                Files.createDirectories(model.repository.modelDir().toPath())
+                for (entry in manifest.entries()) Files.write(model.repository.modelDir().toPath().resolve(entry.file()), byteArrayOf(1))
+                catalog.refresh()
+                val queue = Queue(); val owner = TaskCoordinator(queue)
+                val controller = ModelManagementController(owner, model.repository, model.readiness, ModelOperationControl(), ModelManagementState())
+                controller.bindCatalog(catalog); controller.refreshInspect(); queue.run()
+                model.readiness.markVerified(model.readiness.beginVerify())
+                val before = calls.get(); forbidIo.set(true)
+                val first = controller.pagePresentation(model.key, ModelResidency.Snapshot(ModelResidency.State.LOADED, true))
+                require(first.cards.single().text.contains("已校验 7/7") && first.detail!!.filesText.contains("SHA 已通过"), "current proof and row epoch presentation")
+                require(first.detail!!.selected && first.detail!!.canPrepare && first.detail!!.canVerify && first.detail!!.canDelete, "selected complete model eligibility")
+                require(first.detail!!.readinessText.contains("LOADED · 等待释放") && first.detail!!.filesText.contains(manifest.require("f0").sha256()), "resident fact and expected hash text")
+                var immutable = false
+                try { (first.cards as MutableList<ModelUiText.Card>).clear() } catch (_: UnsupportedOperationException) { immutable = true }
+                require(immutable, "page cards immutable to Java callers")
+                model.readiness.invalidateState(); model.readiness.commitVerified(model.readiness.beginVerify())
+                val newer = controller.pagePresentation(model.key, null)
+                require(newer.cards.single().text.contains("已校验 0/7") && !newer.detail!!.filesText.contains("SHA 已通过"), "stale row and bound epoch do not claim current SHA")
+                require(first.cards.single().text.contains("已校验 7/7") && first.detail!!.filesText.contains("SHA 已通过"), "returned presentation does not retain mutable readiness")
+                require(controller.pagePresentation(null, null).detail == null && controller.pagePresentation("removed", null).detail == null, "list and removed identity carry no detail authority")
+                require(calls.get() == before && !owner.isBusy(), "memory-only page reads do not schedule or perform IO")
+            }
+        }
         private fun pages() {
             fixture { f ->
                 val p = f.page(null); p.foreground(true); val code = p.beginPicker()
@@ -341,7 +390,7 @@ class ModelAndroidHelpersTest {
                 } }
             } else {
                 for (mode in listOf("missing", "revoke", "cancel", "request", "faults", "continuity", "reservation", "scoped", "listeners", "workers")) main(arrayOf(mode))
-                pages()
+                pages(); presentation()
             }
             println("PASS persistent model verification production contracts")
         }

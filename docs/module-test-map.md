@@ -10,6 +10,8 @@
 
 当前生产owner由66增至70：新增 core `FixedModelPackage.kt`（固定trust/严格JSON）、`ModelZipArchive.java`（有界CEN/LFH/Inflater/CRC）、`ModelZipSource.kt`（私有archive/session）；runtime仅新增 `SafModelZipSource.kt`（净化SAF单stream）。原app8、runtime由6至7、core由52至55；生产测试体不进入release。`ModelVerification`/`AndroidModelVerificationIo`/`ModelAccess`/`ModelResidency`/`ModelOperationControl`只读不变。
 
+w05 A 页面 read Interface 为 `ModelManagementController.pagePresentation(detailKey, residentSnapshot)` → 现有 `ModelUiText` 内嵌不可变 cards/detail。纯投影隐藏 installation 绑定、row/readiness epoch、缓存降级和期望 SHA；Activity 只消费展示资格并保留平台/owner/最终命令复核，不把展示当执行授权。增强 `model_zip_picker_test.py` 的同一真实 Activity caller 先旧产品 baseline green，再当前普通/`-O`：原 typed 三 route + identity mutant/恢复共五 route，原≤6compile/12JVM/1800秒不增；原 navigation 全矩阵不删。helper 为补充，host fake 非 Android/设备验证；版本/full/提交后置，详[本地验证](local-verification.md#llm-asr-w05-a-模型页面呈现重构targeted非-apk-交付)。
+
 `tests/ModelZipImportTest.kt`接入既有 core JUnit modelRepository 方法（原45000ms不变）与host混编；独立 `model_zip_import_contract_test.py` ordinary/-O 测生产ZIP/事务/资源/fault/cancel/crash/mutants，默认非quick复用已编译classes执行全部六个catalog清理回归（targeted-only复用同helper），`model_zip_picker_test.py`编译完整Activity+typed page/ticket及受控provider，不等Android runner。精确库存、输入collector、DEX owner负例保持fail-closed；基线pin采纳与full后置另授，不以旧66输出或旧APK冒本轮green。详[定向入口](local-verification.md)及[格式](model-package-format.md)。
 
 ## llm-asr-zcm B：显式准备与单进程复用（targeted工程，尚不交包）
@@ -106,7 +108,7 @@ fault6 SAF/Provider blocked IO、stop-before-delete 及 runner/Binder/grant/系�
 | ModelRepositoryCancelTest | modelCancelCleanup | IO阻塞退出/清理/latch |
 | ModelRepositoryDeleteTest | modelWhitelistDeletion | 白名单、安全删除 |
 | ModelManagementControllerTest | modelManagementController | 真实controller/owner/provider；llm-asr-mfe logging-enabled 三kind admitted拒绝/finalizer失败、queued abnormal Error、pending/terminal observer Error，原Error身份/owner释放；正常success/failure/cancel、exact terminal/INSPECT零事件/busy/stale/retry UUID、optional telemetry隔离与codec隐私；默认main执行，无新JUnit方法 |
-| ModelAndroidHelpersTest | modelPageHelpers | 纯host页面策略（非Android runtime） |
+| ModelAndroidHelpersTest | modelPageHelpers | 纯host页面/持久证明策略；真实 Controller.pagePresentation 不可变文本/模型展示资格、epoch/缓存证据与零元数据 IO（非Android runtime） |
 | diagnostics.RuntimeLogCoreTest | runtimeLogCore | 持久化/隐私/worker/清理；llm-asr-mfe 序号极限组默认main执行：真实合法near-MAX noearly/early多次append、合法不可偏移history normalize为OK、普通gap/early/单次restore、capacity1/4/1000与dense-before-trim/drop、非法append及clock失败不变/全字段旧snapshot与codec冻结、真实Worker+Persistence连续重启、非法history/坏文件仍拒绝、sink Error身份/一次再入/跨界并发coalescing（numeric回落不等旧publication），无新JUnit方法；llm-asr-rpb fatal slot 恢复组（load/restore/callback/save/execute 五条 Error 路径 + R1 interleave/close-block/reject token 协议）；R2 残留同入口新增 close-fatal（阻塞真实 save 中 close 后同 fatal 身份/实际退出/无 auto retry/不计 queue-full）、reject-window（拒绝先释放自己 admission→真实 FailureSink 有界暂停→后继入 slot 真实 save→旧 frame 不清后继→第三 schedule 只 dirty→最终持久）与 teardown-hold（所有 start/首次观察在 try 内、gate 预登记；总纳秒预算 join(millis,nanos)+实际 isAlive；run-local 共享收尾/删除 guard 真实拒删 held save，主 Throwable+suppressed/保中断/宿主 noexit；独立释放确认实际退出才删）。R1/R2-a 已 CLOSED，R2-b 待 fresh B1–B5 回审；新证据 r2b-fix，旧专用清理变体仅历史演示，不冒共享拒删证明 |
 | RuntimeLogStoreErrorTest | runtimeLogErrorIdentity | Error身份/publisher |
 | LogExportTest | logExportGenerations | clear/export世代、阻塞owner；picker abandon(true) slot释放/零IO/同页新code重试、旧callback拒绝、destroy-deferred跨page EXPIRED，原完整main与close/Error收尾保留 |

@@ -25,9 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import org.llmasr.minimal.model.ModelEntry;
 import org.llmasr.minimal.model.ModelReadiness;
-import org.llmasr.minimal.model.ModelReports;
 import org.llmasr.minimal.model.SafModelSource;
 import org.llmasr.minimal.modelmanagement.ModelManagementState;
 import org.llmasr.minimal.modelmanagement.ModelPageSession;
@@ -206,65 +204,35 @@ public final class ModelManagementActivity extends Activity {
         if (inspectNeeded && !ownerBusy && !page.hasDeferred() && unlocked()) {
             inspectNeeded=false; graph.modelManagement().refreshInspect(); ownerBusy=graph.coordinator().isBusy();
         }
-        ModelManagementState.Snapshot boundDetail = graph.modelManagement().snapshotFor(detailModel);
-        ModelManagementState.Snapshot s = boundDetail == null ? ModelManagementState.empty() : boundDetail;
+        ModelUiText.PagePresentation presentation = graph.modelManagement().pagePresentation(detailModel, graph.modelAccess().residentSnapshot());
+        ModelUiText.DetailPresentation detail = presentation.detail;
         cards.removeAllViews();
-        java.util.List<org.llmasr.minimal.model.ModelCatalog.Row> rows = graph.modelManagement().catalogRows();
-        for (org.llmasr.minimal.model.ModelCatalog.Row row : rows) {
-            org.llmasr.minimal.model.ModelDeployment model = row.deployment;
-            int verified = model.readiness.isReady() && model.readiness.epoch() == row.epoch ? row.verifiedCount : 0;
-            String summary = model.policy.displayName + " · " + model.policy.precision + (model.policy.trustedLegacy ? "" : "（声明）")
-                + "\n" + ModelUiText.bytes(model.policy.totalBytes) + (row.selected ? " · 当前选用" : "")
-                + "\n" + ModelUiText.readiness(model.readiness.state()) + " · 已校验 " + verified + "/7";
-            Button card = button(cards,summary,() -> { detailModel = model.key; graph.modelManagement().showDetail(model.key); invalidation.onChange(); });
-            card.setContentDescription(summary);
+        for (ModelUiText.Card card : presentation.cards) {
+            final String key = card.key;
+            Button view = button(cards,card.text,() -> { detailModel = key; graph.modelManagement().showDetail(key); invalidation.onChange(); });
+            view.setContentDescription(card.text);
         }
-        if (rows.isEmpty()) text(cards,"正在读取模型目录……",16);
-        if (detailModel != null && graph.modelManagement().detail(detailModel) == null) { detailModel=null; toast("模型已变化，请重新选择。"); }
+        if (presentation.cards.isEmpty()) text(cards,"正在读取模型目录……",16);
+        if (detailModel != null && detail == null) { detailModel=null; toast("模型已变化，请重新选择。"); }
         listActions.setVisibility(detailModel == null ? View.VISIBLE : View.GONE);
         details.setVisibility(detailModel == null ? View.GONE : View.VISIBLE);
         cards.setVisibility(detailModel == null ? View.VISIBLE : View.GONE);
-        org.llmasr.minimal.model.ModelDeployment model = visibleModel();
-        ModelReadiness.Snapshot r = model == null ? new ModelReadiness.Snapshot(-1,ModelReadiness.State.UNKNOWN,-2) : model.readiness.snapshot();
-        org.llmasr.minimal.model.ModelResidency.Snapshot loaded = graph.modelAccess().residentSnapshot();
-        readiness.setText((model == null ? "" : model.policy.displayName + "\n" + (model.policy.trustedLegacy ? "内置固定可信清单" : "完整性按导入者提供清单；非可信来源认证 · 精度仅声明") + "\n") + "文件："+ModelUiText.readiness(r.state)+"\nepoch "+r.epoch
-            +"\n内存："+(loaded == null ? "未绑定" : loaded.getState().name())
-            +(loaded != null && loaded.getPendingRelease() ? " · 等待释放" : ""));
-        long expected = model == null ? -1 : model.policy.totalBytes;
-        boolean storageSnapshot = boundDetail != null;
-        storage.setText("预期模型："+ModelUiText.bytes(expected)+"\n内部正式文件："+ModelUiText.bytes(storageSnapshot ? s.installedBytes : -1)
-            +"\n临时残片："+ModelUiText.bytes(storageSnapshot ? s.orphanPartBytes : -1)+"\n可用存储（最近检查）："+ModelUiText.bytes(storageSnapshot ? s.availableBytes : -1)
-            +"\n"+(storageSnapshot ? ModelUiText.spacePlan(s) : "等待此模型概况检查"));
+        readiness.setText(detail == null ? "" : detail.readinessText);
+        storage.setText(detail == null ? "" : detail.storageText);
         busy.setText(ownerBusy ? page.ownsActive() ? "本页任务占用共享任务锁；取消后仍需等待收尾。显示最近快照。"
             : "应用 / 输入法 / 另一管理页正在处理，完成后可管理模型。当前仅显示缓存概况。" : "空闲 · 所有写操作仍会重新检查共享任务锁。");
-        ModelManagementState.Snapshot importing = graph.modelManagement().importSnapshot();
-        importTask.setVisibility(importing == null ? View.GONE : View.VISIBLE);
-        importTask.setText(importing == null ? "" : "最近模型包导入（任务独立于模型详情）\n" + ModelUiText.task(importing)
-            + "\n私有 ZIP 已读取：" + ModelUiText.bytes(graph.modelManagement().importArchiveBytes(importing.activeOperationId)));
-        boolean targetSnapshot = boundDetail != null;
-        ModelManagementState.Snapshot shownTask = detailModel == null ? graph.modelManagement().state().current() : s;
-        task.setText((detailModel == null ? "最近模型操作\n"+ModelUiText.task(shownTask) : targetSnapshot ? ModelUiText.task(shownTask) : "此模型尚无当前操作记录")
-            +(shownTask.inspectBusy ? "\n正在刷新内部概况（最近操作保留）" : "")
-            +(shownTask.inspectError == null ? "" : "\n概况刷新："+shownTask.inspectError));
-        StringBuilder detail = new StringBuilder();
-        boolean snapshotMatches = boundDetail != null;
-        java.util.List<ModelReports.FileDetail> detailFiles = snapshotMatches ? s.files : graph.modelManagement().detailCachedFiles(detailModel);
-        for (ModelReports.FileDetail f : detailFiles) detail.append(f.name).append("\n")
-            .append(!f.present ? "缺失" : !f.sizeMatch ? "大小不符" : r.ready() && (!snapshotMatches || r.epoch == s.modelEpoch) ? "SHA 已通过" : "大小匹配 / 尚无当前 SHA 证明")
-            .append("\n").append(snapshotMatches ? ModelUiText.fileResult(s,f.name) : "最近目录快照；未运行新校验")
-            .append(" · ").append(ModelUiText.bytes(f.actualBytes)).append("\n预期：").append(ModelUiText.bytes(f.expectedBytes))
-            .append(f.partExists ? "\n有受管 .part 残片" : "").append("\nSHA-256: ").append(expectedHash(model, f.name)).append("\n\n");
-        if (detailFiles.isEmpty()) detail.append("尚未取得文件快照。\n");
-        if (snapshotMatches && !s.unexpectedFiles.isEmpty()) detail.append("内部目录有 ").append(s.unexpectedFiles.size()).append(" 项未知文件/目录：保留、不递归删除。");
-        files.setText(detail);
-        detailRisk.setText(snapshotMatches ? ModelUiText.task(s) + (s.unexpectedFiles.isEmpty()?"":"\n未知项 "+s.unexpectedFiles.size()+"：保留、不递归删除") : "等待此模型检查");
-        boolean any = false, completeFile = false;
-        for (ModelReports.FileDetail f : detailFiles) { any |= f.present || f.partExists; completeFile |= f.present && f.sizeMatch; }
-        choose.setEnabled(!ownerBusy); chooseZip.setEnabled(!ownerBusy); verify.setEnabled(!ownerBusy && model != null && completeFile); restore.setEnabled(!ownerBusy && model != null); delete.setEnabled(!ownerBusy && model != null && (any || !model.policy.trustedLegacy));
-        boolean currentModel = false; for (org.llmasr.minimal.model.ModelCatalog.Row row : rows) if (model == row.deployment && row.selected) currentModel = true;
-        select.setEnabled(!ownerBusy && model != null && !currentModel);
-        select.setText(currentModel ? "已选用" : "选用");
-        prepare.setEnabled(!ownerBusy && r.ready() && currentModel);
+        importTask.setVisibility(presentation.importText.isEmpty() ? View.GONE : View.VISIBLE);
+        importTask.setText(presentation.importText);
+        task.setText(presentation.taskText);
+        files.setText(detail == null ? "" : detail.filesText);
+        detailRisk.setText(detail == null ? "" : detail.riskText);
+        choose.setEnabled(!ownerBusy); chooseZip.setEnabled(!ownerBusy);
+        verify.setEnabled(!ownerBusy && detail != null && detail.canVerify);
+        restore.setEnabled(!ownerBusy && detail != null);
+        delete.setEnabled(!ownerBusy && detail != null && detail.canDelete);
+        select.setEnabled(!ownerBusy && detail != null && !detail.selected);
+        select.setText(detail != null && detail.selected ? "已选用" : "选用");
+        prepare.setEnabled(!ownerBusy && detail != null && detail.canPrepare);
         release.setEnabled(true);
         org.llmasr.minimal.modelmanagement.ModelOperationControl.Operation active = graph.modelManagement().opControl().peekActive();
         cancel.setVisibility(page.ownsActive() && active != null && active.kind != org.llmasr.minimal.modelmanagement.ModelOperationControl.Kind.DELETE ? View.VISIBLE : View.GONE);
@@ -274,10 +242,6 @@ public final class ModelManagementActivity extends Activity {
     }
     private org.llmasr.minimal.model.ModelDeployment visibleModel() {
         return graph == null ? null : graph.modelManagement().detail(detailModel);
-    }
-    private String expectedHash(org.llmasr.minimal.model.ModelDeployment model, String file) {
-        if (model == null) return "未知";
-        try { return model.repository.manifest().require(file).sha256(); } catch (IOException unavailable) { return "未知"; }
     }
     @Override protected void onResume() {
         super.onResume(); windowBack.resumed(); visible=true;

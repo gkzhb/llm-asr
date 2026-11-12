@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.llmasr.minimal" android:versionCode="9" android:versionName="0.9-debug">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.llmasr.minimal" android:versionCode="10" android:versionName="0.10-debug">
     <uses-sdk android:minSdkVersion="29" android:targetSdkVersion="35" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-feature android:name="android.hardware.microphone" android:required="false" />

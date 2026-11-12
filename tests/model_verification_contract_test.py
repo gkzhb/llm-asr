@@ -160,13 +160,20 @@ def core_fault_suite(classes, directory):
     directory.mkdir(parents=True, exist_ok=False)
     names = ('model/ModelResidency.kt', 'model/ModelVerification.kt', 'model/ModelReadiness.java', 'model/ModelRepository.java',
              'model/ModelAccess.kt', 'modelmanagement/ModelOperationControl.java',
-             'modelmanagement/ModelManagementController.kt')
+             'modelmanagement/ModelManagementController.kt', 'modelmanagement/ModelUiText.kt')
     sources = [BASE / name for name in names]
     sources += [ROOT / 'tests' / name for name in ('ModelAndroidHelpersTest.kt', 'ModelRepositoryCancelTest.kt',
                                                  'ModelManagementControllerTest.kt', 'RequestRunnerTest.kt')]
-    (directory / 'inputs.json').write_text(json.dumps([identity(p) for p in sources], indent=2) + '\n')
+    # Controller's internal presentation collaborators must be in this same Kotlin module.
+    # Record and recheck real source identity; a dependency classpath is not a source substitute.
+    inputs = [identity(p) for p in sources]
+    (directory / 'inputs.json').write_text(json.dumps(inputs, indent=2) + '\n')
     primary = None
     try:
+        require(len(sources) == len(set(sources)) and BASE / 'modelmanagement/ModelUiText.kt' in sources,
+                'corefault same-module source inventory mismatch')
+        require(all(p.is_file() and not p.is_symlink() for p in sources) and
+                [identity(p) for p in sources] == inputs, 'corefault source SHA/inventory mismatch')
         result = lifecycle.run(['bash', str(ROOT / 'scripts/compile-jvm-sources.sh'), str(directory / 'classes'), str(classes), *map(str, sources)], directory, 'corefault-compile', 180, dependency=classes)
         require(result.returncode == 0, 'corefault compile failed ' + result.stderr.decode())
         cp = str(directory / 'classes') + ':' + str(classes) + ':' + os.environ['KOTLIN_HOME'] + '/lib/kotlin-stdlib.jar'
@@ -177,6 +184,7 @@ def core_fault_suite(classes, directory):
             result = lifecycle.run(['java', '-Xmx256m', '-cp', cp, name, mode], directory, 'corefault-' + str(index), 30, dependency=classes)
             print(result.stdout.decode(), flush=True)
             require(result.returncode == 0, 'corefault behavior failed ' + result.stderr.decode())
+        require([identity(p) for p in sources] == inputs, 'corefault source SHA/inventory mismatch')
         (directory / 'budget.json').write_text(json.dumps({'compile': 1, 'jvm': len(cases)}, indent=2) + '\n')
     except BaseException as failure:
         primary = failure

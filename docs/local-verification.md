@@ -1,5 +1,13 @@
 # P1-A 本地分层验证契约
 
+## llm-asr-w05 A 模型页面呈现重构（targeted，非 APK 交付）
+
+`ModelManagementController.pagePresentation(detailKey, residentSnapshot)` 是内存只读入口；返回现有 `ModelUiText` 内嵌的不可变卡片/详情文本与模型展示资格。Activity 保留 View、inspect 调度后的 busy 重读、页面所有权/取消/生命周期及实际操作命令；展示资格不授权执行，删除仍复核 key、installation、epoch 与确认串。不承诺跨 catalog/readiness/controller 的全局原子快照，不增加跨锁等待或渲染 IO。
+
+复用下方原 picker 普通/`-O` 入口，每模式保留1800秒、≤6混编/12 JVM、单次180/30秒预算：green → typed mutant → restored → identity mutant → restored，共5混编/5 JVM。两个 mutant 都要求编译0、外部线程精准 `AssertionError` 退出1、源字节恢复后重新编译/运行0。增强同一真实 Activity caller 先在旧 `326c9be` 产品通过，再在当前产品运行；覆盖 A→B、同 key 新 installation、row/bound epoch、无 bound 缓存降级、期望 SHA/按钮一致、全局 ZIP 非文件证明、陈旧删除与空 custom 重试/未知项保留。受控 JVM 文件访问 guard 检查 render 不触碰合成模型目录；provider/native gate 另有断言，非 Android IO/生命周期验收。
+
+`ModelAndroidHelpersTest` 的同入口纯 host 投影断言补充不可变返回值、内存事实/预期 SHA/资格一致与零元数据 IO，不替代实际 Activity。原完整 navigation 普通/`-O` mutants/恢复及4200秒/270秒compile/45秒JVM预算保持。局部 cccc/knots 对三生产和三测试同版本同范围复测；cccc 不支持 Kotlin，必须一起审新 Controller 入口/ModelUiText 实现，不能把策略由 Java 移至 Kotlin 宣称整体降分。当前源码/targeted 证据入口 `.work/w05-a-implement/`；版本/pins、fresh 审查、正式 full、三包/签名绑定与安全本地提交后置另授，旧 APK 不代表此候选。设备、麦克风/私人文件、模型音频/推理、下载均 NOT RUN。
+
 ## llm-asr-xyh 受控变体 targeted（实施中）
 
 ```bash

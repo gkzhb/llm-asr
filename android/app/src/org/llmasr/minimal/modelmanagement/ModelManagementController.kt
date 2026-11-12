@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicReference
 import org.llmasr.minimal.diagnostics.RuntimeLogEventKind
 import org.llmasr.minimal.diagnostics.RuntimeLogSource
 import org.llmasr.minimal.diagnostics.RuntimeLogStore
+import org.llmasr.minimal.model.ModelResidency
 import org.llmasr.minimal.model.ModelReadiness
 import org.llmasr.minimal.model.ModelReports
 import org.llmasr.minimal.model.ModelRepository
@@ -76,6 +77,26 @@ class ModelManagementController(coordinator: TaskCoordinator?, repository: Model
         return catalog?.rows()?.firstOrNull { it.deployment === model }?.files ?: emptyList()
     }
     fun startSelect(key: String): Boolean = submit(ModelOperationControl.Kind.SELECT, null, -1, targetKey = key)
+    /** Memory-only page read, not an atomic catalog/readiness transaction or action authorization.
+     * Capture binding under the controller monitor; project outside it, without callbacks or IO.
+     */
+    fun pagePresentation(key: String?, resident: ModelResidency.Snapshot?): ModelUiText.PagePresentation {
+        val rows = catalogRows()
+        val model = detail(key)
+        val bound: ModelManagementState.Snapshot?
+        val importing: ModelManagementState.Snapshot?
+        val importedBytes: Long
+        synchronized(this) {
+            bound = if (key != null && key == snapshotKey && model?.installationId == snapshotInstallation) boundSnapshot else null
+            importing = importSummary
+            importedBytes = archiveBytes
+        }
+        val row = rows.firstOrNull { it.deployment === model }
+        val target = model?.let { ModelUiText.DetailFacts(it.policy, it.readiness.snapshot(),
+            row?.selected == true, row?.files ?: emptyList(), bound) }
+        return ModelUiText.page(rows.map { ModelUiText.card(it, it.deployment.readiness.snapshot()) },
+            target, state.current(), importing, importedBytes, resident)
+    }
     private var readiness: ModelReadiness
     private val control: ModelOperationControl
     private val state: ModelManagementState

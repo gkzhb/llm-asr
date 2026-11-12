@@ -8,22 +8,22 @@ android = root / 'android/app'
 SRC_ROOT = android / 'src/org/llmasr/minimal'
 ns = '{http://schemas.android.com/apk/res/android}'
 manifest = ET.parse(android / 'AndroidManifest.xml').getroot()
-assert manifest.get(ns+'versionName') == '0.9-debug'
-assert manifest.get(ns+'versionCode') == '9'
+assert manifest.get(ns+'versionName') == '0.10-debug'
+assert manifest.get(ns+'versionCode') == '10'
 def check_version_declarations(source, xml):
     # AGP owns final package version after staging removes the source attributes.
     code = re.findall(r'^\s*versionCode\s*=\s*(\d+)\s*$', source, re.M)
     name = re.findall(r'^\s*versionName\s*=\s*"([^"]+)"\s*$', source, re.M)
-    if code != ['9'] or name != ['0.9-debug'] or code != [xml.get(ns+'versionCode')] or name != [xml.get(ns+'versionName')]:
-        raise AssertionError('App version declarations must agree at 9 / 0.9-debug')
+    if code != ['10'] or name != ['0.10-debug'] or code != [xml.get(ns+'versionCode')] or name != [xml.get(ns+'versionName')]:
+        raise AssertionError('App version declarations must agree at 10 / 0.10-debug')
 dsl = (android / 'build.gradle.kts').read_text()
 check_version_declarations(dsl, manifest)
-for before, after in [('versionCode = 9', 'versionCode = 8'), ('versionName = "0.9-debug"', 'versionName = "0.8-debug"')]:
+for before, after in [('versionCode = 10', 'versionCode = 9'), ('versionName = "0.10-debug"', 'versionName = "0.9-debug"')]:
     assert dsl.count(before) == 1, 'unique version declaration fixture'
     try:
         check_version_declarations(dsl.replace(before, after), manifest)
     except AssertionError as failure:
-        assert str(failure) == 'App version declarations must agree at 9 / 0.9-debug'
+        assert str(failure) == 'App version declarations must agree at 10 / 0.10-debug'
     else:
         raise AssertionError('version declaration guard accepted independent stale field')
 assert [p.get(ns+'name') for p in manifest.findall('uses-permission')] == ['android.permission.RECORD_AUDIO']

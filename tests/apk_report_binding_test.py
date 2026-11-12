@@ -54,7 +54,7 @@ with zipfile.ZipFile(apk,'w') as z:
         **{'assets/'+name:data for name,data in licenses.items()}}.items():z.writestr(name,data)
 (reports/'native-link-provenance.json').write_text(json.dumps({'output_sha256':hashlib.sha256(native).hexdigest()}))
 (reports/'permissions.txt').write_text("uses-permission: name='android.permission.RECORD_AUDIO'\n")
-(reports/'badging.txt').write_text("package: name='org.llmasr.minimal' versionCode='9' versionName='0.9-debug'\nminSdkVersion:'29'\ntargetSdkVersion:'35'\nnative-code: 'arm64-v8a'\nprovides-component:'ime'\n")
+(reports/'badging.txt').write_text("package: name='org.llmasr.minimal' versionCode='10' versionName='0.10-debug'\nminSdkVersion:'29'\ntargetSdkVersion:'35'\nnative-code: 'arm64-v8a'\nprovides-component:'ime'\n")
 (reports/'signature.txt').write_text('Verifies (synthetic fixture, not signature evidence)\n')
 (reports/'manifest-tree.txt').write_text('''  E: application
     E: activity
@@ -90,8 +90,8 @@ bind();run('bound-fixture',True)
 # Keep report binding valid: each stale version field must fail the actual
 # version oracle independently, not a detached-report or unrelated ZIP check.
 badging=reports/'badging.txt';current_badging=badging.read_text()
-for label, current, stale in [('version-code', "versionCode='9'", "versionCode='8'"),
-                               ('version-name', "versionName='0.9-debug'", "versionName='0.8-debug'")]:
+for label, current, stale in [('version-code', "versionCode='10'", "versionCode='9'"),
+                               ('version-name', "versionName='0.10-debug'", "versionName='0.9-debug'")]:
     assert current_badging.count(current)==1,'unique version fixture'
     badging.write_text(current_badging.replace(current,stale));bind()
     run(label,False,'AssertionError: '+current)
